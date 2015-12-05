@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 11:41, # CodeGen: 0
+**     Date/Time   : 2015-12-05, 12:16, # CodeGen: 4
 **     Abstract    :
 **
 **     Settings    :
@@ -99,6 +99,8 @@ void Common_Init(void)
   /* SIM_SCGC5: PORTD=1,PORTC=1 */
   SIM_SCGC5 |= (SIM_SCGC5_PORTD_MASK | SIM_SCGC5_PORTC_MASK);
 
+  /* SIM_SCGC4: VREF=1 */
+  SIM_SCGC4 |= SIM_SCGC4_VREF_MASK;
   /* SIM_SCGC6: I2S=1 */
   SIM_SCGC6 |= SIM_SCGC6_I2S_MASK;
   /* NVICIP28: PRI28=0 */
@@ -192,6 +194,8 @@ void Components_Init(void)
   (void)BitIoLdd2_Init(NULL);
   /* ### GenericSWI2C "I2C1" init code ... */
   I2C1_Init();
+  /* ### DAC_LDD "DA1" component auto initialization. Auto initialization feature can be disabled by component's property "Auto initialization". */
+  (void)DA1_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 

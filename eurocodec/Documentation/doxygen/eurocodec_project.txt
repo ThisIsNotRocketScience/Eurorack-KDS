@@ -30,6 +30,8 @@
 - \subpage I2S0
 - \subpage BitIoLdd1
 - \subpage BitIoLdd2
+- \subpage VREF
+- \subpage DA1
 
 */
 
@@ -66,6 +68,8 @@
 - \subpage I2S0
 - \subpage BitIoLdd1
 - \subpage BitIoLdd2
+- \subpage VREF
+- \subpage DA1
 
 */
 

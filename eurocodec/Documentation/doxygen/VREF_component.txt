@@ -1,0 +1,78 @@
+/*!
+  \page VREF VREF (Init_VREF)
+**          This file implements the VREF (VREF) module initialization
+**          according to the Peripheral Initialization settings, and
+**          defines interrupt service routines prototypes.
+**
+
+- \subpage VREF_settings
+- \subpage VREF_regs_overview  
+- \subpage VREF_regs_details
+- \ref VREF_module "Component documentation" 
+\page VREF_regs_overview Registers Initialization Overview
+This page contains the initialization values for the registers of the peripheral(s) configured
+by the component. 
+<table>
+<tr><td colspan="4" class="ttitle1">VREF Initialization</td></tr>
+<tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
+<tr><td>0x40074001</td><td>VREF_SC</td>
+<td class="regNotResetVal">0x000000C1</td>
+ <td>VREF_SC register, peripheral VREF.</td></tr>
+</table>
+Color Denotes Reset Value
+<br/>
+\page VREF_regs_details Register Initialization Details
+This page contains detailed description of initialization values for the 
+registers of the peripheral(s) configured by the component. 
+
+<div class="reghdr1">VREF_SC</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">VREFEN</td><td colspan="1" rowspan="2">REGEN</td>
+<td colspan="1" rowspan="2">ICOMPEN</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="1">VREFST</td><td colspan="2" rowspan="2">MODE_LV</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+<td colspan="1"></td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40074001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x000000C1</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>7</td><td>VREFEN</td><td>0x01</td><td>Internal Voltage Reference enable</td>
+<tr><td>6</td><td>REGEN</td><td>0x01</td><td>Regulator enable</td>
+<tr><td>5</td><td>ICOMPEN</td><td>0x00</td><td>Second order curvature compensation enable</td>
+<tr><td>2</td><td>VREFST</td><td>0x00</td><td>Internal Voltage Reference stable</td>
+<tr><td>0 - 1</td><td>MODE_LV</td><td>0x00</td><td>Buffer Mode selection</td>
+</tr></table>
+*/
+/*!
+\page VREF_settings Component Settings
+\code
+**          Component name                                 : VREF
+**          Device                                         : VREF
+**          Settings                                       : 
+**            Clock gate                                   : Enabled
+**            Mode                                         : Tight
+**            Regulator                                    : Enabled
+**          Pins                                           : 
+**            VREFO Pin                                    : Enabled
+**              Output Pin                                 : <Automatic>
+**          Initialization                                 : 
+**            Enable VREF                                  : yes
+**            Call Init method                             : yes
+**            Utilize after reset values                   : default
+<h1>
+\endcode
+*/

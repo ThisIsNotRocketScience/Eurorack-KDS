@@ -581,5 +581,90 @@
       <event name="OnRxChar" v="don&amp;apos;t generate code" />
     </Events>
   </Bean>
+  <Bean name="VREF" type="Init_VREF">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="VREF" />
+      <Device v="VREF" />
+      <group name="Settings">
+        <Clock_gate v="Enabled" />
+        <Mode v="Tight" />
+        <Regulator v="Enabled" />
+      </group>
+      <group name="Pins">
+        <boolgroup name="VREFO Pin" v="Enabled">
+          <Output_Pin v="&amp;lt;Automatic&amp;gt;" />
+        </boolgroup>
+      </group>
+      <group name="Initialization">
+        <Enable_VREF v="yes" />
+        <Call_Init_method v="yes" />
+        <Utilize_after_reset_values v="default" />
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="DA1" type="DAC_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="DA1" />
+      <D_A_converter v="DAC0" />
+      <boolgroup name="Interrupt service/event" v="Disabled" />
+      <boolgroup name="Output pin" v="yes">
+        <D_A_channel__pin_ v="DAC0_OUT/CMP1_IN3/ADC0_SE23" />
+      </boolgroup>
+      <Init_value v="0" />
+      <D_A_resolution v="12 bits" />
+      <Data_mode v="unsigned 16 bits, right justified" />
+      <Low_power_mode v="Disabled" />
+      <Voltage_reference_source v="external" />
+      <boolgroup name="Hardware buffer" v="Disabled" />
+      <boolgroup name="DMA" v="Disabled" />
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+        <group name="Event mask">
+          <OnBufferWatermark v="Disabled" />
+          <OnBufferEnd v="Disabled" />
+          <OnBufferStart v="Disabled" />
+          <OnComplete v="Disabled" />
+          <OnError v="Disabled" />
+        </group>
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <SetEventMask v="don&amp;apos;t generate code" />
+      <GetEventMask v="don&amp;apos;t generate code" />
+      <GetEventStatus v="don&amp;apos;t generate code" />
+      <SetValue v="generate code" />
+      <SetBuffer v="don&amp;apos;t generate code" />
+      <ForceSwTrigger v="don&amp;apos;t generate code" />
+      <SetBufferMode v="don&amp;apos;t generate code" />
+      <SetBufferSize v="don&amp;apos;t generate code" />
+      <SetBufferWatermark v="don&amp;apos;t generate code" />
+      <SetBufferReadPointer v="don&amp;apos;t generate code" />
+      <GetBufferReadPointer v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+      <GetError v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnBufferWatermark" v="don&amp;apos;t generate code" />
+      <event name="OnBufferEnd" v="don&amp;apos;t generate code" />
+      <event name="OnBufferStart" v="don&amp;apos;t generate code" />
+      <event name="OnComplete" v="don&amp;apos;t generate code" />
+      <event name="OnError" v="don&amp;apos;t generate code" />
+    </Events>
+  </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>
 

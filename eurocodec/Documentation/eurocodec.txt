@@ -96,6 +96,20 @@ Module "I2C1"      (component GenericSWI2C)
                 slave address (XX). This method is not able to return the rest value of 10-bit slave address. This method is 
                 available only if the component is in MASTER mode.
 
+Module "VREF"      (component Init_VREF_VAR0)
+   - VREF_Init -This method initializes registers of the VREF module according to the Peripheral Initialization settings. Call 
+                this method in user code to initialize the module. By default, the method is called by PE automatically; see 
+                "Call Init method" property of the component for more details.
+
+Module "DA1"       (component DAC_LDD)
+   - DA1_Init -Initializes the device according to design-time configuration properties. Allocates memory for the device data 
+                structure.   If the <Enable in init. code> is set to "yes" then the device is also enabled (see the description 
+                of the Enable method).  This method can be called only once. Before the second call of Init the Deinit method 
+                must be called first. If DMA service is enabled this method also initializes inherited DMA Transfer component.
+   - DA1_SetValue -Sets DAC output voltage according to specified value.  Input data format is specified by <Data mode> 
+                property settings. If selected formatting is not native for DAC device which is used then any necessary 
+                transformations (e.g. shifting) are done._/Note: This method is available only if Data buffer is disabled./_
+
 Module "Cpu"       (component MK22FN512LH12)
 
 ===================================================================================

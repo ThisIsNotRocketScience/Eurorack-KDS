@@ -59,6 +59,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd2.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Cpu.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/DA1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/I2C1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/PE_LDD.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Pins1.c</PathName>
@@ -71,6 +72,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/I2S0_Init.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/VREF_Init.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/CPU_Init.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/Peripherals_Init.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/Vectors.c</PathName>
@@ -81,6 +83,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CPU_Config.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Cpu.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/DA1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/I2C1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/I2S0.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/I2S0_Config.h</PathName>
@@ -93,6 +96,8 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Pins1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SCL1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SDA1.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/VREF.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/VREF_Config.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Vectors_Config.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/WAIT1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/Events.h</PathName>
@@ -136,6 +141,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/VREF_PDD.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/WDOG_PDD.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/I2S0_Init.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/VREF_Init.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/CPU_Init.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/PDD_Includes.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/Peripherals_Init.h</PathName>

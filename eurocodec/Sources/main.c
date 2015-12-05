@@ -38,6 +38,7 @@
 #include "BitIoLdd1.h"
 #include "SCL1.h"
 #include "BitIoLdd2.h"
+#include "DA1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -61,6 +62,12 @@ int main(void)
 
   /* Write your code here */
   ak4558_init();
+  for(;;) {
+	  DA1_SetValue(DA1_DeviceData, 0);
+	  WAIT1_Waitms(1);
+	  DA1_SetValue(DA1_DeviceData, 0xFFFFFFFF);
+	  WAIT1_Waitms(1);
+  }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

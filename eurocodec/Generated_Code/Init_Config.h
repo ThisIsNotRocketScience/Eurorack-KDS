@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 11:41, # CodeGen: 0
+**     Date/Time   : 2015-12-05, 12:16, # CodeGen: 4
 **     Abstract    :
 **         This file collects Processor Expert components configuration 
 **         and interface files.
@@ -270,6 +270,13 @@
 #include "I2S0_Init.h"
 /* Initialization component generated header file */
 #include "I2S0.h"
+  
+/* Initialization component configuration header file */
+#include "VREF_Config.h"
+/* Initialization component static header file */
+#include "VREF_Init.h"
+/* Initialization component generated header file */
+#include "VREF.h"
   
   
 #endif /* __Init_Config_H */
