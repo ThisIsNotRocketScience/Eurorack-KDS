@@ -33,6 +33,7 @@
 - \subpage VREF
 - \subpage DA1
 - \subpage AD1
+- \subpage AdcLdd1
 
 */
 
@@ -72,6 +73,7 @@
 - \subpage VREF
 - \subpage DA1
 - \subpage AD1
+- \subpage AdcLdd1
 
 */
 

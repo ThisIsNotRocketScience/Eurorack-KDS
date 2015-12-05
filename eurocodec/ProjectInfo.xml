@@ -56,6 +56,8 @@
   <FILES>
     <GeneratedCs>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD1.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD2.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AdcLdd1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd2.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.c</PathName>
@@ -70,6 +72,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Project_Settings/Startup_Code/startup.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/Events.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/ak4558.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/cv_adc.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/I2S0_Init.c</PathName>
@@ -80,6 +83,8 @@
     </GeneratedCs>
     <GeneratedHs>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD1.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD2.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AdcLdd1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd2.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.h</PathName>
@@ -104,6 +109,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/WAIT1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/Events.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/ak4558.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/cv_adc.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/IO_Map/MK22F51212.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/ADC_PDD.h</PathName>

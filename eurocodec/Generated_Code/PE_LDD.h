@@ -6,7 +6,7 @@
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 12:40, # CodeGen: 6
+**     Date/Time   : 2015-12-05, 16:26, # CodeGen: 21
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -65,6 +65,8 @@
 #include "BitIoLdd2.h"
 #include "DA1.h"
 #include "AD1.h"
+#include "AD2.h"
+#include "AdcLdd1.h"
 
 
 /*

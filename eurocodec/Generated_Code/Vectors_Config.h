@@ -59,6 +59,8 @@
 #include "BitIoLdd2.h"
 #include "DA1.h"
 #include "AD1.h"
+#include "AD2.h"
+#include "AdcLdd1.h"
 #include "Events.h"
 
 #ifdef __cplusplus
@@ -123,7 +125,7 @@ extern "C" {
 #define VECTOR_52         (tIsrFunc)&UnhandledInterrupt         /* 0x34 -    ivINT_UART2_ERR               unused by PE */
 #define VECTOR_53         (tIsrFunc)&UnhandledInterrupt         /* 0x35 -    ivINT_Reserved53              unused by PE */
 #define VECTOR_54         (tIsrFunc)&UnhandledInterrupt         /* 0x36 -    ivINT_Reserved54              unused by PE */
-#define VECTOR_55         (tIsrFunc)&UnhandledInterrupt         /* 0x37 -    ivINT_ADC0                    unused by PE */
+#define VECTOR_55         (tIsrFunc)&AdcLdd1_MeasurementCompleteInterrupt /* 0x37 112 ivINT_ADC0           used by PE */
 #define VECTOR_56         (tIsrFunc)&UnhandledInterrupt         /* 0x38 -    ivINT_CMP0                    unused by PE */
 #define VECTOR_57         (tIsrFunc)&UnhandledInterrupt         /* 0x39 -    ivINT_CMP1                    unused by PE */
 #define VECTOR_58         (tIsrFunc)&UnhandledInterrupt         /* 0x3A -    ivINT_FTM0                    unused by PE */

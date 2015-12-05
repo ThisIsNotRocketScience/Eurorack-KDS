@@ -150,6 +150,15 @@ Module "AD1"       (component ADC_LDD)
                 started multiple times. Note: This method works only with the sample groups defined at design time. For 
                 run-time defined groups use <CreateSampleGroup()> method.
 
+Module "AD2"       (component ADC)
+   - AD2_Measure -This method performs one measurement on all channels that are set in the component inspector. (Note: If the 
+                <number of conversions> is more than one the conversion of A/D channels is performed specified number of times.)
+   - AD2_GetValue16 -This method returns the last measured values of all channels. Compared with <GetValue> method this method 
+                returns more accurate result if the <number of conversions> is greater than 1 and <AD resolution> is less than 
+                16 bits. In addition, the user code dependency on <AD resolution> is eliminated.
+   - AD2_Calibrate -This method starts self calibration process. Calibration is typically used to remove the effects of the 
+                gain and offset from a specific reading.
+
 Module "Cpu"       (component MK22FN512LH12)
 
 ===================================================================================

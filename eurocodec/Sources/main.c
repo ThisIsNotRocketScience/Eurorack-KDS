@@ -40,6 +40,8 @@
 #include "BitIoLdd2.h"
 #include "DA1.h"
 #include "AD1.h"
+#include "AD2.h"
+#include "AdcLdd1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -72,9 +74,12 @@ int main(void)
 		  cv_adc_recalibrate();
 		  counter = 0;
 	  }
+	  AD2_Measure(0);
 	  float fvalue = cv_adc_voltage();
 	  dac_set_voltage(fvalue);
 	  WAIT1_Waitms(1);
+	  word adcvalues[AdcLdd1_CHANNEL_COUNT];
+	  AD2_GetValue16(adcvalues);
   }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
