@@ -7,7 +7,7 @@
 **     Version     : Component 01.084, Driver 01.09, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 12:31, # CodeGen: 5
+**     Date/Time   : 2015-12-05, 12:53, # CodeGen: 11
 **     Abstract    :
 **         This component implements an internal D/A converter of the MCU.
 **         It contains settings for converting various format of a values
@@ -21,7 +21,7 @@
 **            D/A channel (pin)                            : DAC0_OUT/CMP1_IN3/ADC0_SE23
 **          Init value                                     : 0
 **          D/A resolution                                 : 12 bits
-**          Data mode                                      : unsigned 16 bits, right justified
+**          Data mode                                      : unsigned 32 bits, left justified
 **          Low power mode                                 : Disabled
 **          Voltage reference source                       : external
 **          Hardware buffer                                : Disabled

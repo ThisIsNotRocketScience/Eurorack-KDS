@@ -32,6 +32,7 @@
 - \subpage BitIoLdd2
 - \subpage VREF
 - \subpage DA1
+- \subpage AD1
 
 */
 
@@ -70,6 +71,7 @@
 - \subpage BitIoLdd2
 - \subpage VREF
 - \subpage DA1
+- \subpage AD1
 
 */
 

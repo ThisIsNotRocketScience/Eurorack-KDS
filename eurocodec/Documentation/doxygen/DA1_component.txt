@@ -290,7 +290,7 @@ registers of the peripheral(s) configured by the component.
 **            D/A channel (pin)                            : DAC0_OUT/CMP1_IN3/ADC0_SE23
 **          Init value                                     : 0
 **          D/A resolution                                 : 12 bits
-**          Data mode                                      : unsigned 16 bits, right justified
+**          Data mode                                      : unsigned 32 bits, left justified
 **          Low power mode                                 : Disabled
 **          Voltage reference source                       : external
 **          Hardware buffer                                : Disabled

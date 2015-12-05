@@ -39,6 +39,7 @@
 #include "SCL1.h"
 #include "BitIoLdd2.h"
 #include "DA1.h"
+#include "AD1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -49,6 +50,7 @@
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "ak4558.h"
+#include "cv_adc.h"
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -62,10 +64,16 @@ int main(void)
 
   /* Write your code here */
   ak4558_init();
+  cv_adc_init();
+  int counter = 0;
   for(;;) {
-	  DA1_SetValue(DA1_DeviceData, 0);
-	  WAIT1_Waitms(1);
-	  DA1_SetValue(DA1_DeviceData, 0xFFFFFFFF);
+	  counter++;
+	  if (counter > 10*1000) {
+		  cv_adc_recalibrate();
+		  counter = 0;
+	  }
+	  float fvalue = cv_adc_voltage();
+	  dac_set_voltage(fvalue);
 	  WAIT1_Waitms(1);
   }
 

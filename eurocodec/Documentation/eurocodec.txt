@@ -110,6 +110,46 @@ Module "DA1"       (component DAC_LDD)
                 property settings. If selected formatting is not native for DAC device which is used then any necessary 
                 transformations (e.g. shifting) are done._/Note: This method is available only if Data buffer is disabled./_
 
+Module "AD1"       (component ADC_LDD)
+   - AD1_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc.   If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.    This method can be called only once. Before the second call of 
+                Init() the Deinit() must be called first.
+   - AD1_StartSingleMeasurement -This method starts one measurement of the selected group of samples and exits immediately. 
+                This is ADC SW trigger method. The group of samples for measurement is specified by preceding call to 
+                <SelectSampleGroup()> or <CreateSampleGroup> method.     DMA disabled: The <OnMeasurementComplete() > event is 
+                invoked after the measurement is done and if the event is enabled. Results of the measurement can be read by 
+                the <GetMeasuredValues()> method.     DMA enabled: DMA request from configured ADC is enabled automatically. 
+                The <OnMeasurementComplete() > event is invoked after the requested number of results are transferred to 
+                destination buffer by DMA and if the event is enabled. <GetMeasuredValues()> method is not available if DMA 
+                mode is enabled. If the DMA transfer was completed before and DMA is not recofingured, DMA error can occur. See 
+                also <SetBuffer()> method.     The state of the measurement can be also polled by the 
+                <GetMeasurementCompleteStatus()> method. The <Discontinuous mode> doesn't support this method.
+   - AD1_StartLoopMeasurement -This method starts periodic measurement of the selected group of and exits immediately. This is 
+                ADC SW trigger method. The group of samples for measurement is specified by preceding call to 
+                <SelectSampleGroup()> or <CreateSampleGroup> method.     DMA disabled: The <OnMeasurementComplete()> event is 
+                invoked after the each measurement is done and the event is enabled. Results of the measurement can be read by 
+                the <GetMeasuredValues()> method.     DMA enabled: DMA request from configured ADC is enabled automatically. 
+                The <OnMeasurementComplete() > event is invoked after the requested number of results are transferred to 
+                destination buffer by DMA and the event is enabled. When DMA transfer is finished, DMA request is automatically 
+                disabled by HW, but ADC loop mode is not stopped. In order to start new loop measurement with DMA, DMA must be 
+                reconfigured by <SetBuffer()> method. <GetMeasuredValues()> method is not available if DMA mode is enabled.     
+                The state of the measurement can be also polled by the <GetMeasurementCompleteStatus()> method. This method is 
+                available only if HW supports loop measurement. The <Discontinuous mode> doesn't support this method.
+   - AD1_CancelMeasurement -This method cancels the measurement in progress. Typically the OnMeasurementComplete() event is not 
+                invoked for cancelled measurement. If DMA mode is enabled, DMA request from ADC is disabled and DMA transfer is 
+                cancelled.
+   - AD1_GetMeasuredValues -This method copies results of the last measurement to the user supplied buffer. Data size depends 
+                on the size of measured sample group (see <SelectSampleGroup()> or <CreateSampleGroup()> method). Data 
+                representation is defined by the <Result type> property. Typically this method is called from 
+                <OnMeasurementComplete> event to get results of the last measurement. This method is not available if DMA is 
+                enabled.
+   - AD1_SelectSampleGroup -This method selects one of the (design-time) predefined <Static sample groups> for the next 
+                measurement. Each call rewrites the preceding setting. Once any group is selected, the measurement can be 
+                started multiple times. Note: This method works only with the sample groups defined at design time. For 
+                run-time defined groups use <CreateSampleGroup()> method.
+
 Module "Cpu"       (component MK22FN512LH12)
 
 ===================================================================================

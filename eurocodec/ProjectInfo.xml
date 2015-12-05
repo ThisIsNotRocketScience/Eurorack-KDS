@@ -55,6 +55,7 @@
   </PATHS>
   <FILES>
     <GeneratedCs>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd2.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.c</PathName>
@@ -78,6 +79,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/Vectors.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/AD1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/BitIoLdd2.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/CODEC_PDN.h</PathName>

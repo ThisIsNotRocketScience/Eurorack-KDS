@@ -620,7 +620,7 @@
       </boolgroup>
       <Init_value v="0" />
       <D_A_resolution v="12 bits" />
-      <Data_mode v="unsigned 16 bits, right justified" />
+      <Data_mode v="unsigned 32 bits, left justified" />
       <Low_power_mode v="Disabled" />
       <Voltage_reference_source v="external" />
       <boolgroup name="Hardware buffer" v="Disabled" />
@@ -663,6 +663,117 @@
       <event name="OnBufferEnd" v="don&amp;apos;t generate code" />
       <event name="OnBufferStart" v="don&amp;apos;t generate code" />
       <event name="OnComplete" v="don&amp;apos;t generate code" />
+      <event name="OnError" v="don&amp;apos;t generate code" />
+    </Events>
+  </Bean>
+  <Bean name="AD1" type="ADC_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="AD1" />
+      <A_D_converter v="ADC1" />
+      <Discontinuous_mode v="no" />
+      <boolgroup name="Interrupt service/event" v="Disabled" />
+      <boolgroup name="DMA" v="Disabled" />
+      <list name="A/D channel list" v="2">
+        <group name="Channel 0">
+          <enumgroup name="Channel mode" v="Differential">
+            <group name="Input">
+              <A_D_channel__pin_ v="ADC0_DP0/ADC1_DP3" />
+            </group>
+            <group name="Negative input">
+              <A_D_channel__pin_ v="ADC0_DM0/ADC1_DM3" />
+            </group>
+          </enumgroup>
+        </group>
+        <group name="Channel 1">
+          <enumgroup name="Channel mode" v="Differential">
+            <group name="Input">
+              <A_D_channel__pin_ v="ADC1_DP0/ADC0_DP3" />
+            </group>
+            <group name="Negative input">
+              <A_D_channel__pin_ v="ADC1_DM0/ADC0_DM3" />
+            </group>
+          </enumgroup>
+        </group>
+      </list>
+      <boolgroup name="Static sample groups" v="Enabled">
+        <list name="Sample group list" v="2">
+          <group name="Group 0">
+            <list name="Sample list" v="1">
+              <boolgroup name="Sample 0" v="Enabled">
+                <Channel_index v="0" />
+              </boolgroup>
+            </list>
+          </group>
+          <group name="Group 1">
+            <list name="Sample list" v="1">
+              <boolgroup name="Sample 0" v="Enabled">
+                <Channel_index v="1" />
+              </boolgroup>
+            </list>
+          </group>
+        </list>
+      </boolgroup>
+      <A_D_resolution v="16 bits" />
+      <Low_power_mode v="Disabled" />
+      <High_speed_conversion_mode v="Disabled" />
+      <Asynchro_clock_output v="Disabled" />
+      <Sample_time v="4 clock periods" />
+      <Number_of_conversions v="1" />
+      <Conversion_time v="10 &amp;#181;s" />
+      <ADC_clock v="2.6 MHz (384.615 ns)" />
+      <Single_conversion_time___Single_ended v="16.621 us" />
+      <Single_conversion_time___Differential v="20.083 us" />
+      <Additional_conversion_time___Single_ended v="9.615 us" />
+      <Additional_conversion_time___Differential v="13.076 us" />
+      <Result_type v="signed 32 bits, left justified" />
+      <boolgroup name="Trigger" v="Disabled" />
+      <group name="Voltage reference">
+        <group name="High voltage reference">
+          <Volt__ref__pin v="VREFH" />
+        </group>
+        <group name="Low voltage reference">
+          <Volt__ref__pin v="VREFL" />
+        </group>
+      </group>
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+        <group name="Event mask">
+          <OnMeasurementComplete v="Disabled" />
+          <OnError v="Disabled" />
+        </group>
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <GetEventMask v="don&amp;apos;t generate code" />
+      <SetEventMask v="don&amp;apos;t generate code" />
+      <StartSingleMeasurement v="generate code" />
+      <StartLoopMeasurement v="generate code" />
+      <StartSingleTriggeredMeasurement v="don&amp;apos;t generate code" />
+      <StartLoopTriggeredMeasurement v="don&amp;apos;t generate code" />
+      <CancelMeasurement v="generate code" />
+      <GetMeasuredValues v="generate code" />
+      <SelectSampleGroup v="generate code" />
+      <CreateSampleGroup v="don&amp;apos;t generate code" />
+      <GetMeasurementCompleteStatus v="don&amp;apos;t generate code" />
+      <EnableAutoCompare v="don&amp;apos;t generate code" />
+      <DisableAutoCompare v="don&amp;apos;t generate code" />
+      <StartCalibration v="don&amp;apos;t generate code" />
+      <GetCalibrationResultStatus v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <SetBuffer v="don&amp;apos;t generate code" />
+      <GetError v="don&amp;apos;t generate code" />
+      <GetMeasuredSamplesCount v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnMeasurementComplete" v="don&amp;apos;t generate code" />
       <event name="OnError" v="don&amp;apos;t generate code" />
     </Events>
   </Bean>

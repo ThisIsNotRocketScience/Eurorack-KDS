@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 12:16, # CodeGen: 4
+**     Date/Time   : 2015-12-05, 12:40, # CodeGen: 6
 **     Abstract    :
 **
 **     Settings    :
@@ -196,6 +196,8 @@ void Components_Init(void)
   I2C1_Init();
   /* ### DAC_LDD "DA1" component auto initialization. Auto initialization feature can be disabled by component's property "Auto initialization". */
   (void)DA1_Init(NULL);
+  /* ### ADC_LDD "AD1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)AD1_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 
