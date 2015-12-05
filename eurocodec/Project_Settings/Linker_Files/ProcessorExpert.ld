@@ -4,13 +4,13 @@
 /*##                                   */
 /*##     Filename  : ProcessorExpert.ld */
 /*##                                   */
-/*##     Project   : codec             */
+/*##     Project   : eurocodec         */
 /*##                                   */
 /*##     Processor : MK22FN512VLH12    */
 /*##                                   */
 /*##     Compiler  : GNU C Compiler    */
 /*##                                   */
-/*##     Date/Time : 2015-12-04, 21:47, # CodeGen: 2 */
+/*##     Date/Time : 2015-12-05, 11:41, # CodeGen: 0 */
 /*##                                   */
 /*##     Abstract  :                   */
 /*##                                   */

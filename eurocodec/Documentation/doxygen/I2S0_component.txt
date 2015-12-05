@@ -22,10 +22,10 @@ by the component.
 <td class="regNotResetVal">0x00000004</td>
  <td>I2S0_MDR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F000</td><td>I2S0_TCSR</td>
-<td class="regNotResetVal">0x921FFD00</td>
+<td class="regNotResetVal">0x921FED00</td>
  <td>I2S0_TCSR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F080</td><td>I2S0_RCSR</td>
-<td class="regNotResetVal">0x921C1D00</td>
+<td class="regNotResetVal">0x921C0C00</td>
  <td>I2S0_RCSR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F004</td><td>I2S0_TCR1</td>
 <td class="regNotResetVal">0x00000001</td>
@@ -220,7 +220,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F000</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921FFD00</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921FED00</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>31</td><td>TE</td><td>0x01</td><td>Transmitter Enable</td>
@@ -234,7 +234,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>18</td><td>FEF</td><td>0x01</td><td>FIFO Error Flag</td>
 <tr><td>17</td><td>FWF</td><td>0x01</td><td>FIFO Warning Flag</td>
 <tr><td>16</td><td>FRF</td><td>0x01</td><td>FIFO Request Flag</td>
-<tr><td>12</td><td>WSIE</td><td>0x01</td><td>Word Start Interrupt Enable</td>
+<tr><td>12</td><td>WSIE</td><td>0x00</td><td>Word Start Interrupt Enable</td>
 <tr><td>11</td><td>SEIE</td><td>0x01</td><td>Sync Error Interrupt Enable</td>
 <tr><td>10</td><td>FEIE</td><td>0x01</td><td>FIFO Error Interrupt Enable</td>
 <tr><td>9</td><td>FWIE</td><td>0x00</td><td>FIFO Warning Interrupt Enable</td>
@@ -290,7 +290,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F080</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921C1D00</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921C0C00</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>31</td><td>RE</td><td>0x01</td><td>Receiver Enable</td>
@@ -304,11 +304,11 @@ registers of the peripheral(s) configured by the component.
 <tr><td>18</td><td>FEF</td><td>0x01</td><td>FIFO Error Flag</td>
 <tr><td>17</td><td>FWF</td><td>0x00</td><td>FIFO Warning Flag</td>
 <tr><td>16</td><td>FRF</td><td>0x00</td><td>FIFO Request Flag</td>
-<tr><td>12</td><td>WSIE</td><td>0x01</td><td>Word Start Interrupt Enable</td>
+<tr><td>12</td><td>WSIE</td><td>0x00</td><td>Word Start Interrupt Enable</td>
 <tr><td>11</td><td>SEIE</td><td>0x01</td><td>Sync Error Interrupt Enable</td>
 <tr><td>10</td><td>FEIE</td><td>0x01</td><td>FIFO Error Interrupt Enable</td>
 <tr><td>9</td><td>FWIE</td><td>0x00</td><td>FIFO Warning Interrupt Enable</td>
-<tr><td>8</td><td>FRIE</td><td>0x01</td><td>FIFO Request Interrupt Enable</td>
+<tr><td>8</td><td>FRIE</td><td>0x00</td><td>FIFO Request Interrupt Enable</td>
 <tr><td>1</td><td>FWDE</td><td>0x00</td><td>FIFO Warning DMA Enable</td>
 <tr><td>0</td><td>FRDE</td><td>0x00</td><td>FIFO Request DMA Enable</td>
 </tr></table>
@@ -1022,7 +1022,7 @@ registers of the peripheral(s) configured by the component.
 **              Interrupt request                          : Enabled
 **              Interrupt priority                         : <Automatic>
 **              Tx ISR Name                                : I2S0_TX
-**              Tx Word start interrupt                    : Enabled
+**              Tx Word start interrupt                    : Disabled
 **              Tx sync error interrupt                    : Enabled
 **              Tx FIFO error interrupt                    : Enabled
 **              Tx FIFO warning interrupt                  : Disabled
@@ -1034,11 +1034,11 @@ registers of the peripheral(s) configured by the component.
 **              Interrupt request                          : Enabled
 **              Interrupt priority                         : <Automatic>
 **              Rx ISR Name                                : I2S0_RX
-**              Rx Word start interrupt                    : Enabled
+**              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled
 **              Rx FIFO error interrupt                    : Enabled
 **              Rx FIFO warning interrupt                  : Disabled
-**              Rx FIFO request interrupt                  : Enabled
+**              Rx FIFO request interrupt                  : Disabled
 **              Rx FIFO warning DMA                        : Disabled
 **              Rx FIFO request DMA                        : Disabled
 **          Initialization                                 : 

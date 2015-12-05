@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PEproject>
   <Header>
-    <Name>codec</Name>
+    <Name>eurocodec</Name>
     <SavedBy>ld0d</SavedBy>
-    <ModificationStamp>16</ModificationStamp>
+    <ModificationStamp>18</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.0.RT7_b1515-0427</PEversion>
@@ -19379,8 +19379,8 @@
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <TypeSpecNameState>typeTxWordStartIntEn</TypeSpecNameState>
-        <Index>1</Index>
-        <EnumSymbVal>enabled</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>TxSyncErrorIntEn</ItemSymbol>
@@ -19508,8 +19508,8 @@
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <TypeSpecNameState>typeRxWordStartIntEn</TypeSpecNameState>
-        <Index>1</Index>
-        <EnumSymbVal>enabled</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>RxSyncErrorIntEn</ItemSymbol>
@@ -19549,8 +19549,8 @@
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <TypeSpecNameState>typeRxFifoRequestIntEn</TypeSpecNameState>
-        <Index>1</Index>
-        <EnumSymbVal>enabled</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>RxFifoWarningDmaEn</ItemSymbol>

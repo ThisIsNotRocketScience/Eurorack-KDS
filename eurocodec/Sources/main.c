@@ -47,43 +47,7 @@
 #include "Init_Config.h"
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-void ak4558_init()
-{
-	CODEC_PDN_SetVal(CODEC_PDN_DeviceData);
-	WAIT1_Waitms(100);
-	volatile byte res = I2C1_SelectSlave(0b0010000);
-	unsigned char ak4558_configdata[] = { 0, 0b00011111, 2, 0b00000000, 3,
-			0b00111110, 4, 0b00010100, 5, 0b01110010, 6, 0b00011001, 7,
-			0b00001100, 8, 255, 9, 255, 1, 0b00001111 };
-	for (int i = 0; i < sizeof(ak4558_configdata) / 2; i += 2) {
-		word sent = 0;
-		byte res = I2C1_SendBlock(&ak4558_configdata[i], 2, &sent);
-	}
-}
-
-uint32_t pos = 0;
-
-float value = 0.0;
-
-PE_ISR(I2S0_TX)
-{
-    I2S0_TDR0 = pos;
-    //I2S0_TDR0 = pos;
-
-    value = value + (1000.0f/187500.0f);
-    if (value > 1.0) value = 0.0;
-    pos = 0x80000000 + (int32_t)(value * (float)(1ULL<<31ULL));
-
-    I2S_PDD_ClearTxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
-}
-
-PE_ISR(I2S0_RX)
-{
-    volatile uint32_t in = I2S0_RDR0;
-    //in = I2S0_RDR0;
-
-    I2S_PDD_ClearRxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
-}
+#include "ak4558.h"
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
