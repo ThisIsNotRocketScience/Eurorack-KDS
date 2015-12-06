@@ -51,7 +51,7 @@ by the component.
 <td class="regResetVal">0x00000000</td>
  <td>ADC0_SC2 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4003B008</td><td>ADC0_CFG1</td>
-<td class="regNotResetVal">0x00000074</td>
+<td class="regNotResetVal">0x00000037</td>
  <td>ADC0_CFG1 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4003B00C</td><td>ADC0_CFG2</td>
 <td class="regNotResetVal">0x00000013</td>
@@ -771,14 +771,14 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4003B008</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000074</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000037</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>ADLPC</td><td>0x00</td><td>Low-Power Configuration</td>
-<tr><td>5 - 6</td><td>ADIV</td><td>0x02</td><td>Clock Divide Select</td>
+<tr><td>5 - 6</td><td>ADIV</td><td>0x00</td><td>Clock Divide Select</td>
 <tr><td>4</td><td>ADLSMP</td><td>0x01</td><td>Sample Time Configuration</td>
 <tr><td>2 - 3</td><td>MODE</td><td>0x00</td><td>Conversion mode selection</td>
-<tr><td>0 - 1</td><td>ADICLK</td><td>0x00</td><td>Input Clock Select</td>
+<tr><td>0 - 1</td><td>ADICLK</td><td>0x02</td><td>Input Clock Select</td>
 </tr></table>
 <div class="reghdr1">ADC0_CFG2</div>
 <div class="regdiag">
@@ -934,11 +934,11 @@ registers of the peripheral(s) configured by the component.
 **          Sample time                                    : 6 clock periods
 **          Number of conversions                          : 1
 **          Conversion time                                : 10 µs
-**          ADC clock                                      : 2.291 MHz (436.364 ns)
-**          Single conversion time - Single-ended          : 10.992 us
-**          Single conversion time - Differential          : 15.356 us
-**          Additional conversion time - Single-ended      : 9.6 us
-**          Additional conversion time - Differential      : 13.963 us
+**          ADC clock                                      : 2.6 MHz (384.615 ns)
+**          Single conversion time - Single-ended          : 14.698 us
+**          Single conversion time - Differential          : 18.544 us
+**          Additional conversion time - Single-ended      : 8.461 us
+**          Additional conversion time - Differential      : 12.307 us
 **          Result type                                    : unsigned 16 bits, right justified
 **          Trigger                                        : Disabled
 **          Voltage reference                              : 

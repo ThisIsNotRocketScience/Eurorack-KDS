@@ -847,11 +847,11 @@
           <Sample_time v="6 clock periods" />
           <Number_of_conversions v="1" />
           <Conversion_time v="10 &amp;#181;s" />
-          <ADC_clock v="2.291 MHz (436.364 ns)" />
-          <Single_conversion_time___Single_ended v="10.992 us" />
-          <Single_conversion_time___Differential v="15.356 us" />
-          <Additional_conversion_time___Single_ended v="9.6 us" />
-          <Additional_conversion_time___Differential v="13.963 us" />
+          <ADC_clock v="2.6 MHz (384.615 ns)" />
+          <Single_conversion_time___Single_ended v="14.698 us" />
+          <Single_conversion_time___Differential v="18.544 us" />
+          <Additional_conversion_time___Single_ended v="8.461 us" />
+          <Additional_conversion_time___Differential v="12.307 us" />
           <Result_type v="unsigned 16 bits, right justified" />
           <boolgroup name="Trigger" v="Disabled" />
           <group name="Voltage reference">

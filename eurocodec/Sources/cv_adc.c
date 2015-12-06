@@ -34,6 +34,14 @@ float cv_adc_recalibrate()
 	cv_adc_calibration_scale = (5.0f * 1.2f) / (float)vref_per_vcc;
 }
 
+int32_t cv_adc_value()
+{
+	int32_t adcvalue = 0;
+	AD1_GetMeasuredValues(AD1_DeviceData, &adcvalue);
+
+	return adcvalue >> 16;
+}
+
 float cv_adc_voltage()
 {
 	int32_t adcvalue = 0;
@@ -47,4 +55,17 @@ void dac_set_voltage(float v)
 {
 	  uint32_t intvalue = (uint32_t)(v * adc_calibration_scale);
 	  DA1_SetValue(DA1_DeviceData, intvalue);
+}
+
+
+extern uint16_t adcvalues[];
+
+float adc_voltage(int channel)
+{
+	return (float)adcvalues[channel] * adc_calibration_scale;
+}
+
+uint16_t adc_value(int channel)
+{
+	return adcvalues[channel];
 }

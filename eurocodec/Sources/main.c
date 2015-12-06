@@ -54,6 +54,8 @@
 #include "ak4558.h"
 #include "cv_adc.h"
 
+word adcvalues[AdcLdd1_CHANNEL_COUNT];
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -65,20 +67,19 @@ int main(void)
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
-  ak4558_init();
   cv_adc_init();
+  ak4558_init();
   int counter = 0;
   for(;;) {
-	  counter++;
+	  /*counter++;
 	  if (counter > 10*1000) {
 		  cv_adc_recalibrate();
 		  counter = 0;
-	  }
-	  AD2_Measure(0);
-	  float fvalue = cv_adc_voltage();
-	  dac_set_voltage(fvalue);
-	  WAIT1_Waitms(1);
-	  word adcvalues[AdcLdd1_CHANNEL_COUNT];
+	  }*/
+	  AD2_Measure(1);
+	  //float fvalue = cv_adc_voltage();
+	  //dac_set_voltage(fvalue);
+	  //WAIT1_Waitms(1);
 	  AD2_GetValue16(adcvalues);
   }
 

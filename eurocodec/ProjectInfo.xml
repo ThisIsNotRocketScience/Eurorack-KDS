@@ -49,6 +49,7 @@
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Project_Settings/Startup_Code/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/</Path>
+      <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/</Path>
     </SourceCodePaths>
@@ -74,6 +75,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/ak4558.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/cv_adc.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_osc.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/I2S0_Init.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/VREF_Init.c</PathName>
@@ -111,6 +113,9 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/ak4558.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/cv_adc.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_osc.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_pitchtables.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/intrinsic.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/IO_Map/MK22F51212.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/ADC_PDD.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/CMP_PDD.h</PathName>
