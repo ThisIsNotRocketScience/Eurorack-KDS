@@ -27,8 +27,8 @@ void dsp_work(uint32_t *outl, uint32_t *outr, uint32_t inl, uint32_t inr)
 	if (dsp_switch_octave) pitch += 1985; // 1V*.2/3.3V*32768
 	pitch += 2*1985; // scale pitch to 1/4 samplerate
 
-	*outr = dpw_sawtooth(pitch, &state1);
-	*outl = dpw_pulse(pitch, pulsewidth, &state2);
+	*outl = dpw_sawtooth(pitch, &state1);
+	*outr = inr;//dpw_pulse(pitch, pulsewidth, &state2);
 
 	if (dsp_switch_gate || !GATE_GetVal(GATE_DeviceData)) {
 		gate = 1500;

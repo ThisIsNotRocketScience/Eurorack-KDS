@@ -27,7 +27,7 @@ void ak4558_init()
 			9, 255,
 			1, 0b00001111
 	};
-	for (int i = 0; i < sizeof(ak4558_configdata) / 2; i += 2) {
+	for (int i = 0; i < sizeof(ak4558_configdata); i += 2) {
 		word sent = 0;
 		byte res = I2C1_SendBlock(&ak4558_configdata[i], 2, &sent);
 	}

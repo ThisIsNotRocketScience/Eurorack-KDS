@@ -1,6 +1,6 @@
 #pragma once
 
-uint32_t phaseadd_hi[256] = {
+static uint32_t phaseadd_hi[256] = {
 	3,
 	4,
 	4,
@@ -259,7 +259,7 @@ uint32_t phaseadd_hi[256] = {
 	2147483647,
 };
 
-uint32_t phaseadd_lo[256] = {
+static uint32_t phaseadd_lo[256] = {
 	3927853061,
 	3929224173,
 	3930595285,
