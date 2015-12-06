@@ -143,6 +143,9 @@ int main(void)
   /* Write your code here */
   cv_adc_init();
   ak4558_init();
+
+  GoldfishInit();
+
   int counter = 0;
   static struct denoise_state_t octave_denoise_state = {0};
   static struct toggle_sw_state_t octave_sw_state = {0};
@@ -162,11 +165,7 @@ int main(void)
 		  int32_t* outbuf = audio_out_buffer;
 		  GoldfishProcess(inbuf, outbuf, AUDIO_BUFFER_SIZE);
 
-		  //for (int i = 0; i < AUDIO_BUFFER_SIZE; i++) {
-	//		  dsp_work(outbuf, outbuf+1, *inbuf, *(inbuf+1));
-	//		  inbuf += 2;
-	//		  outbuf += 2;
-		//  }
+
 	  }
 
 	  if (!measurement_ongoing) {

@@ -967,7 +967,7 @@ uint32_t P303::CalcSample()
 						{
 							*pSamples++ = (INTERNAL_RES)(buffer[i] >> 9);
 						}
-						if (FXSend > 0) DelayProcess(tbuf, nSamples);
+						//if (FXSend > 0) DelayProcess(tbuf, nSamples);
 						if (!AEnvState){ playing = false; }
 
 
