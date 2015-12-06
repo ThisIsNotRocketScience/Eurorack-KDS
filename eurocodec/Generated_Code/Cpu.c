@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 15:32, # CodeGen: 18
+**     Date/Time   : 2015-12-06, 16:17, # CodeGen: 25
 **     Abstract    :
 **
 **     Settings    :
@@ -105,8 +105,8 @@ void Common_Init(void)
   SIM_SCGC6 |= SIM_SCGC6_I2S_MASK;
   /* NVICIP28: PRI28=0 */
   NVICIP28 = NVIC_IP_PRI28(0x00);
-  /* NVICIP29: PRI29=0 */
-  NVICIP29 = NVIC_IP_PRI29(0x00);
+  /* NVICIP29: PRI29=0x40 */
+  NVICIP29 = NVIC_IP_PRI29(0x40);
   /* NVICISER0: SETENA|=0x30000000 */
   NVICISER0 |= NVIC_ISER_SETENA(0x30000000);
   /* PORTC_PCR1: ISF=0,MUX=6 */

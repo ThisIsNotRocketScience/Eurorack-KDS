@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 11:57, # CodeGen: 2
+**     Date/Time   : 2015-12-06, 16:17, # CodeGen: 25
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -54,7 +54,7 @@
 **              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
 **              Data channel                               : Enabled
-**              FIFO empty watermark                       : 1
+**              FIFO empty watermark                       : 2
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -111,7 +111,7 @@
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
 **              Interrupt request                          : Enabled
-**              Interrupt priority                         : <Automatic>
+**              Interrupt priority                         : 64
 **              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled

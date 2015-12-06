@@ -15,17 +15,18 @@ void ak4558_init()
 	volatile byte res = I2C1_SelectSlave(0b0010000);
 	unsigned char ak4558_configdata[] = {
 			0, 0b00011111,
+			1, 0b00001110,
 			2, 0b00000000,
+			6, 0b00011001,
+			7, 0b00001100,
 			3, 0b00111110,
 			4, 0b00010100,
 			5, 0b01110010,
-			6, 0b00011001,
-			7, 0b00001100,
 			8, 255,
 			9, 255,
 			1, 0b00001111
 	};
-	for (int i = 0; i < sizeof(ak4558_configdata) / 2; i += 2) {
+	for (int i = 0; i < sizeof(ak4558_configdata); i += 2) {
 		word sent = 0;
 		byte res = I2C1_SendBlock(&ak4558_configdata[i], 2, &sent);
 	}
@@ -40,10 +41,10 @@ PE_ISR(I2S0_TX)
 {
     I2S0_TDR0 = ak4558_outl;
     I2S0_TDR0 = ak4558_outr;
-	ak4558_inl = I2S0_RDR0;
 	ak4558_inr = I2S0_RDR0;
+	ak4558_inl = I2S0_RDR0;
 
-    I2S_PDD_ClearTxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
+    //I2S_PDD_ClearTxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
 
     dsp_work(&ak4558_outl, &ak4558_outr, ak4558_inl, ak4558_inr);
 }

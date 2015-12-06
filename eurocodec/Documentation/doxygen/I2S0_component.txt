@@ -28,7 +28,7 @@ by the component.
 <td class="regNotResetVal">0x921C0C00</td>
  <td>I2S0_RCSR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F004</td><td>I2S0_TCR1</td>
-<td class="regNotResetVal">0x00000001</td>
+<td class="regNotResetVal">0x00000002</td>
  <td>I2S0_TCR1 register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F084</td><td>I2S0_RCR1</td>
 <td class="regNotResetVal">0x00000001</td>
@@ -358,7 +358,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F004</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000002</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 2</td><td>TFW</td><td>0x00</td><td>Transmit FIFO Watermark</td>
@@ -975,7 +975,7 @@ registers of the peripheral(s) configured by the component.
 **              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
 **              Data channel                               : Enabled
-**              FIFO empty watermark                       : 1
+**              FIFO empty watermark                       : 2
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -1032,7 +1032,7 @@ registers of the peripheral(s) configured by the component.
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
 **              Interrupt request                          : Enabled
-**              Interrupt priority                         : <Automatic>
+**              Interrupt priority                         : 64
 **              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled

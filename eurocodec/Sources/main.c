@@ -76,10 +76,13 @@ int main(void)
 		  cv_adc_recalibrate();
 		  counter = 0;
 	  }*/
+
 	  AD2_Measure(1);
+
 	  //float fvalue = cv_adc_voltage();
 	  //dac_set_voltage(fvalue);
 	  //WAIT1_Waitms(1);
+
 	  AD2_GetValue16(adcvalues);
   }
 

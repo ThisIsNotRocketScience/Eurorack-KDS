@@ -329,7 +329,7 @@
           <Word_N_width__bits_ v="32" />
           <Word_flag_configuration__words_ v="1" />
           <Data_channel v="Enabled" />
-          <FIFO_empty_watermark v="1" />
+          <FIFO_empty_watermark v="2" />
           <FIFO_packing_mode v="Disabled" />
           <FIFO_function_after_error v="Next frame" />
           <Time_slot_mask v="0" />
@@ -398,7 +398,7 @@
         <group name="Receive">
           <Rx_interrupt v="INT_I2S0_Rx" />
           <Interrupt_request v="Enabled" />
-          <Interrupt_priority v="&amp;lt;Automatic&amp;gt;" />
+          <Interrupt_priority v="64" />
           <Rx_ISR_Name v="I2S0_RX" />
           <Rx_Word_start_interrupt v="Disabled" />
           <Rx_sync_error_interrupt v="Enabled" />
