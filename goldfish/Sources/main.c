@@ -58,6 +58,7 @@
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "ak4558.h"
 #include "cv_adc.h"
+#include "dsp_main.h"
 
 word adcvalues[AdcLdd1_CHANNEL_COUNT];
 
@@ -123,6 +124,9 @@ int trigger_sw(int down, struct trigger_sw_state_t* state)
 	return trigger;
 }
 
+volatile int measurement_ongoing = 0;
+volatile int measurement_done = 0;
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -147,8 +151,30 @@ int main(void)
 		  cv_adc_recalibrate();
 		  counter = 0;
 	  }*/
-	  AD2_Measure(1);
-	  AD2_GetValue16(adcvalues);
+
+	  if (audio_buffers_fresh) {
+		  audio_buffers_fresh = 0;
+
+		  int32_t* inbuf = audio_in_buffer;
+		  int32_t* outbuf = audio_out_buffer;
+
+		  for (int i = 0; i < AUDIO_BUFFER_SIZE; i++) {
+			  dsp_work(outbuf, outbuf+1, *inbuf, *(inbuf+1));
+			  inbuf += 2;
+			  outbuf += 2;
+		  }
+	  }
+
+	  if (!measurement_ongoing) {
+		  measurement_ongoing = 1;
+		  AD2_Measure(0);
+	  }
+	  else if (measurement_done) {
+		  measurement_ongoing = 0;
+		  measurement_done = 0;
+
+		  AD2_GetValue16(adcvalues);
+	  }
 
 	  int switch_octave = SWITCH1_GetVal(SWITCH1_DeviceData);
 	  int switch_gate = SWITCH2_GetVal(SWITCH2_DeviceData);
