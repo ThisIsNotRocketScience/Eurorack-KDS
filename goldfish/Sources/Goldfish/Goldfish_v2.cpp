@@ -17,17 +17,8 @@ CMachineParameter const *ppcParameters[] =
 };
 
 #include "saw.h"
-#define USEPULSETOO
-#ifdef USEPULSETOO
 #include "pulse.h"
-#endif
-//#include "saw.h"
-//#include "pulse.h"
-#ifndef BUZZ
 
-
-
-#endif
 
 const unsigned short DecayTime[] = {
 	0x0002, 0x0003, 0x0003, 0x0004, 0x0005, 0x0005, 0x0006, 0x0007, 0x0007, 0x0008, 0x0009, 0x000A, 0x000B, 0x000C, 0x000C, 0x000D,
