@@ -7,7 +7,7 @@
 **     Version     : Component 01.697, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 12:58, # CodeGen: 0
+**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -39,7 +39,7 @@
 **              A/D channel (pin)                          : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **              Mode select                                : Single Ended
 **          A/D resolution                                 : 12 bits
-**          Conversion time                                : 10 Âµs
+**          Conversion time                                : 10 µs
 **          Low-power mode                                 : Disabled
 **          High-speed conversion mode                     : Disabled
 **          Asynchro clock output                          : Disabled

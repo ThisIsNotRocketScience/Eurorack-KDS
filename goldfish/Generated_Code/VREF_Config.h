@@ -7,7 +7,7 @@
 **     Version     : Component 01.004, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 12:58, # CodeGen: 0
+**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
 **     Abstract    :
 **          This file implements the VREF (VREF) module initialization
 **          according to the Peripheral Initialization settings, and

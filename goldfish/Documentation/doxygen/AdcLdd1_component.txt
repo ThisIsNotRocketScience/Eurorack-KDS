@@ -933,7 +933,7 @@ registers of the peripheral(s) configured by the component.
 **          Asynchro clock output                          : Disabled
 **          Sample time                                    : 6 clock periods
 **          Number of conversions                          : 1
-**          Conversion time                                : 10 Âµs
+**          Conversion time                                : 10 µs
 **          ADC clock                                      : 2.6 MHz (384.615 ns)
 **          Single conversion time - Single-ended          : 14.698 us
 **          Single conversion time - Differential          : 18.544 us

@@ -7,7 +7,7 @@
 **     Version     : Component 01.067, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 12:58, # CodeGen: 0
+**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -60,7 +60,7 @@
 **     Returns     : Nothing
 ** ===================================================================
 */
-__attribute__((naked, no_instrument_function)) void WAIT1_Wait10Cycles(void)
+__attribute__((naked)) void WAIT1_Wait10Cycles(void)
 {
   /* This function will wait 10 CPU cycles (including call overhead). */
   /* NOTE: Cortex-M0 and M4 have 1 cycle for a NOP */
@@ -83,7 +83,7 @@ __attribute__((naked, no_instrument_function)) void WAIT1_Wait10Cycles(void)
 **     Returns     : Nothing
 ** ===================================================================
 */
-__attribute__((naked, no_instrument_function)) void WAIT1_Wait100Cycles(void)
+__attribute__((naked)) void WAIT1_Wait100Cycles(void)
 {
   /* This function will spend 100 CPU cycles (including call overhead). */
   __asm (
@@ -163,7 +163,7 @@ void WAIT1_Waitms(uint16_t ms)
   uint32_t msCycles; /* cycles for 1 ms */
 
   /* static clock/speed configuration */
-  msCycles = WAIT1_NofCyclesMs(1, WAIT1_INSTR_CLOCK_HZ);
+  msCycles = WAIT1_NofCyclesMs(1, CPU_CORE_CLK_HZ);
   while(ms>0) {
     WAIT1_WaitLongCycles(msCycles);
     ms--;

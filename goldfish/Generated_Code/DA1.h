@@ -7,7 +7,7 @@
 **     Version     : Component 01.084, Driver 01.09, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 12:58, # CodeGen: 0
+**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
 **     Abstract    :
 **         This component implements an internal D/A converter of the MCU.
 **         It contains settings for converting various format of a values
