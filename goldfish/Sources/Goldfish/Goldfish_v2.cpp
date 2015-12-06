@@ -16,20 +16,10 @@ CMachineParameter const *ppcParameters[] =
 	&paraSound
 };
 
-<<<<<<< HEAD
-#include "saw.h"
-#include "pulse.h"
-=======
 #include "Saw.h"
-#define USEPULSETOO
-#ifdef USEPULSETOO
 #include "Pulse.h"
-#endif
-//#include "saw.h"
-//#include "pulse.h"
-#ifndef BUZZ
 
->>>>>>> origin/master
+
 
 
 const unsigned short DecayTime[] = {
