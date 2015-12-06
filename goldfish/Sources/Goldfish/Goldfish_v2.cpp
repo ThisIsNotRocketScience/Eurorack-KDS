@@ -81,7 +81,7 @@ const int activechordnotes[16]
 	1, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4
 };
 
-void P303::Init()
+void Goldfish::Init()
 {
 	Tab = saw[0];
 	Transpose = 0;
@@ -243,20 +243,20 @@ void P303::Init()
 }
 
 
-P303::P303()
+Goldfish::Goldfish()
 {
 
 }
 
 
-P303::~P303()
+Goldfish::~Goldfish()
 {
 
 }
 
 #include "GoldfishSdkParameters.h"
 
-inline void P303::ParamUpdate()
+inline void Goldfish::ParamUpdate()
 {
 	if (finertiacount)
 	{
@@ -333,7 +333,7 @@ inline void P303::ParamUpdate()
 }
 
 
-void P303::Event(WORD wEventType, int wParm1, int wParm2, int dwParm3/*=0*/, int dwParm4/*=0*/)
+void Goldfish::Event(WORD wEventType, int wParm1, int wParm2, int dwParm3/*=0*/, int dwParm4/*=0*/)
 {
 	switch (wEventType)
 	{
@@ -599,7 +599,7 @@ int32_t Distort(int32_t inp, uint32_t pre, uint32_t post)
 
 }
 
-uint32_t P303::CalcSample()
+uint32_t Goldfish::CalcSample()
 {
 	int32_t R = 0;
 #if OVERSAMPLING > 1
@@ -655,7 +655,7 @@ uint32_t P303::CalcSample()
 }
 
 
-	uint32_t P303::CalcSample3()
+	uint32_t Goldfish::CalcSample3()
 	{
 		int32_t R = 0;
 #if OVERSAMPLING > 1
@@ -736,7 +736,7 @@ uint32_t P303::CalcSample()
 
 		}
 
-		uint32_t P303::CalcSample4()
+		uint32_t Goldfish::CalcSample4()
 		{
 			int32_t R = 0;
 #if OVERSAMPLING > 1
@@ -834,7 +834,7 @@ uint32_t P303::CalcSample()
 
 			int32_t buffer[32];
 
-			void P303::DelayProcess(INTERNAL_RES *pSamples, int nSamples)
+			void Goldfish::DelayProcess(INTERNAL_RES *pSamples, int nSamples)
 			{
 
 				switch (delaymode)
@@ -915,7 +915,7 @@ uint32_t P303::CalcSample()
 				}
 	}
 
-			bool P303::Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
+			bool Goldfish::Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
 			{
 				//bool active = true;
 				int leftover = nSamples;
@@ -981,7 +981,7 @@ uint32_t P303::CalcSample()
 			}
 
 
-			bool P303::RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
+			bool Goldfish::RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
 			{
 				samplecount += nSamples;
 				while (samplecount > (CONTROLRES - 1))

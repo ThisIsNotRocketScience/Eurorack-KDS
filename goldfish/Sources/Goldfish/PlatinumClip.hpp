@@ -307,12 +307,12 @@ public:
 	void Recalc()
 	{
 		if (fuzz) {
-			_gain = int(256.0 * pow(10.0, (push * (1.0 / 128.0) * 8.5 + 9.5) / 20.0));
+			_gain = int(256.0f * powf(10.0f, (push * (1.0f / 128.0f) * 8.5f + 9.5f) / 20.0f));
 		}
 		else {
-			double gain = pow(10.0, (push * push * (1.0 / 16384.0) * 32.0 + 2.0) / 20.0);
-			_gain = int(256.0 * gain);
-			_postgain = int(256.0 * 0.8 * pow(gain, -0.5));
+			double gain = powf(10.0f, (push * push * (1.0f / 16384.0f) * 32.0f + 2.0f) / 20.0f);
+			_gain = int(256.0f * gain);
+			_postgain = int(256.0f * 0.8f * powf(gain, -0.5f));
 		}
 	}
 
@@ -511,8 +511,6 @@ public:
 	}
 
 
-private:
-
 	//	miex ex;
 
 	//bool WorkWrite(float *psamples, int numsamples);
@@ -525,7 +523,6 @@ private:
 	}
 
 
-private:
 
 	bool bypass;
 	int push;

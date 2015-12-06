@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdint.h>
+#include "../dsplib/dpw_osc.h"
 
 typedef unsigned char byte;
 
@@ -103,17 +104,30 @@ typedef struct
 	int32_t hi;
 } chan;
 
-class P303: public SynthInterface
+class Goldfish: public SynthInterface
 {
 
 public:
-	P303();
-	 ~P303();
-	 virtual void Init();
-	 
+	Goldfish();
+	~Goldfish();
+	virtual void Init();
+
 	virtual void	Event(WORD EventType, int Parm1, int Parm2, int Parm3=0, int Parm4=0);
 	virtual bool	Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist);
 	virtual bool	RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist );
+
+	void SetPitch(uint32_t pitch)
+		{
+
+			pitch += 0x8000;
+
+			if (pitch < 0) pitch = 0;
+			if (pitch > 65535) pitch = 65535;
+			dP = umull32_hi(phaseadd_hi[(pitch & 0xFF00) >> 8], phaseadd_lo[pitch & 0xFF]);
+
+
+			pinertiacount = 0;
+		}
 
 #define DELAYLEN (44100/5)	
 	int16_t delay[1][DELAYLEN];
@@ -131,7 +145,7 @@ public:
 
 
 	uint32_t CalcSample();
-	
+
 	uint32_t CalcSample3();
 	uint32_t CalcSample4();
 	unsigned long AccentAMT;
@@ -139,7 +153,7 @@ public:
 	inline void ParamUpdate();
 
 	bool playing;
-//	unsigned long NoteTable[128];
+	//	unsigned long NoteTable[128];
 
 	unsigned char Note;
 
@@ -160,19 +174,19 @@ public:
 	unsigned long Glide;
 
 	chan filt;
-	
+
 	unsigned long C;
 	signed long dC;
 	unsigned short R;
 	unsigned short sR;
 	unsigned short sC;
-	
+
 	unsigned long finertiacount;
 
-//	unsigned long Cmapping[128];
-//	unsigned long DecayTime[128];
-	
-// filter env stuff
+	//	unsigned long Cmapping[128];
+	//	unsigned long DecayTime[128];
+
+	// filter env stuff
 	unsigned long FEnvCurVal;
 	int FEnvDVal;
 	unsigned long FEnvStateTime;
@@ -208,7 +222,7 @@ public:
 	}
 	inline void FEnvReStart()
 	{
-		
+
 		FEnvStateTime=FILTER_REATTACKTIME;
 		FEnvDVal=(~FEnvCurVal)/FEnvStateTime;
 		FEnvState=EF_ATTACK;
@@ -221,7 +235,7 @@ public:
 		FEnvDVal=0;
 	}
 
-	
+
 	inline unsigned short FEnvGet()
 	{
 		FEnvCurVal+=FEnvDVal;
@@ -232,44 +246,44 @@ public:
 			switch(FEnvState)
 			{
 			case EF_DECAY+1:
+			{
+				if (FEnvCurVal>65535)
 				{
-					if (FEnvCurVal>65535)
-					{
-						FEnvState=EF_DECAY;
-						FEnvStateTime=EXTRA_RELEASE;
-						FEnvDVal= FEnvCurVal/FEnvStateTime;
-						break;
-					}
-					else
-					{
-						FEnvStateTime=2;
-						FEnvState=EA_STOP;
-						FEnvCurVal=0;
-						FEnvDVal=0;
-					}
-				} break;
-			case EF_DECAY:
-				{
-					FEnvStateTime=FEnvDecay;
-					FEnvDVal=FEnvCurVal/FEnvStateTime;
-					FEnvDVal=-FEnvDVal;
-				}break;
-			default:
+					FEnvState=EF_DECAY;
+					FEnvStateTime=EXTRA_RELEASE;
+					FEnvDVal= FEnvCurVal/FEnvStateTime;
+					break;
+				}
+				else
 				{
 					FEnvStateTime=2;
 					FEnvState=EA_STOP;
 					FEnvCurVal=0;
 					FEnvDVal=0;
 				}
+			} break;
+			case EF_DECAY:
+			{
+				FEnvStateTime=FEnvDecay;
+				FEnvDVal=FEnvCurVal/FEnvStateTime;
+				FEnvDVal=-FEnvDVal;
+			}break;
+			default:
+			{
+				FEnvStateTime=2;
+				FEnvState=EA_STOP;
+				FEnvCurVal=0;
+				FEnvDVal=0;
+			}
 			}
 		}
 		return ((short*)&FEnvCurVal)[1];
 	}
 
 
-// filter env stuff
+	// filter env stuff
 
-// ampenv stuff
+	// ampenv stuff
 
 	inline void AEnvStart()
 	{
@@ -281,7 +295,7 @@ public:
 
 	inline void AEnvReStart()
 	{
-		
+
 		AEnvStateTime=AMP_REATTACKTIME;
 		AEnvDVal=(~AEnvCurVal)/AEnvStateTime;
 		AEnvState=1;
@@ -315,34 +329,34 @@ public:
 			switch(AEnvState)
 			{
 			case 4:
+			{
+				if (AEnvCurVal>65535)
 				{
-					if (AEnvCurVal>65535)
-					{
-						AEnvState=3;
-						AEnvStateTime=EXTRA_RELEASE;
-						AEnvDVal= AEnvCurVal/AEnvStateTime;
-						break;
-					}
-					else
-					{
-						AEnvStateTime=2;
-						AEnvState=0;
-						AEnvCurVal=0;
-						AEnvDVal=0;
-					}
+					AEnvState=3;
+					AEnvStateTime=EXTRA_RELEASE;
+					AEnvDVal= AEnvCurVal/AEnvStateTime;
+					break;
 				}
-			case 2:
-				{
-					AEnvDVal=0;
-					AEnvStateTime=1;
-				}break;
-			default:
+				else
 				{
 					AEnvStateTime=2;
 					AEnvState=0;
 					AEnvCurVal=0;
 					AEnvDVal=0;
 				}
+			}
+			case 2:
+			{
+				AEnvDVal=0;
+				AEnvStateTime=1;
+			}break;
+			default:
+			{
+				AEnvStateTime=2;
+				AEnvState=0;
+				AEnvCurVal=0;
+				AEnvDVal=0;
+			}
 			}
 		}
 		return ((short*)&AEnvCurVal)[1];
@@ -367,7 +381,7 @@ public:
 typedef struct
 {
 	unsigned char ParamValues[PARAMCOUNTDEF];
-	char Name[NAMELENGTH];
+	//	char Name[NAMELENGTH];
 } GoldFishPreset; // 6 + 10 = 16 bytes!
 
 
@@ -399,7 +413,7 @@ class GoldFishPattern
 public:
 	TICKTYPE Ticks[MAXSTEPPERPATTERN];
 	unsigned char TickCountTimeSig;
-	char Name[NAMELENGTH];
+	//	char Name[NAMELENGTH];
 }; // 64 + 64 +	1 = 65 bytes!
 
 enum
@@ -412,42 +426,42 @@ class GoldFishSettings
 {
 public:
 	GoldFishSettings()
-	{
-		 midichannel = 4;
-		 calibw = 240;
-		 calibh = 320;
-		 calibxmin = 0;
-		 calibymin = 0;
+{
+		midichannel = 4;
+		calibw = 240;
+		calibh = 320;
+		calibxmin = 0;
+		calibymin = 0;
 
-		 SubticksPerTick = 6;
-		 BPM = 125;
-		 TimeMode = TimeMode_Internal;
-		 TimeBits = 0;
-		 Playmode = 0;
-		 HeadphoneVolume = 127;
-		 MidiRouting = 0;
-		 CurrentPresetSet = 0;
-		 CurrentPatternSet = 0;
-		 for (int i = 0; i < MAXFISH; i++)
-		 {
-			 CurrentPattern[i] = 0;
-			 CurrentPreset[i] = 0;
-		 }
-		 Transpose = 0;
-	}
+		SubticksPerTick = 6;
+		BPM = 125;
+		TimeMode = TimeMode_Internal;
+		TimeBits = 0;
+		Playmode = 0;
+		HeadphoneVolume = 127;
+		MidiRouting = 0;
+		CurrentPresetSet = 0;
+		CurrentPatternSet = 0;
+		for (int i = 0; i < MAXFISH; i++)
+		{
+			CurrentPattern[i] = 0;
+			CurrentPreset[i] = 0;
+		}
+		Transpose = 0;
+}
 
 	unsigned char TimeBits;
 	unsigned char MidiRouting;
 	unsigned char HeadphoneVolume;
 	unsigned char Playmode;
 	unsigned int BPM;
-	
+
 	uint32_t CurrentPresetSet;
 	uint32_t CurrentPatternSet;
 
 	unsigned char CurrentPattern[MAXFISH];
 	unsigned char CurrentPreset[MAXFISH];
-	
+
 	uint32_t calibw ;
 	uint32_t calibh ;
 	uint32_t calibxmin;
@@ -459,8 +473,10 @@ public:
 
 	int Transpose;
 
-	char PatternNames[MAXSET][NAMELENGTH];
-	char PresetNames[MAXSET][NAMELENGTH];
+
+
+	//	char PatternNames[MAXSET][NAMELENGTH];
+	//	char PresetNames[MAXSET][NAMELENGTH];
 
 	unsigned char midichannel;
 

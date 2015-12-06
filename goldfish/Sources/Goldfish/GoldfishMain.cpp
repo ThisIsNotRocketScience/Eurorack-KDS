@@ -7,7 +7,7 @@
 #include "DistortionTable_2.h"
 #endif
 
-FISHTYPE Fish[2];
+Goldfish Fish[2];
 PlatinumClip Dist[2];
 
 #include "GATE.h"
@@ -60,10 +60,15 @@ void GoldfishInit()
 signed short SawFishBuffer[AUDIO_BUFFER_SIZE];
 signed short PulseFishBuffer[AUDIO_BUFFER_SIZE];
 int n = 0;
+
+int setdrive = 0;
+int setfuzz = 0;
 void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 {
 
-	int32_t pitch = cv_adc_value() + (adc_value(0) >> 2);
+	int32_t pitchcv = cv_adc_value();
+
+	int32_t pitch = pitchcv + (adc_value(5) >> 7);
 
 	if (dsp_switch_octave) pitch += 1985; // 1V*.2/3.3V*32768
 	pitch += 2*1985; // scale pitch to 1/4 samplerate
@@ -71,39 +76,72 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 	// 0 = cutoff
 	// 1 = resonance;
 	// 2 = fenv amt  (mid = 0x5500)
-	// 3 =  decay (mid = 8192)
-	// 4 = drive
+	// 3 = decay
+	// 4 = drive (mid = 0x8192)
 	// 5 = tune
 
 	int drvtype = 0;
-	int drive = drive- 8192;
+	int32_t drive = adc_value(4)- 0x8192;
+	int32_t decay = (((int32_t)adc_value(3) * 127))>>16;
 	if (drive < 0)
 	{
 		drive = -drive;
 		drvtype = 1;
 	}
-	int32_t fenvamt =( int32_t ) adc_value(2)- 0x5500;
+	drive = (drive *127)/0x8192;
+	drive = drive>>2;
+		drive = drive<<2;
+
+	int32_t fenvamt =( int32_t ) adc_value(2)- (int32_t)(0x5500);
+
 	int32_t Cut = (adc_value(0)*127) / 0x97a0;
 	int32_t Res = (adc_value(1)*127)/ 0xfff0;
-
-		for (int i =0 ;i<2;i++)
-	{
-		Fish[i].FenvAmt = fenvamt ;
-
-
-		Fish[i].Event(CUTOFF, Cut, 0);
-		Fish[i].Event(RESONANCE, Res, 0);
-	}
 
 	if ((dsp_switch_gate || !GATE_GetVal(GATE_DeviceData)) && gate == 0)
 	{
 		gate = 1500 / 32;
 
-		Fish[0].Event(NOTE_ON, 48 + (dsp_switch_octave) * 12 ,0);
-		Fish[1].Event(NOTE_ON, 48 + (dsp_switch_octave) * 12 ,0);
+		Fish[0].Event(NOTE_ON, 0,0);
+		Fish[1].Event(NOTE_ON, 0,0);
 
-		n++;
+
 	}
+
+	for (int i =0 ;i<2;i++)
+	{
+		Fish[i].FenvAmt = fenvamt ;
+
+
+		Fish[i].Event(CUTOFF, Cut, 0);
+		Fish[i].Event(FDEC, decay, 0);
+		Fish[i].Event(RESONANCE, Res, 0);
+		Fish[i].SetPitch(pitch);
+	}
+
+	if (setdrive != drive || setfuzz != drvtype)
+	{
+
+		for (int i =0 ;i<2;i++)
+		{
+
+			if (drvtype)
+			{
+				Dist[i].fuzz = true;
+			}
+			else
+			{
+				Dist[i].fuzz = false;
+
+			}
+			Dist[i].SetPush( drive);
+		}
+		setdrive = drive;
+		setfuzz = drvtype;
+	}
+
+
+
+
 
 	dsp_led_octave = dsp_switch_octave;
 
