@@ -60,6 +60,9 @@
 #include "cv_adc.h"
 #include "dsp_main.h"
 
+
+#include "Goldfish/Goldfish_Interface.h"
+
 word adcvalues[AdcLdd1_CHANNEL_COUNT];
 
 extern int dsp_switch_octave;
@@ -157,12 +160,13 @@ int main(void)
 
 		  int32_t* inbuf = audio_in_buffer;
 		  int32_t* outbuf = audio_out_buffer;
+		  GoldfishProcess(inbuf, outbuf, AUDIO_BUFFER_SIZE);
 
-		  for (int i = 0; i < AUDIO_BUFFER_SIZE; i++) {
-			  dsp_work(outbuf, outbuf+1, *inbuf, *(inbuf+1));
-			  inbuf += 2;
-			  outbuf += 2;
-		  }
+		  //for (int i = 0; i < AUDIO_BUFFER_SIZE; i++) {
+	//		  dsp_work(outbuf, outbuf+1, *inbuf, *(inbuf+1));
+	//		  inbuf += 2;
+	//		  outbuf += 2;
+		//  }
 	  }
 
 	  if (!measurement_ongoing) {
