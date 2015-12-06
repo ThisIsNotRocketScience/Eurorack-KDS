@@ -3,7 +3,7 @@
   <Header>
     <Name>eurocodec</Name>
     <SavedBy>ld0d</SavedBy>
-    <ModificationStamp>37</ModificationStamp>
+    <ModificationStamp>38</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.0.RT7_b1515-0427</PEversion>
@@ -18755,8 +18755,8 @@
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <TypeSpecNameState>typeTxWatermarkValue</TypeSpecNameState>
-        <Index>2</Index>
-        <EnumSymbVal>2</EnumSymbVal>
+        <Index>3</Index>
+        <EnumSymbVal>3</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>TxFIFO_PackingModeFeatureCondGroup</ItemSymbol>

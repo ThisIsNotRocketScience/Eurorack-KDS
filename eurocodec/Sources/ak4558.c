@@ -44,6 +44,7 @@ PE_ISR(I2S0_TX)
 	ak4558_inr = I2S0_RDR0;
 	ak4558_inl = I2S0_RDR0;
 
+	//I2S_PDD_ClearRxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
     //I2S_PDD_ClearTxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
 
     dsp_work(&ak4558_outl, &ak4558_outr, ak4558_inl, ak4558_inr);

@@ -329,7 +329,7 @@
           <Word_N_width__bits_ v="32" />
           <Word_flag_configuration__words_ v="1" />
           <Data_channel v="Enabled" />
-          <FIFO_empty_watermark v="2" />
+          <FIFO_empty_watermark v="3" />
           <FIFO_packing_mode v="Disabled" />
           <FIFO_function_after_error v="Next frame" />
           <Time_slot_mask v="0" />

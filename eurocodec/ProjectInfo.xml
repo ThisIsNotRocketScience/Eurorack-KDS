@@ -114,6 +114,8 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_osc.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_pitchtables.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/intrinsic.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/svf_tables.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/zdfsvf.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/IO_Map/MK22F51212.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/ADC_PDD.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/PDD/CMP_PDD.h</PathName>
