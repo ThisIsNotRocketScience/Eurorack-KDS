@@ -3,7 +3,7 @@
 
 #pragma GCC optimize ("O3")
 
-#include "goldfish_v2.h"
+#include "Goldfish_v2.h"
 #include <math.h>
 
 
@@ -16,10 +16,10 @@ CMachineParameter const *ppcParameters[] =
 	&paraSound
 };
 
-#include "saw.h"
+#include "Saw.h"
 #define USEPULSETOO
 #ifdef USEPULSETOO
-#include "pulse.h"
+#include "Pulse.h"
 #endif
 //#include "saw.h"
 //#include "pulse.h"
@@ -261,7 +261,7 @@ P303::~P303()
 
 }
 
-#include "goldfishsdkparameters.h"
+#include "GoldfishSdkParameters.h"
 
 inline void P303::ParamUpdate()
 {
