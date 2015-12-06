@@ -23,7 +23,7 @@ int32_t dpw_sawtooth(int32_t pitch, struct dpw_sawtooth_state_t* state)
 	state->lastvalue = value;
 	state->phase = phase;
 
-	return smull32_hi(diff, level << 4) << 9;
+	return smull32_hi(diff, level << 4) << 13;
 }
 
 int32_t dpw_pulse(int32_t pitch, uint32_t pulsewidth, struct dpw_pulse_state_t* state)
