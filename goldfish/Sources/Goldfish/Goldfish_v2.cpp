@@ -922,7 +922,7 @@ uint32_t P303::CalcSample()
 				}
 	}
 
-			bool P303::Render(INTERNAL_RES* pSamples, int nSamples, pc *dist)
+			bool P303::Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
 			{
 				//bool active = true;
 				int leftover = nSamples;
@@ -988,7 +988,7 @@ uint32_t P303::CalcSample()
 			}
 
 
-			bool P303::RenderAdd(INTERNAL_RES* pSamples, int nSamples, pc *dist)
+			bool P303::RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip *dist)
 			{
 				samplecount += nSamples;
 				while (samplecount > (CONTROLRES - 1))

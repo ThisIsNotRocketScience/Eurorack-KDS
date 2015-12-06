@@ -8,7 +8,7 @@
 #endif
 
 FISHTYPE Fish;
-pc Dist;
+PlatinumClip Dist;
 
 
 

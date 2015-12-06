@@ -257,7 +257,7 @@ public:
 
 
 
-class pc 
+class PlatinumClip
 {
 public:
 
@@ -267,9 +267,6 @@ public:
 		int i;
 
 		_active = false;
-
-	//	eqA.resize(5);
-	//	eqB.resize(3);
 
 		for (i = 0; i < 5; i++) {
 			eqA[i].set_samplerate(samplerate);
@@ -306,6 +303,7 @@ public:
 		};
 		Recalc();
 	}
+
 	void Recalc()
 	{
 		if (fuzz) {
@@ -317,6 +315,7 @@ public:
 			_postgain = int(256.0 * 0.8 * pow(gain, -0.5));
 		}
 	}
+
 	void Tick()
 	{
 		if(gval.bypass != SWITCH_NO) {

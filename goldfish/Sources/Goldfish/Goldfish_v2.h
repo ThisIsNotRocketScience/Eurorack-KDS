@@ -68,12 +68,12 @@ public:
 class SynthInterface
 {
 public:
-	pc *m_Dist;
+	PlatinumClip *m_Dist;
 	virtual void Init() {};
 
 	virtual void	Event(WORD EventType, int Parm1, int Parm2, int Parm3 = 0, int Parm4 = 0) {};
-	virtual bool	Render(INTERNAL_RES* pSamples, int nSamples, pc* dist) { return false; };
-	virtual bool	RenderAdd(INTERNAL_RES* pSamples, int nSamples, pc* dist) { return false; };
+	virtual bool	Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist) { return false; };
+	virtual bool	RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist) { return false; };
 
 	Parameter ParameterList[PARAMCOUNTDEF];
 
@@ -112,8 +112,8 @@ public:
 	 virtual void Init();
 	 
 	virtual void	Event(WORD EventType, int Parm1, int Parm2, int Parm3=0, int Parm4=0);
-	virtual bool	Render(INTERNAL_RES* pSamples, int nSamples, pc* dist);
-	virtual bool	RenderAdd(INTERNAL_RES* pSamples, int nSamples, pc* dist );
+	virtual bool	Render(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist);
+	virtual bool	RenderAdd(INTERNAL_RES* pSamples, int nSamples, PlatinumClip* dist );
 
 #define DELAYLEN (44100/5)	
 	int16_t delay[1][DELAYLEN];
