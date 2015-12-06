@@ -72,7 +72,8 @@ void Cpu_OnNMI(void)
 */
 void AD2_OnEnd(void)
 {
-  /* Write your code here ... */
+	extern volatile int measurement_done;
+	measurement_done = 1;
 }
 
 /*

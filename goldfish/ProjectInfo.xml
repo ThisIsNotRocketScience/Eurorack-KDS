@@ -49,7 +49,6 @@
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Generated_Code/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Project_Settings/Startup_Code/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/</Path>
-      <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/dsplib/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Static_Code/Peripherals/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Static_Code/System/</Path>
     </SourceCodePaths>
@@ -79,9 +78,6 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/Events.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/ak4558.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/cv_adc.c</PathName>
-      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/dsp_main.c</PathName>
-      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/dsplib/cvsmooth.c</PathName>
-      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/dsplib/dpw_osc.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Sources/main.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Static_Code/Peripherals/I2S0_Init.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/goldfish/Static_Code/Peripherals/VREF_Init.c</PathName>

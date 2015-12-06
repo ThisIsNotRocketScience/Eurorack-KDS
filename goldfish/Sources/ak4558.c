@@ -6,8 +6,6 @@
 #include "I2C1.h"
 #include "PDD_Includes.h"
 
-#include "dsp_main.h"
-
 void ak4558_init()
 {
 	CODEC_PDN_SetVal(CODEC_PDN_DeviceData);
@@ -33,21 +31,40 @@ void ak4558_init()
 	}
 }
 
-static int32_t ak4558_inl = 0;
-static int32_t ak4558_inr = 0;
-static int32_t ak4558_outl = 0;
-static int32_t ak4558_outr = 0;
+static int32_t audio_in_data[AUDIO_BUFFER_SIZE * 4] = {0};
+static int32_t audio_out_data[AUDIO_BUFFER_SIZE * 4] = {0};
+
+int32_t *audio_in_buffer = &audio_in_data[2*AUDIO_BUFFER_SIZE];
+int32_t *audio_out_buffer = &audio_out_data[2*AUDIO_BUFFER_SIZE];
+volatile int audio_buffers_fresh = 1;
+
+static int32_t *audio_in_pos = audio_in_data;
+static int32_t *audio_out_pos = audio_out_data;
 
 PE_ISR(I2S0_TX)
 {
-    I2S0_TDR0 = ak4558_outl;
-    I2S0_TDR0 = ak4558_outr;
-	ak4558_inl = I2S0_RDR0;
-	ak4558_inr = I2S0_RDR0;
-
+    I2S0_TDR0 = *(audio_out_pos++);
+    I2S0_TDR0 = *(audio_out_pos++);
     I2S_PDD_ClearTxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
 
-    dsp_work(&ak4558_outl, &ak4558_outr, ak4558_inl, ak4558_inr);
+    *(audio_in_pos++) = I2S0_RDR0;
+	*(audio_in_pos++) = I2S0_RDR0;
+    I2S_PDD_ClearRxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
+
+    if (audio_in_pos == &audio_in_data[2*AUDIO_BUFFER_SIZE]) {
+    	audio_in_buffer = audio_in_data;
+    	audio_out_buffer = audio_out_data;
+    	audio_buffers_fresh = 1;
+    	audio_buffers_fresh = 1;
+    }
+    else if (audio_in_pos == &audio_in_data[4*AUDIO_BUFFER_SIZE]) {
+    	audio_in_pos = audio_in_data;
+    	audio_out_pos = audio_out_data;
+    	audio_in_buffer = &audio_in_data[2*AUDIO_BUFFER_SIZE];
+    	audio_out_buffer = &audio_out_data[2*AUDIO_BUFFER_SIZE];
+    	audio_buffers_fresh = 1;
+    	audio_buffers_fresh = 1;
+    }
 }
 
 PE_ISR(I2S0_RX)
