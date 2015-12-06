@@ -57,8 +57,8 @@ public:
 };
 
 
-#include "goldfishenvelopes.h" 
-#include "platinumclip.hpp"
+#include "GoldfishEnvelopes.h"
+#include "PlatinumClip.hpp"
 class TickInterface
 {
 public:

@@ -3,7 +3,7 @@
 
 #pragma GCC optimize ("O3")
 
-#include "goldfish_v2.h"
+#include "Goldfish_v2.h"
 #include <math.h>
 
 
@@ -16,8 +16,20 @@ CMachineParameter const *ppcParameters[] =
 	&paraSound
 };
 
+<<<<<<< HEAD
 #include "saw.h"
 #include "pulse.h"
+=======
+#include "Saw.h"
+#define USEPULSETOO
+#ifdef USEPULSETOO
+#include "Pulse.h"
+#endif
+//#include "saw.h"
+//#include "pulse.h"
+#ifndef BUZZ
+
+>>>>>>> origin/master
 
 
 const unsigned short DecayTime[] = {
@@ -252,7 +264,7 @@ P303::~P303()
 
 }
 
-#include "goldfishsdkparameters.h"
+#include "GoldfishSdkParameters.h"
 
 inline void P303::ParamUpdate()
 {

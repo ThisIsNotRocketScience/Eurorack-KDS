@@ -7,6 +7,6 @@
 typedef unsigned char byte;
 #endif
 
-#include "goldfish_v2.h"
+#include "Goldfish_v2.h"
 
 #endif

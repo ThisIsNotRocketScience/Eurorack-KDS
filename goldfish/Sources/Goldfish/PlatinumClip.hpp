@@ -11,7 +11,7 @@
 
 //#include <stdio.h>
 
-#include "rbjfilter.h"
+#include "RBJfilter.h"
 extern const int32_t  clean_lookup[];
 extern const int32_t  fuzz_lookup[];
 /* #define DEBUG */
