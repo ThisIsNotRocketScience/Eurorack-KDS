@@ -40,7 +40,7 @@ int32_t cv_adc_value()
 	AD1_GetMeasuredValues(AD1_DeviceData, &adcvalue);
 
 	return adcvalue >> 16;
-}
+	}
 
 float cv_adc_voltage()
 {

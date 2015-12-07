@@ -1135,7 +1135,7 @@
       <Safe_mode v="no" />
     </Properties>
     <Methods>
-      <Init v="don&amp;apos;t generate code" />
+      <Init v="generate code" />
       <Deinit v="don&amp;apos;t generate code" />
       <GetDir v="don&amp;apos;t generate code" />
       <SetDir v="don&amp;apos;t generate code" />
@@ -1151,6 +1151,160 @@
     </Methods>
     <Events>
       <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="EInt1" type="ExtInt_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="EInt1" />
+      <Pin v="PTB17/SPI1_SIN/UART0_TX/FTM_CLKIN1/FBa_AD16/EWM_OUT_b" />
+      <Generate_interrupt_on v="falling edge" />
+      <Interrupt v="INT_PORTB" />
+      <Interrupt_priority v="medium priority" />
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <GetVal v="don&amp;apos;t generate code" />
+      <SetEdge v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnInterrupt" v="generate code">
+        <Event_procedure_name v="EInt1_OnInterrupt" />
+      </event>
+    </Events>
+  </Bean>
+  <Bean name="TI1" type="TimerInt_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="TI1" />
+      <Periodic_interrupt_source v="PIT_LDVAL0" />
+      <Counter v="PIT_CVAL0" />
+      <boolgroup name="Interrupt service/event" v="Enabled">
+        <Interrupt v="INT_PIT0" />
+        <Interrupt_priority v="medium priority" />
+      </boolgroup>
+      <Interrupt_period v="1 ms" />
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+        <group name="Event mask">
+          <OnInterrupt v="Enabled" />
+        </group>
+      </group>
+      <group name="Referenced components">
+        <Linked_TimerUnit v="TU1" />
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <SetEventMask v="don&amp;apos;t generate code" />
+      <GetEventMask v="don&amp;apos;t generate code" />
+      <GetEventStatus v="don&amp;apos;t generate code" />
+      <SelectPeriod v="don&amp;apos;t generate code" />
+      <SetPeriodUS v="don&amp;apos;t generate code" />
+      <SetPeriodMS v="don&amp;apos;t generate code" />
+      <SetPeriodSec v="don&amp;apos;t generate code" />
+      <SetPeriodReal v="don&amp;apos;t generate code" />
+      <SetFrequencyHz v="don&amp;apos;t generate code" />
+      <SetFrequencykHz v="don&amp;apos;t generate code" />
+      <SetFrequencyMHz v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnInterrupt" v="generate code">
+        <Event_procedure_name v="TI1_OnInterrupt" />
+      </event>
+    </Events>
+  </Bean>
+  <Bean name="TU1" type="TimerUnit_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="TU1" />
+      <Module_name v="PIT" />
+      <Counter v="PIT_CVAL0" />
+      <Counter_direction v="Down" />
+      <Counter_width v="32 bits" />
+      <Value_type v="uint32_t" />
+      <enumgroup name="Input clock source" v="Internal">
+        <Counter_frequency v="Auto select" />
+      </enumgroup>
+      <enumgroup name="Counter restart" v="On-match">
+        <Period_device v="PIT_LDVAL0" />
+        <Period v="1 ms" />
+        <boolgroup name="Interrupt" v="Enabled">
+          <Interrupt v="INT_PIT0" />
+          <Interrupt_priority v="medium priority" />
+        </boolgroup>
+      </enumgroup>
+      <list name="Channel list" v="0">
+        <EmptySection_DummyValue />
+      </list>
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+        <group name="Event mask">
+          <OnCounterRestart v="Enabled" />
+          <OnChannel0 v="Disabled" />
+          <OnChannel1 v="Disabled" />
+          <OnChannel2 v="Disabled" />
+          <OnChannel3 v="Disabled" />
+          <OnChannel4 v="Disabled" />
+          <OnChannel5 v="Disabled" />
+          <OnChannel6 v="Disabled" />
+          <OnChannel7 v="Disabled" />
+        </group>
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <SetEventMask v="don&amp;apos;t generate code" />
+      <GetEventMask v="don&amp;apos;t generate code" />
+      <GetEventStatus v="don&amp;apos;t generate code" />
+      <SelectInputFrequency v="don&amp;apos;t generate code" />
+      <GetInputFrequencyReal v="don&amp;apos;t generate code" />
+      <GetInputFrequency v="don&amp;apos;t generate code" />
+      <SetPeriodTicks v="don&amp;apos;t generate code" />
+      <GetPeriodTicks v="don&amp;apos;t generate code" />
+      <ResetCounter v="don&amp;apos;t generate code" />
+      <GetCounterValue v="don&amp;apos;t generate code" />
+      <SetOffsetTicks v="don&amp;apos;t generate code" />
+      <GetOffsetTicks v="don&amp;apos;t generate code" />
+      <GetCaptureValue v="don&amp;apos;t generate code" />
+      <SelectOutputAction v="don&amp;apos;t generate code" />
+      <SelectCaptureEdge v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnCounterRestart" v="generate code">
+        <Event_procedure_name v="TU1_OnCounterRestart" />
+      </event>
+      <event name="OnChannel0" v="don&amp;apos;t generate code" />
+      <event name="OnChannel1" v="don&amp;apos;t generate code" />
+      <event name="OnChannel2" v="don&amp;apos;t generate code" />
+      <event name="OnChannel3" v="don&amp;apos;t generate code" />
+      <event name="OnChannel4" v="don&amp;apos;t generate code" />
+      <event name="OnChannel5" v="don&amp;apos;t generate code" />
+      <event name="OnChannel6" v="don&amp;apos;t generate code" />
+      <event name="OnChannel7" v="don&amp;apos;t generate code" />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>

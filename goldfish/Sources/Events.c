@@ -38,6 +38,9 @@ extern "C" {
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
 
+int GatePressed = 0;
+extern void updateleds();
+
 /*
 ** ===================================================================
 **     Event       :  Cpu_OnNMI (module Events)
@@ -93,6 +96,50 @@ void AD2_OnEnd(void)
 void AD2_OnCalibrationEnd(void)
 {
   /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  EInt1_OnInterrupt (module Events)
+**
+**     Component   :  EInt1 [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void EInt1_OnInterrupt(LDD_TUserData *UserDataPtr)
+{
+	GatePressed = 1;
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  TI1_OnInterrupt (module Events)
+**
+**     Component   :  TI1 [TimerInt_LDD]
+*/
+/*!
+**     @brief
+**         Called if periodic event occur. Component and OnInterrupt
+**         event must be enabled. See [SetEventMask] and [GetEventMask]
+**         methods. This event is available only if a [Interrupt
+**         service/event] is enabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer passed as
+**                           the parameter of Init method.
+*/
+/* ===================================================================*/
+void TI1_OnInterrupt(LDD_TUserData *UserDataPtr)
+{
+ updateleds();
 }
 
 /* END Events */

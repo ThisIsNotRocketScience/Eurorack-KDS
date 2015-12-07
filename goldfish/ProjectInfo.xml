@@ -49,7 +49,6 @@
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Project_Settings\Startup_Code\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\</Path>
-      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\dsplib\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\Peripherals\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\System\</Path>
     </SourceCodePaths>
@@ -64,6 +63,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\CODEC_PDN.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\DA1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\EInt1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\GATE.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\I2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\LED1.c</PathName>
@@ -74,14 +74,13 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SDA1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SWITCH1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SWITCH2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\TI1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\TU1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\ak4558.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\cv_adc.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\dsp_main.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\dsplib\cvsmooth.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\dsplib\dpw_osc.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\main.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\Peripherals\I2S0_Init.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\Peripherals\VREF_Init.c</PathName>
@@ -99,6 +98,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\CPU_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\Cpu.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\DA1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\EInt1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\GATE.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\I2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\I2S0.h</PathName>
@@ -116,21 +116,25 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SDA1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SWITCH1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\SWITCH2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\TI1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\VREF.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\VREF_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\Vectors_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Events.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Globals.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\GoldfishConfig.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\GoldfishContainer.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\GoldfishEnvelopes.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\GoldfishParameters.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\GoldfishSdkParameters.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish_v2.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Pulse.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\RBJfilter.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Saw.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\DistortionTable_1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\DistortionTable_2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\GoldfishConfig.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\GoldfishEnvelopes.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\GoldfishGlobals.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\GoldfishParameters.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\GoldfishSdkParameters.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\Goldfish_Interface.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\Goldfish_v2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\Pulse.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\RBJfilter.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\Goldfish\Saw.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\ak4558.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\cv_adc.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\dsp_main.h</PathName>
