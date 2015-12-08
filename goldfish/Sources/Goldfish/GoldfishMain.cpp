@@ -11,6 +11,8 @@ Goldfish Fish[2];
 PlatinumClip Dist[2];
 
 #include "GATE.h"
+#include "AD1.h"
+
 
 extern "C"{
 #include "../cv_adc.h"
@@ -33,6 +35,14 @@ static struct cvsmooth_state_t pw_smooth_state;
 
 #include "Goldfish_Interface.h"
 int Octave = 2;
+extern int32_t pitchadcvalue;
+
+int32_t get_cv_adc_value()
+{
+
+	return pitchadcvalue >> 16;
+}
+
 
 extern "C"
 {
@@ -71,7 +81,7 @@ int setfuzz = 0;
 void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 {
 
-	int32_t pitchcv = cv_adc_value();
+	int32_t pitchcv = get_cv_adc_value();
 
 	int32_t pitch = pitchcv + (adc_value(5) >> 4);
 	pitch -= 1985*2;

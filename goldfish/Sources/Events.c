@@ -39,6 +39,8 @@ extern "C" {
 /* User includes (#include below this line is not maintained by Processor Expert) */
 
 int GatePressed = 0;
+int pitchcvcomplete = 0;
+int32_t pitchadcvalue  = 0;
 extern void updateleds();
 
 /*
@@ -140,6 +142,35 @@ void EInt1_OnInterrupt(LDD_TUserData *UserDataPtr)
 void TI1_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
  updateleds();
+}
+
+/*
+** ===================================================================
+**     Event       :  AD1_OnMeasurementComplete (module Events)
+**
+**     Component   :  AD1 [ADC_LDD]
+*/
+/*!
+**     @brief
+**         Called after measurement is done, [Interrupt service/event]
+**         is enabled, OnMeasurementComplete event is enabled and ADC
+**         device is enabled. See [SetEventMask()] method or [Event
+**         mask] property group to enable this event and [Enable]
+**         method or [Enabled in init. code] property to enable ADC
+**         device. If DMA is enabled , this event is called after the
+**         configured number of measurements and DMA transfer is done.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
+{
+  /* Write your code here ... */
+	pitchcvcomplete = 1;
+	AD1_GetMeasuredValues(AD1_DeviceData, &pitchadcvalue);
+
 }
 
 /* END Events */

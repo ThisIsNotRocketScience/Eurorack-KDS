@@ -7,7 +7,7 @@
 **     Version     : Component 01.183, Driver 01.08, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2015-12-07, 16:32, # CodeGen: 6
 **     Abstract    :
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -15,7 +15,9 @@
 **          Component name                                 : AD1
 **          A/D converter                                  : ADC1
 **          Discontinuous mode                             : no
-**          Interrupt service/event                        : Disabled
+**          Interrupt service/event                        : Enabled
+**            A/D interrupt                                : INT_ADC1
+**            A/D interrupt priority                       : medium priority
 **          DMA                                            : Disabled
 **          A/D channel list                               : 2
 **            Channel 0                                    : 
@@ -64,7 +66,7 @@
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : yes
 **            Event mask                                   : 
-**              OnMeasurementComplete                      : Disabled
+**              OnMeasurementComplete                      : Enabled
 **              OnError                                    : Disabled
 **          CPU clock/configuration selection              : 
 **            Clock configuration 0                        : This component enabled
@@ -163,6 +165,7 @@ extern "C" {
 #define AD1_SelectSampleGroup_METHOD_ENABLED /*!< SelectSampleGroup method of the component AD1 is enabled (generated) */
 
 /* Events configuration constants - generated for all enabled component's events */
+#define AD1_OnMeasurementComplete_EVENT_ENABLED /*!< OnMeasurementComplete event of the component AD1 is enabled (generated) */
 
 
 /* Component specific public constants */
@@ -414,6 +417,18 @@ LDD_TError AD1_SelectSampleGroup(LDD_TDeviceData *DeviceDataPtr, uint8_t GroupIn
 */
 /* ===================================================================*/
 LDD_TError AD1_GetMeasuredValues(LDD_TDeviceData *DeviceDataPtr, LDD_TData *BufferPtr);
+
+/*
+** ===================================================================
+**     Method      :  AD1_MeasurementCompleteInterrupt (component ADC_LDD)
+**
+**     Description :
+**         Measurement complete interrupt handler
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+/* {Default RTOS Adapter} ISR function prototype */
+PE_ISR(AD1_MeasurementCompleteInterrupt);
 
 /* END AD1. */
 

@@ -72,6 +72,7 @@ extern int dsp_switch_octave;
 extern int dsp_switch_gate;
 extern int dsp_led_octave;
 extern int dsp_led_gate;
+extern int pitchcvcomplete;
 
 struct denoise_state_t
 {
@@ -177,6 +178,12 @@ int main(void)
 		  int32_t* outbuf = audio_out_buffer;
 		  GoldfishProcess(inbuf, outbuf, AUDIO_BUFFER_SIZE);
 
+
+	  }
+	  if (pitchcvcomplete == 1)
+	  {
+		  pitchcvcomplete = 0;
+		  AD1_StartSingleMeasurement(AD1_DeviceData);
 
 	  }
 
