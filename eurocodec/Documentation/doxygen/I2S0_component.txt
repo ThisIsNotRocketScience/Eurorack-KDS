@@ -25,10 +25,10 @@ by the component.
 <td class="regNotResetVal">0x921FED00</td>
  <td>I2S0_TCSR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F080</td><td>I2S0_RCSR</td>
-<td class="regNotResetVal">0x921C0C00</td>
+<td class="regNotResetVal">0x921C0D00</td>
  <td>I2S0_RCSR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F004</td><td>I2S0_TCR1</td>
-<td class="regNotResetVal">0x00000003</td>
+<td class="regNotResetVal">0x00000001</td>
  <td>I2S0_TCR1 register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F084</td><td>I2S0_RCR1</td>
 <td class="regNotResetVal">0x00000001</td>
@@ -37,7 +37,7 @@ by the component.
 <td class="regNotResetVal">0x52000000</td>
  <td>I2S0_TCR2 register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F088</td><td>I2S0_RCR2</td>
-<td class="regNotResetVal">0x10000000</td>
+<td class="regNotResetVal">0x12000000</td>
  <td>I2S0_RCR2 register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F00C</td><td>I2S0_TCR3</td>
 <td class="regNotResetVal">0x00010000</td>
@@ -290,7 +290,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F080</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921C0C00</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x921C0D00</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>31</td><td>RE</td><td>0x01</td><td>Receiver Enable</td>
@@ -308,7 +308,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>11</td><td>SEIE</td><td>0x01</td><td>Sync Error Interrupt Enable</td>
 <tr><td>10</td><td>FEIE</td><td>0x01</td><td>FIFO Error Interrupt Enable</td>
 <tr><td>9</td><td>FWIE</td><td>0x00</td><td>FIFO Warning Interrupt Enable</td>
-<tr><td>8</td><td>FRIE</td><td>0x00</td><td>FIFO Request Interrupt Enable</td>
+<tr><td>8</td><td>FRIE</td><td>0x01</td><td>FIFO Request Interrupt Enable</td>
 <tr><td>1</td><td>FWDE</td><td>0x00</td><td>FIFO Warning DMA Enable</td>
 <tr><td>0</td><td>FRDE</td><td>0x00</td><td>FIFO Request DMA Enable</td>
 </tr></table>
@@ -358,7 +358,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F004</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000003</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000001</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 2</td><td>TFW</td><td>0x00</td><td>Transmit FIFO Watermark</td>
@@ -511,14 +511,14 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F088</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x10000000</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x12000000</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>30 - 31</td><td>SYNC</td><td>0x00</td><td>Synchronous Mode</td>
 <tr><td>29</td><td>BCS</td><td>0x00</td><td>Bit Clock Swap</td>
 <tr><td>28</td><td>BCI</td><td>0x01</td><td>Bit Clock Input</td>
 <tr><td>26 - 27</td><td>MSEL</td><td>0x00</td><td>MCLK Select</td>
-<tr><td>25</td><td>BCP</td><td>0x00</td><td>Bit Clock Polarity</td>
+<tr><td>25</td><td>BCP</td><td>0x01</td><td>Bit Clock Polarity</td>
 <tr><td>24</td><td>BCD</td><td>0x00</td><td>Bit Clock Direction</td>
 <tr><td>0 - 7</td><td>DIV</td><td>0x00</td><td>Bit Clock Divide</td>
 </tr></table>
@@ -975,7 +975,7 @@ registers of the peripheral(s) configured by the component.
 **              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
 **              Data channel                               : Enabled
-**              FIFO empty watermark                       : 3
+**              FIFO empty watermark                       : 1
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -989,7 +989,7 @@ registers of the peripheral(s) configured by the component.
 **              Frame sync width [bits]                    : 32
 **              Frame size [words]                         : 2
 **              Shift direction                            : MSB first
-**              Data clocked in on                         : rising edge
+**              Data clocked in on                         : falling edge
 **              First bit shifted index                    : 31
 **              Word 0 width [bits]                        : 32
 **              Word N width [bits]                        : 32
@@ -1032,13 +1032,13 @@ registers of the peripheral(s) configured by the component.
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
 **              Interrupt request                          : Enabled
-**              Interrupt priority                         : 64
+**              Interrupt priority                         : 0
 **              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled
 **              Rx FIFO error interrupt                    : Enabled
 **              Rx FIFO warning interrupt                  : Disabled
-**              Rx FIFO request interrupt                  : Disabled
+**              Rx FIFO request interrupt                  : Enabled
 **              Rx FIFO warning DMA                        : Disabled
 **              Rx FIFO request DMA                        : Disabled
 **          Initialization                                 : 

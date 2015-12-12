@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 00:03, # CodeGen: 2
+**     Date/Time   : 2015-12-12, 19:56, # CodeGen: 11
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -54,7 +54,7 @@
 **              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
 **              Data channel                               : Enabled
-**              FIFO empty watermark                       : 3
+**              FIFO empty watermark                       : 1
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -68,7 +68,7 @@
 **              Frame sync width [bits]                    : 32
 **              Frame size [words]                         : 2
 **              Shift direction                            : MSB first
-**              Data clocked in on                         : rising edge
+**              Data clocked in on                         : falling edge
 **              First bit shifted index                    : 31
 **              Word 0 width [bits]                        : 32
 **              Word N width [bits]                        : 32
@@ -111,13 +111,13 @@
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
 **              Interrupt request                          : Enabled
-**              Interrupt priority                         : 64
+**              Interrupt priority                         : 0
 **              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled
 **              Rx FIFO error interrupt                    : Enabled
 **              Rx FIFO warning interrupt                  : Disabled
-**              Rx FIFO request interrupt                  : Disabled
+**              Rx FIFO request interrupt                  : Enabled
 **              Rx FIFO warning DMA                        : Disabled
 **              Rx FIFO request DMA                        : Disabled
 **          Initialization                                 : 

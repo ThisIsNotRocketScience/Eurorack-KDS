@@ -8,13 +8,13 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 11:41, # CodeGen: 0
+**     Date/Time   : 2015-12-07, 00:30, # CodeGen: 3
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         No public methods
+**         EnableInt - void Cpu_EnableInt(void);
 **
 **     (c) Freescale Semiconductor, Inc.
 **     2004 All Rights Reserved
@@ -114,6 +114,8 @@ void Components_Init(void);
 #endif /* CPU_COMPONENTS_INIT */
 
 /* Method synonyms. Following constants maps static CPU methods with enabled user methods of which names are derived from the CPU component name */
+
+#define Cpu_EnableInt() CPU_EnableInt()
 
 
 /*

@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 12:16, # CodeGen: 4
+**     Date/Time   : 2015-12-12, 20:24, # CodeGen: 14
 **     Abstract    :
 **         This file collects Processor Expert components configuration 
 **         and interface files.
@@ -109,7 +109,7 @@
 **                Return to stop after ISR                 : no
 **              STOP operation mode                        : Disabled
 **          Common settings                                : 
-**            Initialization priority                      : minimal priority
+**            Initialization priority                      : interrupts disabled
 **            Watchdog disable                             : yes
 **            Utilize after reset values                   : default
 **            NMI pin                                      : Enabled
@@ -205,7 +205,7 @@
 **            Pendable service                             : Disabled
 **            MCG Loss of lock                             : Disabled
 **     Contents    :
-**         No public methods
+**         EnableInt - void Cpu_EnableInt(void);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.

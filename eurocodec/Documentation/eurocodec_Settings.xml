@@ -81,7 +81,7 @@
         <EmptySection_DummyValue />
       </group>
       <group name="Common settings">
-        <Initialization_priority v="minimal priority" />
+        <Initialization_priority v="interrupts disabled" />
         <Watchdog_disable v="yes" />
         <Utilize_after_reset_values v="default" />
       </group>
@@ -329,7 +329,7 @@
           <Word_N_width__bits_ v="32" />
           <Word_flag_configuration__words_ v="1" />
           <Data_channel v="Enabled" />
-          <FIFO_empty_watermark v="3" />
+          <FIFO_empty_watermark v="1" />
           <FIFO_packing_mode v="Disabled" />
           <FIFO_function_after_error v="Next frame" />
           <Time_slot_mask v="0" />
@@ -344,7 +344,7 @@
           <Frame_sync_width__bits_ v="32" />
           <Frame_size__words_ v="2" />
           <Shift_direction v="MSB first" />
-          <Data_clocked_in_on v="rising edge" />
+          <Data_clocked_in_on v="falling edge" />
           <First_bit_shifted_index v="31" />
           <Word_0_width__bits_ v="32" />
           <Word_N_width__bits_ v="32" />
@@ -398,13 +398,13 @@
         <group name="Receive">
           <Rx_interrupt v="INT_I2S0_Rx" />
           <Interrupt_request v="Enabled" />
-          <Interrupt_priority v="64" />
+          <Interrupt_priority v="0" />
           <Rx_ISR_Name v="I2S0_RX" />
           <Rx_Word_start_interrupt v="Disabled" />
           <Rx_sync_error_interrupt v="Enabled" />
           <Rx_FIFO_error_interrupt v="Enabled" />
           <Rx_FIFO_warning_interrupt v="Disabled" />
-          <Rx_FIFO_request_interrupt v="Disabled" />
+          <Rx_FIFO_request_interrupt v="Enabled" />
           <Rx_FIFO_warning_DMA v="Disabled" />
           <Rx_FIFO_request_DMA v="Disabled" />
         </group>
@@ -991,6 +991,38 @@
         <Event_procedure_name v="AD2_OnCalibrationEnd" />
         <Priority v="same as interrupt" />
       </event>
+    </Events>
+  </Bean>
+  <Bean name="TESTLED" type="BitIO_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="TESTLED" />
+      <Pin_for_I_O v="PTB16/SPI1_SOUT/UART0_RX/FTM_CLKIN0/FBa_AD17/EWM_IN" />
+      <Direction v="Output" />
+      <group name="Initialization">
+        <Init__direction v="Output" />
+        <Init__value v="0" />
+        <Auto_initialization v="yes" />
+      </group>
+      <Safe_mode v="no" />
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <GetDir v="don&amp;apos;t generate code" />
+      <SetDir v="don&amp;apos;t generate code" />
+      <SetInput v="don&amp;apos;t generate code" />
+      <SetOutput v="don&amp;apos;t generate code" />
+      <GetVal v="generate code" />
+      <PutVal v="generate code" />
+      <ClrVal v="generate code" />
+      <SetVal v="generate code" />
+      <NegVal v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <GetRawVal v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>

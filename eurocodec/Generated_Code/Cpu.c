@@ -8,13 +8,13 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 16:17, # CodeGen: 25
+**     Date/Time   : 2015-12-12, 19:45, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         No public methods
+**         EnableInt - void Cpu_EnableInt(void);
 **
 **     (c) Freescale Semiconductor, Inc.
 **     2004 All Rights Reserved
@@ -105,8 +105,8 @@ void Common_Init(void)
   SIM_SCGC6 |= SIM_SCGC6_I2S_MASK;
   /* NVICIP28: PRI28=0 */
   NVICIP28 = NVIC_IP_PRI28(0x00);
-  /* NVICIP29: PRI29=0x40 */
-  NVICIP29 = NVIC_IP_PRI29(0x40);
+  /* NVICIP29: PRI29=0 */
+  NVICIP29 = NVIC_IP_PRI29(0x00);
   /* NVICISER0: SETENA|=0x30000000 */
   NVICISER0 |= NVIC_ISER_SETENA(0x30000000);
   /* PORTC_PCR1: ISF=0,MUX=6 */
@@ -200,6 +200,8 @@ void Components_Init(void)
   (void)AD1_Init(NULL);
   /* ### ADC "AD2" init code ... */
   AD2_Init();
+  /* ### BitIO_LDD "TESTLED" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)TESTLED_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 

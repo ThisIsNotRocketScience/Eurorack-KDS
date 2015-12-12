@@ -45,6 +45,7 @@
 #include "AD1.h"
 #include "AD2.h"
 #include "AdcLdd1.h"
+#include "TESTLED.h"
 
 #ifdef __cplusplus
 extern "C" {

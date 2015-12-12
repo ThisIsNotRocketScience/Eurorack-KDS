@@ -23,10 +23,9 @@ static inline int32_t svf(int32_t sample, int16_t cutoff, uint16_t resonance)
 {
 	int tableindex = (cutoff + 0x8000) >> 8;
 	int tablefract = cutoff & 0xFF;
-	uint32_t g = g_table[tableindex] +
-			(((g_table[tableindex+1]-g_table[tableindex]) * tablefract) >> 8);
+	int32_t g_bi = g_table[tableindex] +
+			((((g_table[tableindex+1]-g_table[tableindex])>>3) * tablefract) >> 5); // /2
 	int32_t k = (0x10000-resonance - 1500) * 17000;
-	int32_t g_bi = (int32_t)(g>>2); // /2
 
 	const uint64_t one = 0x0400000000000000;
 	int32_t bottomtmp = (0x10000000 + smull32_hi(g_bi, (g_bi + k)));
@@ -41,13 +40,13 @@ static inline int32_t svf(int32_t sample, int16_t cutoff, uint16_t resonance)
 	int32_t tmp2 = v0_scaled + v0z - (tmp1<<4) - v2z; // /8
 
 	int32_t tmp3 = smull32_hi(tmp2, ootmp); // /8 * /4 * /2 = /64
-	int32_t tmp4 = smull32_hi(g_bi, tmp3) << 1; // /2 * /64 * /2 * 2 = /128
+	int32_t tmp4 = smull32_hi(g_bi, tmp3); // /2 * /64 * /2 = /256
 
-	int32_t v1 = v1z + (tmp4 << 3); // /16
+	int32_t v1 = v1z + (tmp4 << 4); // /16
 
 	int32_t tmp5 = v1 + v1z; // /16
-	int32_t tmp6 = smull32_hi(g_bi, tmp5) << 1; // /1 * /16 * /2 * 2 = /32
-	int32_t v2 = v2z + (tmp6 << 2); // /8
+	int32_t tmp6 = smull32_hi(g_bi, tmp5) << 1; // /1 * /16 * /2 = /64
+	int32_t v2 = v2z + (tmp6 << 3); // /8
 
 	v0z = v0_scaled; // /8
 	v1z = v1; // /16
@@ -57,7 +56,9 @@ static inline int32_t svf(int32_t sample, int16_t cutoff, uint16_t resonance)
 	else if (v2 > 0x4000000) v2z = 0x4000000;
 	else v2z = v2;
 
-	return v2;
+	if (v2 <= -0x10000000) return -0x7fffffff;
+	else if (v2 >= 0x10000000) return 0x7fffffff;
+	else return v2*8;
 }
 /*
 double g = tan(PI * pitch);

@@ -6,7 +6,7 @@
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 00:03, # CodeGen: 2
+**     Date/Time   : 2015-12-12, 20:24, # CodeGen: 14
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -75,7 +75,7 @@ extern "C" {
 #define CPU_SET_CLOCK_CONFIGURATION                        0x00U      
 #define CPU_GET_CLOCK_CONFIGURATION                        0x00U      
 #define CPU_SET_OPERATION_MODE                             0x00U      
-#define CPU_ENABLE_INT                                     0x00U      
+#define CPU_ENABLE_INT                                     0x01U      
 #define CPU_DISABLE_INT                                    0x00U      
 #define CPU_MCG_AUTO_TRIM                                  0x00U      
 #define CPU_VLP_MODE_ENABLE                                0x00U      
@@ -731,7 +731,7 @@ typedef struct {
 /* Interrupts priority level settings */
   
 /* Property: Common settings\Initialization priority */
-#define CPU_INT_PRIORITY                                   0xF0U     /* Priority level constant of enabled interrupts initialized in PE_low_level_init() */ 
+#define CPU_INT_PRIORITY                                   0x00U     /* Priority level constant of enabled interrupts initialized in PE_low_level_init() */ 
 
 #ifdef __cplusplus
 }

@@ -68,6 +68,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Pins1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SCL1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SDA1.c</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/TESTLED.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/WAIT1.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Project_Settings/Startup_Code/startup.c</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/Events.c</PathName>
@@ -102,6 +103,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Pins1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SCL1.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/SDA1.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/TESTLED.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/VREF.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/VREF_Config.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Generated_Code/Vectors_Config.h</PathName>

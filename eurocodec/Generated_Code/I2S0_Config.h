@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 00:03, # CodeGen: 2
+**     Date/Time   : 2015-12-12, 19:56, # CodeGen: 11
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -54,7 +54,7 @@
 **              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
 **              Data channel                               : Enabled
-**              FIFO empty watermark                       : 3
+**              FIFO empty watermark                       : 1
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -68,7 +68,7 @@
 **              Frame sync width [bits]                    : 32
 **              Frame size [words]                         : 2
 **              Shift direction                            : MSB first
-**              Data clocked in on                         : rising edge
+**              Data clocked in on                         : falling edge
 **              First bit shifted index                    : 31
 **              Word 0 width [bits]                        : 32
 **              Word N width [bits]                        : 32
@@ -111,13 +111,13 @@
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
 **              Interrupt request                          : Enabled
-**              Interrupt priority                         : 64
+**              Interrupt priority                         : 0
 **              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
 **              Rx sync error interrupt                    : Enabled
 **              Rx FIFO error interrupt                    : Enabled
 **              Rx FIFO warning interrupt                  : Disabled
-**              Rx FIFO request interrupt                  : Disabled
+**              Rx FIFO request interrupt                  : Enabled
 **              Rx FIFO warning DMA                        : Disabled
 **              Rx FIFO request DMA                        : Disabled
 **          Initialization                                 : 
@@ -195,14 +195,14 @@
 /* I2S0_RCSR: RE=0,STOPE=0,DBGE=0,BCE=0,??=0,??=0,FR=1,SR=0,??=0,??=0,??=0,WSF=1,SEF=1,FEF=1,FWF=0,FRF=0,??=0,??=0,??=0,WSIE=0,SEIE=0,FEIE=0,FWIE=0,FRIE=0,??=0,??=0,??=0,??=0,??=0,??=0,FWDE=0,FRDE=0 */
 #define I2S0_RCSR_VALUE_1    0x021C0000U
 #define I2S0_WAIT_FOR_RECEIVER
-/* I2S0_TCR1: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,TFW=3 */
-#define I2S0_TCR1_VALUE      0x03U
+/* I2S0_TCR1: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,TFW=1 */
+#define I2S0_TCR1_VALUE      0x01U
 /* I2S0_RCR1: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,RFW=1 */
 #define I2S0_RCR1_VALUE      0x01U
 /* I2S0_TCR2: SYNC=1,BCS=0,BCI=1,MSEL=0,BCP=1,BCD=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,DIV=0 */
 #define I2S0_TCR2_VALUE      0x52000000U
-/* I2S0_RCR2: SYNC=0,BCS=0,BCI=1,MSEL=0,BCP=0,BCD=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,DIV=0 */
-#define I2S0_RCR2_VALUE      0x10000000U
+/* I2S0_RCR2: SYNC=0,BCS=0,BCI=1,MSEL=0,BCP=1,BCD=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,DIV=0 */
+#define I2S0_RCR2_VALUE      0x12000000U
 /* I2S0_TCR3: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,TCE=1,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,WDFL=0 */
 #define I2S0_TCR3_VALUE      0x00010000U
 /* I2S0_RCR3: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,RCE=1,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,WDFL=0 */
@@ -221,8 +221,8 @@
 #define I2S0_RMR_VALUE       0x00U
 /* I2S0_TCSR: TE=1,STOPE=0,DBGE=0,BCE=1,??=0,??=0,FR=0,SR=0,??=0,??=0,??=0,WSF=0,SEF=0,FEF=0,FWF=0,FRF=0,??=0,??=0,??=0,WSIE=0,SEIE=1,FEIE=1,FWIE=0,FRIE=1,??=0,??=0,??=0,??=0,??=0,??=0,FWDE=0,FRDE=0 */
 #define I2S0_TCSR_VALUE_3    0x90000D00U
-/* I2S0_RCSR: RE=1,STOPE=0,DBGE=0,BCE=1,??=0,??=0,FR=0,SR=0,??=0,??=0,??=0,WSF=0,SEF=0,FEF=0,FWF=0,FRF=0,??=0,??=0,??=0,WSIE=0,SEIE=1,FEIE=1,FWIE=0,FRIE=0,??=0,??=0,??=0,??=0,??=0,??=0,FWDE=0,FRDE=0 */
-#define I2S0_RCSR_VALUE_3    0x90000C00U
+/* I2S0_RCSR: RE=1,STOPE=0,DBGE=0,BCE=1,??=0,??=0,FR=0,SR=0,??=0,??=0,??=0,WSF=0,SEF=0,FEF=0,FWF=0,FRF=0,??=0,??=0,??=0,WSIE=0,SEIE=1,FEIE=1,FWIE=0,FRIE=1,??=0,??=0,??=0,??=0,??=0,??=0,FWDE=0,FRDE=0 */
+#define I2S0_RCSR_VALUE_3    0x90000D00U
 
 #define I2S0_AUTOINIT
 

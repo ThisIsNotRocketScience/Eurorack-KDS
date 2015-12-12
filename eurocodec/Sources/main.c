@@ -42,6 +42,7 @@
 #include "AD1.h"
 #include "AD2.h"
 #include "AdcLdd1.h"
+#include "TESTLED.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -67,8 +68,12 @@ int main(void)
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
+
   cv_adc_init();
   ak4558_init();
+
+  Cpu_EnableInt();
+
   int counter = 0;
   for(;;) {
 	  /*counter++;
