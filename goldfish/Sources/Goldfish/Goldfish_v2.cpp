@@ -477,7 +477,7 @@ void Goldfish::Event(WORD wEventType, int wParm1, int wParm2, int dwParm3/*=0*/,
 			break;
 			case 5:
 			{
-				FEnvDecay = DecayTime[wParm1];
+				FEnvDecay = DecayTime[wParm1]*16;
 			}
 			break;
 			case 6:

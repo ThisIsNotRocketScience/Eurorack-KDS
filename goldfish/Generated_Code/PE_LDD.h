@@ -6,7 +6,7 @@
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2015-12-07, 03:05, # CodeGen: 2
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -72,6 +72,9 @@
 #include "LED2.h"
 #include "LED1.h"
 #include "GATE.h"
+#include "EInt1.h"
+#include "TI1.h"
+#include "TU1.h"
 
 
 /*

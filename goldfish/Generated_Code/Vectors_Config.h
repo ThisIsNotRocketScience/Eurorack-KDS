@@ -66,6 +66,9 @@
 #include "LED2.h"
 #include "LED1.h"
 #include "GATE.h"
+#include "EInt1.h"
+#include "TI1.h"
+#include "TU1.h"
 #include "Events.h"
 
 #ifdef __cplusplus
@@ -134,7 +137,7 @@ extern "C" {
 #define VECTOR_56         (tIsrFunc)&UnhandledInterrupt         /* 0x38 -    ivINT_CMP0                    unused by PE */
 #define VECTOR_57         (tIsrFunc)&UnhandledInterrupt         /* 0x39 -    ivINT_CMP1                    unused by PE */
 #define VECTOR_58         (tIsrFunc)&UnhandledInterrupt         /* 0x3A -    ivINT_FTM0                    unused by PE */
-#define VECTOR_59         (tIsrFunc)&UnhandledInterrupt         /* 0x3B -    ivINT_FTM1                    unused by PE */
+#define VECTOR_59         (tIsrFunc)&TU1_Interrupt              /* 0x3B 112  ivINT_FTM1                    used by PE */
 #define VECTOR_60         (tIsrFunc)&UnhandledInterrupt         /* 0x3C -    ivINT_FTM2                    unused by PE */
 #define VECTOR_61         (tIsrFunc)&UnhandledInterrupt         /* 0x3D -    ivINT_Reserved61              unused by PE */
 #define VECTOR_62         (tIsrFunc)&UnhandledInterrupt         /* 0x3E -    ivINT_RTC                     unused by PE */
@@ -151,7 +154,7 @@ extern "C" {
 #define VECTOR_73         (tIsrFunc)&UnhandledInterrupt         /* 0x49 -    ivINT_MCG                     unused by PE */
 #define VECTOR_74         (tIsrFunc)&UnhandledInterrupt         /* 0x4A -    ivINT_LPTMR0                  unused by PE */
 #define VECTOR_75         (tIsrFunc)&UnhandledInterrupt         /* 0x4B -    ivINT_PORTA                   unused by PE */
-#define VECTOR_76         (tIsrFunc)&UnhandledInterrupt         /* 0x4C -    ivINT_PORTB                   unused by PE */
+#define VECTOR_76         (tIsrFunc)&EInt1_Interrupt            /* 0x4C 112  ivINT_PORTB                   used by PE */
 #define VECTOR_77         (tIsrFunc)&UnhandledInterrupt         /* 0x4D -    ivINT_PORTC                   unused by PE */
 #define VECTOR_78         (tIsrFunc)&UnhandledInterrupt         /* 0x4E -    ivINT_PORTD                   unused by PE */
 #define VECTOR_79         (tIsrFunc)&UnhandledInterrupt         /* 0x4F -    ivINT_PORTE                   unused by PE */
@@ -164,7 +167,7 @@ extern "C" {
 #define VECTOR_86         (tIsrFunc)&UnhandledInterrupt         /* 0x56 -    ivINT_Reserved86              unused by PE */
 #define VECTOR_87         (tIsrFunc)&UnhandledInterrupt         /* 0x57 -    ivINT_FTM3                    unused by PE */
 #define VECTOR_88         (tIsrFunc)&UnhandledInterrupt         /* 0x58 -    ivINT_DAC1                    unused by PE */
-#define VECTOR_89         (tIsrFunc)&UnhandledInterrupt         /* 0x59 -    ivINT_ADC1                    unused by PE */
+#define VECTOR_89         (tIsrFunc)&AD1_MeasurementCompleteInterrupt /* 0x59 112 ivINT_ADC1               used by PE */
 #define VECTOR_90         (tIsrFunc)&UnhandledInterrupt         /* 0x5A -    ivINT_Reserved90              unused by PE */
 #define VECTOR_91         (tIsrFunc)&UnhandledInterrupt         /* 0x5B -    ivINT_Reserved91              unused by PE */
 #define VECTOR_92         (tIsrFunc)&UnhandledInterrupt         /* 0x5C -    ivINT_Reserved92              unused by PE */

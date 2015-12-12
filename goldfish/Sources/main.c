@@ -47,6 +47,9 @@
 #include "LED2.h"
 #include "LED1.h"
 #include "GATE.h"
+#include "EInt1.h"
+#include "TI1.h"
+#include "TU1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -64,17 +67,26 @@
 #include "Goldfish/Goldfish_Interface.h"
 
 word adcvalues[AdcLdd1_CHANNEL_COUNT];
-
+int last_dsp_switch_octave = 1;
 extern int dsp_switch_octave;
 extern int dsp_switch_gate;
 extern int dsp_led_octave;
 extern int dsp_led_gate;
+extern int pitchcvcomplete;
 
 struct denoise_state_t
 {
 	int counter;
 	int down;
 };
+
+byte pwm =0 ;
+void updateleds()
+{
+	pwm+= 16;
+	LED1_PutVal(LED1_DeviceData, dsp_led_octave>pwm?1:0);
+	LED2_PutVal(LED2_DeviceData, dsp_led_gate>pwm?1:0);
+}
 
 int denoise(int sw_down, struct denoise_state_t* state)
 {
@@ -151,6 +163,7 @@ int main(void)
   static struct toggle_sw_state_t octave_sw_state = {0};
   static struct denoise_state_t gate_denoise_state = {0};
   static struct trigger_sw_state_t gate_sw_state = {0};
+
   for(;;) {
 	  /*counter++;
 	  if (counter > 10*1000) {
@@ -165,6 +178,12 @@ int main(void)
 		  int32_t* outbuf = audio_out_buffer;
 		  GoldfishProcess(inbuf, outbuf, AUDIO_BUFFER_SIZE);
 
+
+	  }
+	  if (pitchcvcomplete == 1)
+	  {
+		  pitchcvcomplete = 0;
+		  AD1_StartSingleMeasurement(AD1_DeviceData);
 
 	  }
 
@@ -182,9 +201,13 @@ int main(void)
 	  int switch_octave = SWITCH1_GetVal(SWITCH1_DeviceData);
 	  int switch_gate = SWITCH2_GetVal(SWITCH2_DeviceData);
 	  dsp_switch_octave = toggle_sw(denoise(switch_octave, &octave_denoise_state), &octave_sw_state);
+	  if (dsp_switch_octave != last_dsp_switch_octave)
+	  {
+		  GoldfishOctavePressed();
+	  }
+	  last_dsp_switch_octave = dsp_switch_octave;
+
 	  dsp_switch_gate = trigger_sw(denoise(switch_gate, &gate_denoise_state), &gate_sw_state);
-	  LED1_PutVal(LED1_DeviceData, dsp_led_octave);
-	  LED2_PutVal(LED2_DeviceData, dsp_led_gate);
   }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/

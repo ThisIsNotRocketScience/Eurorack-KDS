@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2015-12-07, 03:07, # CodeGen: 3
 **     Abstract    :
 **
 **     Settings    :
@@ -210,6 +210,10 @@ void Components_Init(void)
   (void)LED1_Init(NULL);
   /* ### BitIO_LDD "GATE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)GATE_Init(NULL);
+  /* ### ExtInt_LDD "EInt1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)EInt1_Init(NULL);
+  /* ### TimerInt_LDD "TI1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)TI1_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 

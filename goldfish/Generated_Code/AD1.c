@@ -7,7 +7,7 @@
 **     Version     : Component 01.183, Driver 01.08, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2015-12-07, 16:32, # CodeGen: 6
 **     Abstract    :
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -15,7 +15,9 @@
 **          Component name                                 : AD1
 **          A/D converter                                  : ADC1
 **          Discontinuous mode                             : no
-**          Interrupt service/event                        : Disabled
+**          Interrupt service/event                        : Enabled
+**            A/D interrupt                                : INT_ADC1
+**            A/D interrupt priority                       : medium priority
 **          DMA                                            : Disabled
 **          A/D channel list                               : 2
 **            Channel 0                                    : 
@@ -64,7 +66,7 @@
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : yes
 **            Event mask                                   : 
-**              OnMeasurementComplete                      : Disabled
+**              OnMeasurementComplete                      : Enabled
 **              OnError                                    : Disabled
 **          CPU clock/configuration selection              : 
 **            Clock configuration 0                        : This component enabled
@@ -128,6 +130,7 @@
 
 /* MODULE AD1. */
 
+#include "Events.h"
 #include "AD1.h"
 /* {Default RTOS Adapter} No RTOS includes */
 
@@ -149,15 +152,15 @@ static const TStaticSampleGroup StaticSampleGroups[AD1_STATIC_GROUP_COUNT] = {
   { /* Static sample group 0 */
     1U,                                /* Sample count */
     {
-      /* ADC1_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=0,DIFF=1,ADCH=3 */
-      0x23U
+      /* ADC1_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=1,ADCH=3 */
+      0x63U
     }                                  /* Samples settings */
   },
   { /* Static sample group 1 */
     1U,                                /* Sample count */
     {
-      /* ADC1_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=0,DIFF=1,ADCH=0 */
-      0x20U
+      /* ADC1_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=1,ADCH=0 */
+      0x60U
     }                                  /* Samples settings */
   }
 };
@@ -172,6 +175,8 @@ typedef AD1_TDeviceData* AD1_TDeviceDataPtr ; /* Pointer to the device data stru
 
 /* {Default RTOS Adapter} Static object used for simulation of dynamic driver memory allocation */
 static AD1_TDeviceData DeviceDataPrv__DEFAULT_RTOS_ALLOC;
+/* {Default RTOS Adapter} Global variable used for passing a parameter into ISR */
+static AD1_TDeviceDataPtr INT_ADC1__DEFAULT_RTOS_ISRPARAM;
 /*
 ** ===================================================================
 **     Method      :  AD1_Init (component ADC_LDD)
@@ -203,9 +208,17 @@ LDD_TDeviceData* AD1_Init(LDD_TUserData *UserDataPtr)
   /* {Default RTOS Adapter} Driver memory allocation: Dynamic allocation is simulated by a pointer to the static object */
   DeviceDataPrv = &DeviceDataPrv__DEFAULT_RTOS_ALLOC;
   DeviceDataPrv->UserData = UserDataPtr; /* Store the RTOS device structure */
+  /* Interrupt vector(s) allocation */
+  /* {Default RTOS Adapter} Set interrupt vector: IVT is static, ISR parameter is passed by the global variable */
+  INT_ADC1__DEFAULT_RTOS_ISRPARAM = DeviceDataPrv;
   DeviceDataPrv->SampleCount = 0U;     /* Initializing SampleCount for right access of some methods to SC1n registers before first conversion is done */
   /* SIM_SCGC6: ADC1=1 */
   SIM_SCGC6 |= SIM_SCGC6_ADC1_MASK;
+  /* Interrupt vector(s) priority setting */
+  /* NVICIP73: PRI73=0x70 */
+  NVICIP73 = NVIC_IP_PRI73(0x70);
+  /* NVICISER2: SETENA|=0x0200 */
+  NVICISER2 |= NVIC_ISER_SETENA(0x0200);
   /* Enable device clock gate */
   /* SIM_SCGC6: ADC1=1 */
   SIM_SCGC6 |= SIM_SCGC6_ADC1_MASK;
@@ -409,7 +422,7 @@ LDD_TError AD1_SelectSampleGroup(LDD_TDeviceData *DeviceDataPtr, uint8_t GroupIn
     return ERR_BUSY;                   /* Yes, return ERR_BUSY */
   }
   GroupPtr = &StaticSampleGroups[GroupIndex]; /* Remember static sample group address */
-  DeviceDataPrv->FirstSample = GroupPtr->StatusControlRegVal[0]; /* Remember first sample */
+  DeviceDataPrv->FirstSample = (GroupPtr->StatusControlRegVal[0]) | (uint8_t)(LDD_ADC_ON_MEASUREMENT_COMPLETE); /* Remember first sample */
   DeviceDataPrv->SampleCount = GroupPtr->SampleCount; /* Remember sample count */
   return ERR_OK;                       /* OK */
 }
@@ -459,6 +472,23 @@ LDD_TError AD1_GetMeasuredValues(LDD_TDeviceData *DeviceDataPtr, LDD_TData *Buff
     pBuffer[Sample] = (int32_t)ValueTemp;
   }
   return ERR_OK;                       /* OK */
+}
+
+/*
+** ===================================================================
+**     Method      :  AD1_MeasurementCompleteInterrupt (component ADC_LDD)
+**
+**     Description :
+**         Measurement complete interrupt handler
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+PE_ISR(AD1_MeasurementCompleteInterrupt)
+{
+  /* {Default RTOS Adapter} ISR parameter is passed through the global variable */
+  AD1_TDeviceDataPtr DeviceDataPrv = INT_ADC1__DEFAULT_RTOS_ISRPARAM;
+  AD1_OnMeasurementComplete(DeviceDataPrv->UserData);
+  (void)ADC_PDD_GetResultValueRaw(ADC1_BASE_PTR, 0U); /* Clear conversion complete flag */
 }
 
 /* END AD1. */

@@ -39,6 +39,9 @@
 - \subpage LED2
 - \subpage LED1
 - \subpage GATE
+- \subpage EInt1
+- \subpage TU1
+- \subpage TI1
 
 */
 
@@ -84,6 +87,9 @@
 - \subpage LED2
 - \subpage LED1
 - \subpage GATE
+- \subpage EInt1
+- \subpage TU1
+- \subpage TI1
 
 */
 

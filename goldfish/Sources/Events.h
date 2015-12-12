@@ -50,6 +50,9 @@
 #include "LED2.h"
 #include "LED1.h"
 #include "GATE.h"
+#include "EInt1.h"
+#include "TI1.h"
+#include "TU1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,6 +105,66 @@ void AD2_OnCalibrationEnd(void);
 **     Returns     : Nothing
 ** ===================================================================
 */
+
+/*
+** ===================================================================
+**     Event       :  EInt1_OnInterrupt (module Events)
+**
+**     Component   :  EInt1 [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void EInt1_OnInterrupt(LDD_TUserData *UserDataPtr);
+
+/*
+** ===================================================================
+**     Event       :  TI1_OnInterrupt (module Events)
+**
+**     Component   :  TI1 [TimerInt_LDD]
+*/
+/*!
+**     @brief
+**         Called if periodic event occur. Component and OnInterrupt
+**         event must be enabled. See [SetEventMask] and [GetEventMask]
+**         methods. This event is available only if a [Interrupt
+**         service/event] is enabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer passed as
+**                           the parameter of Init method.
+*/
+/* ===================================================================*/
+void TI1_OnInterrupt(LDD_TUserData *UserDataPtr);
+
+/*
+** ===================================================================
+**     Event       :  AD1_OnMeasurementComplete (module Events)
+**
+**     Component   :  AD1 [ADC_LDD]
+*/
+/*!
+**     @brief
+**         Called after measurement is done, [Interrupt service/event]
+**         is enabled, OnMeasurementComplete event is enabled and ADC
+**         device is enabled. See [SetEventMask()] method or [Event
+**         mask] property group to enable this event and [Enable]
+**         method or [Enabled in init. code] property to enable ADC
+**         device. If DMA is enabled , this event is called after the
+**         configured number of measurements and DMA transfer is done.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr);
 
 /* END Events */
 

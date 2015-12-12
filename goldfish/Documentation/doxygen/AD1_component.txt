@@ -15,11 +15,17 @@ by the component.
 <tr><td colspan="4" class="ttitle1">AD1 Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
 <tr><td>0x40027000</td><td>ADC1_SC1A</td>
-<td class="regNotResetVal">0x00000023</td>
+<td class="regNotResetVal">0x00000063</td>
  <td>ADC1_SC1A register, peripheral AD1.</td></tr>
 <tr><td>0x4004803C</td><td>SIM_SCGC6</td>
 <td class="regNotResetVal">0xC0000081</td>
  <td>SIM_SCGC6 register, peripheral AD1.</td></tr>
+<tr><td>0xE000E449</td><td>NVICIP73</td>
+<td class="regNotResetVal">0x00000070</td>
+ <td>NVICIP73 register, peripheral AD1.</td></tr>
+<tr><td>0xE000E108</td><td>NVICISER2</td>
+<td class="regNotResetVal">0x00000200</td>
+ <td>NVICISER2 register, peripheral AD1.</td></tr>
 <tr><td>0x40027020</td><td>ADC1_SC2</td>
 <td class="regResetVal">0x00000000</td>
  <td>ADC1_SC2 register, peripheral AD1.</td></tr>
@@ -85,11 +91,11 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40027000</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000023</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000063</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x0000001F</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>COCO</td><td>0x00</td><td>Conversion Complete Flag</td>
-<tr><td>6</td><td>AIEN</td><td>0x00</td><td>Interrupt Enable</td>
+<tr><td>6</td><td>AIEN</td><td>0x01</td><td>Interrupt Enable</td>
 <tr><td>5</td><td>DIFF</td><td>0x01</td><td>Differential Mode Enable</td>
 <tr><td>0 - 4</td><td>ADCH</td><td>0x00</td><td>Input channel select</td>
 </tr></table>
@@ -162,6 +168,72 @@ registers of the peripheral(s) configured by the component.
 <tr><td>6</td><td>FTM3</td><td>0x00</td><td>FTM3 Clock Gate Control</td>
 <tr><td>1</td><td>DMAMUX</td><td>0x00</td><td>DMA Mux Clock Gate Control</td>
 <tr><td>0</td><td>FTF</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
+</tr></table>
+<div class="reghdr1">NVICIP73</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI73</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E449</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000070</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>0 - 7</td><td>PRI73</td><td>0x00</td><td>Priority of interrupt 73</td>
+</tr></table>
+<div class="reghdr1">NVICISER2</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E108</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000200</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>0 - 31</td><td>SETENA</td><td>0x00</td><td>Interrupt set enable bits</td>
 </tr></table>
 <div class="reghdr1">ADC1_SC2</div>
 <div class="regdiag">
@@ -392,7 +464,9 @@ registers of the peripheral(s) configured by the component.
 **          Component name                                 : AD1
 **          A/D converter                                  : ADC1
 **          Discontinuous mode                             : no
-**          Interrupt service/event                        : Disabled
+**          Interrupt service/event                        : Enabled
+**            A/D interrupt                                : INT_ADC1
+**            A/D interrupt priority                       : medium priority
 **          DMA                                            : Disabled
 **          A/D channel list                               : 2
 **            Channel 0                                    : 
@@ -441,7 +515,7 @@ registers of the peripheral(s) configured by the component.
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : yes
 **            Event mask                                   : 
-**              OnMeasurementComplete                      : Disabled
+**              OnMeasurementComplete                      : Enabled
 **              OnError                                    : Disabled
 **          CPU clock/configuration selection              : 
 **            Clock configuration 0                        : This component enabled

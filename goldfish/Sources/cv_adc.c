@@ -17,7 +17,7 @@ float cv_adc_recalibrate()
 {
 	AD1_CancelMeasurement(AD1_DeviceData);
 
-	AD1_SelectSampleGroup(AD1_DeviceData, 1);
+	AD1_SelectSampleGroup(AD1_DeviceData, 0);
 
 	AD1_StartSingleMeasurement(AD1_DeviceData);
 	WAIT1_Waitus(10);
@@ -26,8 +26,9 @@ float cv_adc_recalibrate()
 	int32_t vref_per_vcc = 0;
 	AD1_GetMeasuredValues(AD1_DeviceData, &vref_per_vcc);
 
-	AD1_SelectSampleGroup(AD1_DeviceData, 0);
-	AD1_StartLoopMeasurement(AD1_DeviceData);
+	AD1_SelectSampleGroup(AD1_DeviceData, 1);
+	AD1_StartSingleMeasurement(AD1_DeviceData);
+		//AD1_StartLoopMeasurement(AD1_DeviceData);
 
 	adc_calibration_scale = (2.0f / 1.2f) * (float)vref_per_vcc;
 

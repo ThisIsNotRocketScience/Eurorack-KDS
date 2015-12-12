@@ -11,6 +11,8 @@ Goldfish Fish[2];
 PlatinumClip Dist[2];
 
 #include "GATE.h"
+#include "AD1.h"
+
 
 extern "C"{
 #include "../cv_adc.h"
@@ -22,7 +24,7 @@ extern int dsp_switch_octave ;
 extern int dsp_switch_gate ;
 extern int dsp_led_octave ;
 extern int dsp_led_gate;
-
+extern int GatePressed;
 extern int gate ;
 }
 
@@ -32,9 +34,22 @@ static struct cvsmooth_state_t pw_smooth_state;
 
 
 #include "Goldfish_Interface.h"
+int Octave = 2;
+extern int32_t pitchadcvalue;
+
+int32_t get_cv_adc_value()
+{
+
+	return pitchadcvalue >> 16;
+}
+
 
 extern "C"
 {
+
+void GoldfishOctavePressed(){
+	Octave = (Octave + 1) % 4;
+}
 
 void GoldfishInit()
 {
@@ -66,11 +81,13 @@ int setfuzz = 0;
 void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 {
 
-	int32_t pitchcv = cv_adc_value();
+	int32_t pitchcv = get_cv_adc_value();
 
-	int32_t pitch = pitchcv + (adc_value(5) >> 7);
+	int32_t pitch = pitchcv + (adc_value(5) >> 4);
+	pitch -= 1985*2;
+	pitch += Octave * 1985;
 
-	if (dsp_switch_octave) pitch += 1985; // 1V*.2/3.3V*32768
+//	if (dsp_switch_octave) pitch += 1985; // 1V*.2/3.3V*32768
 	pitch += 2*1985; // scale pitch to 1/4 samplerate
 
 	// 0 = cutoff
@@ -97,10 +114,10 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 	int32_t Cut = (adc_value(0)*127) / 0x97a0;
 	int32_t Res = (adc_value(1)*127)/ 0xfff0;
 
-	if ((dsp_switch_gate || !GATE_GetVal(GATE_DeviceData)) && gate == 0)
+	if ((dsp_switch_gate || (GATE_GetVal(GATE_DeviceData)  == FALSE) || GatePressed == 1) && gate == 0)
 	{
 		gate = 1500 / 32;
-
+		GatePressed = 0;
 		Fish[0].Event(NOTE_ON, 0,0);
 		Fish[1].Event(NOTE_ON, 0,0);
 
@@ -142,19 +159,13 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 
 
 
+	dsp_led_octave =  Octave * 64;
 
-	dsp_led_octave = dsp_switch_octave;
 
-	if (gate)
-	{
-		dsp_led_gate = 1;
-		gate--;
-	}
-	else
-	{
-		dsp_led_gate = 0;
-	}
+	if (gate)		gate--;
 
+	dsp_led_gate = Fish[0].FEnvCurVal >> 24;
+	//if (dsp_led_gate >0 )dsp_led_gate += 128;
 	if (Fish[0].Render(PulseFishBuffer, frames, &Dist[0]) == false)
 	{
 		for (int i = 0; i < frames ; i++)
