@@ -11,12 +11,18 @@ float cv_adc_voltage();
 
 extern uint16_t adcvalues[];
 
+extern int32_t cv_adc_current;
+
 static inline int32_t cv_adc_value()
 {
-	int32_t adcvalue = 0;
-	AD1_GetMeasuredValues(AD1_DeviceData, &adcvalue);
+	//if (*(uint8_t*)AD1_DeviceData) {
+	//	value = ADC_PDD_GetResultValueRaw(ADC1_BASE_PTR, 0);
+	//}
+	return cv_adc_current;
 
-	return adcvalue >> 16;
+	//int32_t adcvalue;
+	//AD1_GetMeasuredValues(AD1_DeviceData, &adcvalue);
+	//return adcvalue >> 16;
 }
 
 void dac_set_voltage(float v);

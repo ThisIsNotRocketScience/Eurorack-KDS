@@ -51,6 +51,7 @@
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/Peripherals/</Path>
       <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/</Path>
+      <Path>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
@@ -112,6 +113,7 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/ak4558.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/cv_adc.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsp_main.h</PathName>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/core_cm4_simd.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/cvsmooth.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_osc.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/dpw_pitchtables.h</PathName>
@@ -161,6 +163,9 @@
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/PDD_Includes.h</PathName>
       <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Static_Code/System/Peripherals_Init.h</PathName>
     </GeneratedHs>
+    <GeneratedASMs>
+      <PathName>/home/ld0d/dsp/work/eurocodec_fw_kds3/eurocodec/Sources/dsplib/divide.S</PathName>
+    </GeneratedASMs>
   </FILES>
   <OPTIONS>
   </OPTIONS>

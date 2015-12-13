@@ -66,8 +66,8 @@
       <XtraAge13>1200052837</XtraAge13>
       <XtraAge14>1200052837</XtraAge14>
       <XtraAge16>1199877440</XtraAge16>
-      <XtraAge17>1200397744</XtraAge17>
-      <XtraAge18>1200399126</XtraAge18>
+      <XtraAge17>1200465629</XtraAge17>
+      <XtraAge18>1200465629</XtraAge18>
       <XtraAge19>1200399126</XtraAge19>
       <GenExtraFileType23>5</GenExtraFileType23>
       <GenExtraFileType22>4</GenExtraFileType22>
@@ -538,9 +538,10 @@
       <GenEventModules lines_count="1">
         <Line>Events</Line>
       </GenEventModules>
-      <GenMethodsInEvents lines_count="3">
+      <GenMethodsInEvents lines_count="4">
         <Line>AD2_OnEnd</Line>
         <Line>AD2_OnCalibrationEnd</Line>
+        <Line>AD1_OnMeasurementComplete</Line>
         <Line>Cpu_OnNMI</Line>
       </GenMethodsInEvents>
       <GenAllModules lines_count="19">
@@ -583,7 +584,7 @@
     </GenFiles>
     <SignalListFile />
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>50</ProjectModificationStamp>
+    <ProjectModificationStamp>51</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>false</Generated>
@@ -1910,8 +1911,8 @@
     <GenComponentVersion>01.183</GenComponentVersion>
     <GenDriverVersion>01.08</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1199926313</HeaderAge>
-    <CodeAge>1199926313</CodeAge>
+    <HeaderAge>1200465629</HeaderAge>
+    <CodeAge>1200465629</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Init>true</Init>
@@ -1940,7 +1941,7 @@
     <GetError>false</GetError>
     <GetMeasuredSamplesCount>false</GetMeasuredSamplesCount>
     <GenNumEvents>2</GenNumEvents>
-    <OnMeasurementComplete_Selected>0</OnMeasurementComplete_Selected>
+    <OnMeasurementComplete_Selected>3</OnMeasurementComplete_Selected>
     <OnMeasurementComplete_Name>AD1_OnMeasurementComplete</OnMeasurementComplete_Name>
     <OnMeasurementComplete_Priority>interrupts disabled</OnMeasurementComplete_Priority>
     <OnError_Selected>0</OnError_Selected>
@@ -1951,90 +1952,104 @@
     <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
     <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
     <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>12</GenMethodPos>
+    <GenMethodPos>14</GenMethodPos>
     <MethodPos>
       <MethodPos0>Init</MethodPos0>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>221</LineBeg>
-      <LineEnd>245</LineEnd>
+      <LineBeg>224</LineBeg>
+      <LineEnd>248</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>StartSingleMeasurement</MethodPos1>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>246</LineBeg>
-      <LineEnd>285</LineEnd>
+      <LineBeg>249</LineBeg>
+      <LineEnd>288</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos2>StartLoopMeasurement</MethodPos2>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>286</LineBeg>
-      <LineEnd>328</LineEnd>
+      <LineBeg>289</LineBeg>
+      <LineEnd>331</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos3>CancelMeasurement</MethodPos3>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>329</LineBeg>
-      <LineEnd>351</LineEnd>
+      <LineBeg>332</LineBeg>
+      <LineEnd>354</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos4>SelectSampleGroup</MethodPos4>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>352</LineBeg>
-      <LineEnd>382</LineEnd>
+      <LineBeg>355</LineBeg>
+      <LineEnd>385</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos5>GetMeasuredValues</MethodPos5>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>383</LineBeg>
-      <LineEnd>416</LineEnd>
+      <LineBeg>386</LineBeg>
+      <LineEnd>419</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos6>Init</MethodPos6>
+      <MethodPos6>MeasurementCompleteInterrupt</MethodPos6>
       <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>172</LineBeg>
-      <LineEnd>234</LineEnd>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>420</LineBeg>
+      <LineEnd>431</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos7>StartSingleMeasurement</MethodPos7>
+      <MethodPos7>Init</MethodPos7>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>235</LineBeg>
-      <LineEnd>284</LineEnd>
+      <LineBeg>175</LineBeg>
+      <LineEnd>247</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos8>StartLoopMeasurement</MethodPos8>
+      <MethodPos8>StartSingleMeasurement</MethodPos8>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>285</LineBeg>
-      <LineEnd>337</LineEnd>
+      <LineBeg>248</LineBeg>
+      <LineEnd>297</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos9>CancelMeasurement</MethodPos9>
+      <MethodPos9>StartLoopMeasurement</MethodPos9>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>338</LineBeg>
-      <LineEnd>367</LineEnd>
+      <LineBeg>298</LineBeg>
+      <LineEnd>350</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos10>SelectSampleGroup</MethodPos10>
+      <MethodPos10>CancelMeasurement</MethodPos10>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>368</LineBeg>
-      <LineEnd>415</LineEnd>
+      <LineBeg>351</LineBeg>
+      <LineEnd>380</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos11>GetMeasuredValues</MethodPos11>
+      <MethodPos11>SelectSampleGroup</MethodPos11>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>416</LineBeg>
-      <LineEnd>462</LineEnd>
+      <LineBeg>381</LineBeg>
+      <LineEnd>428</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos12>GetMeasuredValues</MethodPos12>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>429</LineBeg>
+      <LineEnd>475</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos13>MeasurementCompleteInterrupt</MethodPos13>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>476</LineBeg>
+      <LineEnd>492</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\AD1_component.txt</ExtraFile0>

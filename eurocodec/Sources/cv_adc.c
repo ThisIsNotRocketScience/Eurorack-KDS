@@ -5,6 +5,8 @@
 #include "DA1.h"
 #include "WAIT1.h"
 
+int32_t cv_adc_current = 0;
+
 void cv_adc_init()
 {
 	cv_adc_recalibrate();

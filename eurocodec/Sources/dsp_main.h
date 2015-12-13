@@ -20,6 +20,8 @@ static inline void dsp_work(uint32_t *outl, uint32_t *outr, uint32_t inl, uint32
 	int32_t pitch = cv_adc_value() + (cutoff_knob>>2) + (cutoff_knob>>5);
 	if (pitch > 0x7fff) pitch = 0x7fff;
 
-	*outl = svf(inl, pitch, adc_value(1));//dpw_sawtooth(pitch, &state1);
-	*outr = inr;//dpw_pulse(pitch, pulsewidth, &state2);
+	svf_stereo(outl, outr, inl, inr, pitch, adc_value(1));
+
+	//*outl = svf(inl, pitch, adc_value(1));//dpw_sawtooth(pitch, &state1);
+	//*outr = inr;//dpw_pulse(pitch, pulsewidth, &state2);
 }

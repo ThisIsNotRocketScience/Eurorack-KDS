@@ -3,7 +3,7 @@
   <Header>
     <Name>eurocodec</Name>
     <SavedBy>ld0d</SavedBy>
-    <ModificationStamp>50</ModificationStamp>
+    <ModificationStamp>51</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.0.RT7_b1515-0427</PEversion>
@@ -22603,8 +22603,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>false</Value>
-        <Expanded>false</Expanded>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
       </ItemState>
       <ItemState>
         <ItemSymbol>MeasurementCompleteInterrupt</ItemSymbol>
@@ -24193,8 +24193,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>8</Index>
-        <EnumSymbVal>int32_left</EnumSymbVal>
+        <Index>10</Index>
+        <EnumSymbVal>int16_right</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>Trigger</ItemSymbol>
@@ -24728,24 +24728,24 @@
       </ItemState>
       <ItemState>
         <ItemSymbol>GetEventMask</ItemSymbol>
-        <ReadOnly>true</ReadOnly>
+        <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>1</Index>
         <Value>false</Value>
         <LastSelection>false</LastSelection>
-        <LastUserSel>never</LastUserSel>
+        <LastUserSel>no</LastUserSel>
         <UsrMethodName>GetEventMask</UsrMethodName>
       </ItemState>
       <ItemState>
         <ItemSymbol>SetEventMask</ItemSymbol>
-        <ReadOnly>true</ReadOnly>
+        <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>1</Index>
         <Value>false</Value>
         <LastSelection>false</LastSelection>
-        <LastUserSel>never</LastUserSel>
+        <LastUserSel>no</LastUserSel>
         <UsrMethodName>SetEventMask</UsrMethodName>
       </ItemState>
       <ItemState>
@@ -25050,13 +25050,13 @@
       </ItemState>
       <ItemState>
         <ItemSymbol>OnMeasurementComplete</ItemSymbol>
-        <ReadOnly>true</ReadOnly>
+        <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>false</Value>
-        <Expanded>false</Expanded>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
         <LastSelection>true</LastSelection>
-        <LastUserSel>never</LastUserSel>
+        <LastUserSel>yes</LastUserSel>
       </ItemState>
       <ItemState>
         <ItemSymbol>OnMeasurementCompleteName</ItemSymbol>

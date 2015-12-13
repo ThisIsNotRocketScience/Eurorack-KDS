@@ -7,7 +7,7 @@
 **     Version     : Component 01.183, Driver 01.08, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 13:33, # CodeGen: 17
+**     Date/Time   : 2015-12-13, 20:54, # CodeGen: 15
 **     Abstract    :
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -15,7 +15,9 @@
 **          Component name                                 : AD1
 **          A/D converter                                  : ADC1
 **          Discontinuous mode                             : no
-**          Interrupt service/event                        : Disabled
+**          Interrupt service/event                        : Enabled
+**            A/D interrupt                                : INT_ADC1
+**            A/D interrupt priority                       : medium priority
 **          DMA                                            : Disabled
 **          A/D channel list                               : 2
 **            Channel 0                                    : 
@@ -53,7 +55,7 @@
 **          Single conversion time - Differential          : 20.083 us
 **          Additional conversion time - Single-ended      : 9.615 us
 **          Additional conversion time - Differential      : 13.076 us
-**          Result type                                    : signed 32 bits, left justified
+**          Result type                                    : signed 16 bits, right justified
 **          Trigger                                        : Disabled
 **          Voltage reference                              : 
 **            High voltage reference                       : 
@@ -64,7 +66,7 @@
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : yes
 **            Event mask                                   : 
-**              OnMeasurementComplete                      : Disabled
+**              OnMeasurementComplete                      : Enabled
 **              OnError                                    : Disabled
 **          CPU clock/configuration selection              : 
 **            Clock configuration 0                        : This component enabled
@@ -163,6 +165,7 @@ extern "C" {
 #define AD1_SelectSampleGroup_METHOD_ENABLED /*!< SelectSampleGroup method of the component AD1 is enabled (generated) */
 
 /* Events configuration constants - generated for all enabled component's events */
+#define AD1_OnMeasurementComplete_EVENT_ENABLED /*!< OnMeasurementComplete event of the component AD1 is enabled (generated) */
 
 
 /* Component specific public constants */
@@ -206,7 +209,7 @@ extern "C" {
 #define AD1_MAX_HW_SAMPLE_COUNT         1U
 
 /* This constant informs about the actual width of results. */
-#define AD1_RESULT_WIDTH                32U
+#define AD1_RESULT_WIDTH                16U
 
 /* This constant informs about the native size of result in bytes */
 #define AD1_RESULT_WIDTH_BYTES          2U
@@ -216,7 +219,7 @@ extern "C" {
 
 /* Measurement result data type. Definition of the type depends
    on "Result type" property value. */
-typedef int32_t AD1_TResultData;
+typedef int16_t AD1_TResultData;
 
 
 /*
@@ -414,6 +417,18 @@ LDD_TError AD1_SelectSampleGroup(LDD_TDeviceData *DeviceDataPtr, uint8_t GroupIn
 */
 /* ===================================================================*/
 LDD_TError AD1_GetMeasuredValues(LDD_TDeviceData *DeviceDataPtr, LDD_TData *BufferPtr);
+
+/*
+** ===================================================================
+**     Method      :  AD1_MeasurementCompleteInterrupt (component ADC_LDD)
+**
+**     Description :
+**         Measurement complete interrupt handler
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+/* {Default RTOS Adapter} ISR function prototype */
+PE_ISR(AD1_MeasurementCompleteInterrupt);
 
 /* END AD1. */
 

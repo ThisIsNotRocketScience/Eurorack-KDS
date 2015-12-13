@@ -94,6 +94,33 @@ void AD2_OnCalibrationEnd(void)
   /* Write your code here ... */
 }
 
+/*
+** ===================================================================
+**     Event       :  AD1_OnMeasurementComplete (module Events)
+**
+**     Component   :  AD1 [ADC_LDD]
+*/
+/*!
+**     @brief
+**         Called after measurement is done, [Interrupt service/event]
+**         is enabled, OnMeasurementComplete event is enabled and ADC
+**         device is enabled. See [SetEventMask()] method or [Event
+**         mask] property group to enable this event and [Enable]
+**         method or [Enabled in init. code] property to enable ADC
+**         device. If DMA is enabled , this event is called after the
+**         configured number of measurements and DMA transfer is done.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
+{
+	extern int32_t cv_adc_current;
+	cv_adc_current = ADC_PDD_GetResultValueRaw(ADC1_BASE_PTR, 0U);
+}
+
 /* END Events */
 
 #ifdef __cplusplus
