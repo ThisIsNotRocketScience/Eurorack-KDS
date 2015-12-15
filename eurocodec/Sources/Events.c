@@ -118,7 +118,7 @@ void AD2_OnCalibrationEnd(void)
 void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
 {
 	extern int32_t cv_adc_current;
-	cv_adc_current = ADC_PDD_GetResultValueRaw(ADC1_BASE_PTR, 0U);
+	cv_adc_current = (int16_t)ADC_PDD_GetResultValueRaw(ADC1_BASE_PTR, 0U);
 }
 
 /* END Events */

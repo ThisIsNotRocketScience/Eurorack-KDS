@@ -1,3 +1,4 @@
+extern "C" {
 #include "ak4558.h"
 
 #include "Cpu.h"
@@ -21,8 +22,8 @@ void ak4558_init()
 			6, 0b00011001,
 			7, 0b00001100,
 			3, 0b00111110,
-			4, 0b00010100, // 192khz
-			5, 0b01110010, // 192khz
+			//4, 0b00010100, // 192khz
+			//5, 0b01110010, // 192khz
 			4, 0b00010010, //96khz
 			5, 0b01011010, //96khz
 			8, 255,
@@ -67,3 +68,5 @@ PE_ISR(I2S0_RX)
 		I2S_PDD_ClearRxInterruptFlags(I2S0_BASE_PTR, I2S_PDD_ALL_INT_FLAG);
 	}
 }
+
+}; // extern "C"
