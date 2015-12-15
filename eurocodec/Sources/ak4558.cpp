@@ -7,9 +7,11 @@ extern "C" {
 #include "I2C1.h"
 #include "TESTLED.h"
 #include "PDD_Includes.h"
+};
 
-#include "dsp_main.h"
+#include "dsp_main.hpp"
 
+extern "C" {
 void ak4558_init()
 {
 	CODEC_PDN_SetVal(CODEC_PDN_DeviceData);

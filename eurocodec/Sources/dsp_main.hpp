@@ -1,12 +1,14 @@
 #pragma once
 
+#include <dsplib/zdfsvf.hpp>
 #include <stdint.h>
 
+extern "C" {
 #include "cv_adc.h"
 #include "dsplib/cvsmooth.h"
 //#include "dsplib/dpw_osc.h"
 //#include "dsplib/cvsmooth.h"
-#include "dsplib/zdfsvf.h"
+};
 
 static inline void dsp_work(int32_t *outl, int32_t *outr, int32_t inl, int32_t inr)
 {
@@ -23,9 +25,8 @@ static inline void dsp_work(int32_t *outl, int32_t *outr, int32_t inl, int32_t i
 	if (pitch > 0x7fff) pitch = 0x7fff;
 	else if (pitch < 0) pitch = 0;
 
-	//svf_stereo(outl, outr, inl, inr, pitch, resonance_knob, gain_knob);
-	svf_stereo_templ(outl, outr, inl, inr, pitch, resonance_knob, gain_knob);
+	svf_stereo(outl, outr, inl, inr, pitch, resonance_knob, gain_knob);
 
-	//*outl = svf(inl, pitch, adc_value(1));//dpw_sawtooth(pitch, &state1);
-	//*outr = inr;//dpw_pulse(pitch, pulsewidth, &state2);
+	//*outl = dpw_sawtooth(pitch, &state1);
+	//*outr = dpw_pulse(pitch, pulsewidth, &state2);
 }

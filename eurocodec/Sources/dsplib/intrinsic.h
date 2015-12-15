@@ -18,6 +18,23 @@
   __RES; \
  })
 
+// core_cm4_simd.h has a bug in it: qadd/qsub are signed!
+__attribute__( ( always_inline ) ) static __INLINE int32_t __SQADD(int32_t op1, int32_t op2)
+{
+  uint32_t result;
+
+  __ASM volatile ("qadd %0, %1, %2" : "=r" (result) : "r" (op1), "r" (op2) );
+  return(result);
+}
+
+__attribute__( ( always_inline ) ) static __INLINE int32_t __SQSUB(int32_t op1, int32_t op2)
+{
+  uint32_t result;
+
+  __ASM volatile ("qsub %0, %1, %2" : "=r" (result) : "r" (op1), "r" (op2) );
+  return(result);
+}
+
 __attribute__( ( always_inline ) ) static __INLINE uint32_t __QDADD(uint32_t op1, uint32_t op2)
 {
   uint32_t result;

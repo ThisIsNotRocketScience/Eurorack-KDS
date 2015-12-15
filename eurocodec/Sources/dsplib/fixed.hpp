@@ -1,5 +1,7 @@
 #pragma once
 
+#include "intrinsic.h"
+
 template <typename base_t, int intshift>
 struct fixed_t;
 
@@ -31,6 +33,12 @@ struct fixed_t<int32_t, intshift>
 		return intshift;
 	}
 
+	template <int otherintshift>
+	operator fixed_t<int32_t, otherintshift> () const
+	{
+		return fixed_t<int32_t, otherintshift> (_value << (intshift - otherintshift));
+	}
+
 	int32_t _value;
 };
 
@@ -48,11 +56,11 @@ operator+ (const fixed_t<int32_t, leftintshift>& left,
 {
 	if (leftintshift <= rightintshift) {
 		return fixed_t<int32_t, leftintshift> (
-			__QADD(left.get(), (right.get() << (rightintshift - leftintshift))));
+			__SQADD(left.get(), (right.get() << (rightintshift - leftintshift))));
 	}
 	else {
 		return fixed_t<int32_t, leftintshift> (
-			__QADD(left.get(), (right.get() >> (leftintshift - rightintshift))));
+			__SQADD(left.get(), (right.get() >> (leftintshift - rightintshift))));
 	}
 }
 
@@ -63,11 +71,11 @@ operator- (const fixed_t<int32_t, leftintshift>& left,
 {
 	if (leftintshift <= rightintshift) {
 		return fixed_t<int32_t, leftintshift> (
-			__QSUB(left.get(), (right.get() << (rightintshift - leftintshift))));
+			__SQSUB(left.get(), (right.get() << (rightintshift - leftintshift))));
 	}
 	else {
 		return fixed_t<int32_t, leftintshift> (
-			__QSUB(left.get(), (right.get() >> (leftintshift - rightintshift))));
+			__SQSUB(left.get(), (right.get() >> (leftintshift - rightintshift))));
 	}
 }
 
@@ -108,10 +116,10 @@ scaleshift (const fixed_t<int32_t, intshift>& value,
 			const int& valueshiftleft)
 {
 	if (valueshiftleft - shiftleft >= 0) {
-		return fixed_t<int32_t, intshift - shiftleft> (value.get() << (valueshiftleft - shiftleft));
+		return fixed_t<int32_t, intshift - shiftleft> (value.get() << (valueshiftleft + shiftleft));
 	}
 	else {
-		return fixed_t<int32_t, intshift - shiftleft> (value.get() << (shiftleft - valueshiftleft));
+		return fixed_t<int32_t, intshift - shiftleft> (value.get() << (shiftleft + valueshiftleft));
 	}
 }
 
