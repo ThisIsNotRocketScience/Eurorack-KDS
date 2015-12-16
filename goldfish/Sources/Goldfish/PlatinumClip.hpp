@@ -307,12 +307,14 @@ public:
 	void Recalc()
 	{
 		if (fuzz) {
-			_gain = int(256.0f * powf(10.0f, (push * (1.0f / 128.0f) * 8.5f + 9.5f) / 20.0f));
+			float gain = powf(10.0f, (push * (1.0f / 128.0f) * 8.5f + 9.5f) / 20.0f);
+			_gain = int(96.0f * gain);
+			_postgain = int(-1024.0f * 0.28f * powf(gain, -1.0f));
 		}
 		else {
-			double gain = powf(10.0f, (push * push * (1.0f / 16384.0f) * 32.0f + 2.0f) / 20.0f);
+			float gain = powf(10.0f, (push * push * (1.0f / 16384.0f) * 32.0f + 2.0f) / 20.0f);
 			_gain = int(256.0f * gain);
-			_postgain = int(256.0f * 0.8f * powf(gain, -0.5f));
+			_postgain = int(256.0f * 0.8f * powf(gain, -0.75f));
 		}
 	}
 
@@ -397,11 +399,20 @@ public:
 
 		if (fuzz) 
 		{
-			int32_t* r = fuzzdistort.process(samplebuf, n);
-			for (i = 0; i < n; i++) {
-				samplebuf[i] = r[i] >> 2;
+			for (i = 0; i < n; i++)
+			{
+				if (samplebuf[i] < -(1 << 23)) {
+					samplebuf[i] = -(1 << 23);
+				}
+				if (samplebuf[i] > (1 << 23)-1) {
+					samplebuf[i] = (1 << 23)-1;
+				}
 			}
-
+			int32_t* r = fuzzdistort.process(samplebuf, n);
+			int postgain = _postgain;
+			for (i = 0; i < n; i++) {
+				samplebuf[i] = (int64_t(r[i]) * int64_t(postgain)) >> 6;
+			}
 		}
 		else {
 			// clean
@@ -409,7 +420,7 @@ public:
 
 			int32_t* r = cleandistort.process(samplebuf, n);
 			for (i = 0; i < n; i++) {
-				samplebuf[i] = (r[i] * postgain) >> 8;
+				samplebuf[i] = (int64_t(r[i]) * postgain) >> 8;
 			}
 
 		}
@@ -419,6 +430,10 @@ public:
 			int32_t* r = eqB[k].process(samplebuf, n);
 			memcpy(samplebuf, r, n * sizeof(int));
 
+			for (i = 0; i < n; i++) {
+				if (samplebuf[i] > (1<<23)-1) samplebuf[i] = (1<<23)-1;
+				else if (samplebuf[i] < -(1<<23)) samplebuf[i] = -(1<<23);
+			}
 		}
 
 		if (!active) 
