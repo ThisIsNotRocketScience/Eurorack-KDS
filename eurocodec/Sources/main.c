@@ -43,6 +43,17 @@
 #include "AD2.h"
 #include "AdcLdd1.h"
 #include "TESTLED.h"
+#include "MODE2A.h"
+#include "MODE2B.h"
+#include "MODE1A.h"
+#include "MODE1B.h"
+#include "LEDS.h"
+#include "STCP1.h"
+#include "BitIoLdd3.h"
+#include "DS1.h"
+#include "BitIoLdd4.h"
+#include "SHCP1.h"
+#include "BitIoLdd5.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -89,6 +100,8 @@ int main(void)
 	  //WAIT1_Waitms(1);
 
 	  AD2_GetValue16(adcvalues);
+
+	  ak4558_loop();
   }
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/

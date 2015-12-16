@@ -7,7 +7,7 @@
 **     Version     : Component 01.033, Driver 01.03, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 11:19, # CodeGen: 8
+**     Date/Time   : 2015-12-16, 17:27, # CodeGen: 18
 **     Abstract    :
 **         The HAL BitIO component provides a low level API for unified
 **         access to general purpose digital input/output pins across
@@ -17,7 +17,7 @@
 **         portable to various microprocessors.
 **     Settings    :
 **          Component name                                 : TESTLED
-**          Pin for I/O                                    : PTB16/SPI1_SOUT/UART0_RX/FTM_CLKIN0/FBa_AD17/EWM_IN
+**          Pin for I/O                                    : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **          Direction                                      : Output
 **          Initialization                                 : 
 **            Init. direction                              : Output
@@ -126,22 +126,22 @@ LDD_TDeviceData* TESTLED_Init(LDD_TUserData *UserDataPtr)
   DeviceDataPrv = &DeviceDataPrv__DEFAULT_RTOS_ALLOC;
   DeviceDataPrv->UserDataPtr = UserDataPtr; /* Store the RTOS device structure */
   /* Enable device clock gate */
-  /* SIM_SCGC5: PORTB=1 */
-  SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+  /* SIM_SCGC5: PORTD=1 */
+  SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
   /* Configure pin as output */
-  /* GPIOB_PDDR: PDD|=0x00010000 */
-  GPIOB_PDDR |= GPIO_PDDR_PDD(0x00010000);
+  /* GPIOD_PDDR: PDD|=0x20 */
+  GPIOD_PDDR |= GPIO_PDDR_PDD(0x20);
   /* Set initialization value */
-  /* GPIOB_PDOR: PDO&=~0x00010000 */
-  GPIOB_PDOR &= (uint32_t)~(uint32_t)(GPIO_PDOR_PDO(0x00010000));
+  /* GPIOD_PDOR: PDO&=~0x20 */
+  GPIOD_PDOR &= (uint32_t)~(uint32_t)(GPIO_PDOR_PDO(0x20));
   /* Initialization of pin routing */
-  /* PORTB_PCR16: ISF=0,MUX=1 */
-  PORTB_PCR16 = (uint32_t)((PORTB_PCR16 & (uint32_t)~(uint32_t)(
-                 PORT_PCR_ISF_MASK |
-                 PORT_PCR_MUX(0x06)
-                )) | (uint32_t)(
-                 PORT_PCR_MUX(0x01)
-                ));
+  /* PORTD_PCR5: ISF=0,MUX=1 */
+  PORTD_PCR5 = (uint32_t)((PORTD_PCR5 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK |
+                PORT_PCR_MUX(0x06)
+               )) | (uint32_t)(
+                PORT_PCR_MUX(0x01)
+               ));
   /* Registration of the device structure */
   PE_LDD_RegisterDeviceStructure(PE_LDD_COMPONENT_TESTLED_ID,DeviceDataPrv);
   return ((LDD_TDeviceData *)DeviceDataPrv);

@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-12, 19:45, # CodeGen: 10
+**     Date/Time   : 2015-12-16, 17:48, # CodeGen: 21
 **     Abstract    :
 **
 **     Settings    :
@@ -96,8 +96,10 @@ void Common_Init(void)
      Optimizations\Utilize after reset values property or enabled processor 
      component Common settings\Utilize after reset values property) */
   /* Enable clock gate of peripherals initialized in Common_Init() */
-  /* SIM_SCGC5: PORTD=1,PORTC=1 */
-  SIM_SCGC5 |= (SIM_SCGC5_PORTD_MASK | SIM_SCGC5_PORTC_MASK);
+  /* SIM_SCGC5: PORTD=1,PORTC=1,PORTB=1 */
+  SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK |
+               SIM_SCGC5_PORTC_MASK |
+               SIM_SCGC5_PORTB_MASK;
 
   /* SIM_SCGC4: VREF=1 */
   SIM_SCGC4 |= SIM_SCGC4_VREF_MASK;
@@ -109,6 +111,42 @@ void Common_Init(void)
   NVICIP29 = NVIC_IP_PRI29(0x00);
   /* NVICISER0: SETENA|=0x30000000 */
   NVICISER0 |= NVIC_ISER_SETENA(0x30000000);
+  /* PORTB_PCR16: ISF=0,IRQC=0,LK=0,MUX=1,SRE=1 */
+  PORTB_PCR16 = (uint32_t)((PORTB_PCR16 & (uint32_t)~(uint32_t)(
+                 PORT_PCR_ISF_MASK |
+                 PORT_PCR_IRQC(0x0F) |
+                 PORT_PCR_LK_MASK |
+                 PORT_PCR_MUX(0x06)
+                )) | (uint32_t)(
+                 PORT_PCR_MUX(0x01) |
+                 PORT_PCR_SRE_MASK
+                ));
+  /* PORTB_PCR17: ISF=0,IRQC=0,LK=0,MUX=1,SRE=1 */
+  PORTB_PCR17 = (uint32_t)((PORTB_PCR17 & (uint32_t)~(uint32_t)(
+                 PORT_PCR_ISF_MASK |
+                 PORT_PCR_IRQC(0x0F) |
+                 PORT_PCR_LK_MASK |
+                 PORT_PCR_MUX(0x06)
+                )) | (uint32_t)(
+                 PORT_PCR_MUX(0x01) |
+                 PORT_PCR_SRE_MASK
+                ));
+  /* PORTB_PCR3: ISF=0,IRQC=0,LK=0,SRE=1 */
+  PORTB_PCR3 = (uint32_t)((PORTB_PCR3 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK |
+                PORT_PCR_IRQC(0x0F) |
+                PORT_PCR_LK_MASK
+               )) | (uint32_t)(
+                PORT_PCR_SRE_MASK
+               ));
+  /* PORTC_PCR0: ISF=0,IRQC=0,LK=0,SRE=1 */
+  PORTC_PCR0 = (uint32_t)((PORTC_PCR0 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK |
+                PORT_PCR_IRQC(0x0F) |
+                PORT_PCR_LK_MASK
+               )) | (uint32_t)(
+                PORT_PCR_SRE_MASK
+               ));
   /* PORTC_PCR1: ISF=0,MUX=6 */
   PORTC_PCR1 = (uint32_t)((PORTC_PCR1 & (uint32_t)~(uint32_t)(
                 PORT_PCR_ISF_MASK |
@@ -160,10 +198,11 @@ void Common_Init(void)
                ));
 
   /* Disable clock gate of peripherals initialized in Common_Init() */
-  /* SIM_SCGC5: PORTD=0,PORTC=0 */
+  /* SIM_SCGC5: PORTD=0,PORTC=0,PORTB=0 */
   SIM_SCGC5 &= (uint32_t)~(uint32_t)(
                 SIM_SCGC5_PORTD_MASK |
-                SIM_SCGC5_PORTC_MASK
+                SIM_SCGC5_PORTC_MASK |
+                SIM_SCGC5_PORTB_MASK
                );
 }
 
@@ -202,6 +241,22 @@ void Components_Init(void)
   AD2_Init();
   /* ### BitIO_LDD "TESTLED" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)TESTLED_Init(NULL);
+  /* ### BitIO_LDD "MODE2A" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)MODE2A_Init(NULL);
+  /* ### BitIO_LDD "MODE2B" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)MODE2B_Init(NULL);
+  /* ### BitIO_LDD "MODE1A" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)MODE1A_Init(NULL);
+  /* ### BitIO_LDD "MODE1B" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)MODE1B_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd3" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd3_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd4" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd4_Init(NULL);
+  /* ### BitIO_LDD "BitIoLdd5" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BitIoLdd5_Init(NULL);
+  /* ### 74HC595 "LEDS" init code ... */
+  LEDS_Init();
 }
 #endif /* CPU_COMPONENTS_INIT */
 

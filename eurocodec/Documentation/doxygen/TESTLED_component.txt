@@ -21,18 +21,18 @@ by the component.
 <tr><td>0x40048038</td><td>SIM_SCGC5</td>
 <td class="regNotResetVal">0x00041D82</td>
  <td>SIM_SCGC5 register, peripheral TESTLED.</td></tr>
-<tr><td>0x400FF054</td><td>GPIOB_PDDR</td>
-<td class="regNotResetVal">0x00090000</td>
- <td>GPIOB_PDDR register, peripheral TESTLED.</td></tr>
-<tr><td>0x400FF040</td><td>GPIOB_PDOR</td>
-<td class="regResetVal">0x00000000</td>
- <td>GPIOB_PDOR register, peripheral TESTLED.</td></tr>
-<tr><td>0x4004A04C</td><td>PORTB_PCR19</td>
+<tr><td>0x400FF0D4</td><td>GPIOD_PDDR</td>
+<td class="regNotResetVal">0x00000020</td>
+ <td>GPIOD_PDDR register, peripheral TESTLED.</td></tr>
+<tr><td>0x400FF0C0</td><td>GPIOD_PDOR</td>
+<td class="regNotResetVal">0x00000001</td>
+ <td>GPIOD_PDOR register, peripheral TESTLED.</td></tr>
+<tr><td>0x4004C000</td><td>PORTD_PCR0</td>
 <td class="regNotResetVal">0x00000100</td>
- <td>PORTB_PCR19 register, peripheral TESTLED.</td></tr>
-<tr><td>0x4004A040</td><td>PORTB_PCR16</td>
+ <td>PORTD_PCR0 register, peripheral TESTLED.</td></tr>
+<tr><td>0x4004C014</td><td>PORTD_PCR5</td>
 <td class="regNotResetVal">0x00000100</td>
- <td>PORTB_PCR16 register, peripheral TESTLED.</td></tr>
+ <td>PORTD_PCR5 register, peripheral TESTLED.</td></tr>
 </table>
 Color Denotes Reset Value
 <br/>
@@ -97,7 +97,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>9</td><td>PORTA</td><td>0x00</td><td>Port A Clock Gate Control</td>
 <tr><td>0</td><td>LPTMR</td><td>0x00</td><td>Low Power Timer Access Control</td>
 </tr></table>
-<div class="reghdr1">GPIOB_PDDR</div>
+<div class="reghdr1">GPIOD_PDDR</div>
 <div class="regdiag">
 <table class="regtbl">
 <tr class="trd1r">
@@ -133,13 +133,13 @@ registers of the peripheral(s) configured by the component.
 </table>
         
 </div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x400FF054</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00090000</td></tr>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x400FF0D4</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000020</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 31</td><td>PDD</td><td>0x00</td><td>Port Data Direction</td>
 </tr></table>
-<div class="reghdr1">GPIOB_PDOR</div>
+<div class="reghdr1">GPIOD_PDOR</div>
 <div class="regdiag">
 <table class="regtbl">
 <tr class="trd1r">
@@ -175,13 +175,13 @@ registers of the peripheral(s) configured by the component.
 </table>
         
 </div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x400FF040</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000000</td></tr>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x400FF0C0</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000001</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 31</td><td>PDO</td><td>0x00</td><td>Port Data Output</td>
 </tr></table>
-<div class="reghdr1">PORTB_PCR19</div>
+<div class="reghdr1">PORTD_PCR0</div>
 <div class="regdiag">
 <table class="regtbl">
 <tr class="trd1r">
@@ -225,7 +225,7 @@ registers of the peripheral(s) configured by the component.
 </table>
         
 </div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004A04C</td></tr>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004C000</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000100</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
@@ -240,7 +240,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>1</td><td>PE</td><td>0x00</td><td>Pull Enable</td>
 <tr><td>0</td><td>PS</td><td>0x00</td><td>Pull Select</td>
 </tr></table>
-<div class="reghdr1">PORTB_PCR16</div>
+<div class="reghdr1">PORTD_PCR5</div>
 <div class="regdiag">
 <table class="regtbl">
 <tr class="trd1r">
@@ -284,7 +284,7 @@ registers of the peripheral(s) configured by the component.
 </table>
         
 </div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004A040</td></tr>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004C014</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000100</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
@@ -304,7 +304,7 @@ registers of the peripheral(s) configured by the component.
 \page TESTLED_settings Component Settings
 \code
 **          Component name                                 : TESTLED
-**          Pin for I/O                                    : PTB16/SPI1_SOUT/UART0_RX/FTM_CLKIN0/FBa_AD17/EWM_IN
+**          Pin for I/O                                    : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **          Direction                                      : Output
 **          Initialization                                 : 
 **            Init. direction                              : Output

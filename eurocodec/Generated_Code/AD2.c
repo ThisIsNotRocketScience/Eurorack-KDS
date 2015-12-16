@@ -7,7 +7,7 @@
 **     Version     : Component 01.697, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 15:33, # CodeGen: 19
+**     Date/Time   : 2015-12-16, 17:25, # CodeGen: 16
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -19,7 +19,7 @@
 **          Interrupt service/event                        : Enabled
 **            A/D interrupt                                : INT_ADC0
 **            A/D interrupt priority                       : medium priority
-**          A/D channels                                   : 6
+**          A/D channels                                   : 3
 **            Channel0                                     : 
 **              A/D channel (pin)                          : ADC0_SE8/ADC1_SE8/PTB0/LLWU_P5/I2C0_SCL/FTM1_CH0/FTM1_QD_PHA
 **              Mode select                                : Single Ended
@@ -28,15 +28,6 @@
 **              Mode select                                : Single Ended
 **            Channel2                                     : 
 **              A/D channel (pin)                          : ADC0_SE12/PTB2/I2C0_SCL/UART0_RTS_b/FTM0_FLT3
-**              Mode select                                : Single Ended
-**            Channel3                                     : 
-**              A/D channel (pin)                          : ADC0_SE13/PTB3/I2C0_SDA/UART0_CTS_b/FTM0_FLT0
-**              Mode select                                : Single Ended
-**            Channel4                                     : 
-**              A/D channel (pin)                          : ADC0_SE14/PTC0/SPI0_PCS4/PDB0_EXTRG/USB_SOF_OUT/FBa_AD14
-**              Mode select                                : Single Ended
-**            Channel5                                     : 
-**              A/D channel (pin)                          : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **              Mode select                                : Single Ended
 **          A/D resolution                                 : 12 bits
 **          Conversion time                                : 10 µs
@@ -141,9 +132,6 @@ static void ClrSumV(void)
   AD2_OutV[0] = 0U;                    /* Set variable for storing measured values to 0 */
   AD2_OutV[1] = 0U;                    /* Set variable for storing measured values to 0 */
   AD2_OutV[2] = 0U;                    /* Set variable for storing measured values to 0 */
-  AD2_OutV[3] = 0U;                    /* Set variable for storing measured values to 0 */
-  AD2_OutV[4] = 0U;                    /* Set variable for storing measured values to 0 */
-  AD2_OutV[5] = 0U;                    /* Set variable for storing measured values to 0 */
 }
 
 /*
@@ -251,9 +239,6 @@ byte AD2_GetValue16(word *Values)
   Values[0] = (word)((AD2_OutV[0]) << 4U); /* Save measured values to the output buffer */
   Values[1] = (word)((AD2_OutV[1]) << 4U); /* Save measured values to the output buffer */
   Values[2] = (word)((AD2_OutV[2]) << 4U); /* Save measured values to the output buffer */
-  Values[3] = (word)((AD2_OutV[3]) << 4U); /* Save measured values to the output buffer */
-  Values[4] = (word)((AD2_OutV[4]) << 4U); /* Save measured values to the output buffer */
-  Values[5] = (word)((AD2_OutV[5]) << 4U); /* Save measured values to the output buffer */
   return ERR_OK;                       /* OK */
 }
 
@@ -323,7 +308,7 @@ void AdcLdd1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
   }
   AdcLdd1_GetMeasuredValues(AdcLdd1_DeviceDataPtr, (LDD_TData *)&AD2_OutV[SumChan]);
   SumChan++;                           /* Increase counter of measured channels*/
-  if (SumChan == 6U) {                 /* Is number of measured channels equal to the number of channels used in the component? */
+  if (SumChan == 3U) {                 /* Is number of measured channels equal to the number of channels used in the component? */
     SumChan = 0U;                      /* If yes then set the counter of measured channels to 0 */
     OutFlg = TRUE;                     /* Measured values are available */
     AD2_OnEnd();                       /* If yes then invoke user event */

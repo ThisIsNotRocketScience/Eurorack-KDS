@@ -177,6 +177,63 @@ Module "TESTLED"   (component BitIO_LDD)
    - TESTLED_SetVal -Sets (to one) the output value. It is equivalent to the [PutVal(TRUE)]. This method is available only if 
                 the direction = _[output]_ or _[input/output]_.
 
+Module "PTB"       (component Init_GPIO_VAR0)
+   - PTB_Init -This method initializes registers of the GPIO module according to the Peripheral Initialization settings. Call 
+                this method in user code to initialize the module. By default, the method is called by PE automatically; see 
+                "Call Init method" property of the component for more details.
+
+Module "MODE2A"    (component BitIO_LDD)
+   - MODE2A_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.
+   - MODE2A_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read and 
+                returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
+
+Module "MODE2B"    (component BitIO_LDD)
+   - MODE2B_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.
+   - MODE2B_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read and 
+                returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
+
+Module "MODE1A"    (component BitIO_LDD)
+   - MODE1A_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.
+   - MODE1A_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read and 
+                returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
+
+Module "PTC"       (component Init_GPIO_VAR0)
+   - PTC_Init -This method initializes registers of the GPIO module according to the Peripheral Initialization settings. Call 
+                this method in user code to initialize the module. By default, the method is called by PE automatically; see 
+                "Call Init method" property of the component for more details.
+
+Module "MODE1B"    (component BitIO_LDD)
+   - MODE1B_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.
+   - MODE1B_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read and 
+                returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
+
+Module "LEDS"      (component 74HC595)
+   - LEDS_Disable -Disables the device
+   - LEDS_ShiftByte -Shift a byte to the shift register. The most significant bit will be on output pin 0. Use Latch() to show 
+                the data on the output pins.
+   - LEDS_Latch -Sends a latch pulse to move the bits from the internal memory to the output pins.
+   - LEDS_ReadByte -Returns the current value of the shift register. The current value of the shift register is cached in the 
+                driver.
+   - LEDS_WriteByte -Shifts the given byte and latches it.
+   - LEDS_Deinit -Deinitializes the driver
+   - LEDS_Init -Initializes the driver
+
 Module "Cpu"       (component MK22FN512LH12)
    - Cpu_EnableInt -Enables all maskable interrupts.
 

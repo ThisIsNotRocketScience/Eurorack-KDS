@@ -13,6 +13,10 @@ struct fixed_t<int32_t, intshift>
 	{
 	}
 
+	fixed_t()
+	{
+	}
+
 	/*fixed_t(const double& value)
 	: _value(round(value * (1ULL<<(31-intshift))))
 	{
@@ -85,7 +89,7 @@ operator* (const fixed_t<int32_t, leftintshift>& left,
 	   const fixed_t<int32_t, rightintshift>& right)
 {
 	return fixed_t<int32_t, leftintshift+rightintshift+1> (
-		(int32_t)(((int64_t)left.get() * (int64_t)right.get()) >> 32) );
+			smmul(left.get(), right.get()) );
 }
 
 template <int intshift>
@@ -137,4 +141,25 @@ operator>> (const fixed_t<int32_t, intshift>& left,
 	        const int32_t& right)
 {
 	return fixed_t<int32_t, intshift> (left.get() >> right);
+}
+
+template <int saturateshift, int intshift>
+fixed_t<int32_t, intshift>
+saturate(const fixed_t<int32_t, intshift>& value)
+{
+	static_assert(32-intshift+saturateshift <= 32, "saturation out of bounds");
+	static_assert(32-intshift+saturateshift > 0, "saturation out of bounds");
+	return __SSAT_NOSHIFT(value.get(), 32-intshift+saturateshift);
+}
+
+template <int accintshift, int leftintshift, int rightintshift>
+fixed_t<int32_t, accintshift>
+mac (const fixed_t<int32_t, accintshift>& acc,
+	 const fixed_t<int32_t, leftintshift>& left,
+	 const fixed_t<int32_t, rightintshift>& right)
+{
+	static_assert(leftintshift+rightintshift+1 == accintshift, "destination register shift does not match");
+	return fixed_t<int32_t, accintshift> (
+//			smlal32_hi(acc.get(), left.get(), right.get()) );
+			smmla(acc.get(), left.get(), right.get()) );
 }

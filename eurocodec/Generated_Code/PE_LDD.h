@@ -6,7 +6,7 @@
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 11:19, # CodeGen: 8
+**     Date/Time   : 2015-12-16, 17:48, # CodeGen: 21
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -68,6 +68,17 @@
 #include "AD2.h"
 #include "AdcLdd1.h"
 #include "TESTLED.h"
+#include "MODE2A.h"
+#include "MODE2B.h"
+#include "MODE1A.h"
+#include "MODE1B.h"
+#include "LEDS.h"
+#include "STCP1.h"
+#include "BitIoLdd3.h"
+#include "DS1.h"
+#include "BitIoLdd4.h"
+#include "SHCP1.h"
+#include "BitIoLdd5.h"
 
 
 /*

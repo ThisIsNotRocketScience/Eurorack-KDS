@@ -35,6 +35,15 @@
 - \subpage AD1
 - \subpage AdcLdd1
 - \subpage TESTLED
+- \subpage PTB
+- \subpage MODE2A
+- \subpage MODE2B
+- \subpage MODE1A
+- \subpage PTC
+- \subpage MODE1B
+- \subpage BitIoLdd3
+- \subpage BitIoLdd4
+- \subpage BitIoLdd5
 
 */
 
@@ -76,6 +85,15 @@
 - \subpage AD1
 - \subpage AdcLdd1
 - \subpage TESTLED
+- \subpage PTB
+- \subpage MODE2A
+- \subpage MODE2B
+- \subpage MODE1A
+- \subpage PTC
+- \subpage MODE1B
+- \subpage BitIoLdd3
+- \subpage BitIoLdd4
+- \subpage BitIoLdd5
 
 */
 

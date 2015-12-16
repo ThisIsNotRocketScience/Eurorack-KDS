@@ -7,7 +7,7 @@
 **     Version     : Component 01.183, Driver 01.08, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 12:04, # CodeGen: 22
+**     Date/Time   : 2015-12-16, 17:25, # CodeGen: 16
 **     Abstract    :
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -19,7 +19,7 @@
 **            A/D interrupt                                : INT_ADC0
 **            A/D interrupt priority                       : medium priority
 **          DMA                                            : Disabled
-**          A/D channel list                               : 6
+**          A/D channel list                               : 3
 **            Channel 0                                    : 
 **              Channel mode                               : Single Ended
 **                Input                                    : 
@@ -32,18 +32,6 @@
 **              Channel mode                               : Single Ended
 **                Input                                    : 
 **                  A/D channel (pin)                      : ADC0_SE12/PTB2/I2C0_SCL/UART0_RTS_b/FTM0_FLT3
-**            Channel 3                                    : 
-**              Channel mode                               : Single Ended
-**                Input                                    : 
-**                  A/D channel (pin)                      : ADC0_SE13/PTB3/I2C0_SDA/UART0_CTS_b/FTM0_FLT0
-**            Channel 4                                    : 
-**              Channel mode                               : Single Ended
-**                Input                                    : 
-**                  A/D channel (pin)                      : ADC0_SE14/PTC0/SPI0_PCS4/PDB0_EXTRG/USB_SOF_OUT/FBa_AD14
-**            Channel 5                                    : 
-**              Channel mode                               : Single Ended
-**                Input                                    : 
-**                  A/D channel (pin)                      : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **          Static sample groups                           : Disabled
 **          Max. samples                                   : 8
 **          A/D resolution                                 : 12 bits
@@ -143,7 +131,7 @@
 extern "C" { 
 #endif
 
-#define AdcLdd1_AVAILABLE_CHANNEL0_31_PIN_MASK (LDD_ADC_CHANNEL_0_PIN | LDD_ADC_CHANNEL_1_PIN | LDD_ADC_CHANNEL_2_PIN | LDD_ADC_CHANNEL_3_PIN | LDD_ADC_CHANNEL_4_PIN | LDD_ADC_CHANNEL_5_PIN) /*!< Mask of all allocated channel pins from 0 to 31 */
+#define AdcLdd1_AVAILABLE_CHANNEL0_31_PIN_MASK (LDD_ADC_CHANNEL_0_PIN | LDD_ADC_CHANNEL_1_PIN | LDD_ADC_CHANNEL_2_PIN) /*!< Mask of all allocated channel pins from 0 to 31 */
 #define AdcLdd1_AVAILABLE_CHANNEL32_63_PIN_MASK 0x00U /*!< Mask of all allocated channel pins from 32 to 63 */
 #define AdcLdd1_AVAILABLE_TRIGGER_PIN_MASK 0x00U /*!< Mask of all allocated trigger pins */
 #define AdcLdd1_AVAILABLE_VOLT_REF_PIN_MASK (LDD_ADC_LOW_VOLT_REF_PIN | LDD_ADC_HIGH_VOLT_REF_PIN) /*!< Mask of all allocated voltage reference pins */
@@ -154,13 +142,7 @@ static const uint8_t ChannelToPin[] = { /* Channel to pin conversion table */
   /* ADC0_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=0,ADCH=9 */
   0x49U,                               /* Status and control register value */
   /* ADC0_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=0,ADCH=0x0C */
-  0x4CU,                               /* Status and control register value */
-  /* ADC0_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=0,ADCH=0x0D */
-  0x4DU,                               /* Status and control register value */
-  /* ADC0_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=0,ADCH=0x0E */
-  0x4EU,                               /* Status and control register value */
-  /* ADC0_SC1A: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,COCO=0,AIEN=1,DIFF=0,ADCH=6 */
-  0x46U                                /* Status and control register value */
+  0x4CU                                /* Status and control register value */
 };
 
 typedef struct {
@@ -220,10 +202,8 @@ LDD_TDeviceData* AdcLdd1_Init(LDD_TUserData *UserDataPtr)
   /* NVICISER1: SETENA|=0x80 */
   NVICISER1 |= NVIC_ISER_SETENA(0x80);
   /* Enable device clock gate */
-  /* SIM_SCGC5: PORTD=1,PORTC=1,PORTB=1 */
-  SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK |
-               SIM_SCGC5_PORTC_MASK |
-               SIM_SCGC5_PORTB_MASK;
+  /* SIM_SCGC5: PORTB=1 */
+  SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
   /* SIM_SCGC6: ADC0=1 */
   SIM_SCGC6 |= SIM_SCGC6_ADC0_MASK;
   /* Initialization of pin routing */
@@ -233,12 +213,6 @@ LDD_TDeviceData* AdcLdd1_Init(LDD_TUserData *UserDataPtr)
   PORTB_PCR1 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
   /* PORTB_PCR2: ISF=0,MUX=0 */
   PORTB_PCR2 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  /* PORTB_PCR3: ISF=0,MUX=0 */
-  PORTB_PCR3 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  /* PORTC_PCR0: ISF=0,MUX=0 */
-  PORTC_PCR0 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  /* PORTD_PCR5: ISF=0,MUX=0 */
-  PORTD_PCR5 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
   /* ADC0_SC2: REFSEL=0 */
   ADC0_SC2 &= (uint32_t)~(uint32_t)(ADC_SC2_REFSEL(0x03));
   /* ADC0_CFG1: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,ADLPC=0,ADIV=1,ADLSMP=1,MODE=1,ADICLK=3 */
@@ -247,12 +221,12 @@ LDD_TDeviceData* AdcLdd1_Init(LDD_TUserData *UserDataPtr)
               ADC_CFG1_MODE(0x01) |
               ADC_CFG1_ADICLK(0x03);
 
-  /* ADC0_CFG2: MUXSEL=1,ADACKEN=0,ADHSC=0,ADLSTS=3 */
+  /* ADC0_CFG2: MUXSEL=0,ADACKEN=0,ADHSC=0,ADLSTS=3 */
   ADC0_CFG2 = (uint32_t)((ADC0_CFG2 & (uint32_t)~(uint32_t)(
+               ADC_CFG2_MUXSEL_MASK |
                ADC_CFG2_ADACKEN_MASK |
                ADC_CFG2_ADHSC_MASK
               )) | (uint32_t)(
-               ADC_CFG2_MUXSEL_MASK |
                ADC_CFG2_ADLSTS(0x03)
               ));
   /* ADC0_SC2: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,ADACT=0,ADTRG=0,ACFE=0,ACFGT=0,ACREN=0,DMAEN=0,REFSEL=0 */

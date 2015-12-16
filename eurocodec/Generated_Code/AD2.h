@@ -7,7 +7,7 @@
 **     Version     : Component 01.697, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 15:33, # CodeGen: 19
+**     Date/Time   : 2015-12-16, 17:25, # CodeGen: 16
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -19,7 +19,7 @@
 **          Interrupt service/event                        : Enabled
 **            A/D interrupt                                : INT_ADC0
 **            A/D interrupt priority                       : medium priority
-**          A/D channels                                   : 6
+**          A/D channels                                   : 3
 **            Channel0                                     : 
 **              A/D channel (pin)                          : ADC0_SE8/ADC1_SE8/PTB0/LLWU_P5/I2C0_SCL/FTM1_CH0/FTM1_QD_PHA
 **              Mode select                                : Single Ended
@@ -28,15 +28,6 @@
 **              Mode select                                : Single Ended
 **            Channel2                                     : 
 **              A/D channel (pin)                          : ADC0_SE12/PTB2/I2C0_SCL/UART0_RTS_b/FTM0_FLT3
-**              Mode select                                : Single Ended
-**            Channel3                                     : 
-**              A/D channel (pin)                          : ADC0_SE13/PTB3/I2C0_SDA/UART0_CTS_b/FTM0_FLT0
-**              Mode select                                : Single Ended
-**            Channel4                                     : 
-**              A/D channel (pin)                          : ADC0_SE14/PTC0/SPI0_PCS4/PDB0_EXTRG/USB_SOF_OUT/FBa_AD14
-**              Mode select                                : Single Ended
-**            Channel5                                     : 
-**              A/D channel (pin)                          : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **              Mode select                                : Single Ended
 **          A/D resolution                                 : 12 bits
 **          Conversion time                                : 10 µs
@@ -126,7 +117,7 @@ extern "C" {
 
 
 
-#define AD2_SAMPLE_GROUP_SIZE 6U
+#define AD2_SAMPLE_GROUP_SIZE 3U
 void AD2_HWEnDi(void);
 /*
 ** ===================================================================

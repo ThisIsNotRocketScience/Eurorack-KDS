@@ -7,7 +7,7 @@
 **     Version     : Component 01.033, Driver 01.03, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 11:19, # CodeGen: 8
+**     Date/Time   : 2015-12-16, 17:27, # CodeGen: 18
 **     Abstract    :
 **         The HAL BitIO component provides a low level API for unified
 **         access to general purpose digital input/output pins across
@@ -17,7 +17,7 @@
 **         portable to various microprocessors.
 **     Settings    :
 **          Component name                                 : TESTLED
-**          Pin for I/O                                    : PTB16/SPI1_SOUT/UART0_RX/FTM_CLKIN0/FBa_AD17/EWM_IN
+**          Pin for I/O                                    : ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FBa_AD1/EWM_OUT_b/SPI1_SCK
 **          Direction                                      : Output
 **          Initialization                                 : 
 **            Init. direction                              : Output
@@ -101,7 +101,7 @@ extern "C" {
 
 
 /*! Peripheral base address of a device allocated by the component. This constant can be used directly in PDD macros. */
-#define TESTLED_PRPH_BASE_ADDRESS  0x400FF040U
+#define TESTLED_PRPH_BASE_ADDRESS  0x400FF0C0U
   
 /*! Device data structure pointer used when auto initialization property is enabled. This constant can be passed as a first parameter to all component's methods. */
 #define TESTLED_DeviceData  ((LDD_TDeviceData *)PE_LDD_GetDeviceStructure(PE_LDD_COMPONENT_TESTLED_ID))
@@ -114,9 +114,9 @@ extern "C" {
 #define TESTLED_SetVal_METHOD_ENABLED  /*!< SetVal method of the component TESTLED is enabled (generated) */
 
 /* Definition of implementation constants */
-#define TESTLED_MODULE_BASE_ADDRESS PTB_BASE_PTR /*!< Name of macro used as the base address */
-#define TESTLED_PORTCONTROL_BASE_ADDRESS PORTB_BASE_PTR /*!< Name of macro used as the base address */
-#define TESTLED_PORT_MASK 0x00010000U  /*!< Mask of the allocated pin from the port */
+#define TESTLED_MODULE_BASE_ADDRESS PTD_BASE_PTR /*!< Name of macro used as the base address */
+#define TESTLED_PORTCONTROL_BASE_ADDRESS PORTD_BASE_PTR /*!< Name of macro used as the base address */
+#define TESTLED_PORT_MASK 0x20U        /*!< Mask of the allocated pin from the port */
 
 
 
