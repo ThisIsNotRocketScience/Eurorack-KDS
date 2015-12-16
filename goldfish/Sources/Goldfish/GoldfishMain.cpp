@@ -98,14 +98,25 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 	// 5 = tune
 
 	int drvtype = 0;
-	int32_t drive = adc_value(4)- 0x8192;
+	int32_t drive = adc_value(4) - 0x8000;
 	int32_t decay = (((int32_t)adc_value(3) * 127))>>16;
-	if (drive < 0)
-	{
-		drive = -drive;
+	if (!setfuzz && drive < -0x800) {
 		drvtype = 1;
 	}
-	drive = (drive *127)/0x8192;
+	else if (setfuzz && drive > 0x800) {
+		drvtype = 0;
+	}
+	else {
+		drvtype = setfuzz;
+	}
+	if (drvtype) {
+		drive = -drive;
+	}
+	if (drive < 0)
+	{
+		drive = 0;
+	}
+	drive = (drive *127)/0x8000;
 	drive = drive>>2;
 		drive = drive<<2;
 
