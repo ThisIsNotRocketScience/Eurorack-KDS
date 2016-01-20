@@ -50,6 +50,7 @@ static int32_t ak4558_inr = 0;
 static int32_t ak4558_outl = 0;
 static int32_t ak4558_outr = 0;
 
+__attribute__( ( section(".data") ) )
 PE_ISR(I2S0_TX)
 {
 	//TESTLED_PutVal(TESTLED_DeviceData, 1);
@@ -65,6 +66,7 @@ PE_ISR(I2S0_TX)
 	//TESTLED_PutVal(TESTLED_DeviceData, 0);
 }
 
+__attribute__( ( section(".data") ) )
 PE_ISR(I2S0_RX)
 {
 	if (I2S_PDD_GetRxInterruptFlags(I2S0_BASE_PTR) & I2S_RCSR_FRF_MASK) {
