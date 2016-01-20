@@ -43,7 +43,7 @@ __attribute__( ( always_inline ) ) static __INLINE int32_t __QDADD(int32_t op1, 
   return(result);
 }
 
-__attribute__( ( always_inline ) ) static __INLINE uint32_t __UDIV64_16(uint32_t a_lo, uint32_t a_hi, uint32_t b)
+__attribute__( ( always_inline ) ) static __INLINE uint32_t __UDIV64_24(uint32_t a_lo, uint32_t a_hi, uint32_t b)
 {
   uint32_t result;
 

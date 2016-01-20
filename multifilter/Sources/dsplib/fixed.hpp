@@ -158,8 +158,8 @@ mac (const fixed_t<int32_t, accintshift>& acc,
 	 const fixed_t<int32_t, leftintshift>& left,
 	 const fixed_t<int32_t, rightintshift>& right)
 {
-	static_assert(leftintshift+rightintshift+1 == accintshift, "destination register shift does not match");
 	return fixed_t<int32_t, accintshift> (
-//			smlal32_hi(acc.get(), left.get(), right.get()) );
-			smmla(acc.get(), left.get(), right.get()) );
+			smmla(acc.get(),
+					left.get(),
+					right.get() << ((leftintshift+rightintshift+1) - accintshift)) );
 }

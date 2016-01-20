@@ -18,6 +18,7 @@ extern "C" {
 
 static volatile int32_t mode1 = 0;
 static volatile int32_t mode2 = 0;
+static volatile int32_t clipflags = 0;
 
 static inline void dsp_work(int32_t *outl, int32_t *outr, int32_t inl, int32_t inr)
 {
@@ -35,6 +36,13 @@ static inline void dsp_work(int32_t *outl, int32_t *outr, int32_t inl, int32_t i
 	else if (pitch < 0) pitch = 0;
 
 	svf_stereo(outl, outr, inl, inr, pitch, resonance_knob, gain_knob, mode1, mode2);
+
+	if (-*outl <= -0x7FFFFFFF) {
+		clipflags |= 1;
+	}
+	if (-*outr <= -0x7FFFFFFF) {
+		clipflags |= 2;
+	}
 
 	//*outl = dpw_sawtooth(pitch, &state1);
 	//*outr = dpw_pulse(pitch, pulsewidth, &state2);
@@ -62,6 +70,7 @@ static inline void dsp_loop()
 		mode2 = 1;
 	}
 
-	LEDS_WriteByte((4 >> mode1) | (8 << mode2));
+	LEDS_WriteByte((4 >> mode1) | (8 << mode2) | (clipflags << 6));
+	clipflags = 0;
 }
 
