@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2016-02-19, 02:31, # CodeGen: 9
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -68,7 +68,7 @@
 **              Frame sync width [bits]                    : 32
 **              Frame size [words]                         : 2
 **              Shift direction                            : MSB first
-**              Data clocked in on                         : rising edge
+**              Data clocked in on                         : falling edge
 **              First bit shifted index                    : 31
 **              Word 0 width [bits]                        : 32
 **              Word N width [bits]                        : 32

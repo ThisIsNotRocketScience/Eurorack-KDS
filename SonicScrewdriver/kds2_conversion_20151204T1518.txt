@@ -1,0 +1,10 @@
+20151204T1518 KDS Upgrade Assistant Conversion Report
+Project name: SonicScrewdriver
+Project location: C:/Projects/Code/Kinetis2/SonicScrewdriver
+Conversion status: success.
+Toolchain settings, for configuration Debug: successfully converted.
+Newlib-nano, for configuration Debug: successfully converted.
+Toolchain settings, for configuration Release: successfully converted.
+Newlib-nano, for configuration Release: successfully converted.
+Add _exit(): /Sources/exit.c, was added.
+A backup of the original .cproject file has been created in .cproject_backup

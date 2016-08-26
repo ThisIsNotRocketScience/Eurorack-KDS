@@ -78,6 +78,7 @@ int n = 0;
 
 int setdrive = 0;
 int setfuzz = 0;
+int lastgate = 0;
 void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 {
 
@@ -125,7 +126,7 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 	int32_t Cut = (adc_value(0)*127) / 0x97a0;
 	int32_t Res = (adc_value(1)*127)/ 0xfff0;
 
-	if ((dsp_switch_gate || (GATE_GetVal(GATE_DeviceData)  == FALSE) || GatePressed == 1) && gate == 0)
+	if (((dsp_switch_gate && lastgate == 0)|| (GATE_GetVal(GATE_DeviceData)  == FALSE) || GatePressed == 1) && gate == 0)
 	{
 		gate = 1500 / 32;
 		GatePressed = 0;
@@ -134,6 +135,7 @@ void GoldfishProcess(int32_t *in, int32_t * out, int32_t frames)
 
 
 	}
+	lastgate = dsp_switch_gate;
 
 	for (int i =0 ;i<2;i++)
 	{

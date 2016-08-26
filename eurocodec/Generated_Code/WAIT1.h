@@ -7,7 +7,7 @@
 **     Version     : Component 01.067, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 11:41, # CodeGen: 0
+**     Date/Time   : 2016-02-19, 02:32, # CodeGen: 22
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -65,7 +65,6 @@ extern "C" {
 #endif
 
 
-#define WAIT1_INSTR_CLOCK_HZ       CPU_CORE_CLK_HZ /* for Kinetis, use core clock as base for instruction execution */
 #define WAIT1_NofCyclesMs(ms, hz)  ((ms)*((hz)/1000)) /* calculates the needed cycles based on bus clock frequency */
 #define WAIT1_NofCyclesUs(us, hz)  ((us)*(((hz)/1000)/1000)) /* calculates the needed cycles based on bus clock frequency */
 #define WAIT1_NofCyclesNs(ns, hz)  (((ns)*(((hz)/1000)/1000))/1000) /* calculates the needed cycles based on bus clock frequency */
@@ -129,11 +128,11 @@ void WAIT1_Waitms(uint16_t ms);
 
 /* we are having a static clock configuration: implement as macro/inlined version */
 #define WAIT1_Waitus(us)  \
-       (  ((WAIT1_NofCyclesUs((us),WAIT1_INSTR_CLOCK_HZ)==0)||(us)==0) ? \
+       (  ((WAIT1_NofCyclesUs((us),CPU_BUS_CLK_HZ)==0)||(us)==0) ? \
           (void)0 : \
           ( ((us)/1000)==0 ? (void)0 : WAIT1_Waitms((uint16_t)((us)/1000))) \
-          , (WAIT1_NofCyclesUs(((us)%1000), WAIT1_INSTR_CLOCK_HZ)==0) ? (void)0 : \
-            WAIT1_WAIT_C(WAIT1_NofCyclesUs(((us)%1000), WAIT1_INSTR_CLOCK_HZ)) \
+          , (WAIT1_NofCyclesUs(((us)%1000), CPU_BUS_CLK_HZ)==0) ? (void)0 : \
+            WAIT1_WAIT_C(WAIT1_NofCyclesUs(((us)%1000), CPU_BUS_CLK_HZ)) \
        )
 /*
 ** ===================================================================
@@ -150,12 +149,12 @@ void WAIT1_Waitms(uint16_t ms);
 
 /* we are having a static clock configuration: implement as macro/inlined version */
 #define WAIT1_Waitns(ns)  \
-       (  ((WAIT1_NofCyclesNs((ns), WAIT1_INSTR_CLOCK_HZ)==0)||(ns)==0) ? \
+       (  ((WAIT1_NofCyclesNs((ns), CPU_BUS_CLK_HZ)==0)||(ns)==0) ? \
           (void)0 : \
           WAIT1_Waitus((ns)/1000) \
-          , (WAIT1_NofCyclesNs((ns)%1000, WAIT1_INSTR_CLOCK_HZ)==0) ? \
+          , (WAIT1_NofCyclesNs((ns)%1000, CPU_BUS_CLK_HZ)==0) ? \
               (void)0 : \
-              WAIT1_WAIT_C(WAIT1_NofCyclesNs(((ns)%1000), WAIT1_INSTR_CLOCK_HZ)) \
+              WAIT1_WAIT_C(WAIT1_NofCyclesNs(((ns)%1000), CPU_BUS_CLK_HZ)) \
        )
 /*
 ** ===================================================================
