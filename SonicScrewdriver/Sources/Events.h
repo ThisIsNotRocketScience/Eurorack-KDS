@@ -40,6 +40,8 @@
 #include "DACSEL.h"
 #include "GATE.h"
 #include "EInt1.h"
+#include "SW1.h"
+#include "SW2.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"

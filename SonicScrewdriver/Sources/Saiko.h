@@ -1,5 +1,6 @@
 #pragma once
 
+#define SAIKO_MAXTICK 256
 struct Tick
 {
 	float vel;
@@ -9,7 +10,7 @@ struct Tick
 
 struct PatternTarget
 {
-	struct Tick Ticks[256];
+	struct Tick Ticks[SAIKO_MAXTICK];
 };
 
 

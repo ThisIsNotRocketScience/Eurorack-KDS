@@ -36,6 +36,8 @@
 #include "DACSEL.h"
 #include "GATE.h"
 #include "EInt1.h"
+#include "SW1.h"
+#include "SW2.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
@@ -66,36 +68,47 @@ unsigned char coms[4];
 
 struct PatternTarget Pattern;
 
-void WriteBoth(int A, int B)
+struct denoise_state_t
 {
-	while (!senddone){}
-	DACSEL_ClrVal(0);
-
-	unsigned int  command = 0x0000;
-	command |= shutdown1 ? 0x0000 : 0x1000;
-	command |= gain1 ? 0x0000 : 0x2000;
-	command |= (A & 0x0FFF);
-	coms[0] =  command >> 8;
-	coms[1] = command &0xff;
-	senddone = 0;
-
-	//SM1_SendBlock(SM1_DeviceData, coms, 2 );
-
-	//while (!senddone){}
+	int counter;
+	int down;
+	int pressed;
+	int released;
+	int lastcounter;
+};
 
 
-	command = 0x8000;
-	command |= shutdown2 ? 0x0000 : 0x1000;
-	command |= gain2 ? 0x0000 : 0x2000;
-	command |= (B & 0x0FFF);
-	coms[2] =  command >> 8;
-	coms[3] = command &0xff;
-	senddone = 0;
-	SM1_SendBlock(SM1_DeviceData, coms, 4 );
+int denoise(int sw_down, struct denoise_state_t* state)
+{
+	if (sw_down) state->counter++;
+	else state->counter--;
+	state->pressed = 0;
+	state->released = 0;
 
-	//	while (!senddone){}
+	if (state->counter < 2)
+	{
+		if (state->lastcounter == 2)
+		{
+			state->pressed =1;
+		}
+		state->counter = 1;
+		state->down = 1;
 
+	}
+	else if (state->counter > 30)
+	{
+		if (state->lastcounter == 30)
+		{
+			state->released =1;
+		}
+		state->counter = 31;
+		state->down = 0;
+
+	}
+	state->lastcounter = state->counter;
+	return state->down;
 }
+
 void WriteDac(int channel, int mv)
 {
 	while (!senddone)
@@ -131,26 +144,21 @@ void WriteDac(int channel, int mv)
 	}
 }
 
-word t1 = 0;
-word t2 = 0;
-float T = 0;
 uint32_t t =0 ;
-uint32_t tt =0 ;
-unsigned char pwm = 0;
+
 #define VOLT(x) ((int)((4095.0*(x))/6.08))
 #define NOTE(x) VOLT((x)/12.0)
 
-word vals[8] = {0,VOLT(1),VOLT(2),VOLT(3),VOLT(2.5),VOLT(1.5),VOLT(0.5),4095};
-
-word major[8] = {NOTE(0),NOTE(4),NOTE(7),NOTE(0),NOTE(4),NOTE(7),NOTE(0),NOTE(7)};
 
 int countdownTick = 1;
 int countdownNote = 1;
 word TickOut = 0;
 word CVOut = 0;
 int Tick = -1;
-long oldseed= 0;
+long oldseed= -1;
 
+
+// half-millisecond timer -> update each dacchannel in turn
 void doTimer()
 {
 	t++;
@@ -158,7 +166,6 @@ void doTimer()
 	if (t %2 == 0)
 	{
 		if (countdownNote >= 0)
-
 		{
 			countdownNote--;
 			if (countdownNote <= 0)
@@ -166,11 +173,14 @@ void doTimer()
 				TickOut = 4095;
 			}
 		}
+		int bpm = 1 + (200 * adcchannels[3])/ 65536;
+		int msecperbeat = (1000*60)/(4*bpm);
 
 		countdownTick--;
+		if (countdownTick > msecperbeat)  countdownTick = msecperbeat;
 		if (countdownTick <= 0)
 		{
-			countdownTick = 4 + adcchannels[3]/64;
+			countdownTick = msecperbeat;
 			countdownNote = 1 +  (countdownTick * adcchannels[5])/67000;
 			if (countdownNote >= countdownTick ) countdownNote = 0;
 			TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
@@ -200,44 +210,80 @@ int main(void)
 	/*** End of Processor Expert internal initialization.                    ***/
 
 	/* Write your code here */
+
+	static struct denoise_state_t triggersw_state = {0};
+	static struct denoise_state_t sonicsw_state = {0};
+	static struct denoise_state_t gatesw_state = {0};
+	int patternmode = 0;
 	AD1_Measure(FALSE);
 	szrand(oldseed);
 	PatternGen_Goa(&Pattern);
+	int switchmode = 1;
+	SW2LED_ClrVal(0);
+	LED1_SetVal(0);
 
-	/* For example: for(;;) { } */
 	for(;;){
+		int sonicsw= denoise(SW2_GetVal(0), &sonicsw_state);
+		//int gatesw = denoise(GATE_GetVal(0), &gatesw_state);
+		//int triggersw = denoise(SW2_GetVal(0), &triggersw_state);
+		if (sonicsw_state.pressed == 1)
+		{
+			switchmode=1;
+			patternmode = (patternmode+ 1) % 3;
+		}
 
 		if (measured == 1)
 		{
 			measured  = 0;
 			AD1_Measure(FALSE);
 		}
-		pwm ++;
+
+		// read the X/Y seed knobs
 		long newseed= (adcchannels[2]>>11) + (adcchannels[4]>>11)<<16;
-		if (newseed!= oldseed)
-		{
+		if (newseed!= oldseed) switchmode = 1;
+
+		if (switchmode == 1){
+			// updated pattern needed for some reason!
+			switchmode = 0;
 			oldseed = newseed;
 			szrand(oldseed);
-			PatternGen_Goa(&Pattern);
 
+			switch(patternmode)
+			{
+			case 0:
+				PatternGen_Goa(&Pattern);
+				LED4_SetVal(0);
+				LED2_ClrVal(0);
+				LED3_ClrVal(0);
+				break;
+			case 1:
+				PatternGen_Flat(&Pattern);
+				LED4_ClrVal(0);
+				LED2_SetVal(0);
+				LED3_ClrVal(0);
+
+				break;
+			case 2:
+				PatternGen_Psych(&Pattern);
+				LED4_ClrVal(0);
+				LED2_ClrVal(0);
+				LED3_SetVal(0);
+
+				break;
+			}
 		}
-		if (adcchannels[2]/128 > pwm ) LED1_ClrVal(0);else LED1_SetVal(0);
-		if (adcchannels[3]/128 > pwm ) LED2_ClrVal(0);else LED2_SetVal(0);
-		if (adcchannels[4]/128 > pwm ) LED3_ClrVal(0);else LED3_SetVal(0);
-		if (adcchannels[5]/128 > pwm ) LED4_ClrVal(0);else LED4_SetVal(0);
-		if (adcchannels[0]/32 > pwm ) SW2LED_SetVal(0);else SW2LED_ClrVal(0);
 
 
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+	/*** End of RTOS startup code.  ***/
+	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for(;;){}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */
