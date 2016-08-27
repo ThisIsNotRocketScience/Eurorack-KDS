@@ -3,3 +3,6 @@
 
 *.d
 SonicScrewdriver/Patterns/Patterns.bmx.backup
+SonicScrewdriver/Debug/
+SonicScrewdriver/Release/
+SonicScrewdriver/Generated_Code/
