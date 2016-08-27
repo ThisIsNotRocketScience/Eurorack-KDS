@@ -62,6 +62,9 @@ int measured = 0;
 int adcchannels[6];
 unsigned char coms[4];
 
+#include "Saiko.h"
+
+struct PatternTarget Pattern;
 
 void WriteBoth(int A, int B)
 {
@@ -77,7 +80,6 @@ void WriteBoth(int A, int B)
 	senddone = 0;
 
 	//SM1_SendBlock(SM1_DeviceData, coms, 2 );
-
 
 	//while (!senddone){}
 
@@ -135,20 +137,20 @@ float T = 0;
 uint32_t t =0 ;
 uint32_t tt =0 ;
 unsigned char pwm = 0;
-#define VOLT(x) ((int)((4095.0*x)/6.08))
+#define VOLT(x) ((int)((4095.0*(x))/6.08))
 #define NOTE(x) VOLT((x)/12.0)
 
 word vals[8] = {0,VOLT(1),VOLT(2),VOLT(3),VOLT(2.5),VOLT(1.5),VOLT(0.5),4095};
 
-
 word major[8] = {NOTE(0),NOTE(4),NOTE(7),NOTE(0),NOTE(4),NOTE(7),NOTE(0),NOTE(7)};
-
 
 int countdownTick = 1;
 int countdownNote = 1;
 word TickOut = 0;
 word CVOut = 0;
 int Tick = -1;
+long oldseed= 0;
+
 void doTimer()
 {
 	t++;
@@ -171,9 +173,10 @@ void doTimer()
 			countdownTick = 4 + adcchannels[3]/64;
 			countdownNote = 1 +  (countdownTick * adcchannels[5])/67000;
 			if (countdownNote >= countdownTick ) countdownNote = 0;
-			TickOut = 0;
-			Tick = (Tick + 1) % 8;
-			CVOut = 4095 - major[Tick];
+			TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
+			Tick = (Tick + 1) % 16;
+
+			CVOut = 4095 - NOTE(Pattern.Ticks[Tick].note+24);
 		}
 		WriteDac(0, CVOut);
 	}
@@ -198,6 +201,9 @@ int main(void)
 
 	/* Write your code here */
 	AD1_Measure(FALSE);
+	szrand(oldseed);
+	PatternGen_Goa(&Pattern);
+
 	/* For example: for(;;) { } */
 	for(;;){
 
@@ -207,6 +213,14 @@ int main(void)
 			AD1_Measure(FALSE);
 		}
 		pwm ++;
+		long newseed= (adcchannels[2]>>11) + (adcchannels[4]>>11)<<16;
+		if (newseed!= oldseed)
+		{
+			oldseed = newseed;
+			szrand(oldseed);
+			PatternGen_Goa(&Pattern);
+
+		}
 		if (adcchannels[2]/128 > pwm ) LED1_ClrVal(0);else LED1_SetVal(0);
 		if (adcchannels[3]/128 > pwm ) LED2_ClrVal(0);else LED2_SetVal(0);
 		if (adcchannels[4]/128 > pwm ) LED3_ClrVal(0);else LED3_SetVal(0);
