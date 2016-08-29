@@ -3,7 +3,7 @@
 
 long RandomMemory= 0x1235;
 
-void  szrand (unsigned int seed)
+void  ZRANDOMSEED (unsigned int seed)
 {
 	RandomMemory = (long)seed;
 }
@@ -18,11 +18,57 @@ float RAND1()
 	return zrand() / (float)(0x7fff);
 }
 
-void PatternGen_Psych(struct PatternTarget *T)
+void Reverse(struct PatternTarget *T, int first, int length)
 {
+	int last = first + length;
+	if (last > T->Length) last = T->Length;
+	for(int j = first;j<last-1;j++)
+	{
+		Rotate(T, j, last-j,1);
+	}
+}
+
+void Rotate(struct PatternTarget *T, int first, int length, int rotate)
+{
+	int last = first + length;
+	if (last > T->Length) last = T->Length;
+
+	for (int i =0 ;i<rotate;i++)
+	{
+		float V = T->Ticks[first].vel;
+		int N = T->Ticks[first].note;
+		int A = T->Ticks[first].accent;
+		for (int j= first;j<last-1;j++)
+		{
+			T->Ticks[j].vel = T->Ticks[j+1].vel;
+			T->Ticks[j].note= T->Ticks[j+1].note;
+			T->Ticks[j].accent = T->Ticks[j+1].accent;
+		}
+		T->Ticks[last-1].note =N;
+		T->Ticks[last-1].vel =V;
+		T->Ticks[last-1].accent =A;
+	}
+}
+
+void Transpose(struct PatternTarget *T, int first, int length, int transpose)
+{
+	int last = first + length;
+	if (last > T->Length) last = T->Length;
+	for(int i = first;i<last;i++)
+	{
+		T->Ticks[i].note += transpose;
+	}
+}
+
+void PatternGen_Psych(struct PatternTarget *T, int Length)
+{
+	if (Length> SAIKO_MAXTICK) Length = SAIKO_MAXTICK;
+
+	T->Length = Length;
+	T->TPB = 4;
 	for (int i = 0; i < SAIKO_MAXTICK; i++)
 	{
-		T->Ticks[i].vel = (RAND1() - 0.5) * 0.1;
+		T->Ticks[i].vel = RAND1() ;
 
 		uint64_t a = zrand() & 32767;
 		a *= 0x57619F1ULL;
@@ -61,15 +107,17 @@ void PatternGen_Psych(struct PatternTarget *T)
 	}
 }
 
-void PatternGen_Flat(struct PatternTarget *T)
+void PatternGen_Flat(struct PatternTarget *T, int Length)
 {
+	if (Length> SAIKO_MAXTICK) Length = SAIKO_MAXTICK;
 
-
+	T->TPB = 4;
+	T->Length = Length;
 	for (int i = 0; i < SAIKO_MAXTICK; i++)
 	{
 
 
-		T->Ticks[i].vel = RAND1() * 0.00025;
+		T->Ticks[i].vel = RAND1() ;
 
 		uint64_t a = zrand() & 32767;
 		a *= 0x57619F1ULL;
@@ -85,7 +133,7 @@ void PatternGen_Flat(struct PatternTarget *T)
 		case 4:
 		case 5:
 		case 6:
-				T->Ticks[i].note = 0;break;
+			T->Ticks[i].note = 0;break;
 		case 1: T->Ticks[i].note = -12;break;
 		case 3: T->Ticks[i].note = 0xD;break;
 		case 7: T->Ticks[i].note = 0xC;break;
@@ -98,8 +146,44 @@ void PatternGen_Flat(struct PatternTarget *T)
 
 };
 
-void PatternGen_Goa(struct PatternTarget *T)
+void PatternGen_Zeph(struct PatternTarget *T, int stepsperbeat, int beats, int fullcycles)
 {
+	int totalticks = stepsperbeat * beats * fullcycles;
+	int subpattern = stepsperbeat * beats;
+		if (totalticks > SAIKO_MAXTICK)
+	{
+		return;
+	}
+	PatternGen_Goa(T, subpattern  );
+	T->Length = totalticks;
+	T->TPB = stepsperbeat;
+	for (int i =1;i<fullcycles;i++)
+	{
+		for(int j = 0;j<subpattern;j++)
+		{
+			T->Ticks[i*subpattern + j].note = T->Ticks[j].note;
+			T->Ticks[i*subpattern + j].vel= T->Ticks[j].vel;
+			T->Ticks[i*subpattern + j].accent = T->Ticks[j].accent;
+		}
+		if (RAND1() > 0.5)
+		{
+			Rotate(T, (fullcycles-1)*subpattern,subpattern,3);
+		}
+		if (RAND1() > 0.5)
+				{
+					Reverse(T, (fullcycles-1)*subpattern + subpattern/2,subpattern/2);
+				}
+	}
+	if (RAND1() > 0.5) Transpose(T, (fullcycles-1)*subpattern,subpattern,3);
+	if (RAND1() > 0.5) Transpose(T, 2*subpattern,7,-5);
+}
+
+
+void PatternGen_Goa(struct PatternTarget *T, int Length)
+{
+	if (Length> SAIKO_MAXTICK) Length = SAIKO_MAXTICK;
+	T->TPB = 4;
+	T->Length = Length;
 	for (int i = 0;i < SAIKO_MAXTICK;i++)
 	{
 		T->Ticks[i].vel = RAND1();
@@ -110,7 +194,7 @@ void PatternGen_Goa(struct PatternTarget *T)
 		{
 		case 0:
 		case 2:
-				T->Ticks[i].note = 0;break;
+			T->Ticks[i].note = 0;break;
 		case 1: T->Ticks[i].note = (char)0xf4;break;
 		case 3: T->Ticks[i].note = 1;break;
 		case 4: T->Ticks[i].note = 3;break;
@@ -139,17 +223,11 @@ void PatternGen_Goa(struct PatternTarget *T)
 
 	if (RAND1() > 0.5)
 	{
-		for (int i = 0;i < 7;i++)
-		{
-			T->Ticks[i].note += 3;
-		}
+		Transpose(T, 0,7,3);
 	}
 
 	if(RAND1() > 0.5)
 	{
-		for (int i = 0;i < 7;i++)
-		{
-			T->Ticks[i].note += -5;
-		}
+		Transpose(T, 0,7,-5);
 	}			
 }

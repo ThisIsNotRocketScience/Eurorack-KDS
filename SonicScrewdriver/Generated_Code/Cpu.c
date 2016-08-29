@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-08-25, 21:17, # CodeGen: 48
+**     Date/Time   : 2016-08-27, 15:59, # CodeGen: 50
 **     Abstract    :
 **
 **     Settings    :
@@ -239,6 +239,8 @@
 #include "DACSEL.h"
 #include "GATE.h"
 #include "EInt1.h"
+#include "SW1.h"
+#include "SW2.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -458,6 +460,10 @@ void PE_low_level_init(void)
   (void)DACSEL_Init(NULL);
   /* ### BitIO_LDD "GATE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)GATE_Init(NULL);
+  /* ### BitIO_LDD "SW1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)SW1_Init(NULL);
+  /* ### BitIO_LDD "SW2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)SW2_Init(NULL);
   __EI();
 }
   /* Flash configuration field */

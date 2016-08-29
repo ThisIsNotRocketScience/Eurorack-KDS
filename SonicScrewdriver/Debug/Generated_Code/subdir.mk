@@ -17,6 +17,8 @@ C_SRCS += \
 ../Generated_Code/PE_LDD.c \
 ../Generated_Code/PTA.c \
 ../Generated_Code/SM1.c \
+../Generated_Code/SW1.c \
+../Generated_Code/SW2.c \
 ../Generated_Code/SW2LED.c \
 ../Generated_Code/TI1.c \
 ../Generated_Code/TU1.c \
@@ -37,6 +39,8 @@ OBJS += \
 ./Generated_Code/PE_LDD.o \
 ./Generated_Code/PTA.o \
 ./Generated_Code/SM1.o \
+./Generated_Code/SW1.o \
+./Generated_Code/SW2.o \
 ./Generated_Code/SW2LED.o \
 ./Generated_Code/TI1.o \
 ./Generated_Code/TU1.o \
@@ -57,6 +61,8 @@ C_DEPS += \
 ./Generated_Code/PE_LDD.d \
 ./Generated_Code/PTA.d \
 ./Generated_Code/SM1.d \
+./Generated_Code/SW1.d \
+./Generated_Code/SW2.d \
 ./Generated_Code/SW2LED.d \
 ./Generated_Code/TI1.d \
 ./Generated_Code/TU1.d \
@@ -68,7 +74,7 @@ C_DEPS += \
 Generated_Code/%.o: ../Generated_Code/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross ARM C Compiler'
-	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert/lib/Kinetis/pdd/inc" -I"C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert/lib/Kinetis/iofiles" -I"C:/Projects/Code/Kinetis2/SonicScrewdriver/Sources" -I"C:/Projects/Code/Kinetis2/SonicScrewdriver/Generated_Code" -std=c99 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -c -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -I"C:\Freescale\KDS_v3\eclipse\ProcessorExpert/lib/Kinetis/pdd/inc" -I"C:\Freescale\KDS_v3\eclipse\ProcessorExpert/lib/Kinetis/iofiles" -I"C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Sources" -I"C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code" -std=c99 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

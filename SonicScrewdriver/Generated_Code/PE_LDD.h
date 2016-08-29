@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-08-25, 21:17, # CodeGen: 48
+**     Date/Time   : 2016-08-27, 15:59, # CodeGen: 50
 **     Abstract    :
 **
 **     Settings    :
@@ -76,6 +76,8 @@
 #include "DACSEL.h"
 #include "GATE.h"
 #include "EInt1.h"
+#include "SW1.h"
+#include "SW2.h"
 
 
 /*

@@ -52,7 +52,7 @@ all: SonicScrewdriver.elf secondary-outputs
 SonicScrewdriver.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -T "C:/Projects/Code/Kinetis2/SonicScrewdriver/Project_Settings/Linker_Files/ProcessorExpert.ld" -Xlinker --gc-sections -L"C:/Projects/Code/Kinetis2/SonicScrewdriver/Project_Settings/Linker_Files" -Wl,-Map,"SonicScrewdriver.map" --specs=nano.specs -o "SonicScrewdriver.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m0plus -mthumb -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g3 -T "C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Project_Settings/Linker_Files/ProcessorExpert.ld" -Xlinker --gc-sections -L"C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Project_Settings/Linker_Files" -Wl,-Map,"SonicScrewdriver.map" --specs=nano.specs -o "SonicScrewdriver.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

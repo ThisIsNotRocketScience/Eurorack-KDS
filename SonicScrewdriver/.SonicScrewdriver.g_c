@@ -2,7 +2,7 @@
 <GenerationInfo_G_C>
   <Options>
     <ProjectName>SonicScrewdriver</ProjectName>
-    <ProjectDirectory>C:\Projects\Code\Kinetis2\SonicScrewdriver\</ProjectDirectory>
+    <ProjectDirectory>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\</ProjectDirectory>
     <ProjectMainModuleName>main</ProjectMainModuleName>
     <DestEventsDirectory>Sources\</DestEventsDirectory>
     <DestDriversSubDirectory>..\Generated_Code\</DestDriversSubDirectory>
@@ -19,19 +19,19 @@
         <Line>PE_Const</Line>
         <Line>IO_Map</Line>
       </GenSharedModules>
-      <ShrdHeaderAge0>1226418738</ShrdHeaderAge0>
+      <ShrdHeaderAge0>1226538873</ShrdHeaderAge0>
       <ShrdCodeAge0>-1</ShrdCodeAge0>
       <ShrdAsemblAge0>-1</ShrdAsemblAge0>
-      <ShrdHeaderAge1>1199864231</ShrdHeaderAge1>
+      <ShrdHeaderAge1>1226474246</ShrdHeaderAge1>
       <ShrdCodeAge1>-1</ShrdCodeAge1>
       <ShrdAsemblAge1>-1</ShrdAsemblAge1>
-      <ShrdHeaderAge2>1199864231</ShrdHeaderAge2>
+      <ShrdHeaderAge2>1226474246</ShrdHeaderAge2>
       <ShrdCodeAge2>-1</ShrdCodeAge2>
       <ShrdAsemblAge2>-1</ShrdAsemblAge2>
-      <ShrdHeaderAge3>1199864231</ShrdHeaderAge3>
+      <ShrdHeaderAge3>1226474246</ShrdHeaderAge3>
       <ShrdCodeAge3>-1</ShrdCodeAge3>
       <ShrdAsemblAge3>-1</ShrdAsemblAge3>
-      <GenExtraFiles lines_count="22">
+      <GenExtraFiles lines_count="24">
         <Line>Documentation\doxygen\SM1_component.txt</Line>
         <Line>Documentation\doxygen\TU1_component.txt</Line>
         <Line>Documentation\doxygen\TimerIntLdd1_component.txt</Line>
@@ -45,6 +45,8 @@
         <Line>Documentation\doxygen\DACSEL_component.txt</Line>
         <Line>Documentation\doxygen\GATE_component.txt</Line>
         <Line>Documentation\doxygen\EInt1_component.txt</Line>
+        <Line>Documentation\doxygen\SW1_component.txt</Line>
+        <Line>Documentation\doxygen\SW2_component.txt</Line>
         <Line>Documentation\doxygen\SonicScrewdriver_project.txt</Line>
         <Line>Documentation\doxygen\RoutingReport_component.txt</Line>
         <Line>Documentation\doxygen\pex.doxyfile</Line>
@@ -55,18 +57,20 @@
         <Line>Project_Settings\Startup_Code\startup.c</Line>
         <Line>Generated_Code\Vectors.c</Line>
       </GenExtraFiles>
-      <GenExtraFileSrcDir20>lib\Kinetis\startup\</GenExtraFileSrcDir20>
-      <GenExtraFileSrcDir16>Repositories\lib\doxygen\</GenExtraFileSrcDir16>
-      <XtraAge17>1226418738</XtraAge17>
-      <XtraAge18>1226418738</XtraAge18>
-      <XtraAge20>1199861307</XtraAge20>
-      <XtraAge21>1226419815</XtraAge21>
+      <GenExtraFileSrcDir22>lib\Kinetis\startup\</GenExtraFileSrcDir22>
+      <GenExtraFileSrcDir18>Repositories\lib\doxygen\</GenExtraFileSrcDir18>
+      <XtraAge19>1226538873</XtraAge19>
+      <XtraAge20>1226538873</XtraAge20>
+      <XtraAge22>1226474246</XtraAge22>
+      <XtraAge23>1226538873</XtraAge23>
+      <GenExtraFileType23>4</GenExtraFileType23>
+      <GenExtraFileType22>5</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
-      <GenExtraFileType20>5</GenExtraFileType20>
+      <GenExtraFileType20>4</GenExtraFileType20>
       <GenExtraFileType19>4</GenExtraFileType19>
-      <GenExtraFileType18>4</GenExtraFileType18>
+      <GenExtraFileType18>5</GenExtraFileType18>
       <GenExtraFileType17>4</GenExtraFileType17>
-      <GenExtraFileType16>5</GenExtraFileType16>
+      <GenExtraFileType16>4</GenExtraFileType16>
       <GenExtraFileType15>4</GenExtraFileType15>
       <GenExtraFileType14>4</GenExtraFileType14>
       <GenExtraFileType13>4</GenExtraFileType13>
@@ -84,24 +88,24 @@
       <GenExtraFileType1>4</GenExtraFileType1>
       <GenExtraFileType0>4</GenExtraFileType0>
       <GenLinkedFiles lines_count="18">
-        <Line>Static_Code\IO_Map\MKL02Z4.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</Line>
-        <Line>Static_Code\PDD\PDD_Types.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</Line>
-        <Line>Static_Code\PDD\ADC_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</Line>
-        <Line>Static_Code\PDD\CMP_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</Line>
-        <Line>Static_Code\PDD\COP_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</Line>
-        <Line>Static_Code\PDD\FTFA_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</Line>
-        <Line>Static_Code\PDD\GPIO_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</Line>
-        <Line>Static_Code\PDD\I2C_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</Line>
-        <Line>Static_Code\PDD\LPTMR_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</Line>
-        <Line>Static_Code\PDD\MCG_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</Line>
-        <Line>Static_Code\PDD\MCM_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</Line>
-        <Line>Static_Code\PDD\OSC_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</Line>
-        <Line>Static_Code\PDD\PORT_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</Line>
-        <Line>Static_Code\PDD\SIM_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</Line>
-        <Line>Static_Code\PDD\SPI_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</Line>
-        <Line>Static_Code\PDD\SysTick_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</Line>
-        <Line>Static_Code\PDD\TPM_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</Line>
-        <Line>Static_Code\PDD\UART0_PDD.h=C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</Line>
+        <Line>Static_Code\IO_Map\MKL02Z4.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</Line>
+        <Line>Static_Code\PDD\PDD_Types.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</Line>
+        <Line>Static_Code\PDD\ADC_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</Line>
+        <Line>Static_Code\PDD\CMP_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</Line>
+        <Line>Static_Code\PDD\COP_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</Line>
+        <Line>Static_Code\PDD\FTFA_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</Line>
+        <Line>Static_Code\PDD\GPIO_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</Line>
+        <Line>Static_Code\PDD\I2C_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</Line>
+        <Line>Static_Code\PDD\LPTMR_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</Line>
+        <Line>Static_Code\PDD\MCG_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</Line>
+        <Line>Static_Code\PDD\MCM_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</Line>
+        <Line>Static_Code\PDD\OSC_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</Line>
+        <Line>Static_Code\PDD\PORT_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</Line>
+        <Line>Static_Code\PDD\SIM_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</Line>
+        <Line>Static_Code\PDD\SPI_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</Line>
+        <Line>Static_Code\PDD\SysTick_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</Line>
+        <Line>Static_Code\PDD\TPM_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</Line>
+        <Line>Static_Code\PDD\UART0_PDD.h=C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</Line>
       </GenLinkedFiles>
       <GenEventModules lines_count="1">
         <Line>Events</Line>
@@ -115,7 +119,7 @@
         <Line>SM1_OnBlockReceived</Line>
         <Line>Cpu_OnNMIINT</Line>
       </GenMethodsInEvents>
-      <GenAllModules lines_count="21">
+      <GenAllModules lines_count="23">
         <Line>AD1</Line>
         <Line>AdcLdd1</Line>
         <Line>Cpu</Line>
@@ -133,13 +137,15 @@
         <Line>PE_Types</Line>
         <Line>PTA</Line>
         <Line>SM1</Line>
+        <Line>SW1</Line>
+        <Line>SW2</Line>
         <Line>SW2LED</Line>
         <Line>TI1</Line>
         <Line>TimerIntLdd1</Line>
         <Line>TU1</Line>
       </GenAllModules>
       <GenExternModules lines_count="0" />
-      <GenBeanModules lines_count="15">
+      <GenBeanModules lines_count="17">
         <Line>SM1</Line>
         <Line>TI1</Line>
         <Line>TimerIntLdd1</Line>
@@ -155,11 +161,13 @@
         <Line>DACSEL</Line>
         <Line>GATE</Line>
         <Line>EInt1</Line>
+        <Line>SW1</Line>
+        <Line>SW2</Line>
       </GenBeanModules>
     </GenFiles>
     <SignalListFile>Documentation\SonicScrewdriver_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>45</ProjectModificationStamp>
+    <ProjectModificationStamp>46</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -167,8 +175,8 @@
     <GenComponentVersion>01.009</GenComponentVersion>
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226418738</HeaderAge>
-    <CodeAge>1226418738</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226538873</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -229,24 +237,24 @@
     <ExtraFile5>Generated_Code\PE_LDD.h</ExtraFile5>
     <ExtraFile6>Project_Settings\Linker_Files\ProcessorExpert.ld</ExtraFile6>
     <ExtraFile7>Project_Settings\Startup_Code\startup.c</ExtraFile7>
-    <ExtraFile8>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\UART0_PDD.h</ExtraFile8>
-    <ExtraFile9>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\TPM_PDD.h</ExtraFile9>
-    <ExtraFile10>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\SysTick_PDD.h</ExtraFile10>
-    <ExtraFile11>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\SPI_PDD.h</ExtraFile11>
-    <ExtraFile12>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\SIM_PDD.h</ExtraFile12>
-    <ExtraFile13>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\PORT_PDD.h</ExtraFile13>
-    <ExtraFile14>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\OSC_PDD.h</ExtraFile14>
-    <ExtraFile15>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\MCM_PDD.h</ExtraFile15>
-    <ExtraFile16>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\MCG_PDD.h</ExtraFile16>
-    <ExtraFile17>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\LPTMR_PDD.h</ExtraFile17>
-    <ExtraFile18>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\I2C_PDD.h</ExtraFile18>
-    <ExtraFile19>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\GPIO_PDD.h</ExtraFile19>
-    <ExtraFile20>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\FTFA_PDD.h</ExtraFile20>
-    <ExtraFile21>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\COP_PDD.h</ExtraFile21>
-    <ExtraFile22>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\CMP_PDD.h</ExtraFile22>
-    <ExtraFile23>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\ADC_PDD.h</ExtraFile23>
-    <ExtraFile24>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\PDD\PDD_Types.h</ExtraFile24>
-    <ExtraFile25>C:\Projects\Code\Kinetis2\SonicScrewdriver\Static_Code\IO_Map\MKL02Z4.h</ExtraFile25>
+    <ExtraFile8>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\UART0_PDD.h</ExtraFile8>
+    <ExtraFile9>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\TPM_PDD.h</ExtraFile9>
+    <ExtraFile10>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\SysTick_PDD.h</ExtraFile10>
+    <ExtraFile11>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\SPI_PDD.h</ExtraFile11>
+    <ExtraFile12>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\SIM_PDD.h</ExtraFile12>
+    <ExtraFile13>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\PORT_PDD.h</ExtraFile13>
+    <ExtraFile14>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\OSC_PDD.h</ExtraFile14>
+    <ExtraFile15>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\MCM_PDD.h</ExtraFile15>
+    <ExtraFile16>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\MCG_PDD.h</ExtraFile16>
+    <ExtraFile17>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\LPTMR_PDD.h</ExtraFile17>
+    <ExtraFile18>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\I2C_PDD.h</ExtraFile18>
+    <ExtraFile19>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\GPIO_PDD.h</ExtraFile19>
+    <ExtraFile20>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\FTFA_PDD.h</ExtraFile20>
+    <ExtraFile21>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\COP_PDD.h</ExtraFile21>
+    <ExtraFile22>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\CMP_PDD.h</ExtraFile22>
+    <ExtraFile23>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\ADC_PDD.h</ExtraFile23>
+    <ExtraFile24>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\PDD\PDD_Types.h</ExtraFile24>
+    <ExtraFile25>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Static_Code\IO_Map\MKL02Z4.h</ExtraFile25>
     <ExtraFile26>Generated_Code\Vectors.c</ExtraFile26>
   </CpuID_2>
   <ComponentID_7>
@@ -255,8 +263,8 @@
     <GenComponentVersion>01.111</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226358062</HeaderAge>
-    <CodeAge>1226358062</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Init>true</Init>
@@ -379,8 +387,8 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226419815</HeaderAge>
-    <CodeAge>1226419815</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
     <Enable>false</Enable>
@@ -432,8 +440,8 @@
       <GenComponentVersion>01.018</GenComponentVersion>
       <GenDriverVersion>01.02</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1226419815</HeaderAge>
-      <CodeAge>1226419815</CodeAge>
+      <HeaderAge>1226474246</HeaderAge>
+      <CodeAge>1226474246</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>17</GenNumMethods>
       <Init>true</Init>
@@ -499,8 +507,8 @@
     <GenComponentVersion>01.164</GenComponentVersion>
     <GenDriverVersion>01.11</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226419815</HeaderAge>
-    <CodeAge>1226419815</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Init>true</Init>
@@ -596,8 +604,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199864231</HeaderAge>
-    <CodeAge>1199864231</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -697,8 +705,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199864231</HeaderAge>
-    <CodeAge>1199864231</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -798,8 +806,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199864231</HeaderAge>
-    <CodeAge>1199864231</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -899,8 +907,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199864231</HeaderAge>
-    <CodeAge>1199864231</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1000,8 +1008,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199864231</HeaderAge>
-    <CodeAge>1199864231</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1101,8 +1109,8 @@
     <GenComponentVersion>01.697</GenComponentVersion>
     <GenDriverVersion>01.00</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226345771</HeaderAge>
-    <CodeAge>1226345771</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Enable>false</Enable>
@@ -1287,8 +1295,8 @@
       <GenComponentVersion>01.183</GenComponentVersion>
       <GenDriverVersion>01.08</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1226345771</HeaderAge>
-      <CodeAge>1226345771</CodeAge>
+      <HeaderAge>1226474246</HeaderAge>
+      <CodeAge>1226474246</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>25</GenNumMethods>
       <Init>true</Init>
@@ -1465,8 +1473,8 @@
     <GenComponentVersion>01.006</GenComponentVersion>
     <GenDriverVersion>01.06</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1199932439</HeaderAge>
-    <CodeAge>1199932439</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>1</GenNumMethods>
     <Init>true</Init>
@@ -1499,8 +1507,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1226357525</HeaderAge>
-    <CodeAge>1226357525</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1600,8 +1608,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1226418738</HeaderAge>
-    <CodeAge>1226418738</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1659,8 +1667,8 @@
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1226418738</HeaderAge>
-    <CodeAge>1226418738</CodeAge>
+    <HeaderAge>1226474246</HeaderAge>
+    <CodeAge>1226474246</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>
@@ -1712,6 +1720,124 @@
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\EInt1_component.txt</ExtraFile0>
   </ComponentID_26>
+  <ComponentID_27>
+    <Generated>true</Generated>
+    <GenCompName>SW1</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1226538873</HeaderAge>
+    <CodeAge>1226538873</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>117</LineBeg>
+      <LineEnd>140</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>141</LineBeg>
+      <LineEnd>162</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>93</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>168</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\SW1_component.txt</ExtraFile0>
+  </ComponentID_27>
+  <ComponentID_28>
+    <Generated>true</Generated>
+    <GenCompName>SW2</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1226538873</HeaderAge>
+    <CodeAge>1226538873</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>117</LineBeg>
+      <LineEnd>140</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>141</LineBeg>
+      <LineEnd>162</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>93</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>168</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\SW2_component.txt</ExtraFile0>
+  </ComponentID_28>
   <UsedSrcFiles>
     <SrcFile0>Drivers\Common\CheckRegBits8_Rst.prg=1183486427</SrcFile0>
     <SrcFile1>Drivers\Common\ADC_LDDInit.inc=-1</SrcFile1>
@@ -1766,7 +1892,7 @@
     <SrcFile50>Drivers\Kinetis\IsSupported_LLWU_PDD.prg=1183486082</SrcFile50>
     <SrcFile51>Drivers\Common\TimerUnit_LDDInit.inc=-1</SrcFile51>
     <SrcFile52>Drivers\Common\ADC_LDDStartSingleMeasurement.inc=-1</SrcFile52>
-    <SrcFile53>Drivers\Kinetis\Kinetis_Linker.prg=1183486434</SrcFile53>
+    <SrcFile53>Drivers\Kinetis\Kinetis_Linker.prg=1200530696</SrcFile53>
     <SrcFile54>Drivers\Common\BitIO_LDDSetVal.inc=-1</SrcFile54>
     <SrcFile55>Drivers\SPIMaster_LDD.src=-1</SrcFile55>
     <SrcFile56>Drivers\Common\Header.end=1183486427</SrcFile56>
@@ -1811,7 +1937,7 @@
     <SrcFile95>Drivers\Common\TimerInt_LDDInit.inc=-1</SrcFile95>
     <SrcFile96>Drivers\Kinetis\Init_FMC_KINETIS.prg=1183486064</SrcFile96>
     <SrcFile97>Drivers\TimerUnit_LDD.src=-1</SrcFile97>
-    <SrcFile98>Drivers\sw\RTOSAdaptor\Common_RTOSAdaptor.prg=1183487027</SrcFile98>
+    <SrcFile98>Drivers\sw\RTOSAdaptor\Common_RTOSAdaptor.prg=1183482931</SrcFile98>
     <SrcFile99>Drivers\Common\InitReg8Block.prg=1183486427</SrcFile99>
     <SrcFile100>Drivers\Kinetis\IsSupported_LPUART_PDD.prg=1183486057</SrcFile100>
     <SrcFile101>Drivers\Common\ErrorDefinitions.inc=1183486427</SrcFile101>
@@ -1851,7 +1977,7 @@
     <SrcFile135>Drivers\Kinetis\Init_SIM_KINETIS.prg=1183486066</SrcFile135>
     <SrcFile136>Drivers\Common\GeneralParameters.inc=1183486427</SrcFile136>
     <SrcFile137>Drivers\TimerInt.src=-1</SrcFile137>
-    <SrcFile138>Drivers\sw\RTOSAdaptor\Default_RTOSAdaptor.prg=1183487027</SrcFile138>
+    <SrcFile138>Drivers\sw\RTOSAdaptor\Default_RTOSAdaptor.prg=1183482931</SrcFile138>
     <SrcFile139>Drivers\Common\GenReg32InitInfo.prg=1183486427</SrcFile139>
     <SrcFile140>Drivers\Common\BitIO_LDDPutVal.inc=-1</SrcFile140>
     <SrcFile141>Drivers\Common\ADCGetChanValue.inc=-1</SrcFile141>
@@ -1890,7 +2016,7 @@
     <SrcFile174>Drivers\Kinetis\Init_PMC_KINETIS.prg=1183486069</SrcFile174>
     <SrcFile175>Drivers\Common\SetRegBits32.prg=1183486427</SrcFile175>
     <SrcFile176>Drivers\Common\PE_ErrorAbstract.inc=1183486427</SrcFile176>
-    <SrcFile177>lib\doxygen\pex.doxyfile=1183486894</SrcFile177>
+    <SrcFile177>lib\doxygen\pex.doxyfile=1183482798</SrcFile177>
     <SrcFile178>Drivers\Kinetis\IsSupported_NFC_PDD.prg=1183486082</SrcFile178>
     <SrcFile179>Drivers\Common\GeneralEvent.inc=1183486427</SrcFile179>
     <SrcFile180>Drivers\Common\SetRegBitMask.prg=1183486427</SrcFile180>
@@ -1913,7 +2039,7 @@
     <SrcFile197>Drivers\Common\PE_LDD.prg=1183486427</SrcFile197>
     <SrcFile198>Drivers\Common\CheckRegBits32_Rst.prg=1183486427</SrcFile198>
     <SrcFile199>Drivers\Common\LDDSupport\PE_LDD_Event.prg=1183486427</SrcFile199>
-    <SrcFile200>Drivers\Common\Header.doxy=1183488475</SrcFile200>
+    <SrcFile200>Drivers\Common\Header.doxy=1183484379</SrcFile200>
     <SrcFile201>Drivers\Kinetis\IsSupported_CRC_PDD.prg=1183486054</SrcFile201>
     <SrcFile202>Drivers\Common\SPIMaster_LDDAbstract.inc=-1</SrcFile202>
     <SrcFile203>Drivers\Kinetis\PE_Error.drv=1183486437</SrcFile203>

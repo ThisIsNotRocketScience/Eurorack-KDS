@@ -6,7 +6,7 @@
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-07, 03:05, # CodeGen: 2
+**     Date/Time   : 2016-08-28, 02:45, # CodeGen: 10
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -57,12 +57,6 @@
 #include "PE_Const.h"
 #include "Pins1.h"
 #include "CODEC_PDN.h"
-#include "WAIT1.h"
-#include "I2C1.h"
-#include "SDA1.h"
-#include "BitIoLdd1.h"
-#include "SCL1.h"
-#include "BitIoLdd2.h"
 #include "DA1.h"
 #include "AD1.h"
 #include "AD2.h"

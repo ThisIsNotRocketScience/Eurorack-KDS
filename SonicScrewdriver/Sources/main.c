@@ -156,6 +156,8 @@ word TickOut = 0;
 word CVOut = 0;
 int Tick = -1;
 long oldseed= -1;
+int beatpwm = 0;
+byte pwm = 0;
 
 
 // half-millisecond timer -> update each dacchannel in turn
@@ -174,28 +176,42 @@ void doTimer()
 			}
 		}
 		int bpm = 1 + (200 * adcchannels[3])/ 65536;
-		int msecperbeat = (1000*60)/(4*bpm);
+		int msecperbeat = (1000*60)/(Pattern.TPB*bpm);
 
 		countdownTick--;
 		if (countdownTick > msecperbeat)  countdownTick = msecperbeat;
 		if (countdownTick <= 0)
 		{
 			countdownTick = msecperbeat;
-			countdownNote = 1 +  (countdownTick * adcchannels[5])/67000;
-			if (countdownNote >= countdownTick ) countdownNote = 0;
-			TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
-			Tick = (Tick + 1) % 16;
 
-			CVOut = 4095 - NOTE(Pattern.Ticks[Tick].note+24);
+			if (Pattern.Ticks[Tick].vel >= (1.0 - (adcchannels[5] / 65535.0)) )
+			{
+				countdownNote = (countdownTick * 900 ) / 1000;
+				//1 +  (countdownTick * adcchannels[5])/67000;
+
+				if (countdownNote >= countdownTick ) countdownNote = 0;
+
+				TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
+				CVOut = 4095 - NOTE(Pattern.Ticks[Tick].note+24);
+
+			}
+
+			beatpwm = (Tick%Pattern.Length==0)?255:((Tick%Pattern.TPB==0)?65:0);
+
+			Tick = (Tick + 1) % Pattern.Length;
+
 		}
 		WriteDac(0, CVOut);
 	}
 	else
 	{
 		WriteDac(1, TickOut);
+
+
 	}
 
-
+	pwm+=16;
+	if (pwm < beatpwm) SW2LED_ClrVal(0); else SW2LED_SetVal(0);
 
 }
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -214,10 +230,11 @@ int main(void)
 	static struct denoise_state_t triggersw_state = {0};
 	static struct denoise_state_t sonicsw_state = {0};
 	static struct denoise_state_t gatesw_state = {0};
-	int patternmode = 0;
+	int patternmode = 3;
+
 	AD1_Measure(FALSE);
-	szrand(oldseed);
-	PatternGen_Goa(&Pattern);
+	ZRANDOMSEED(oldseed);
+	PatternGen_Goa(&Pattern,16);
 	int switchmode = 1;
 	SW2LED_ClrVal(0);
 	LED1_SetVal(0);
@@ -226,10 +243,12 @@ int main(void)
 		int sonicsw= denoise(SW2_GetVal(0), &sonicsw_state);
 		//int gatesw = denoise(GATE_GetVal(0), &gatesw_state);
 		//int triggersw = denoise(SW2_GetVal(0), &triggersw_state);
+
+
 		if (sonicsw_state.pressed == 1)
 		{
 			switchmode=1;
-			patternmode = (patternmode+ 1) % 3;
+			patternmode = (patternmode+ 1) % 4;
 		}
 
 		if (measured == 1)
@@ -245,31 +264,40 @@ int main(void)
 		if (switchmode == 1){
 			// updated pattern needed for some reason!
 			switchmode = 0;
+			ZRANDOMSEED(newseed);
 			oldseed = newseed;
-			szrand(oldseed);
+
 
 			switch(patternmode)
 			{
 			case 0:
-				PatternGen_Goa(&Pattern);
+				PatternGen_Goa(&Pattern,16);
 				LED4_SetVal(0);
 				LED2_ClrVal(0);
 				LED3_ClrVal(0);
 				break;
 			case 1:
-				PatternGen_Flat(&Pattern);
+				PatternGen_Flat(&Pattern,16);
 				LED4_ClrVal(0);
 				LED2_SetVal(0);
 				LED3_ClrVal(0);
 
 				break;
 			case 2:
-				PatternGen_Psych(&Pattern);
+				PatternGen_Psych(&Pattern,16);
 				LED4_ClrVal(0);
 				LED2_ClrVal(0);
 				LED3_SetVal(0);
 
 				break;
+
+			case 3:
+							PatternGen_Zeph(&Pattern, 4, 4, 4);
+							LED4_SetVal(0);
+							LED2_SetVal(0);
+							LED3_SetVal(0);
+
+							break;
 			}
 		}
 

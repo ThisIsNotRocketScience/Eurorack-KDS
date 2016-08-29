@@ -35,6 +35,8 @@
 - \subpage DACSEL
 - \subpage GATE
 - \subpage EInt1
+- \subpage SW1
+- \subpage SW2
 
 */
 

@@ -344,7 +344,7 @@
           <Frame_sync_width__bits_ v="32" />
           <Frame_size__words_ v="2" />
           <Shift_direction v="MSB first" />
-          <Data_clocked_in_on v="rising edge" />
+          <Data_clocked_in_on v="falling edge" />
           <First_bit_shifted_index v="31" />
           <Word_0_width__bits_ v="32" />
           <Word_N_width__bits_ v="32" />

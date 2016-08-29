@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-06, 18:36, # CodeGen: 0
+**     Date/Time   : 2016-08-28, 02:45, # CodeGen: 10
 **     Abstract    :
 **         This file collects Processor Expert components configuration 
 **         and interface files.
@@ -108,6 +108,7 @@
 **                Low Power mode                           : STOP
 **                Return to stop after ISR                 : no
 **              STOP operation mode                        : Disabled
+**          External memory settings                       : Disabled
 **          Common settings                                : 
 **            Initialization priority                      : minimal priority
 **            Watchdog disable                             : yes
