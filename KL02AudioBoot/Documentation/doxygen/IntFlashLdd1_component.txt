@@ -1,0 +1,418 @@
+/*!
+  \page IntFlashLdd1 IntFlashLdd1 (FLASH_LDD)
+**          This embedded component implements an access to an on-chip flash memory.
+**          Using this component the flash memory could be written to, erased,
+**          read from. Some other services would be provided, if they are supported
+**          by hardware, e.g. changes of the flash memory protection state.
+**
+
+- \subpage IntFlashLdd1_settings
+- \subpage IntFlashLdd1_regs_overview  
+- \subpage IntFlashLdd1_regs_details
+- \ref IntFlashLdd1_module "Component documentation" 
+\page IntFlashLdd1_regs_overview Registers Initialization Overview
+This page contains the initialization values for the registers of the peripheral(s) configured
+by the component. 
+<table>
+<tr><td colspan="4" class="ttitle1">IntFlashLdd1 Initialization</td></tr>
+<tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
+<tr><td>0xE000E404</td><td>NVIC_IPR1</td>
+<td class="regResetVal">0x00000000</td>
+ <td>NVIC_IPR1 register, peripheral IntFlashLdd1.</td></tr>
+<tr><td>0xE000E100</td><td>NVIC_ISER</td>
+<td class="regNotResetVal">0x00028020</td>
+ <td>NVIC_ISER register, peripheral IntFlashLdd1.</td></tr>
+<tr><td>0x4004803C</td><td>SIM_SCGC6</td>
+<td class="regNotResetVal">0x09000001</td>
+ <td>SIM_SCGC6 register, peripheral IntFlashLdd1.</td></tr>
+</table>
+Color Denotes Reset Value
+<br/>
+\page IntFlashLdd1_regs_details Register Initialization Details
+This page contains detailed description of initialization values for the 
+registers of the peripheral(s) configured by the component. 
+
+<div class="reghdr1">NVIC_IPR1</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_7</td><td colspan="8" rowspan="2">PRI_6</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_5</td><td colspan="8" rowspan="2">PRI_4</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E404</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000000</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>24 - 31</td><td>PRI_7</td><td>0x00</td><td>Priority of interrupt 7</td>
+<tr><td>16 - 23</td><td>PRI_6</td><td>0x00</td><td>Priority of interrupt 6</td>
+<tr><td>8 - 15</td><td>PRI_5</td><td>0x00</td><td>Priority of interrupt 5</td>
+<tr><td>0 - 7</td><td>PRI_4</td><td>0x00</td><td>Priority of interrupt 4</td>
+</tr></table>
+<div class="reghdr1">NVIC_ISER</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E100</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00028020</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>0 - 31</td><td>SETENA</td><td>0x00</td><td>Interrupt set enable bits</td>
+</tr></table>
+<div class="reghdr1">SIM_SCGC6</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ADC0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">TPM1</td><td colspan="1" rowspan="2">TPM0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FTF</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x09000001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000001</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>27</td><td>ADC0</td><td>0x01</td><td>ADC0 Clock Gate Control</td>
+<tr><td>25</td><td>TPM1</td><td>0x00</td><td>TPM1 Clock Gate Control</td>
+<tr><td>24</td><td>TPM0</td><td>0x01</td><td>TPM0 Clock Gate Control</td>
+<tr><td>0</td><td>FTF</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
+</tr></table>
+*/
+/*!
+\page IntFlashLdd1_settings Component Settings
+\code
+**          Component name                                 : IntFlashLdd1
+**          Device                                         : FTFA
+**          Use user memory areas                          : no
+**          Interrupt service                              : Enabled
+**            Read batch size                              : Unlimited
+**            Command complete interrupt                   : 
+**              Interrupt                                  : INT_FTFA
+**              Interrupt priority                         : maximal priority
+**          Safe launch and wait                           : yes
+**            Safe routine location                        : On stack
+**            Interruptable wait loop                      : no
+**          Initialization                                 : 
+**            Enabled in init. code                        : yes
+**            Auto initialization                          : no
+**            Event mask                                   : 
+**              OnOperationComplete                        : Enabled
+**              OnError                                    : Enabled
+**            CPU clock/configuration selection            : 
+**              Clock configuration 0                      : This component enabled
+**              Clock configuration 1                      : This component disabled
+**              Clock configuration 2                      : This component disabled
+**              Clock configuration 3                      : This component disabled
+**              Clock configuration 4                      : This component disabled
+**              Clock configuration 5                      : This component disabled
+**              Clock configuration 6                      : This component disabled
+**              Clock configuration 7                      : This component disabled
+<h1>
+\endcode
+*/
+/*!
+  \page IntFlashLdd1 IntFlashLdd1 (FLASH_LDD)
+**          This embedded component implements an access to an on-chip flash memory.
+**          Using this component the flash memory could be written to, erased,
+**          read from. Some other services would be provided, if they are supported
+**          by hardware, e.g. changes of the flash memory protection state.
+**
+
+- \subpage IntFlashLdd1_settings
+- \subpage IntFlashLdd1_regs_overview  
+- \subpage IntFlashLdd1_regs_details
+- \ref IntFlashLdd1_module "Component documentation" 
+\page IntFlashLdd1_regs_overview Registers Initialization Overview
+This page contains the initialization values for the registers of the peripheral(s) configured
+by the component. 
+<table>
+<tr><td colspan="4" class="ttitle1">IntFlashLdd1 Initialization</td></tr>
+<tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
+<tr><td>0xE000E404</td><td>NVIC_IPR1</td>
+<td class="regResetVal">0x00000000</td>
+ <td>NVIC_IPR1 register, peripheral IntFlashLdd1.</td></tr>
+<tr><td>0xE000E100</td><td>NVIC_ISER</td>
+<td class="regNotResetVal">0x00028020</td>
+ <td>NVIC_ISER register, peripheral IntFlashLdd1.</td></tr>
+<tr><td>0x4004803C</td><td>SIM_SCGC6</td>
+<td class="regNotResetVal">0x09000001</td>
+ <td>SIM_SCGC6 register, peripheral IntFlashLdd1.</td></tr>
+</table>
+Color Denotes Reset Value
+<br/>
+\page IntFlashLdd1_regs_details Register Initialization Details
+This page contains detailed description of initialization values for the 
+registers of the peripheral(s) configured by the component. 
+
+<div class="reghdr1">NVIC_IPR1</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_7</td><td colspan="8" rowspan="2">PRI_6</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_5</td><td colspan="8" rowspan="2">PRI_4</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E404</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000000</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>24 - 31</td><td>PRI_7</td><td>0x00</td><td>Priority of interrupt 7</td>
+<tr><td>16 - 23</td><td>PRI_6</td><td>0x00</td><td>Priority of interrupt 6</td>
+<tr><td>8 - 15</td><td>PRI_5</td><td>0x00</td><td>Priority of interrupt 5</td>
+<tr><td>0 - 7</td><td>PRI_4</td><td>0x00</td><td>Priority of interrupt 4</td>
+</tr></table>
+<div class="reghdr1">NVIC_ISER</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E100</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00028020</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>0 - 31</td><td>SETENA</td><td>0x00</td><td>Interrupt set enable bits</td>
+</tr></table>
+<div class="reghdr1">SIM_SCGC6</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ADC0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">TPM1</td><td colspan="1" rowspan="2">TPM0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FTF</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x09000001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000001</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>27</td><td>ADC0</td><td>0x01</td><td>ADC0 Clock Gate Control</td>
+<tr><td>25</td><td>TPM1</td><td>0x00</td><td>TPM1 Clock Gate Control</td>
+<tr><td>24</td><td>TPM0</td><td>0x01</td><td>TPM0 Clock Gate Control</td>
+<tr><td>0</td><td>FTF</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
+</tr></table>
+*/
+/*!
+\page IntFlashLdd1_settings Component Settings
+\code
+**          Component name                                 : IntFlashLdd1
+**          Device                                         : FTFA
+**          Use user memory areas                          : no
+**          Interrupt service                              : Enabled
+**            Read batch size                              : Unlimited
+**            Command complete interrupt                   : 
+**              Interrupt                                  : INT_FTFA
+**              Interrupt priority                         : maximal priority
+**          Safe launch and wait                           : yes
+**            Safe routine location                        : On stack
+**            Interruptable wait loop                      : no
+**          Initialization                                 : 
+**            Enabled in init. code                        : yes
+**            Auto initialization                          : no
+**            Event mask                                   : 
+**              OnOperationComplete                        : Enabled
+**              OnError                                    : Enabled
+**            CPU clock/configuration selection            : 
+**              Clock configuration 0                      : This component enabled
+**              Clock configuration 1                      : This component disabled
+**              Clock configuration 2                      : This component disabled
+**              Clock configuration 3                      : This component disabled
+**              Clock configuration 4                      : This component disabled
+**              Clock configuration 5                      : This component disabled
+**              Clock configuration 6                      : This component disabled
+**              Clock configuration 7                      : This component disabled
+<h1>
+\endcode
+*/
