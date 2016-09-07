@@ -1,10 +1,23 @@
 #include <stdint.h>
 #include "Boot.h"
 #include "IFsh1.h"
+#include "Cpu.h"
 
 uint8_t ValidAppAddress(dword addr)
 {
 	return ((addr>=MIN_APP_FLASH_ADDRESS) && (addr<=MAX_APP_FLASH_ADDRESS));
+}
+
+void Reboot()
+{
+#if KIN1_IS_USING_KINETIS_SDK
+  SCB_AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
+#else
+  SCB_AIRCR = SCB_AIRCR_VECTKEY(0x5FA) | SCB_AIRCR_SYSRESETREQ_MASK;
+#endif
+  for(;;)
+  {
+  }
 }
 
 uint8_t Boot_FlashProg(uint32_t flash_addr, uint8_t *data_addr, uint16_t nofDataBytes)
@@ -24,11 +37,10 @@ uint8_t Boot_EraseAll(void)
 {
 	dword addr;
 
-	/* erase application flash pages */
 	for(addr=MIN_APP_FLASH_ADDRESS;addr<=MAX_APP_FLASH_ADDRESS;addr+=FLASH_PAGE_SIZE)
 	{
 		if(IFsh1_EraseSector(addr) != ERR_OK)
-		{ /* Error Erasing Flash */
+		{
 			return ERR_FAILED;
 		}
 	}
@@ -47,6 +59,7 @@ void Boot_Check(void)
 	startup = ((uint32_t*)APP_FLASH_VECTOR_START)[1];
 	if (startup!=-1 && !Boot_CheckButtons())
 	{
-		((void(*)(void))startup)();
+
+			((void(*)(void))startup)();
 	}
 }

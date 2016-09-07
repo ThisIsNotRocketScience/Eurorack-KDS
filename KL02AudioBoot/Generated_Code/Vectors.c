@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-06, 00:24, # CodeGen: 39
+**     Date/Time   : 2016-09-06, 19:30, # CodeGen: 46
 **     Abstract    :
 **
 **     Settings    :
@@ -58,7 +58,6 @@
   #include "TI1.h"
   #include "TimerIntLdd1.h"
   #include "TU1.h"
-  #include "GATE.h"
   #include "AD1.h"
   #include "AdcLdd1.h"
   #include "KSDK1.h"

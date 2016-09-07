@@ -33,7 +33,6 @@
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"
-#include "GATE.h"
 #include "AD1.h"
 #include "AdcLdd1.h"
 #include "KSDK1.h"
@@ -87,6 +86,7 @@ int main(void)
 	/* Write your code here */
 	//AD1_Calibrate(TRUE);
 	DecoderInit();
+	GUISuccesState();
 //	TU1_Enable(NULL);
 	for(;;){
 		//	WAIT1_Waitms(1000);

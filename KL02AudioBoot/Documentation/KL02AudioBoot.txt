@@ -20,15 +20,6 @@ Module "TU1"       (component TimerUnit_LDD)
    - TU1_Disable -Disables the component - it stops signal generation and events calling. The method is not available if the 
                 counter can't be disabled/enabled by HW.
 
-Module "GATE"      (component BitIO_LDD)
-   - GATE_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
-                interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" value 
-                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
-                is not necessary and needn't to be generated.
-   - GATE_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read and 
-                returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
-                property for limitations). This method cannot be disabled if direction is [input].
-
 Module "AD1"       (component ADC)
    - AD1_Measure -This method performs one measurement on all channels that are set in the component inspector. (Note: If the 
                 <number of conversions> is more than one the conversion of A/D channels is performed specified number of times.)

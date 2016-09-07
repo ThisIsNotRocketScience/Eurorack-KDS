@@ -2,7 +2,8 @@
 #define _AUDIOSTREAMREADER
 #include <stdint.h>
 
-#define AUDIOREADER_MAXBYTESPERMESSAGE 64
+#define AUDIOREADER_MAXCHUNK 32
+#define AUDIOREADER_MAXBYTESPERMESSAGE (AUDIOREADER_MAXCHUNK + 4 + 4 + 4)
 
 #define AUDIOREADER_INTERRUPTMS 0.05
 #define AUDIOREADER_INTERRUPTRATE ((int)((float)1000.0/(float)AUDIOREADER_INTERRUPTMS))
@@ -31,8 +32,6 @@ typedef struct {
 	int LastSyncByte;
 } AudioReaderStruct;
 
-
-// initialize the reader
 void AudioReader_Init(AudioReaderStruct *S);
 void AudioReader_Update(AudioReaderStruct *S, int32_t NewVal);
 void AudioReader_NewPacket(AudioReaderStruct *S);

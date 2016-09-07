@@ -56,10 +56,12 @@ PE_DEBUGHALT();
       </enumgroup>
       <group name="User initialization">
         <User_data_declarations>
-          <StrgList></StrgList>
+          <StrgList><![CDATA[#include "Boot.h"
+]]></StrgList>
         </User_data_declarations>
         <User_code_before_PE_initialization>
-          <StrgList></StrgList>
+          <StrgList><![CDATA[Boot_Check();
+]]></StrgList>
         </User_code_before_PE_initialization>
         <User_code_after_PE_initialization>
           <StrgList></StrgList>
@@ -86,14 +88,19 @@ PE_DEBUGHALT();
             </boolgroup>
           </group>
           <group name="MemoryArea1">
-            <boolgroup name="ROM/RAM Area" v="Disabled" />
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_text2" />
+              <Qualifier v="RX" />
+              <Address v="192" />
+              <Size v="832" />
+            </boolgroup>
           </group>
           <group name="MemoryArea2">
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_text" />
               <Qualifier v="RX" />
               <Address v="1040" />
-              <Size v="6128" />
+              <Size v="7152" />
             </boolgroup>
           </group>
           <group name="MemoryArea3">
@@ -281,38 +288,6 @@ PE_DEBUGHALT();
       <event name="OnChannel5" v="don&amp;apos;t generate code" />
       <event name="OnChannel6" v="don&amp;apos;t generate code" />
       <event name="OnChannel7" v="don&amp;apos;t generate code" />
-    </Events>
-  </Bean>
-  <Bean name="GATE" type="BitIO_LDD">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="GATE" />
-      <Pin_for_I_O v="PTA6/TPM0_CH0/SPI0_MISO" />
-      <Direction v="Input" />
-      <group name="Initialization">
-        <Init__direction v="Input" />
-        <Init__value v="0" />
-        <Auto_initialization v="yes" />
-      </group>
-      <Safe_mode v="no" />
-    </Properties>
-    <Methods>
-      <Init v="generate code" />
-      <Deinit v="don&amp;apos;t generate code" />
-      <GetDir v="don&amp;apos;t generate code" />
-      <SetDir v="don&amp;apos;t generate code" />
-      <SetInput v="don&amp;apos;t generate code" />
-      <SetOutput v="don&amp;apos;t generate code" />
-      <GetVal v="generate code" />
-      <PutVal v="don&amp;apos;t generate code" />
-      <ClrVal v="don&amp;apos;t generate code" />
-      <SetVal v="don&amp;apos;t generate code" />
-      <NegVal v="don&amp;apos;t generate code" />
-      <ConnectPin v="don&amp;apos;t generate code" />
-      <GetRawVal v="don&amp;apos;t generate code" />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
     </Events>
   </Bean>
   <Bean name="AD1" type="ADC">

@@ -12,5 +12,6 @@ void Boot_Check();
 
 uint8_t Boot_FlashProg(uint32_t flash_addr, uint8_t *data_addr, uint16_t nofDataBytes) ;
 uint8_t Boot_EraseAll();
+void Reboot();
 
 #endif

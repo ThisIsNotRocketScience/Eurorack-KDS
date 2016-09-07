@@ -24,7 +24,6 @@
 \page page_components Components 
 - \subpage TU1
 - \subpage TimerIntLdd1
-- \subpage GATE
 - \subpage AdcLdd1
 - \subpage IntFlashLdd1
 - \subpage IntFlashLdd1

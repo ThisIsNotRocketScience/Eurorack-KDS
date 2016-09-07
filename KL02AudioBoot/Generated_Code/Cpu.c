@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-05, 23:52, # CodeGen: 37
+**     Date/Time   : 2016-09-06, 19:46, # CodeGen: 49
 **     Abstract    :
 **
 **     Settings    :
@@ -231,7 +231,6 @@
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"
-#include "GATE.h"
 #include "AD1.h"
 #include "AdcLdd1.h"
 #include "KSDK1.h"
@@ -325,14 +324,16 @@ void Cpu_DisableInt(void)
 }
 
 
-/*** !!! Here you can place your own code using property "User data declarations" on the build options tab. !!! ***/
+/* User declarations */
+#include "Boot.h"
 
 /*lint -esym(765,__init_hardware) Disable MISRA rule (8.10) checking for symbols (__init_hardware). The function is linked to the EWL library */
 /*lint -esym(765,Cpu_Interrupt) Disable MISRA rule (8.10) checking for symbols (Cpu_Interrupt). */
 void __init_hardware(void)
 {
-
-  /*** !!! Here you can place your own code before PE initialization using property "User code before PE initialization" on the build options tab. !!! ***/
+  /*** User code before PE initialization ***/
+  Boot_Check();
+  /*** End of user code before PE initialization ***/
 
   /*** ### MKL02Z32VFM4 "Cpu" init code ... ***/
   /*** PE initialization code after reset ***/
@@ -464,8 +465,6 @@ void PE_low_level_init(void)
   /* ### TimerInt_LDD "TimerIntLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)TimerIntLdd1_Init(NULL);
   /* ### TimerInt "TI1" init code ... */
-  /* ### BitIO_LDD "GATE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)GATE_Init(NULL);
   /* ### ADC "AD1" init code ... */
   AD1_Init();
   /* ### KinetisSDK "KSDK1" init code ... */
