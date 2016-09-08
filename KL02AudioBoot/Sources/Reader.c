@@ -92,7 +92,7 @@ void AudioReader_Update(AudioReaderStruct *S, int32_t NewVal)
 					else
 					{
 
-						if (S->LastSyncByte == 0x02 && S->CurrentVal == 0x09)
+						if (S->LastSyncByte == 0x02 && S->CurrentVal == 0x03)
 						{
 
 						}

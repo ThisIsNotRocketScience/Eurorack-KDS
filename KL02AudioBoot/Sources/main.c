@@ -86,9 +86,12 @@ int main(void)
 	/* Write your code here */
 	//AD1_Calibrate(TRUE);
 	DecoderInit();
+	GUIInit();
 	GUISuccesState();
 //	TU1_Enable(NULL);
 	for(;;){
+		if (GetErrorLed()==1) ErrorLedOn();else ErrorLedOff();
+		if (GetSuccesLed()==1) SuccesLedOn();else SuccesLedOff();
 		//	WAIT1_Waitms(1000);
 
 	}

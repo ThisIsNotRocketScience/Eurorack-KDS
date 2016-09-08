@@ -6,32 +6,53 @@
 int32_t avg = 9000;
 int32_t min = 9000;
 int32_t max = 9000;
+int32_t totalblocks =0 ;
 
-
-#define CHUNKS (1024/AUDIOREADER_MAXCHUNK)
+#define CHUNKS (FLASH_PAGE_SIZE/AUDIOREADER_MAXCHUNK)
+#define FULLBLOCKS ((0x8000 - MIN_APP_FLASH_ADDRESS)/FLASH_PAGE_SIZE)
 byte blockshad[CHUNKS] = {0};
+byte fullblockshad[FULLBLOCKS] = {0};
+
 AudioReaderStruct Reader;
 
+#define EXPECTEDPACKAGE (AUDIOREADER_MAXCHUNK + 4 + 4)
+char rcvbuf[AUDIOREADER_MAXBYTESPERMESSAGE];
+char wribuf[FLASH_PAGE_SIZE];
+char busy = 0;
+int flasherror = 0;
 #define POLY 0x82f63b78
 
-void __attribute__ ((weak)) GUIErrorState()
-		{
+int ErrorCountDown =0 ;
+int SuccesCountDown  =0;
+int GetErrorLed()
+{
+	if (ErrorCountDown >0)
+	{
+		ErrorCountDown --;
+		return 1;
+	}
+	return 0;
+}
 
-		}
+int GetSuccesLed()
+{
+	if (SuccesCountDown >0)
+	{
+		SuccesCountDown  --;
+		return 1;
+	}
+	return 0;
+}
 
-void __attribute__ ((weak)) GUISuccesState()
-		{
+void __attribute__ ((weak))SuccesLedOn(){}
+void __attribute__ ((weak))SuccesLedOff(){}
+void __attribute__ ((weak))ErrorLedOn(){}
+void __attribute__ ((weak))ErrorLedOff(){}
 
-		}
-
-void __attribute__ ((weak)) GUIProgress(byte progress) // 255 = 99.999%
-		{
-		}
-
-void __attribute__ ((weak)) GUIComplete()
-		{
-	Reboot();
-		}
+void __attribute__ ((weak)) GUIErrorState()	{ErrorCountDown = 20000;}
+void __attribute__ ((weak)) GUISuccesState() {SuccesCountDown = 20000;}
+void __attribute__ ((weak)) GUIProgress(byte progress) {} // 255 = 99.999%
+void __attribute__ ((weak)) GUIComplete(){ Reboot(); }
 
 uint32_t CalcCrc(uint32_t crc, uint8_t *buf, uint32_t length)
 {
@@ -66,9 +87,6 @@ void DecoderInit()
 	AudioReader_Init(&Reader);
 }
 
-char rcvbuf[64 + 4 + 4];
-char wribuf[1024];
-char busy = 0;
 
 uint32_t ReadInt(uint8_t *buf, int offs)
 {
@@ -83,6 +101,8 @@ uint32_t ReadInt(uint8_t *buf, int offs)
 }
 void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 {
+	SuccesCountDown+= 60;
+
 	if (busy >0) return;
 
 	if (bytes>= AUDIOREADER_MAXBYTESPERMESSAGE) AudioReader_NewPacket(S);
@@ -92,7 +112,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 
 	switch(bytes + 1)
 	{
-	case AUDIOREADER_MAXBYTESPERMESSAGE:
+	case EXPECTEDPACKAGE:
 	{
 		if (rcvbuf[0] == 'B' && rcvbuf[1] == 'L' && rcvbuf[2] == 'O')
 		{
@@ -112,10 +132,12 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 						wribuf[idx*AUDIOREADER_MAXCHUNK + i] = rcvbuf[8+i];
 					}
 					blockshad[idx] = 1;
+					SuccesCountDown = 20000;
 				}
 				else
 				{
 					blockshad[idx] = 2;
+					ErrorCountDown = 20000;
 				}
 			}
 			AudioReader_NewPacket(&Reader);
@@ -135,7 +157,16 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 			Reboot();
 		}
 	}break;
+	case 8:
+	if (rcvbuf[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
+	{
+		flasherror = 0 ;
+		for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
+		for(int i =0 ;i<FULLBLOCKS;i++) fullblockshad[i] = 0;
 
+		totalblocks = ReadInt(rcvbuf, 4);
+	}
+	break;
 	case 12:
 	{
 		if (rcvbuf[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
@@ -144,19 +175,34 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 			uint32_t crccheck = ReadInt(rcvbuf, 8);
 
 			uint32_t crcblock = CalcCrc(0, wribuf, 1024);
-			if (crccheck  == crcblock)
+			int complete =0 ;
+			for (int i =0 ;i<CHUNKS;i++)
+			{
+				if (blockshad[i] == 1) complete++;
+			}
+
+			if (complete == CHUNKS && crcblock == crccheck)
 			{
 				if (Boot_FlashProg(MIN_APP_FLASH_ADDRESS + off, wribuf, 1024) == ERR_FAILED)
 				{
 					GUIErrorState();
+					flasherror++;
+
+					fullblockshad[off/FLASH_PAGE_SIZE] = 2;
 				}
 				else
 				{
-					GUISuccesState();
+					fullblockshad[off/FLASH_PAGE_SIZE] = 1;
+					//GUISuccesState();
+					SuccesCountDown = 50000;
+
 				}
 			}
 			else
 			{
+				flasherror++;
+				fullblockshad[off/FLASH_PAGE_SIZE] = 2;
+
 				GUIErrorState();
 			}
 			for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;

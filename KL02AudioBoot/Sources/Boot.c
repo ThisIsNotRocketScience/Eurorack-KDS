@@ -3,12 +3,9 @@
 #include "IFsh1.h"
 #include "Cpu.h"
 
-uint8_t ValidAppAddress(dword addr)
-{
-	return ((addr>=MIN_APP_FLASH_ADDRESS) && (addr<=MAX_APP_FLASH_ADDRESS));
-}
+uint8_t ValidAppAddress(dword addr){ return ((addr>=MIN_APP_FLASH_ADDRESS) && (addr<=MAX_APP_FLASH_ADDRESS)); }
 
-void Reboot()
+void  __attribute__((optimize("-O0"))) Reboot()
 {
 #if KIN1_IS_USING_KINETIS_SDK
   SCB_AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
