@@ -7,7 +7,7 @@
 **     Version     : Component 01.006, Driver 01.06, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2015-12-05, 16:32, # CodeGen: 21
+**     Date/Time   : 2016-09-15, 15:00, # CodeGen: 51
 **     Abstract    :
 **          This file implements the GPIO (PTA) module initialization
 **          according to the Peripheral Initialization settings, and

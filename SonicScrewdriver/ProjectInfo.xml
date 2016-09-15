@@ -102,26 +102,7 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TimerIntLdd1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Events.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Saiko.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
-      <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
@@ -132,6 +113,7 @@
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>

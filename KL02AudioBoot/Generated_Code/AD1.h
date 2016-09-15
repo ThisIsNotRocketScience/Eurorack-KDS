@@ -124,7 +124,7 @@ void AD1_HWEnDi(void);
 ** ===================================================================
 */
 
-byte AD1_Measure(bool WaitForResult);
+byte AD1_Measure(byte WaitForResult);
 /*
 ** ===================================================================
 **     Method      :  AD1_Measure (component ADC)
