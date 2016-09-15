@@ -1,7 +1,10 @@
-#include "Saiko.h"
+#include "PatternGen.h"
 #include <stdint.h>
 
 long RandomMemory= 0x1235;
+
+void Rotate(struct PatternGen_Target *T, int first, int length, int rotate);
+void Reverse(struct PatternGen_Target *T, int first, int length);
 
 void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 {
@@ -95,6 +98,8 @@ float RAND1()
 {
 	return zrand() / (float)(0x7fff);
 }
+
+
 
 void Reverse(struct PatternGen_Target *T, int first, int length)
 {

@@ -5,19 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Sources/Events.c \
-../Sources/Saiko.c \
+../Sources/PatternGen.c \
 ../Sources/exit.c \
 ../Sources/main.c 
 
 OBJS += \
 ./Sources/Events.o \
-./Sources/Saiko.o \
+./Sources/PatternGen.o \
 ./Sources/exit.o \
 ./Sources/main.o 
 
 C_DEPS += \
 ./Sources/Events.d \
-./Sources/Saiko.d \
+./Sources/PatternGen.d \
 ./Sources/exit.d \
 ./Sources/main.d 
 

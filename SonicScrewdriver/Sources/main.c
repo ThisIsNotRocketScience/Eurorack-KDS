@@ -64,7 +64,7 @@ int measured = 0;
 int adcchannels[6];
 unsigned char coms[4];
 
-#include "Saiko.h"
+#include "PatternGen.h"
 
 struct PatternGen_Target Pattern;
 
