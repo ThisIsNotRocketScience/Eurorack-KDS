@@ -26,10 +26,77 @@ Module "CODEC_PDN" (component BitIO_LDD)
    - CODEC_PDN_SetVal -Sets (to one) the output value. It is equivalent to the [PutVal(TRUE)]. This method is available only if 
                 the direction = _[output]_ or _[input/output]_.
 
+Module "WAIT1"     (component Wait)
+   - WAIT1_Wait10Cycles -Wait for 10 CPU cycles.
+   - WAIT1_Wait100Cycles -Wait for 100 CPU cycles.
+   - WAIT1_WaitCycles -Wait for a specified number of CPU cycles (16bit data type).
+   - WAIT1_WaitLongCycles -Wait for a specified number of CPU cycles (32bit data type).
+   - WAIT1_Waitms -Wait for a specified time in milliseconds.
+   - WAIT1_Waitus -Wait for a specified time in microseconds.
+   - WAIT1_Waitns -Wait for a specified time in nano seconds.
+   - WAIT1_WaitOSms -If an RTOS is enabled, this routine will use a non-blocking wait method. Otherwise it will do a 
+                busy/blocking wait.
+
 Module "I2S0"      (component Init_I2S_VAR1)
    - I2S0_Init -This method initializes registers of the I2S module according to the Peripheral Initialization settings. Call 
                 this method in user code to initialize the module. By default, the method is called by PE automatically; see 
                 "Call Init method" property of the component for more details.
+
+Module "I2C1"      (component GenericSWI2C)
+   - I2C1_Init -Initializes the associated peripheral(s) and the components internal variables. The method is called 
+                automatically as a part of the application initialization code.
+   - I2C1_ResetBus -Reset bus if needed.
+   - I2C1_SendChar -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and 
+                then writes one character (byte) to the bus. The slave address must be specified before by the "SelectSlave" 
+                method or in the  component initialization section of 'Slave address init' property. When working as the SLAVE, 
+                this method writes one character (byte) to the bus. If the ERR_NOTAVAIL error code returned, the char is 
+                successfully sent to master but the master device responds by an acknowledgment instead of no acknowledgment at 
+                the end of transfer. 'OnError' event is called in this case.
+   - I2C1_RecvChar -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 1 to the I2C bus and 
+                then reads one character (byte) from the bus. The slave address must be specified before by the "SelectSlave" 
+                method or in the component initialization section of 'Slave address init' property. When working as a SLAVE, 
+                this method reads one character (byte) from the bus.
+   - I2C1_SendBlock -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and 
+                then writes the block of characters to the bus. If the component is disabled (by the "Disable" method or 
+                initialization), the block is moved to the output buffer if the 'Output buffer size' property is different from 
+                zero. The content of the output buffer is sent immediately with the stop condition at the end when the 
+                component is enabled by the "Enable" method. After the output buffer transmission, the whole output buffer is 
+                cleared. The slave address must be specified before by the "SelectSlave" method or in component initialization 
+                section of 'Slave address init' property.  When working as a SLAVE, this method writes block of characters to 
+                the bus. If the ERR_NOTAVAIL error code is returned, the whole block is successfully sent to a master but the 
+                master device responds by an acknowledgment instead of no acknowledgment sent at the end of the last block byte 
+                transfer. 'OnError' event is called in this case.
+   - I2C1_SendBlockContinue -Same is SendBlock() but does not send start condition. When working as a MASTER, this method 
+                writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and then writes the block of characters to the 
+                bus. If the component is disabled (by the "Disable" method or initialization), the block is moved to the output 
+                buffer if the 'Output buffer size' property is different from zero. The content of the output buffer is sent 
+                immediately with the stop condition at the end when the component is enabled by the "Enable" method. After the 
+                output buffer transmission, the whole output buffer is cleared. The slave address must be specified before by 
+                the "SelectSlave" method or in component initialization section of 'Slave address init' property.  When working 
+                as a SLAVE, this method writes block of characters to the bus. If the ERR_NOTAVAIL error code is returned, the 
+                whole block is successfully sent to a master but the master device responds by an acknowledgment instead of no 
+                acknowledgment sent at the end of the last block byte transfer. 'OnError' event is called in this case.
+   - I2C1_RecvBlock -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 1 to the I2C bus and 
+                then reads the block of characters from the bus. The slave address must be specified before by the 
+                "SelectSlave" method or in component initialization section of 'Slave address init' property.  When working as 
+                a SLAVE, this method reads the block of characters from the bus.
+   - I2C1_RecvBlockCustom -Same as RecvBlock(), but with additional flags to control the bus transfer.
+   - I2C1_SendAck -The method sends ACK to the bus.
+   - I2C1_SendStop -When working as a MASTER, if the 'Automatic stop condition' property value is 'no', this method sends a 
+                valid stop  condition to the serial data line of the I2C bus to terminate the communication on the bus after 
+                using send methods. This method is enabled only if the component is in MASTER mode and 'Automatic stop 
+                condition' property value is 'no'
+   - I2C1_SelectSlave -When working as a MASTER, this method selects a new slave for communication by its slave address value. 
+                Any send or receive method are directed to or from the selected device, until a new slave device is selected by 
+                this method. If the selected slave uses 10-bit slave addressing, as the parameter 7 bits must be passed, which 
+                involves 10-bit addressing (11110XX), including two MSBs of slave address (XX). The second byte of the 10-bit 
+                slave address must be sent to the slave as a general character of send methods. This method is available only 
+                if the component is in MASTER mode.
+   - I2C1_GetSelected -When working as a MASTER, this method returns the identification address value of the slave, which is 
+                currently selected for communication with the master. If the current slave uses 10-bit slave addressing, the 
+                method returns the first 7 bits only, which involves 10-bit addressing (11110XX), including two MSBs of the 
+                slave address (XX). This method is not able to return the rest value of 10-bit slave address. This method is 
+                available only if the component is in MASTER mode.
 
 Module "VREF"      (component Init_VREF_VAR0)
    - VREF_Init -This method initializes registers of the VREF module according to the Peripheral Initialization settings. Call 
@@ -186,6 +253,8 @@ Module "TU1"       (component TimerUnit_LDD)
                 to use value below selected period. This method is available when at least one channel is configured.
    - TU1_GetOffsetTicks -Returns the number of counter ticks to compare match channel specified by the parameter ChannelIdx. 
                 See also method <SetOffsetTicks>. This method is available when at least one channel is configured.
+
+Module "KSDK1"     (component KinetisSDK)
 
 Module "Cpu"       (component MK22FN512LH12)
 

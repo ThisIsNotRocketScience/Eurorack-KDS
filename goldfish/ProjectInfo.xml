@@ -58,19 +58,26 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AD1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AD2.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\BitIoLdd1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\BitIoLdd2.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\CODEC_PDN.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\DA1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\EInt1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\GATE.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\I2C1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\KSDK1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\LED1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\LED2.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Pins1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SCL1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SDA1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SWITCH1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SWITCH2.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\TI1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\TU1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Sources\Events.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Sources\ak4558.c</PathName>
@@ -86,16 +93,20 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AD1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AD2.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\BitIoLdd1.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\BitIoLdd2.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\CODEC_PDN.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\CPU_Config.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Cpu.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\DA1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\EInt1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\GATE.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\I2C1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\I2S0.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\I2S0_Config.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\IO_Map.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Init_Config.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\KSDK1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\LED1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\LED2.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\PE_Const.h</PathName>
@@ -103,6 +114,8 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\PE_LDD.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\PE_Types.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Pins1.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SCL1.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SDA1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SWITCH1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\SWITCH2.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\TI1.h</PathName>
@@ -110,6 +123,7 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\VREF.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\VREF_Config.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\Vectors_Config.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Sources\Events.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Sources\Goldfish\DistortionTable_1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\goldfish\Sources\Goldfish\DistortionTable_2.h</PathName>

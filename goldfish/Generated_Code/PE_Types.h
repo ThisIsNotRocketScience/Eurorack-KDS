@@ -6,7 +6,7 @@
 **     Component   : PE_Types
 **     Version     : Driver 01.01
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-08-28, 02:45, # CodeGen: 10
+**     Date/Time   : 2016-08-29, 18:45, # CodeGen: 11
 **     Abstract    :
 **         PE_Types.h - contains definitions of basic types,
 **         register access macros and hardware specific macros
@@ -205,17 +205,19 @@ typedef unsigned long int       uint32;
 ** ===========================================================================
 */
 #define PE_LDD_COMPONENT_CODEC_PDN_ID            0x00U
-#define PE_LDD_COMPONENT_DA1_ID                  0x01U
-#define PE_LDD_COMPONENT_AD1_ID                  0x02U
-#define PE_LDD_COMPONENT_AdcLdd1_ID              0x03U
-#define PE_LDD_COMPONENT_SWITCH2_ID              0x04U
-#define PE_LDD_COMPONENT_SWITCH1_ID              0x05U
-#define PE_LDD_COMPONENT_LED2_ID                 0x06U
-#define PE_LDD_COMPONENT_LED1_ID                 0x07U
-#define PE_LDD_COMPONENT_GATE_ID                 0x08U
-#define PE_LDD_COMPONENT_EInt1_ID                0x09U
-#define PE_LDD_COMPONENT_TU1_ID                  0x0AU
-#define PE_LDD_COMPONENT_TI1_ID                  0x0BU
+#define PE_LDD_COMPONENT_BitIoLdd1_ID            0x01U
+#define PE_LDD_COMPONENT_BitIoLdd2_ID            0x02U
+#define PE_LDD_COMPONENT_DA1_ID                  0x03U
+#define PE_LDD_COMPONENT_AD1_ID                  0x04U
+#define PE_LDD_COMPONENT_AdcLdd1_ID              0x05U
+#define PE_LDD_COMPONENT_SWITCH2_ID              0x06U
+#define PE_LDD_COMPONENT_SWITCH1_ID              0x07U
+#define PE_LDD_COMPONENT_LED2_ID                 0x08U
+#define PE_LDD_COMPONENT_LED1_ID                 0x09U
+#define PE_LDD_COMPONENT_GATE_ID                 0x0AU
+#define PE_LDD_COMPONENT_EInt1_ID                0x0BU
+#define PE_LDD_COMPONENT_TU1_ID                  0x0CU
+#define PE_LDD_COMPONENT_TI1_ID                  0x0DU
 
 /*
 ** ===================================================================

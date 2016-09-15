@@ -66,7 +66,7 @@ unsigned char coms[4];
 
 #include "Saiko.h"
 
-struct PatternTarget Pattern;
+struct PatternGen_Target Pattern;
 
 struct denoise_state_t
 {
@@ -233,7 +233,7 @@ int main(void)
 	int patternmode = 3;
 
 	AD1_Measure(FALSE);
-	ZRANDOMSEED(oldseed);
+	PatternGen_ZRANDOMSEED(oldseed);
 	PatternGen_Goa(&Pattern,16);
 	int switchmode = 1;
 	SW2LED_ClrVal(0);
@@ -264,7 +264,7 @@ int main(void)
 		if (switchmode == 1){
 			// updated pattern needed for some reason!
 			switchmode = 0;
-			ZRANDOMSEED(newseed);
+			PatternGen_ZRANDOMSEED(newseed);
 			oldseed = newseed;
 
 

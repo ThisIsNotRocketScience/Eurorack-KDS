@@ -51,6 +51,12 @@
 #include "Cpu.h"
 #include "Pins1.h"
 #include "CODEC_PDN.h"
+#include "WAIT1.h"
+#include "I2C1.h"
+#include "SDA1.h"
+#include "BitIoLdd1.h"
+#include "SCL1.h"
+#include "BitIoLdd2.h"
 #include "DA1.h"
 #include "AD1.h"
 #include "AD2.h"
@@ -63,6 +69,7 @@
 #include "EInt1.h"
 #include "TI1.h"
 #include "TU1.h"
+#include "KSDK1.h"
 #include "Events.h"
 
 #ifdef __cplusplus
