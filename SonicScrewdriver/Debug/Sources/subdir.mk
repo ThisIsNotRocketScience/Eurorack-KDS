@@ -4,18 +4,21 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Sources/DAC.c \
 ../Sources/Events.c \
 ../Sources/PatternGen.c \
 ../Sources/exit.c \
 ../Sources/main.c 
 
 OBJS += \
+./Sources/DAC.o \
 ./Sources/Events.o \
 ./Sources/PatternGen.o \
 ./Sources/exit.o \
 ./Sources/main.o 
 
 C_DEPS += \
+./Sources/DAC.d \
 ./Sources/Events.d \
 ./Sources/PatternGen.d \
 ./Sources/exit.d \

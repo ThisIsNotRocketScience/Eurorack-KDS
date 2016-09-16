@@ -36,7 +36,8 @@ extern "C" {
 
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-extern int senddone;
+#include "DAC.h"
+
 extern int measured;
 extern int adcchannels[6];
 
@@ -79,7 +80,7 @@ void Cpu_OnNMIINT(void)
 void SM1_OnBlockSent(LDD_TUserData *UserDataPtr)
 {
 	DACSEL_SetVal(0);
-	senddone = 1;
+	DACSENDDONE = 1;
 	/* Write your code here ... */
 }
 

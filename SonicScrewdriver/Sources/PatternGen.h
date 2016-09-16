@@ -45,5 +45,6 @@ struct PatternGen_Params
 	uint8_t seed2;
 };
 
+extern void PatternGen_LoadSettings(struct PatternGen_Settings *S);
 extern void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *P, struct PatternGen_Settings *S);
 extern void PatternGen_ZRANDOMSEED(unsigned int seed);

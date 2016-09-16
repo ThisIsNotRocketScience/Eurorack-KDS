@@ -36,7 +36,8 @@ Sources/Events.o: ../Sources/Events.c \
  C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/LED1.h \
  C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/LED3.h \
  C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/LED4.h \
- C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/SW2LED.h
+ C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/SW2LED.h \
+ ../Sources/DAC.h
 
 C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/Cpu.h:
 
@@ -113,3 +114,5 @@ C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/LED3.h:
 C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/LED4.h:
 
 C:/Projects/Eurorack/Eurorack-KDS/SonicScrewdriver/Generated_Code/SW2LED.h:
+
+../Sources/DAC.h:

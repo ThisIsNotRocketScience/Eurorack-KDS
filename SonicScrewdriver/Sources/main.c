@@ -55,18 +55,13 @@
 /* User includes (#include below this line is not maintained by Processor Expert) */
 
 #include <math.h>
-int shutdown1 = 0;
-int gain1 = 0;
-int shutdown2 = 0	;
-int gain2 = 0;
-int senddone = 1;
 int measured = 0;
 int adcchannels[6];
-unsigned char coms[4];
 
 #include "PatternGen.h"
-
+#include "DAC.h"
 struct PatternGen_Target Pattern;
+struct PatternGen_Settings Settings;
 
 struct denoise_state_t
 {
@@ -109,40 +104,6 @@ int denoise(int sw_down, struct denoise_state_t* state)
 	return state->down;
 }
 
-void WriteDac(int channel, int mv)
-{
-	while (!senddone)
-	{
-		return;
-	}
-	DACSEL_ClrVal(0);
-
-	unsigned int command;
-	if(channel == 1)
-	{
-		command = 0x0000;
-		command |= shutdown1 ? 0x0000 : 0x1000;
-		command |= gain1 ? 0x0000 : 0x2000;
-		command |= (mv & 0x0FFF);
-		coms[0] =  command >> 8;
-		coms[1] = command &0xff;
-		senddone = 0;
-
-		SM1_SendBlock(SM1_DeviceData, coms, 2 );
-
-
-	} else {
-		command = 0x8000;
-		command |= shutdown2 ? 0x0000 : 0x1000;
-		command |= gain2 ? 0x0000 : 0x2000;
-		command |= (mv & 0x0FFF);
-		coms[0] =  command >> 8;
-		coms[1] = command &0xff;
-		senddone = 0;
-		SM1_SendBlock(SM1_DeviceData, coms, 2 );
-
-	}
-}
 
 uint32_t t =0 ;
 
@@ -232,9 +193,10 @@ int main(void)
 	static struct denoise_state_t gatesw_state = {0};
 	int patternmode = 3;
 
-	AD1_Measure(FALSE);
+	PatternGen_LoadSettings(&Settings);
 	PatternGen_ZRANDOMSEED(oldseed);
 	PatternGen_Goa(&Pattern,16);
+	AD1_Measure(FALSE);
 	int switchmode = 1;
 	SW2LED_ClrVal(0);
 	LED1_SetVal(0);
