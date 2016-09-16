@@ -62,6 +62,7 @@ int adcchannels[6];
 #include "DAC.h"
 struct PatternGen_Target Pattern;
 struct PatternGen_Settings Settings;
+struct PatternGen_Params Params;
 
 struct denoise_state_t
 {
@@ -188,7 +189,7 @@ int main(void)
 	static struct denoise_state_t gatesw_state = {0};
 	int patternmode = 3;
 
-	PatternGen_LoadSettings(&Settings);
+	PatternGen_LoadSettings(&Settings, &Params);
 	PatternGen_ZRANDOMSEED(oldseed);
 	PatternGen_Goa(&Pattern,16);
 	AD1_Measure(FALSE);

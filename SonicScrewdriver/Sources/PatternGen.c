@@ -6,8 +6,13 @@ long RandomMemory= 0x1235;
 void Rotate(struct PatternGen_Target *T, int first, int length, int rotate);
 void Reverse(struct PatternGen_Target *T, int first, int length);
 
-void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
+void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
+	P->algo = 0;
+	P->beatopt = 0;
+	P->scale = 1;
+	P->tpbopt = 1;
+
 	for (int i =0 ;i<16;i++) S->algooptions[i] = i;
 
 	S->tpboptions[0] = 3;
@@ -36,7 +41,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 	S->scale[0][4] = 7;
 	S->scale[0][5] = 9;
 	S->scale[0][6] = 11;
-	S->scalecount[0] = 7;
+	S->scalecount[0] = 7; // Major scale
 
 	S->scale[1][0] = 0;
 	S->scale[1][1] = 2;
@@ -45,8 +50,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 	S->scale[1][4] = 7;
 	S->scale[1][5] = 8;
 	S->scale[1][6] = 10;
-	S->scalecount[1] = 7;
-
+	S->scalecount[1] = 7; // Minor scale
 
 	S->scale[1][0] = 0;
 	S->scale[1][1] = 2;
@@ -55,8 +59,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 	S->scale[1][4] = 7;
 	S->scale[1][5] = 8;
 	S->scale[1][6] = 10;
-	S->scalecount[1] = 7;
-
+	S->scalecount[1] = 7; // Pentatonic scale
 
 	S->scale[2][0] = 0;
 	S->scale[2][1] = 2;
@@ -65,8 +68,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 	S->scale[2][4] = 7;
 	S->scale[2][5] = 9;
 	S->scale[2][6] = 10;
-	S->scalecount[1] = 7;
-
+	S->scalecount[1] = 7; // Dorian scale
 
 	S->scale[3][0] = 0;
 	S->scale[3][1] = 2;
@@ -74,13 +76,11 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S)
 	S->scale[3][3] = 7;
 	S->scale[3][4] = 9;
 	S->scalecount[1] = 5;
-
-
 }
 
-void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S)
+void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
-	PatternGen_LoadDefaults(S);
+	PatternGen_LoadDefaults(S,P);
 }
 
 
@@ -314,3 +314,62 @@ void PatternGen_Goa(struct PatternGen_Target *T, int Length)
 		Transpose(T, 0,7,-5);
 	}			
 }
+
+unsigned char dither[24*3] =
+{
+		0b0001, 0b0011, 0b0111,
+		0b0001, 0b0011, 0b1011,
+		0b0001, 0b0101, 0b0111,
+		0b0001, 0b0101, 0b1101,
+		0b0001, 0b1001, 0b1011,
+		0b0001, 0b1001, 0b1101,
+		0b0010, 0b0011, 0b0111,
+		0b0010, 0b0011, 0b1011,
+		0b0010, 0b0110, 0b0111,
+		0b0010, 0b0110, 0b1110,
+		0b0010, 0b1010, 0b1011,
+		0b0010, 0b1010, 0b1110,
+		0b0100, 0b0101, 0b0111,
+		0b0100, 0b0101, 0b1101,
+		0b0100, 0b0110, 0b0111,
+		0b0100, 0b0110, 0b1110,
+		0b0100, 0b1100, 0b1101,
+		0b0100, 0b1100, 0b1110,
+		0b1000, 0b1001, 0b1011,
+		0b1000, 0b1001, 0b1101,
+		0b1000, 0b1010, 0b1011,
+		0b1000, 0b1010, 0b1110,
+		0b1000, 0b1100, 0b1101,
+		0b1000, 0b1100, 0b1110
+};
+
+void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *P, struct PatternGen_Settings *S)
+{
+
+	int len = S->tpboptions[P->tpbopt] * S->beatoptions[P->beatopt];
+
+	int X = P->seed1 >> 3;
+	int Y = P->seed2 >> 3;
+
+	int XFade = (P->seed1 & 0b110) >> 1;
+	int YFade = (P->seed2 & 0b110) >> 1;
+
+	unsigned char xbase = P->seed1 & 0b1111 + ((P->seed1)>>6) ;
+	unsigned char ybase = P->seed2 & 0b1111 + ((P->seed2)>>6);
+
+	unsigned char ditherx = 0;
+	unsigned char dithery = 0;
+
+	if (XFade > 0) ditherx = dither[xbase*3 + XFade-1];
+	if (YFade > 0) dithery = dither[ybase*3 + YFade-1];
+
+	switch(S->algooptions[P->algo])
+	{
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+		break;
+	}
+}
+
