@@ -3,8 +3,13 @@
 #include "DACSEL.h"
 
 unsigned char DACSENDDONE = 1;
+void DAC_Done()
+{
+	DACSEL_SetVal(0);
+	DACSENDDONE = 1;
+}
 
-void WriteDac(int channel, int value)
+void DAC_Write(int channel, int value)
 {
 
 	const int shutdown1 = 0;
@@ -18,7 +23,7 @@ void WriteDac(int channel, int value)
 	{
 		return;
 	}
-	DACSEL_ClrVal(0);
+	DACSEL_ClrVal(0); // SetVal done in interrupt handler
 
 	unsigned int command;
 	if(channel == 1)

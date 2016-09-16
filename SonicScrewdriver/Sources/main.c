@@ -148,13 +148,11 @@ void doTimer()
 			if (Pattern.Ticks[Tick].vel >= (1.0 - (adcchannels[5] / 65535.0)) )
 			{
 				countdownNote = (countdownTick * 900 ) / 1000;
-				//1 +  (countdownTick * adcchannels[5])/67000;
 
 				if (countdownNote >= countdownTick ) countdownNote = 0;
 
 				TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
 				CVOut = 4095 - NOTE(Pattern.Ticks[Tick].note+24);
-
 			}
 
 			beatpwm = (Tick%Pattern.Length==0)?255:((Tick%Pattern.TPB==0)?65:0);
@@ -162,18 +160,15 @@ void doTimer()
 			Tick = (Tick + 1) % Pattern.Length;
 
 		}
-		WriteDac(0, CVOut);
+		DAC_Write(0, CVOut);
 	}
 	else
 	{
-		WriteDac(1, TickOut);
-
-
+		DAC_Write(1, TickOut);
 	}
 
 	pwm+=16;
 	if (pwm < beatpwm) SW2LED_ClrVal(0); else SW2LED_SetVal(0);
-
 }
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)

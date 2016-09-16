@@ -44,6 +44,12 @@ endif
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
+SECONDARY_FLASH += \
+SonicScrewdriver.hex \
+
+SECONDARY_SIZE += \
+SonicScrewdriver.siz \
+
 
 # All Target
 all: SonicScrewdriver.elf secondary-outputs
@@ -56,12 +62,24 @@ SonicScrewdriver.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
+SonicScrewdriver.hex: SonicScrewdriver.elf
+	@echo 'Invoking: Cross ARM GNU Create Flash Image'
+	arm-none-eabi-objcopy -O ihex "SonicScrewdriver.elf"  "SonicScrewdriver.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+SonicScrewdriver.siz: SonicScrewdriver.elf
+	@echo 'Invoking: Cross ARM GNU Print Size'
+	arm-none-eabi-size --format=berkeley "SonicScrewdriver.elf"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) $(C++_DEPS)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(CC_DEPS)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS)$(S_UPPER_DEPS) SonicScrewdriver.elf
+	-$(RM) $(SECONDARY_SIZE)$(C++_DEPS)$(OBJS)$(C_DEPS)$(ASM_DEPS)$(CC_DEPS)$(SECONDARY_FLASH)$(CPP_DEPS)$(CXX_DEPS)$(C_UPPER_DEPS)$(S_UPPER_DEPS) SonicScrewdriver.elf
 	-@echo ' '
 
-secondary-outputs:
+secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)
 
 .PHONY: all clean dependents
 .SECONDARY:

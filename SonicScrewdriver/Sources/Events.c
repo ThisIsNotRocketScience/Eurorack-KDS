@@ -79,9 +79,7 @@ void Cpu_OnNMIINT(void)
 /* ===================================================================*/
 void SM1_OnBlockSent(LDD_TUserData *UserDataPtr)
 {
-	DACSEL_SetVal(0);
-	DACSENDDONE = 1;
-	/* Write your code here ... */
+	DAC_Done();
 }
 
 /*
