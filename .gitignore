@@ -1,8 +1,11 @@
 .metadata
-
-
 *.d
 SonicScrewdriver/Patterns/Patterns.bmx.backup
 SonicScrewdriver/Debug/
 SonicScrewdriver/Release/
 SonicScrewdriver/Generated_Code/
+SonicScrewdriver/Documentation/
+Goldfish/Generated_Code/
+Goldfish/Debug/
+Goldfish/Release/
+Goldfish/Documentation/
