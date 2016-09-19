@@ -1,10 +1,37 @@
 #include "PatternGen.h"
 #include <stdint.h>
 
-long RandomMemory= 0x1235;
 
 void Rotate(struct PatternGen_Target *T, int first, int length, int rotate);
 void Reverse(struct PatternGen_Target *T, int first, int length);
+
+
+void PatternGen_RandomSeed (struct PatternGen_Random *R, unsigned int seed)
+{
+	R->RandomMemory = (long)seed;
+}
+
+int  PatternGen_Rand(struct PatternGen_Random *R)
+{
+	return(((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
+}
+
+uint8_t PatternGen_RandByte(struct PatternGen_Random *R)
+{
+	return (PatternGen_Rand(R) >> 7) & 0xff;
+}
+
+// no float! saves space
+//float PatternGen_Rand1(struct PatternGen_Random *R)
+//{
+//	return PatternGen_Rand(R) / (float)(0x7fff);
+//}
+
+uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
+{
+	if ((PatternGen_Rand(R)>>6)&0xff >= perc) return 1;
+	return 0;
+}
 
 void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
@@ -84,20 +111,6 @@ void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings 
 }
 
 
-void  PatternGen_ZRANDOMSEED (unsigned int seed)
-{
-	RandomMemory = (long)seed;
-}
-
-int  zrand (void)
-{
-	return(((RandomMemory = RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
-}
-
-float RAND1()
-{
-	return zrand() / (float)(0x7fff);
-}
 
 
 
@@ -143,7 +156,7 @@ void Transpose(struct PatternGen_Target *T, int first, int length, int transpose
 	}
 }
 
-void PatternGen_Psych(struct PatternGen_Target *T, int Length)
+void PatternGen_Psych(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length)
 {
 	if (Length> PATTERNGEN_MAXTICK) Length = PATTERNGEN_MAXTICK;
 
@@ -151,15 +164,15 @@ void PatternGen_Psych(struct PatternGen_Target *T, int Length)
 	T->TPB = 4;
 	for (int i = 0; i < PATTERNGEN_MAXTICK; i++)
 	{
-		T->Ticks[i].vel = RAND1() ;
+		T->Ticks[i].vel = PatternGen_RandByte(R) ;
 
-		uint64_t a = zrand() & 32767;
+		uint64_t a = PatternGen_Rand(R) & 32767;
 		a *= 0x57619F1ULL;
 		a = (a>>(32+9)) + ((uint32_t)a >> 31);
 
 		T->Ticks[i].accent = (a != 0);
 
-		int r = (zrand() & 32767) >> 12;
+		int r = (PatternGen_Rand(R) & 32767) >> 12;
 		switch (r)
 		{
 		case 0:
@@ -190,7 +203,7 @@ void PatternGen_Psych(struct PatternGen_Target *T, int Length)
 	}
 }
 
-void PatternGen_Flat(struct PatternGen_Target *T, int Length)
+void PatternGen_Flat(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length)
 {
 	if (Length> PATTERNGEN_MAXTICK) Length = PATTERNGEN_MAXTICK;
 
@@ -200,15 +213,15 @@ void PatternGen_Flat(struct PatternGen_Target *T, int Length)
 	{
 
 
-		T->Ticks[i].vel = RAND1() ;
+		T->Ticks[i].vel = PatternGen_RandByte(R) ;
 
-		uint64_t a = zrand() & 32767;
+		uint64_t a = PatternGen_Rand(R) & 32767;
 		a *= 0x57619F1ULL;
 		a = (a>>(32+9)) + ((uint32_t)a >> 31);
 
 		T->Ticks[i].accent = (a != 0);
 
-		int r = (zrand() & 32767) >> 12;
+		int r = (PatternGen_Rand(R) & 32767) >> 12;
 		switch (r)
 		{
 		case 0:
@@ -229,7 +242,7 @@ void PatternGen_Flat(struct PatternGen_Target *T, int Length)
 
 };
 
-void PatternGen_Zeph(struct PatternGen_Target *T, int stepsperbeat, int beats, int fullcycles)
+void PatternGen_Zeph(struct PatternGen_Target *T, struct PatternGen_Random *R, int stepsperbeat, int beats, int fullcycles)
 {
 	int totalticks = stepsperbeat * beats * fullcycles;
 	int subpattern = stepsperbeat * beats;
@@ -237,7 +250,7 @@ void PatternGen_Zeph(struct PatternGen_Target *T, int stepsperbeat, int beats, i
 	{
 		return;
 	}
-	PatternGen_Goa(T, subpattern  );
+	PatternGen_Goa(T, R, subpattern  );
 	T->Length = totalticks;
 	T->TPB = stepsperbeat;
 	for (int i =1;i<fullcycles;i++)
@@ -248,31 +261,31 @@ void PatternGen_Zeph(struct PatternGen_Target *T, int stepsperbeat, int beats, i
 			T->Ticks[i*subpattern + j].vel= T->Ticks[j].vel;
 			T->Ticks[i*subpattern + j].accent = T->Ticks[j].accent;
 		}
-		if (RAND1() > 0.5)
+		if (PatternGen_PercChance(R, 128))
 		{
 			Rotate(T, (fullcycles-1)*subpattern,subpattern,3);
 		}
-		if (RAND1() > 0.5)
+		if (PatternGen_PercChance(R, 128))
 				{
 					Reverse(T, (fullcycles-1)*subpattern + subpattern/2,subpattern/2);
 				}
 	}
-	if (RAND1() > 0.5) Transpose(T, (fullcycles-1)*subpattern,subpattern,3);
-	if (RAND1() > 0.5) Transpose(T, 2*subpattern,7,-5);
+	if (PatternGen_PercChance(R, 128)) Transpose(T, (fullcycles-1)*subpattern,subpattern,3);
+	if (PatternGen_PercChance(R, 128)) Transpose(T, 2*subpattern,7,-5);
 }
 
 
-void PatternGen_Goa(struct PatternGen_Target *T, int Length)
+void PatternGen_Goa(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length)
 {
 	if (Length> PATTERNGEN_MAXTICK) Length = PATTERNGEN_MAXTICK;
 	T->TPB = 4;
 	T->Length = Length;
 	for (int i = 0;i < PATTERNGEN_MAXTICK;i++)
 	{
-		T->Ticks[i].vel = RAND1();
-		T->Ticks[i].accent = (RAND1()> 0.5) ? 1 : 0;
+		T->Ticks[i].vel = PatternGen_RandByte(R);
+		T->Ticks[i].accent = (PatternGen_PercChance(R, 128)) ? 1 : 0;
 
-		int RandNote = zrand() % 8;
+		int RandNote = PatternGen_Rand(R) % 8;
 		switch (RandNote)
 		{
 		case 0:
@@ -304,12 +317,12 @@ void PatternGen_Goa(struct PatternGen_Target *T, int Length)
 	}
 
 
-	if (RAND1() > 0.5)
+	if (PatternGen_PercChance(R,128))
 	{
 		Transpose(T, 0,7,3);
 	}
 
-	if(RAND1() > 0.5)
+	if (PatternGen_PercChance(R,128))
 	{
 		Transpose(T, 0,7,-5);
 	}			
@@ -343,6 +356,50 @@ unsigned char dither[24*3] =
 		0b1000, 0b1100, 0b1110
 };
 
+void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern2(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern6(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern7(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+void Pattern8(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
+
+typedef void (*GenFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output);
+
+GenFuncPtr Funcs[8] = {&Pattern1,Pattern2,Pattern3,Pattern4,Pattern5,Pattern6,Pattern7,Pattern8};
+
+struct PatternGen_Tick T1;
+struct PatternGen_Tick T2;
+struct PatternGen_Tick T3;
+struct PatternGen_Tick T4;
+
+struct PatternGen_Tick Top;
+struct PatternGen_Tick Bot;
+
+struct PatternGen_Random R1;
+struct PatternGen_Random R2;
+struct PatternGen_Random R3;
+struct PatternGen_Random R4;
+
+void CopyTick(struct PatternGen_Tick *A, struct PatternGen_Tick *Out )
+{
+	Out->accent = A->accent;
+	Out->note = A->note;
+	Out->vel = A->vel;
+}
+
+void ApplyDither(int tick, uint32_t ditherpattern, struct PatternGen_Tick *A, struct PatternGen_Tick *B, struct PatternGen_Tick *Out )
+{
+	if ((ditherpattern >> (tick & 0b11)) & 1 == 1)
+	{
+		CopyTick(A, Out);
+	}
+	else
+	{
+		CopyTick(B, Out);
+	}
+}
 void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *P, struct PatternGen_Settings *S)
 {
 
@@ -363,13 +420,26 @@ void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *
 	if (XFade > 0) ditherx = dither[xbase*3 + XFade-1];
 	if (YFade > 0) dithery = dither[ybase*3 + YFade-1];
 
-	switch(S->algooptions[P->algo])
+	PatternGen_RandomSeed(&R1, X + Y  * 32);
+	PatternGen_RandomSeed(&R2, X + Y  * 32 + 1) ;
+
+	PatternGen_RandomSeed(&R3, X + Y  * 32 + 32);
+	PatternGen_RandomSeed(&R4, X + Y  * 32 + 33);
+
+	GenFuncPtr TheFunc = Funcs[S->algooptions[P->algo]];
+	for (int i =0;i<len;i++)
 	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-		break;
+
+
+		TheFunc(P, S, &R1, i, &T1 );
+		TheFunc(P, S, &R2, i, &T2 );
+		TheFunc(P, S, &R3, i, &T3 );
+		TheFunc(P, S, &R4, i, &T4 );
+
+		 ApplyDither(i, ditherx, &T1, &T2, &Top);
+		 ApplyDither(i, ditherx, &T3, &T4, &Bot);
+
+		 ApplyDither(i, dithery, &Top, &Bot, &T->Ticks[i]);
 	}
 }
 

@@ -17,12 +17,17 @@ struct PatternGen_Target
 	unsigned char Length;
 };
 
-extern void PatternGen_ZRANDOMSEED(unsigned int seed);
+struct PatternGen_Random
+{
+	long RandomMemory;
+};
 
-extern void PatternGen_Goa(struct PatternGen_Target *T, int Length);
-extern void PatternGen_Flat(struct PatternGen_Target *T, int Length);
-extern void PatternGen_Psych(struct PatternGen_Target *T, int Length);
-extern void PatternGen_Zeph(struct PatternGen_Target *T, int stepsperbeat, int beats, int fullcycles);
+extern void PatternGen_RandomSeed(struct PatternGen_Random *R, unsigned int seed);
+
+extern void PatternGen_Goa(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length);
+extern void PatternGen_Flat(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length);
+extern void PatternGen_Psych(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length);
+extern void PatternGen_Zeph(struct PatternGen_Target *T, struct PatternGen_Random *R, int stepsperbeat, int beats, int fullcycles);
 
 struct PatternGen_Settings
 {

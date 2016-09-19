@@ -63,6 +63,7 @@ int adcchannels[6];
 struct PatternGen_Target Pattern;
 struct PatternGen_Settings Settings;
 struct PatternGen_Params Params;
+struct PatternGen_Random MainRandom;
 
 struct denoise_state_t
 {
@@ -190,8 +191,8 @@ int main(void)
 	int patternmode = 3;
 
 	PatternGen_LoadSettings(&Settings, &Params);
-	PatternGen_ZRANDOMSEED(oldseed);
-	PatternGen_Goa(&Pattern,16);
+	PatternGen_RandomSeed(&MainRandom, oldseed);
+	PatternGen_Goa(&Pattern, &MainRandom, 16);
 	AD1_Measure(FALSE);
 	int switchmode = 1;
 	SW2LED_ClrVal(0);
@@ -222,27 +223,27 @@ int main(void)
 		if (switchmode == 1){
 			// updated pattern needed for some reason!
 			switchmode = 0;
-			PatternGen_ZRANDOMSEED(newseed);
+			PatternGen_RandomSeed(&MainRandom,newseed);
 			oldseed = newseed;
 
 
 			switch(patternmode)
 			{
 			case 0:
-				PatternGen_Goa(&Pattern,16);
+				PatternGen_Goa(&Pattern, &MainRandom, 16);
 				LED4_SetVal(0);
 				LED2_ClrVal(0);
 				LED3_ClrVal(0);
 				break;
 			case 1:
-				PatternGen_Flat(&Pattern,16);
+				PatternGen_Flat(&Pattern, &MainRandom, 16);
 				LED4_ClrVal(0);
 				LED2_SetVal(0);
 				LED3_ClrVal(0);
 
 				break;
 			case 2:
-				PatternGen_Psych(&Pattern,16);
+				PatternGen_Psych(&Pattern, &MainRandom, 16);
 				LED4_ClrVal(0);
 				LED2_ClrVal(0);
 				LED3_SetVal(0);
@@ -250,7 +251,7 @@ int main(void)
 				break;
 
 			case 3:
-							PatternGen_Zeph(&Pattern, 4, 4, 4);
+							PatternGen_Zeph(&Pattern, &MainRandom, 4, 4, 4);
 							LED4_SetVal(0);
 							LED2_SetVal(0);
 							LED3_SetVal(0);
