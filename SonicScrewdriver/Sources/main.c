@@ -60,6 +60,7 @@ int adcchannels[6];
 
 #include "PatternGen.h"
 #include "DAC.h"
+
 struct PatternGen_Target Pattern;
 struct PatternGen_Settings Settings;
 struct PatternGen_Params Params;

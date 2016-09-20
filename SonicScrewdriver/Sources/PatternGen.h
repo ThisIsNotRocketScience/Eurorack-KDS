@@ -7,7 +7,7 @@ struct PatternGen_Tick
 {
 	unsigned char vel;
 	signed char note;
-	unsigned char accent ;
+	unsigned char accent;
 };
 
 struct PatternGen_Target

@@ -11,3 +11,6 @@ Goldfish/Release/
 Goldfish/Documentation/
 
 SonicScrewdriver/Debug/SonicScrewdriver.map
+SonicScrewdriver/Debug/Generated_Code/subdir.mk
+SonicScrewdriver/Debug/Project_Settings/Startup_Code/startup.o
+SonicScrewdriver/Debug/Generated_Code/subdir.mk
