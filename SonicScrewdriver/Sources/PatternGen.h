@@ -22,6 +22,14 @@ struct PatternGen_Random
 	long RandomMemory;
 };
 
+struct PatternGen_PatternFuncSpecific
+{
+	uint8_t b1;
+	uint8_t b2;
+	uint8_t b3;
+	uint8_t b4;
+};
+
 extern void PatternGen_RandomSeed(struct PatternGen_Random *R, unsigned int seed);
 
 extern void PatternGen_Goa(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length);

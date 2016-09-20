@@ -106,9 +106,9 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 }
 
 void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
-{
+		{
 	PatternGen_LoadDefaults(S,P);
-}
+		}
 
 
 
@@ -246,7 +246,7 @@ void PatternGen_Zeph(struct PatternGen_Target *T, struct PatternGen_Random *R, i
 {
 	int totalticks = stepsperbeat * beats * fullcycles;
 	int subpattern = stepsperbeat * beats;
-		if (totalticks > PATTERNGEN_MAXTICK)
+	if (totalticks > PATTERNGEN_MAXTICK)
 	{
 		return;
 	}
@@ -266,9 +266,9 @@ void PatternGen_Zeph(struct PatternGen_Target *T, struct PatternGen_Random *R, i
 			Rotate(T, (fullcycles-1)*subpattern,subpattern,3);
 		}
 		if (PatternGen_PercChance(R, 128))
-				{
-					Reverse(T, (fullcycles-1)*subpattern + subpattern/2,subpattern/2);
-				}
+		{
+			Reverse(T, (fullcycles-1)*subpattern + subpattern/2,subpattern/2);
+		}
 	}
 	if (PatternGen_PercChance(R, 128)) Transpose(T, (fullcycles-1)*subpattern,subpattern,3);
 	if (PatternGen_PercChance(R, 128)) Transpose(T, 2*subpattern,7,-5);
@@ -356,31 +356,85 @@ unsigned char dither[24*3] =
 		0b1000, 0b1100, 0b1110
 };
 
-void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern2(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern6(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern7(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
-void Pattern8(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output){}
 
-typedef void (*GenFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, int I, struct PatternGen_Tick *Output);
 
-GenFuncPtr Funcs[8] = {&Pattern1,Pattern2,Pattern3,Pattern4,Pattern5,Pattern6,Pattern7,Pattern8};
 
-struct PatternGen_Tick T1;
-struct PatternGen_Tick T2;
-struct PatternGen_Tick T3;
-struct PatternGen_Tick T4;
+void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
+{
+	// classic arguru goa scale conversion
+
+	Output->vel = PatternGen_RandByte(R);
+	Output->accent = (PatternGen_PercChance(R, 128)) ? 1 : 0;
+
+	int RandNote = PatternGen_Rand(R) % 8;
+	switch (RandNote)
+	{
+	case 0:
+	case 2: Output->note = 0;break;
+	case 1: Output->note = (char)0xf4;break; // -12
+
+	case 3: Output->note = 1;break;
+	case 4: Output->note = 3;break;
+	case 5: Output->note = 7;break;
+	case 6: Output->note = 0xc;break; // 12
+	case 7: Output->note = 0xd;break; // 13
+	}
+
+	if (Output->accent)
+	{
+		switch (RandNote)
+		{
+		case 0:
+		case 3:
+		case 7:Output->note= 0;break;
+		case 1:Output->note = (char)0xf4;break;
+		case 2:Output->note = (char)0xfe;break;
+		case 4:Output->note = 3;break;
+		case 5:Output->note = (char)0xf2;break;
+		case 6:Output->note = 1;break;
+		}
+	}
+
+	if (I<7)
+	{
+		if (PS->b1 == 0) Output->note += 3;
+		if (PS->b2 == 0) Output->note -= 3;
+	}
+}
+void Pattern2(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern6(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern7(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern8(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+
+typedef void (*GenFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output);
+typedef void (*InitFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S,struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output);
+
+void NoInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output){};
+
+void FourBool(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
+{
+	Output->b1 = PatternGen_PercChance(R, 127);
+	Output->b2 = PatternGen_PercChance(R, 127);
+	Output->b3 = PatternGen_PercChance(R, 127);
+	Output->b4 = PatternGen_PercChance(R, 127);
+}
+
+GenFuncPtr Funcs[8] = {&Pattern1,&Pattern2,&Pattern3,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
+InitFuncPtr InitFuncs[8] = {&FourBool,&FourBool,&FourBool,&FourBool,&NoInit,&NoInit,&NoInit,&NoInit};
+uint8_t FuncDither[8] = {1,1,1,1,1,1,1,1};
+
+
+
+struct PatternGen_PatternFuncSpecific FuncSpecific[4];
+struct PatternGen_Tick Ticks[4];
 
 struct PatternGen_Tick Top;
 struct PatternGen_Tick Bot;
 
-struct PatternGen_Random R1;
-struct PatternGen_Random R2;
-struct PatternGen_Random R3;
-struct PatternGen_Random R4;
+struct PatternGen_Random Randoms[4];
 
 void CopyTick(struct PatternGen_Tick *A, struct PatternGen_Tick *Out )
 {
@@ -400,6 +454,8 @@ void ApplyDither(int tick, uint32_t ditherpattern, struct PatternGen_Tick *A, st
 		CopyTick(B, Out);
 	}
 }
+
+
 void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *P, struct PatternGen_Settings *S)
 {
 
@@ -420,26 +476,43 @@ void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *
 	if (XFade > 0) ditherx = dither[xbase*3 + XFade-1];
 	if (YFade > 0) dithery = dither[ybase*3 + YFade-1];
 
-	PatternGen_RandomSeed(&R1, X + Y  * 32);
-	PatternGen_RandomSeed(&R2, X + Y  * 32 + 1) ;
+	PatternGen_RandomSeed(&Randoms[0], X + Y  * 32);
 
-	PatternGen_RandomSeed(&R3, X + Y  * 32 + 32);
-	PatternGen_RandomSeed(&R4, X + Y  * 32 + 33);
+	PatternGen_RandomSeed(&Randoms[1], X + Y  * 32 + 1) ;
 
-	GenFuncPtr TheFunc = Funcs[S->algooptions[P->algo]];
-	for (int i =0;i<len;i++)
+	PatternGen_RandomSeed(&Randoms[2], X + Y  * 32 + 32);
+	PatternGen_RandomSeed(&Randoms[3], X + Y  * 32 + 33);
+
+
+	int CurrentAlgo = S->algooptions[P->algo];
+	GenFuncPtr TheFunc = Funcs[CurrentAlgo];
+	InitFuncPtr InitFunc = InitFuncs[CurrentAlgo];
+
+	for (int j =0 ;j<4;j++)
 	{
+		InitFunc(P, S, &Randoms[j], &FuncSpecific[j]);
+	}
 
+	if (FuncDither[CurrentAlgo] == 1)
+	{
+		for (int i =0;i<len;i++)
+		{
+			for (int j =0 ;j<4;j++)
+			{
+				TheFunc(P, S, &Randoms[j], &FuncSpecific[j], i, &Ticks[j]);
+			}
 
-		TheFunc(P, S, &R1, i, &T1 );
-		TheFunc(P, S, &R2, i, &T2 );
-		TheFunc(P, S, &R3, i, &T3 );
-		TheFunc(P, S, &R4, i, &T4 );
-
-		 ApplyDither(i, ditherx, &T1, &T2, &Top);
-		 ApplyDither(i, ditherx, &T3, &T4, &Bot);
-
-		 ApplyDither(i, dithery, &Top, &Bot, &T->Ticks[i]);
+			ApplyDither(i, ditherx, &Ticks[0], &Ticks[1], &Top);
+			ApplyDither(i, ditherx, &Ticks[2], &Ticks[3], &Bot);
+			ApplyDither(i, dithery, &Top, &Bot, &T->Ticks[i]);
+		}
+	}
+	else
+	{
+		for (int i =0;i<len;i++)
+		{
+			TheFunc(P, S, &Randoms[0], &FuncSpecific[0], i, &T->Ticks[i]);
+		}
 	}
 }
 

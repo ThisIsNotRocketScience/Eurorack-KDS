@@ -43,21 +43,16 @@ Allocating common symbols
 Common symbol       size              file
 
 Params              0x6               ./Sources/main.o
-T2                  0x3               ./Sources/PatternGen.o
-R3                  0x4               ./Sources/PatternGen.o
-T4                  0x3               ./Sources/PatternGen.o
 adcchannels         0x18              ./Sources/main.o
 Settings            0x4c              ./Sources/main.o
 AD1_OutV            0xc               ./Generated_Code/AD1.o
+Ticks               0xc               ./Sources/PatternGen.o
+FuncSpecific        0x10              ./Sources/PatternGen.o
 Top                 0x3               ./Sources/PatternGen.o
-R4                  0x4               ./Sources/PatternGen.o
 AdcLdd1_DeviceDataPtr
                     0x4               ./Generated_Code/AD1.o
-T3                  0x3               ./Sources/PatternGen.o
-R1                  0x4               ./Sources/PatternGen.o
+Randoms             0x10              ./Sources/PatternGen.o
 SR_reg              0x1               ./Generated_Code/Cpu.o
-T1                  0x3               ./Sources/PatternGen.o
-R2                  0x4               ./Sources/PatternGen.o
 Bot                 0x3               ./Sources/PatternGen.o
 MainRandom          0x4               ./Sources/main.o
 Pattern             0x182             ./Sources/main.o
@@ -145,8 +140,6 @@ Discarded input sections
  .text          0x00000000        0x0 ./Sources/PatternGen.o
  .data          0x00000000        0x0 ./Sources/PatternGen.o
  .bss           0x00000000        0x0 ./Sources/PatternGen.o
- .text.Pattern1
-                0x00000000        0x2 ./Sources/PatternGen.o
  .text.Pattern2
                 0x00000000        0x2 ./Sources/PatternGen.o
  .text.Pattern3
@@ -161,19 +154,28 @@ Discarded input sections
                 0x00000000        0x2 ./Sources/PatternGen.o
  .text.Pattern8
                 0x00000000        0x2 ./Sources/PatternGen.o
+ .text.NoInit   0x00000000        0x2 ./Sources/PatternGen.o
+ .text.Pattern1
+                0x00000000       0xb8 ./Sources/PatternGen.o
+ .text.FourBool
+                0x00000000       0x30 ./Sources/PatternGen.o
  .text.CopyTick
                 0x00000000        0xe ./Sources/PatternGen.o
  .text.ApplyDither
                 0x00000000       0x28 ./Sources/PatternGen.o
  .text.PatternGen_Generate
-                0x00000000      0x148 ./Sources/PatternGen.o
+                0x00000000      0x16c ./Sources/PatternGen.o
  .data.Funcs    0x00000000       0x20 ./Sources/PatternGen.o
+ .data.FuncDither
+                0x00000000        0x8 ./Sources/PatternGen.o
  .data.dither   0x00000000       0x48 ./Sources/PatternGen.o
+ .data.InitFuncs
+                0x00000000       0x20 ./Sources/PatternGen.o
  .debug_macro   0x00000000      0x808 ./Sources/PatternGen.o
  .debug_macro   0x00000000       0x16 ./Sources/PatternGen.o
  .debug_macro   0x00000000       0x44 ./Sources/PatternGen.o
  .debug_macro   0x00000000      0x209 ./Sources/PatternGen.o
- COMMON         0x00000000       0x27 ./Sources/PatternGen.o
+ COMMON         0x00000000       0x33 ./Sources/PatternGen.o
  .group         0x00000000        0x8 ./Sources/exit.o
  .text          0x00000000        0x0 ./Sources/exit.o
  .data          0x00000000        0x0 ./Sources/exit.o
@@ -1720,7 +1722,7 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
  .bss.pwm       0x1ffffc3e        0x1 ./Sources/main.o
                 0x1ffffc3e                pwm
  *fill*         0x1ffffc3f        0x1 
- .bss.sonicsw_state.6137
+ .bss.sonicsw_state.6142
                 0x1ffffc40       0x14 ./Sources/main.o
  .bss.CVOut     0x1ffffc54        0x2 ./Sources/main.o
                 0x1ffffc54                CVOut
@@ -1909,161 +1911,161 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x0000076c       0x1e c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
 OUTPUT(SonicScrewdriver.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x6f9d
+.debug_info     0x00000000     0x724e
  .debug_info    0x00000000      0x207 ./Sources/DAC.o
  .debug_info    0x00000207      0x20f ./Sources/Events.o
- .debug_info    0x00000416     0x11f4 ./Sources/PatternGen.o
- .debug_info    0x0000160a      0x89e ./Sources/main.o
- .debug_info    0x00001ea8      0x3b8 ./Project_Settings/Startup_Code/startup.o
- .debug_info    0x00002260      0x50a ./Generated_Code/AD1.o
- .debug_info    0x0000276a      0x883 ./Generated_Code/AdcLdd1.o
- .debug_info    0x00002fed      0xaa2 ./Generated_Code/Cpu.o
- .debug_info    0x00003a8f      0x383 ./Generated_Code/DACSEL.o
- .debug_info    0x00003e12      0x306 ./Generated_Code/EInt1.o
- .debug_info    0x00004118      0x30d ./Generated_Code/GATE.o
- .debug_info    0x00004425      0x383 ./Generated_Code/LED1.o
- .debug_info    0x000047a8      0x383 ./Generated_Code/LED2.o
- .debug_info    0x00004b2b      0x383 ./Generated_Code/LED3.o
- .debug_info    0x00004eae      0x383 ./Generated_Code/LED4.o
- .debug_info    0x00005231      0x258 ./Generated_Code/PE_LDD.o
- .debug_info    0x00005489      0x11f ./Generated_Code/PTA.o
- .debug_info    0x000055a8      0x772 ./Generated_Code/SM1.o
- .debug_info    0x00005d1a      0x30d ./Generated_Code/SW1.o
- .debug_info    0x00006027      0x30d ./Generated_Code/SW2.o
- .debug_info    0x00006334      0x383 ./Generated_Code/SW2LED.o
- .debug_info    0x000066b7       0xc7 ./Generated_Code/TI1.o
- .debug_info    0x0000677e      0x55d ./Generated_Code/TU1.o
- .debug_info    0x00006cdb      0x1b4 ./Generated_Code/TimerIntLdd1.o
- .debug_info    0x00006e8f      0x10e ./Generated_Code/Vectors.o
+ .debug_info    0x00000416     0x14a5 ./Sources/PatternGen.o
+ .debug_info    0x000018bb      0x89e ./Sources/main.o
+ .debug_info    0x00002159      0x3b8 ./Project_Settings/Startup_Code/startup.o
+ .debug_info    0x00002511      0x50a ./Generated_Code/AD1.o
+ .debug_info    0x00002a1b      0x883 ./Generated_Code/AdcLdd1.o
+ .debug_info    0x0000329e      0xaa2 ./Generated_Code/Cpu.o
+ .debug_info    0x00003d40      0x383 ./Generated_Code/DACSEL.o
+ .debug_info    0x000040c3      0x306 ./Generated_Code/EInt1.o
+ .debug_info    0x000043c9      0x30d ./Generated_Code/GATE.o
+ .debug_info    0x000046d6      0x383 ./Generated_Code/LED1.o
+ .debug_info    0x00004a59      0x383 ./Generated_Code/LED2.o
+ .debug_info    0x00004ddc      0x383 ./Generated_Code/LED3.o
+ .debug_info    0x0000515f      0x383 ./Generated_Code/LED4.o
+ .debug_info    0x000054e2      0x258 ./Generated_Code/PE_LDD.o
+ .debug_info    0x0000573a      0x11f ./Generated_Code/PTA.o
+ .debug_info    0x00005859      0x772 ./Generated_Code/SM1.o
+ .debug_info    0x00005fcb      0x30d ./Generated_Code/SW1.o
+ .debug_info    0x000062d8      0x30d ./Generated_Code/SW2.o
+ .debug_info    0x000065e5      0x383 ./Generated_Code/SW2LED.o
+ .debug_info    0x00006968       0xc7 ./Generated_Code/TI1.o
+ .debug_info    0x00006a2f      0x55d ./Generated_Code/TU1.o
+ .debug_info    0x00006f8c      0x1b4 ./Generated_Code/TimerIntLdd1.o
+ .debug_info    0x00007140      0x10e ./Generated_Code/Vectors.o
 
-.debug_abbrev   0x00000000     0x23ea
+.debug_abbrev   0x00000000     0x2400
  .debug_abbrev  0x00000000      0x14d ./Sources/DAC.o
  .debug_abbrev  0x0000014d      0x13c ./Sources/Events.o
- .debug_abbrev  0x00000289      0x325 ./Sources/PatternGen.o
- .debug_abbrev  0x000005ae      0x1f3 ./Sources/main.o
- .debug_abbrev  0x000007a1      0x1f1 ./Project_Settings/Startup_Code/startup.o
- .debug_abbrev  0x00000992      0x1ed ./Generated_Code/AD1.o
- .debug_abbrev  0x00000b7f      0x211 ./Generated_Code/AdcLdd1.o
- .debug_abbrev  0x00000d90      0x1dc ./Generated_Code/Cpu.o
- .debug_abbrev  0x00000f6c      0x154 ./Generated_Code/DACSEL.o
- .debug_abbrev  0x000010c0      0x18f ./Generated_Code/EInt1.o
- .debug_abbrev  0x0000124f      0x11c ./Generated_Code/GATE.o
- .debug_abbrev  0x0000136b      0x154 ./Generated_Code/LED1.o
- .debug_abbrev  0x000014bf      0x154 ./Generated_Code/LED2.o
- .debug_abbrev  0x00001613      0x154 ./Generated_Code/LED3.o
- .debug_abbrev  0x00001767      0x154 ./Generated_Code/LED4.o
- .debug_abbrev  0x000018bb      0x12b ./Generated_Code/PE_LDD.o
- .debug_abbrev  0x000019e6       0x8d ./Generated_Code/PTA.o
- .debug_abbrev  0x00001a73      0x1ec ./Generated_Code/SM1.o
- .debug_abbrev  0x00001c5f      0x11c ./Generated_Code/SW1.o
- .debug_abbrev  0x00001d7b      0x11c ./Generated_Code/SW2.o
- .debug_abbrev  0x00001e97      0x154 ./Generated_Code/SW2LED.o
- .debug_abbrev  0x00001feb       0x86 ./Generated_Code/TI1.o
- .debug_abbrev  0x00002071      0x19c ./Generated_Code/TU1.o
- .debug_abbrev  0x0000220d      0x139 ./Generated_Code/TimerIntLdd1.o
- .debug_abbrev  0x00002346       0xa4 ./Generated_Code/Vectors.o
+ .debug_abbrev  0x00000289      0x33b ./Sources/PatternGen.o
+ .debug_abbrev  0x000005c4      0x1f3 ./Sources/main.o
+ .debug_abbrev  0x000007b7      0x1f1 ./Project_Settings/Startup_Code/startup.o
+ .debug_abbrev  0x000009a8      0x1ed ./Generated_Code/AD1.o
+ .debug_abbrev  0x00000b95      0x211 ./Generated_Code/AdcLdd1.o
+ .debug_abbrev  0x00000da6      0x1dc ./Generated_Code/Cpu.o
+ .debug_abbrev  0x00000f82      0x154 ./Generated_Code/DACSEL.o
+ .debug_abbrev  0x000010d6      0x18f ./Generated_Code/EInt1.o
+ .debug_abbrev  0x00001265      0x11c ./Generated_Code/GATE.o
+ .debug_abbrev  0x00001381      0x154 ./Generated_Code/LED1.o
+ .debug_abbrev  0x000014d5      0x154 ./Generated_Code/LED2.o
+ .debug_abbrev  0x00001629      0x154 ./Generated_Code/LED3.o
+ .debug_abbrev  0x0000177d      0x154 ./Generated_Code/LED4.o
+ .debug_abbrev  0x000018d1      0x12b ./Generated_Code/PE_LDD.o
+ .debug_abbrev  0x000019fc       0x8d ./Generated_Code/PTA.o
+ .debug_abbrev  0x00001a89      0x1ec ./Generated_Code/SM1.o
+ .debug_abbrev  0x00001c75      0x11c ./Generated_Code/SW1.o
+ .debug_abbrev  0x00001d91      0x11c ./Generated_Code/SW2.o
+ .debug_abbrev  0x00001ead      0x154 ./Generated_Code/SW2LED.o
+ .debug_abbrev  0x00002001       0x86 ./Generated_Code/TI1.o
+ .debug_abbrev  0x00002087      0x19c ./Generated_Code/TU1.o
+ .debug_abbrev  0x00002223      0x139 ./Generated_Code/TimerIntLdd1.o
+ .debug_abbrev  0x0000235c       0xa4 ./Generated_Code/Vectors.o
 
-.debug_loc      0x00000000     0x19a8
+.debug_loc      0x00000000     0x1ba5
  .debug_loc     0x00000000       0x87 ./Sources/DAC.o
  .debug_loc     0x00000087       0x40 ./Sources/Events.o
- .debug_loc     0x000000c7      0xb25 ./Sources/PatternGen.o
- .debug_loc     0x00000bec       0xe5 ./Sources/main.o
- .debug_loc     0x00000cd1      0x156 ./Project_Settings/Startup_Code/startup.o
- .debug_loc     0x00000e27      0x137 ./Generated_Code/AD1.o
- .debug_loc     0x00000f5e      0x1fe ./Generated_Code/AdcLdd1.o
- .debug_loc     0x0000115c       0x69 ./Generated_Code/DACSEL.o
- .debug_loc     0x000011c5       0x43 ./Generated_Code/EInt1.o
- .debug_loc     0x00001208       0x69 ./Generated_Code/GATE.o
- .debug_loc     0x00001271       0x69 ./Generated_Code/LED1.o
- .debug_loc     0x000012da       0x6a ./Generated_Code/LED2.o
- .debug_loc     0x00001344       0x68 ./Generated_Code/LED3.o
- .debug_loc     0x000013ac       0x68 ./Generated_Code/LED4.o
- .debug_loc     0x00001414       0xe3 ./Generated_Code/PE_LDD.o
- .debug_loc     0x000014f7      0x271 ./Generated_Code/SM1.o
- .debug_loc     0x00001768       0x69 ./Generated_Code/SW1.o
- .debug_loc     0x000017d1       0x68 ./Generated_Code/SW2.o
- .debug_loc     0x00001839       0x68 ./Generated_Code/SW2LED.o
- .debug_loc     0x000018a1       0x21 ./Generated_Code/TI1.o
- .debug_loc     0x000018c2       0x95 ./Generated_Code/TU1.o
- .debug_loc     0x00001957       0x51 ./Generated_Code/TimerIntLdd1.o
+ .debug_loc     0x000000c7      0xd22 ./Sources/PatternGen.o
+ .debug_loc     0x00000de9       0xe5 ./Sources/main.o
+ .debug_loc     0x00000ece      0x156 ./Project_Settings/Startup_Code/startup.o
+ .debug_loc     0x00001024      0x137 ./Generated_Code/AD1.o
+ .debug_loc     0x0000115b      0x1fe ./Generated_Code/AdcLdd1.o
+ .debug_loc     0x00001359       0x69 ./Generated_Code/DACSEL.o
+ .debug_loc     0x000013c2       0x43 ./Generated_Code/EInt1.o
+ .debug_loc     0x00001405       0x69 ./Generated_Code/GATE.o
+ .debug_loc     0x0000146e       0x69 ./Generated_Code/LED1.o
+ .debug_loc     0x000014d7       0x6a ./Generated_Code/LED2.o
+ .debug_loc     0x00001541       0x68 ./Generated_Code/LED3.o
+ .debug_loc     0x000015a9       0x68 ./Generated_Code/LED4.o
+ .debug_loc     0x00001611       0xe3 ./Generated_Code/PE_LDD.o
+ .debug_loc     0x000016f4      0x271 ./Generated_Code/SM1.o
+ .debug_loc     0x00001965       0x69 ./Generated_Code/SW1.o
+ .debug_loc     0x000019ce       0x68 ./Generated_Code/SW2.o
+ .debug_loc     0x00001a36       0x68 ./Generated_Code/SW2LED.o
+ .debug_loc     0x00001a9e       0x21 ./Generated_Code/TI1.o
+ .debug_loc     0x00001abf       0x95 ./Generated_Code/TU1.o
+ .debug_loc     0x00001b54       0x51 ./Generated_Code/TimerIntLdd1.o
 
-.debug_aranges  0x00000000      0x610
+.debug_aranges  0x00000000      0x620
  .debug_aranges
                 0x00000000       0x28 ./Sources/DAC.o
  .debug_aranges
                 0x00000028       0x50 ./Sources/Events.o
  .debug_aranges
-                0x00000078       0xd8 ./Sources/PatternGen.o
+                0x00000078       0xe8 ./Sources/PatternGen.o
  .debug_aranges
-                0x00000150       0x30 ./Sources/main.o
+                0x00000160       0x30 ./Sources/main.o
  .debug_aranges
-                0x00000180       0x58 ./Project_Settings/Startup_Code/startup.o
+                0x00000190       0x58 ./Project_Settings/Startup_Code/startup.o
  .debug_aranges
-                0x000001d8       0x60 ./Generated_Code/AD1.o
+                0x000001e8       0x60 ./Generated_Code/AD1.o
  .debug_aranges
-                0x00000238       0x60 ./Generated_Code/AdcLdd1.o
+                0x00000248       0x60 ./Generated_Code/AdcLdd1.o
  .debug_aranges
-                0x00000298       0x40 ./Generated_Code/Cpu.o
+                0x000002a8       0x40 ./Generated_Code/Cpu.o
  .debug_aranges
-                0x000002d8       0x40 ./Generated_Code/DACSEL.o
+                0x000002e8       0x40 ./Generated_Code/DACSEL.o
  .debug_aranges
-                0x00000318       0x28 ./Generated_Code/EInt1.o
+                0x00000328       0x28 ./Generated_Code/EInt1.o
  .debug_aranges
-                0x00000340       0x28 ./Generated_Code/GATE.o
+                0x00000350       0x28 ./Generated_Code/GATE.o
  .debug_aranges
-                0x00000368       0x40 ./Generated_Code/LED1.o
+                0x00000378       0x40 ./Generated_Code/LED1.o
  .debug_aranges
-                0x000003a8       0x40 ./Generated_Code/LED2.o
+                0x000003b8       0x40 ./Generated_Code/LED2.o
  .debug_aranges
-                0x000003e8       0x40 ./Generated_Code/LED3.o
+                0x000003f8       0x40 ./Generated_Code/LED3.o
  .debug_aranges
-                0x00000428       0x40 ./Generated_Code/LED4.o
+                0x00000438       0x40 ./Generated_Code/LED4.o
  .debug_aranges
-                0x00000468       0x30 ./Generated_Code/PE_LDD.o
+                0x00000478       0x30 ./Generated_Code/PE_LDD.o
  .debug_aranges
-                0x00000498       0x20 ./Generated_Code/PTA.o
+                0x000004a8       0x20 ./Generated_Code/PTA.o
  .debug_aranges
-                0x000004b8       0x40 ./Generated_Code/SM1.o
+                0x000004c8       0x40 ./Generated_Code/SM1.o
  .debug_aranges
-                0x000004f8       0x28 ./Generated_Code/SW1.o
+                0x00000508       0x28 ./Generated_Code/SW1.o
  .debug_aranges
-                0x00000520       0x28 ./Generated_Code/SW2.o
+                0x00000530       0x28 ./Generated_Code/SW2.o
  .debug_aranges
-                0x00000548       0x40 ./Generated_Code/SW2LED.o
+                0x00000558       0x40 ./Generated_Code/SW2LED.o
  .debug_aranges
-                0x00000588       0x20 ./Generated_Code/TI1.o
+                0x00000598       0x20 ./Generated_Code/TI1.o
  .debug_aranges
-                0x000005a8       0x28 ./Generated_Code/TU1.o
+                0x000005b8       0x28 ./Generated_Code/TU1.o
  .debug_aranges
-                0x000005d0       0x28 ./Generated_Code/TimerIntLdd1.o
+                0x000005e0       0x28 ./Generated_Code/TimerIntLdd1.o
  .debug_aranges
-                0x000005f8       0x18 ./Generated_Code/Vectors.o
+                0x00000608       0x18 ./Generated_Code/Vectors.o
 
-.debug_ranges   0x00000000      0x580
+.debug_ranges   0x00000000      0x530
  .debug_ranges  0x00000000       0x18 ./Sources/DAC.o
  .debug_ranges  0x00000018       0x40 ./Sources/Events.o
- .debug_ranges  0x00000058      0x188 ./Sources/PatternGen.o
- .debug_ranges  0x000001e0       0x20 ./Sources/main.o
- .debug_ranges  0x00000200       0x60 ./Project_Settings/Startup_Code/startup.o
- .debug_ranges  0x00000260       0x50 ./Generated_Code/AD1.o
- .debug_ranges  0x000002b0       0x68 ./Generated_Code/AdcLdd1.o
- .debug_ranges  0x00000318       0x30 ./Generated_Code/Cpu.o
- .debug_ranges  0x00000348       0x30 ./Generated_Code/DACSEL.o
- .debug_ranges  0x00000378       0x18 ./Generated_Code/EInt1.o
- .debug_ranges  0x00000390       0x18 ./Generated_Code/GATE.o
- .debug_ranges  0x000003a8       0x30 ./Generated_Code/LED1.o
- .debug_ranges  0x000003d8       0x30 ./Generated_Code/LED2.o
- .debug_ranges  0x00000408       0x30 ./Generated_Code/LED3.o
- .debug_ranges  0x00000438       0x30 ./Generated_Code/LED4.o
- .debug_ranges  0x00000468       0x20 ./Generated_Code/PE_LDD.o
- .debug_ranges  0x00000488       0x10 ./Generated_Code/PTA.o
- .debug_ranges  0x00000498       0x48 ./Generated_Code/SM1.o
- .debug_ranges  0x000004e0       0x18 ./Generated_Code/SW1.o
- .debug_ranges  0x000004f8       0x18 ./Generated_Code/SW2.o
- .debug_ranges  0x00000510       0x30 ./Generated_Code/SW2LED.o
- .debug_ranges  0x00000540       0x10 ./Generated_Code/TI1.o
- .debug_ranges  0x00000550       0x18 ./Generated_Code/TU1.o
- .debug_ranges  0x00000568       0x18 ./Generated_Code/TimerIntLdd1.o
+ .debug_ranges  0x00000058      0x138 ./Sources/PatternGen.o
+ .debug_ranges  0x00000190       0x20 ./Sources/main.o
+ .debug_ranges  0x000001b0       0x60 ./Project_Settings/Startup_Code/startup.o
+ .debug_ranges  0x00000210       0x50 ./Generated_Code/AD1.o
+ .debug_ranges  0x00000260       0x68 ./Generated_Code/AdcLdd1.o
+ .debug_ranges  0x000002c8       0x30 ./Generated_Code/Cpu.o
+ .debug_ranges  0x000002f8       0x30 ./Generated_Code/DACSEL.o
+ .debug_ranges  0x00000328       0x18 ./Generated_Code/EInt1.o
+ .debug_ranges  0x00000340       0x18 ./Generated_Code/GATE.o
+ .debug_ranges  0x00000358       0x30 ./Generated_Code/LED1.o
+ .debug_ranges  0x00000388       0x30 ./Generated_Code/LED2.o
+ .debug_ranges  0x000003b8       0x30 ./Generated_Code/LED3.o
+ .debug_ranges  0x000003e8       0x30 ./Generated_Code/LED4.o
+ .debug_ranges  0x00000418       0x20 ./Generated_Code/PE_LDD.o
+ .debug_ranges  0x00000438       0x10 ./Generated_Code/PTA.o
+ .debug_ranges  0x00000448       0x48 ./Generated_Code/SM1.o
+ .debug_ranges  0x00000490       0x18 ./Generated_Code/SW1.o
+ .debug_ranges  0x000004a8       0x18 ./Generated_Code/SW2.o
+ .debug_ranges  0x000004c0       0x30 ./Generated_Code/SW2LED.o
+ .debug_ranges  0x000004f0       0x10 ./Generated_Code/TI1.o
+ .debug_ranges  0x00000500       0x18 ./Generated_Code/TU1.o
+ .debug_ranges  0x00000518       0x18 ./Generated_Code/TimerIntLdd1.o
 
 .debug_macro    0x00000000     0xaee7
  .debug_macro   0x00000000       0xc8 ./Sources/DAC.o
@@ -2153,83 +2155,83 @@ OUTPUT(SonicScrewdriver.elf elf32-littlearm)
  .debug_macro   0x0000ac3d       0xc5 ./Generated_Code/TimerIntLdd1.o
  .debug_macro   0x0000ad02      0x1e5 ./Generated_Code/Vectors.o
 
-.debug_line     0x00000000     0x55ab
+.debug_line     0x00000000     0x55fd
  .debug_line    0x00000000      0x2e7 ./Sources/DAC.o
  .debug_line    0x000002e7      0x413 ./Sources/Events.o
- .debug_line    0x000006fa      0x50a ./Sources/PatternGen.o
- .debug_line    0x00000c04      0x4dc ./Sources/main.o
- .debug_line    0x000010e0      0x323 ./Project_Settings/Startup_Code/startup.o
- .debug_line    0x00001403      0x4d4 ./Generated_Code/AD1.o
- .debug_line    0x000018d7      0x388 ./Generated_Code/AdcLdd1.o
- .debug_line    0x00001c5f      0x52f ./Generated_Code/Cpu.o
- .debug_line    0x0000218e      0x2c4 ./Generated_Code/DACSEL.o
- .debug_line    0x00002452      0x404 ./Generated_Code/EInt1.o
- .debug_line    0x00002856      0x287 ./Generated_Code/GATE.o
- .debug_line    0x00002add      0x2c0 ./Generated_Code/LED1.o
- .debug_line    0x00002d9d      0x2c0 ./Generated_Code/LED2.o
- .debug_line    0x0000305d      0x2c0 ./Generated_Code/LED3.o
- .debug_line    0x0000331d      0x2c0 ./Generated_Code/LED4.o
- .debug_line    0x000035dd      0x37b ./Generated_Code/PE_LDD.o
- .debug_line    0x00003958      0x205 ./Generated_Code/PTA.o
- .debug_line    0x00003b5d      0x4b2 ./Generated_Code/SM1.o
- .debug_line    0x0000400f      0x285 ./Generated_Code/SW1.o
- .debug_line    0x00004294      0x285 ./Generated_Code/SW2.o
- .debug_line    0x00004519      0x2c4 ./Generated_Code/SW2LED.o
- .debug_line    0x000047dd      0x3d1 ./Generated_Code/TI1.o
- .debug_line    0x00004bae      0x2b8 ./Generated_Code/TU1.o
- .debug_line    0x00004e66      0x2a2 ./Generated_Code/TimerIntLdd1.o
- .debug_line    0x00005108      0x4a3 ./Generated_Code/Vectors.o
+ .debug_line    0x000006fa      0x55c ./Sources/PatternGen.o
+ .debug_line    0x00000c56      0x4dc ./Sources/main.o
+ .debug_line    0x00001132      0x323 ./Project_Settings/Startup_Code/startup.o
+ .debug_line    0x00001455      0x4d4 ./Generated_Code/AD1.o
+ .debug_line    0x00001929      0x388 ./Generated_Code/AdcLdd1.o
+ .debug_line    0x00001cb1      0x52f ./Generated_Code/Cpu.o
+ .debug_line    0x000021e0      0x2c4 ./Generated_Code/DACSEL.o
+ .debug_line    0x000024a4      0x404 ./Generated_Code/EInt1.o
+ .debug_line    0x000028a8      0x287 ./Generated_Code/GATE.o
+ .debug_line    0x00002b2f      0x2c0 ./Generated_Code/LED1.o
+ .debug_line    0x00002def      0x2c0 ./Generated_Code/LED2.o
+ .debug_line    0x000030af      0x2c0 ./Generated_Code/LED3.o
+ .debug_line    0x0000336f      0x2c0 ./Generated_Code/LED4.o
+ .debug_line    0x0000362f      0x37b ./Generated_Code/PE_LDD.o
+ .debug_line    0x000039aa      0x205 ./Generated_Code/PTA.o
+ .debug_line    0x00003baf      0x4b2 ./Generated_Code/SM1.o
+ .debug_line    0x00004061      0x285 ./Generated_Code/SW1.o
+ .debug_line    0x000042e6      0x285 ./Generated_Code/SW2.o
+ .debug_line    0x0000456b      0x2c4 ./Generated_Code/SW2LED.o
+ .debug_line    0x0000482f      0x3d1 ./Generated_Code/TI1.o
+ .debug_line    0x00004c00      0x2b8 ./Generated_Code/TU1.o
+ .debug_line    0x00004eb8      0x2a2 ./Generated_Code/TimerIntLdd1.o
+ .debug_line    0x0000515a      0x4a3 ./Generated_Code/Vectors.o
 
-.debug_str      0x00000000    0x33c90
+.debug_str      0x00000000    0x33cf7
  .debug_str     0x00000000    0x24fe6 ./Sources/DAC.o
                               0x253e5 (size before relaxing)
  .debug_str     0x00024fe6     0xa955 ./Sources/Events.o
                               0x2fc65 (size before relaxing)
- .debug_str     0x0002f93b      0x334 ./Sources/PatternGen.o
-                               0x3107 (size before relaxing)
- .debug_str     0x0002fc6f     0x1d48 ./Sources/main.o
+ .debug_str     0x0002f93b      0x39b ./Sources/PatternGen.o
+                               0x3181 (size before relaxing)
+ .debug_str     0x0002fcd6     0x1d48 ./Sources/main.o
                               0x31b45 (size before relaxing)
- .debug_str     0x000319b7     0x114b ./Project_Settings/Startup_Code/startup.o
+ .debug_str     0x00031a1e     0x114b ./Project_Settings/Startup_Code/startup.o
                                0x4bcb (size before relaxing)
- .debug_str     0x00032b02      0x215 ./Generated_Code/AD1.o
+ .debug_str     0x00032b69      0x215 ./Generated_Code/AD1.o
                               0x2fe5a (size before relaxing)
- .debug_str     0x00032d17      0x41e ./Generated_Code/AdcLdd1.o
+ .debug_str     0x00032d7e      0x41e ./Generated_Code/AdcLdd1.o
                               0x245a5 (size before relaxing)
- .debug_str     0x00033135      0x248 ./Generated_Code/Cpu.o
+ .debug_str     0x0003319c      0x248 ./Generated_Code/Cpu.o
                               0x2ff99 (size before relaxing)
- .debug_str     0x0003337d       0x86 ./Generated_Code/DACSEL.o
+ .debug_str     0x000333e4       0x86 ./Generated_Code/DACSEL.o
                               0x1fe0c (size before relaxing)
- .debug_str     0x00033403       0x6d ./Generated_Code/EInt1.o
+ .debug_str     0x0003346a       0x6d ./Generated_Code/EInt1.o
                               0x2fd29 (size before relaxing)
- .debug_str     0x00033470       0x4a ./Generated_Code/GATE.o
+ .debug_str     0x000334d7       0x4a ./Generated_Code/GATE.o
                               0x1fd6c (size before relaxing)
- .debug_str     0x000334ba       0x62 ./Generated_Code/LED1.o
+ .debug_str     0x00033521       0x62 ./Generated_Code/LED1.o
                               0x1fde4 (size before relaxing)
- .debug_str     0x0003351c       0x56 ./Generated_Code/LED2.o
+ .debug_str     0x00033583       0x56 ./Generated_Code/LED2.o
                               0x1fde6 (size before relaxing)
- .debug_str     0x00033572       0x56 ./Generated_Code/LED3.o
+ .debug_str     0x000335d9       0x56 ./Generated_Code/LED3.o
                               0x1fde4 (size before relaxing)
- .debug_str     0x000335c8       0x56 ./Generated_Code/LED4.o
+ .debug_str     0x0003362f       0x56 ./Generated_Code/LED4.o
                               0x1fde4 (size before relaxing)
- .debug_str     0x0003361e      0x17e ./Generated_Code/PE_LDD.o
+ .debug_str     0x00033685      0x17e ./Generated_Code/PE_LDD.o
                               0x2fd4a (size before relaxing)
- .debug_str     0x0003379c       0x18 ./Generated_Code/PTA.o
+ .debug_str     0x00033803       0x18 ./Generated_Code/PTA.o
                               0x1ee3e (size before relaxing)
- .debug_str     0x000337b4      0x1ed ./Generated_Code/SM1.o
+ .debug_str     0x0003381b      0x1ed ./Generated_Code/SM1.o
                               0x2ffe0 (size before relaxing)
- .debug_str     0x000339a1       0x46 ./Generated_Code/SW1.o
+ .debug_str     0x00033a08       0x46 ./Generated_Code/SW1.o
                               0x1fd5e (size before relaxing)
- .debug_str     0x000339e7       0x3b ./Generated_Code/SW2.o
+ .debug_str     0x00033a4e       0x3b ./Generated_Code/SW2.o
                               0x1fd5e (size before relaxing)
- .debug_str     0x00033a22       0x60 ./Generated_Code/SW2LED.o
+ .debug_str     0x00033a89       0x60 ./Generated_Code/SW2LED.o
                               0x1fe0c (size before relaxing)
- .debug_str     0x00033a82       0x31 ./Generated_Code/TI1.o
+ .debug_str     0x00033ae9       0x31 ./Generated_Code/TI1.o
                               0x2fbcf (size before relaxing)
- .debug_str     0x00033ab3      0x12a ./Generated_Code/TU1.o
+ .debug_str     0x00033b1a      0x12a ./Generated_Code/TU1.o
                               0x2107d (size before relaxing)
- .debug_str     0x00033bdd       0x97 ./Generated_Code/TimerIntLdd1.o
+ .debug_str     0x00033c44       0x97 ./Generated_Code/TimerIntLdd1.o
                               0x20f10 (size before relaxing)
- .debug_str     0x00033c74       0x1c ./Generated_Code/Vectors.o
+ .debug_str     0x00033cdb       0x1c ./Generated_Code/Vectors.o
                               0x2fbdd (size before relaxing)
 
 .comment        0x00000000       0x70
@@ -2260,39 +2262,39 @@ OUTPUT(SonicScrewdriver.elf elf32-littlearm)
  .comment       0x00000000       0x71 ./Generated_Code/TimerIntLdd1.o
  .comment       0x00000000       0x71 ./Generated_Code/Vectors.o
 
-.debug_frame    0x00000000      0xd98
+.debug_frame    0x00000000      0xdd0
  .debug_frame   0x00000000       0x48 ./Sources/DAC.o
  .debug_frame   0x00000048       0xa0 ./Sources/Events.o
- .debug_frame   0x000000e8      0x240 ./Sources/PatternGen.o
- .debug_frame   0x00000328       0x68 ./Sources/main.o
- .debug_frame   0x00000390       0xb4 ./Project_Settings/Startup_Code/startup.o
- .debug_frame   0x00000444       0xf4 ./Generated_Code/AD1.o
- .debug_frame   0x00000538       0xe8 ./Generated_Code/AdcLdd1.o
- .debug_frame   0x00000620       0x84 ./Generated_Code/Cpu.o
- .debug_frame   0x000006a4       0x60 ./Generated_Code/DACSEL.o
- .debug_frame   0x00000704       0x40 ./Generated_Code/EInt1.o
- .debug_frame   0x00000744       0x30 ./Generated_Code/GATE.o
- .debug_frame   0x00000774       0x60 ./Generated_Code/LED1.o
- .debug_frame   0x000007d4       0x60 ./Generated_Code/LED2.o
- .debug_frame   0x00000834       0x60 ./Generated_Code/LED3.o
- .debug_frame   0x00000894       0x60 ./Generated_Code/LED4.o
- .debug_frame   0x000008f4       0x40 ./Generated_Code/PE_LDD.o
- .debug_frame   0x00000934       0x20 ./Generated_Code/PTA.o
- .debug_frame   0x00000954       0xa4 ./Generated_Code/SM1.o
- .debug_frame   0x000009f8       0x30 ./Generated_Code/SW1.o
- .debug_frame   0x00000a28       0x30 ./Generated_Code/SW2.o
- .debug_frame   0x00000a58       0x60 ./Generated_Code/SW2LED.o
- .debug_frame   0x00000ab8       0x28 ./Generated_Code/TI1.o
- .debug_frame   0x00000ae0       0x44 ./Generated_Code/TU1.o
- .debug_frame   0x00000b24       0x44 ./Generated_Code/TimerIntLdd1.o
- .debug_frame   0x00000b68       0x20 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_divsi3.o)
- .debug_frame   0x00000b88       0x30 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_muldi3.o)
- .debug_frame   0x00000bb8       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(divdf3.o)
- .debug_frame   0x00000bf4       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(eqdf2.o)
- .debug_frame   0x00000c30       0x38 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(gedf2.o)
- .debug_frame   0x00000c68       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(ledf2.o)
- .debug_frame   0x00000ca4       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(muldf3.o)
- .debug_frame   0x00000ce0       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(subdf3.o)
- .debug_frame   0x00000d1c       0x2c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(fixdfsi.o)
- .debug_frame   0x00000d48       0x30 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(floatsidf.o)
- .debug_frame   0x00000d78       0x20 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_udivsi3.o)
+ .debug_frame   0x000000e8      0x278 ./Sources/PatternGen.o
+ .debug_frame   0x00000360       0x68 ./Sources/main.o
+ .debug_frame   0x000003c8       0xb4 ./Project_Settings/Startup_Code/startup.o
+ .debug_frame   0x0000047c       0xf4 ./Generated_Code/AD1.o
+ .debug_frame   0x00000570       0xe8 ./Generated_Code/AdcLdd1.o
+ .debug_frame   0x00000658       0x84 ./Generated_Code/Cpu.o
+ .debug_frame   0x000006dc       0x60 ./Generated_Code/DACSEL.o
+ .debug_frame   0x0000073c       0x40 ./Generated_Code/EInt1.o
+ .debug_frame   0x0000077c       0x30 ./Generated_Code/GATE.o
+ .debug_frame   0x000007ac       0x60 ./Generated_Code/LED1.o
+ .debug_frame   0x0000080c       0x60 ./Generated_Code/LED2.o
+ .debug_frame   0x0000086c       0x60 ./Generated_Code/LED3.o
+ .debug_frame   0x000008cc       0x60 ./Generated_Code/LED4.o
+ .debug_frame   0x0000092c       0x40 ./Generated_Code/PE_LDD.o
+ .debug_frame   0x0000096c       0x20 ./Generated_Code/PTA.o
+ .debug_frame   0x0000098c       0xa4 ./Generated_Code/SM1.o
+ .debug_frame   0x00000a30       0x30 ./Generated_Code/SW1.o
+ .debug_frame   0x00000a60       0x30 ./Generated_Code/SW2.o
+ .debug_frame   0x00000a90       0x60 ./Generated_Code/SW2LED.o
+ .debug_frame   0x00000af0       0x28 ./Generated_Code/TI1.o
+ .debug_frame   0x00000b18       0x44 ./Generated_Code/TU1.o
+ .debug_frame   0x00000b5c       0x44 ./Generated_Code/TimerIntLdd1.o
+ .debug_frame   0x00000ba0       0x20 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_divsi3.o)
+ .debug_frame   0x00000bc0       0x30 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_muldi3.o)
+ .debug_frame   0x00000bf0       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(divdf3.o)
+ .debug_frame   0x00000c2c       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(eqdf2.o)
+ .debug_frame   0x00000c68       0x38 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(gedf2.o)
+ .debug_frame   0x00000ca0       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(ledf2.o)
+ .debug_frame   0x00000cdc       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(muldf3.o)
+ .debug_frame   0x00000d18       0x3c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(subdf3.o)
+ .debug_frame   0x00000d54       0x2c c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(fixdfsi.o)
+ .debug_frame   0x00000d80       0x30 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(floatsidf.o)
+ .debug_frame   0x00000db0       0x20 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(_udivsi3.o)
