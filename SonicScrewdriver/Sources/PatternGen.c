@@ -21,15 +21,15 @@ uint8_t PatternGen_RandByte(struct PatternGen_Random *R)
 	return (PatternGen_Rand(R) >> 7) & 0xff;
 }
 
-// no float! saves space
-//float PatternGen_Rand1(struct PatternGen_Random *R)
-//{
-//	return PatternGen_Rand(R) / (float)(0x7fff);
-//}
+uint8_t PatternGen_BoolChance(struct PatternGen_Random *R)
+{
+	return (((PatternGen_Rand(R) >> 16 )) &1 == 1 ) ?1:0;
+}
 
 uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
 {
-	if ((PatternGen_Rand(R)>>6)&0xff >= perc) return 1;
+	int Res =(PatternGen_Rand(R)>>6);
+	if ((Res &0xff) >= perc) return 1;
 	return 0;
 }
 
@@ -106,9 +106,9 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 }
 
 void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
-		{
+				{
 	PatternGen_LoadDefaults(S,P);
-		}
+				}
 
 
 
@@ -283,7 +283,7 @@ void PatternGen_Goa(struct PatternGen_Target *T, struct PatternGen_Random *R, in
 	for (int i = 0;i < PATTERNGEN_MAXTICK;i++)
 	{
 		T->Ticks[i].vel = PatternGen_RandByte(R);
-		T->Ticks[i].accent = (PatternGen_PercChance(R, 128)) ? 1 : 0;
+		T->Ticks[i].accent =  (PatternGen_BoolChance(R)) ? 1 : 0;
 
 		int RandNote = PatternGen_Rand(R) % 8;
 		switch (RandNote)
@@ -317,12 +317,12 @@ void PatternGen_Goa(struct PatternGen_Target *T, struct PatternGen_Random *R, in
 	}
 
 
-	if (PatternGen_PercChance(R,128))
+	if (PatternGen_BoolChance(R))
 	{
 		Transpose(T, 0,7,3);
 	}
 
-	if (PatternGen_PercChance(R,128))
+	if (PatternGen_BoolChance(R))
 	{
 		Transpose(T, 0,7,-5);
 	}			
@@ -426,14 +426,11 @@ GenFuncPtr Funcs[8] = {&Pattern1,&Pattern2,&Pattern3,&Pattern4,&Pattern5,&Patter
 InitFuncPtr InitFuncs[8] = {&FourBool,&FourBool,&FourBool,&FourBool,&NoInit,&NoInit,&NoInit,&NoInit};
 uint8_t FuncDither[8] = {1,1,1,1,1,1,1,1};
 
-
-
 struct PatternGen_PatternFuncSpecific FuncSpecific[4];
-struct PatternGen_Tick Ticks[4];
 
+struct PatternGen_Tick Ticks[4];
 struct PatternGen_Tick Top;
 struct PatternGen_Tick Bot;
-
 struct PatternGen_Random Randoms[4];
 
 void CopyTick(struct PatternGen_Tick *A, struct PatternGen_Tick *Out )
@@ -476,10 +473,9 @@ void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *
 	if (XFade > 0) ditherx = dither[xbase*3 + XFade-1];
 	if (YFade > 0) dithery = dither[ybase*3 + YFade-1];
 
+
 	PatternGen_RandomSeed(&Randoms[0], X + Y  * 32);
-
 	PatternGen_RandomSeed(&Randoms[1], X + Y  * 32 + 1) ;
-
 	PatternGen_RandomSeed(&Randoms[2], X + Y  * 32 + 32);
 	PatternGen_RandomSeed(&Randoms[3], X + Y  * 32 + 33);
 

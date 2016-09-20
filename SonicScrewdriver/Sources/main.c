@@ -147,7 +147,7 @@ void doTimer()
 		{
 			countdownTick = msecperbeat;
 
-			if (Pattern.Ticks[Tick].vel >= (1.0 - (adcchannels[5] / 65535.0)) )
+			if (Pattern.Ticks[Tick].vel >= (255 - (adcchannels[5] / 256.0)) )
 			{
 				countdownNote = (countdownTick * 900 ) / 1000;
 
@@ -188,7 +188,7 @@ int main(void)
 	static struct denoise_state_t triggersw_state = {0};
 	static struct denoise_state_t sonicsw_state = {0};
 	static struct denoise_state_t gatesw_state = {0};
-	int patternmode = 3;
+	int patternmode = 4;
 
 	PatternGen_LoadSettings(&Settings, &Params);
 	PatternGen_RandomSeed(&MainRandom, oldseed);
@@ -207,7 +207,7 @@ int main(void)
 		if (sonicsw_state.pressed == 1)
 		{
 			switchmode=1;
-			patternmode = (patternmode+ 1) % 4;
+			patternmode = (patternmode+ 1) % 5;
 		}
 
 		if (measured == 1)
@@ -217,7 +217,7 @@ int main(void)
 		}
 
 		// read the X/Y seed knobs
-		long newseed= (adcchannels[2]>>11) + (adcchannels[4]>>11)<<16;
+		long newseed= (adcchannels[2]>>8) + ((adcchannels[4]>>8)<<8);
 		if (newseed!= oldseed) switchmode = 1;
 
 		if (switchmode == 1){
@@ -257,6 +257,15 @@ int main(void)
 							LED3_SetVal(0);
 
 							break;
+			case 4:
+				Params.seed1 = (adcchannels[2]>>8);
+				Params.seed2 = (adcchannels[4]>>8);
+										PatternGen_Generate(&Pattern,&Params, &Settings);
+										LED4_SetVal(0);
+										LED2_ClrVal(0);
+										LED3_SetVal(0);
+
+										break;
 			}
 		}
 

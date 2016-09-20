@@ -8,15 +8,16 @@ void DAC_Done()
 	DACSEL_SetVal(0);
 	DACSENDDONE = 1;
 }
+const int shutdown1 = 0;
+const int gain1 = 0;
+const int shutdown2 = 0	;
+const int gain2 = 0;
+unsigned char coms[2];
 
 void DAC_Write(int channel, int value)
 {
 
-	const int shutdown1 = 0;
-	const int gain1 = 0;
-	const int shutdown2 = 0	;
-	const int gain2 = 0;
-	unsigned char coms[2];
+
 
 
 	if (DACSENDDONE == 0)
