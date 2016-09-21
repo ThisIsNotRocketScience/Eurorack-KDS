@@ -123,10 +123,13 @@ long oldseed= -1;
 int beatpwm = 0;
 byte pwm = 0;
 
+int timesincelastclocktick;
+int clocktick = 0;
 
 // half-millisecond timer -> update each dacchannel in turn
 void doTimer()
 {
+	timesincelastclocktick++;
 	t++;
 
 	if (t %2 == 0)
@@ -196,15 +199,26 @@ int main(void)
 	PatternGen_Goa(&Pattern, &MainRandom, 16);
 	AD1_Measure(FALSE);
 	int switchmode = 1;
+	int submode = 1;
 	SW2LED_ClrVal(0);
 	LED1_SetVal(0);
 
 	for(;;){
 		int sonicsw= denoise(SW2_GetVal(0), &sonicsw_state);
-		//int gatesw = denoise(GATE_GetVal(0), &gatesw_state);
-		//int triggersw = denoise(SW2_GetVal(0), &triggersw_state);
+		int gatesw = denoise(GATE_GetVal(0), &gatesw_state);
+		int triggersw = denoise(SW1_GetVal(0), &triggersw_state);
 
+		if (gatesw_state.pressed == 1)
+		{
+			clocktick++;
+			timesincelastclocktick = 0;
+		}
 
+		if (triggersw_state.pressed == 1)
+		{
+			switchmode = 1;
+			submode = (submode + 1)%4;
+		}
 		if (sonicsw_state.pressed == 1)
 		{
 			switchmode=1;
@@ -223,6 +237,7 @@ int main(void)
 
 		if (switchmode == 1){
 			// updated pattern needed for some reason!
+
 			switchmode = 0;
 			PatternGen_RandomSeed(&MainRandom,newseed);
 			oldseed = newseed;
@@ -252,21 +267,22 @@ int main(void)
 				break;
 
 			case 3:
-							PatternGen_Zeph(&Pattern, &MainRandom, 4, 4, 4);
-							LED4_SetVal(0);
-							LED2_SetVal(0);
-							LED3_SetVal(0);
+				PatternGen_Zeph(&Pattern, &MainRandom, 4, 4, 4);
+				LED4_SetVal(0);
+				LED2_SetVal(0);
+				LED3_SetVal(0);
 
-							break;
+				break;
 			case 4:
 				Params.seed1 = (adcchannels[2]>>8);
 				Params.seed2 = (adcchannels[4]>>8);
-										PatternGen_Generate(&Pattern,&Params, &Settings);
-										LED4_SetVal(0);
-										LED2_ClrVal(0);
-										LED3_SetVal(0);
+				Params.algo = submode;
+				PatternGen_Generate(&Pattern,&Params, &Settings);
+				LED4_SetVal(0);
+				LED2_ClrVal(0);
+				LED3_SetVal(0);
 
-										break;
+				break;
 			}
 		}
 
