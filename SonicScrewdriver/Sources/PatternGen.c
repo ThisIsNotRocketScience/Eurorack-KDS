@@ -1,19 +1,17 @@
 #include "PatternGen.h"
 #include <stdint.h>
 
-
 void Rotate(struct PatternGen_Target *T, int first, int length, int rotate);
 void Reverse(struct PatternGen_Target *T, int first, int length);
-
 
 void PatternGen_RandomSeed (struct PatternGen_Random *R, unsigned int seed)
 {
 	R->RandomMemory = (long)seed;
 }
 
-int  PatternGen_Rand(struct PatternGen_Random *R)
+int PatternGen_Rand(struct PatternGen_Random *R)
 {
-	return(((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
+	return (((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
 }
 
 uint8_t PatternGen_RandByte(struct PatternGen_Random *R)
@@ -37,7 +35,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 {
 	P->algo = 0;
 	P->beatopt = 0;
-	P->scale = 2;
+	P->scale = 1;
 	P->tpbopt = 1;
 
 	for (int i =0 ;i<16;i++) S->algooptions[i] = i;
@@ -96,7 +94,7 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 	S->scalecount[3] = 5; // Penta
 }
 
-void  __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
+void __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
 	PatternGen_LoadDefaults(S,P);
 }
@@ -116,7 +114,7 @@ void Rotate(struct PatternGen_Target *T, int first, int length, int rotate)
 	int last = first + length;
 	if (last > T->Length) last = T->Length;
 
-	for (int i =0 ;i<rotate;i++)
+	for (int i = 0 ;i < rotate;i++)
 	{
 		float V = T->Ticks[first].vel;
 		int N = T->Ticks[first].note;
@@ -392,7 +390,6 @@ void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct
 	case 7: NOTE( 1, 1);break; // 13
 	}
 
-
 	if (Output->accent)
 	{
 		switch (RandNote)
@@ -408,7 +405,6 @@ void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct
 		}
 	}
 
-
 	if (I<7)
 	{
 		if (PS->b1 == 0) SN.note += 1;
@@ -423,14 +419,34 @@ void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct Pa
 	struct ScaledNote SN;
 
 	SN.note = ((I+PS->b1) % PS->b4)*2;
-	SN.oct = ((I+PS->b2) % PS->b3 );
+	SN.oct = ((I+PS->b2) % PS->b3);
 
+	Output->accent = 0;
+	Output->vel = 255;
 	Output->note = ScaleToNote(&SN, P,S);
 }
 
+
 void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
+	struct ScaledNote SN;
+	switch(I % 3)
+	{
+		case 0:NOTE(-1,0);break;
+		case 1:NOTE(0,0);break;
+		case 2:
+			NOTE(1,PS->b1);
+			if (PatternGen_BoolChance(R)==1)
+			{
+				PS->b1 = ((PatternGen_Rand(R)>>5)&0x7);
+			};break;
+	}
+
+	Output->note = ScaleToNote(&SN, P,S);
+	Output->accent = 0;
+	Output->vel = 255;
 }
+
 
 void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
 void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
@@ -444,6 +460,15 @@ typedef void (*PatternInitFuncPtr)(struct PatternGen_Params *P, struct PatternGe
 
 void NoInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
 {
+
+}
+
+void TranceThingInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
+{
+	Output->b1 = 0;
+	Output->b2 = 0;
+	Output->b3 = 0;
+	Output->b4 = 0;
 }
 
 void ChipInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
@@ -475,7 +500,7 @@ void NoPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,st
 
 
 GenFuncPtr Funcs[8] = {&Pattern1,&Chip1,&Pattern3,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
-InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&FourBool,&FourBool,&NoInit,&NoInit,&NoInit,&NoInit};
+InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&TranceThingInit,&FourBool,&NoInit,&NoInit,&NoInit,&NoInit};
 PatternInitFuncPtr PatternInit[8] = {&NoPatternInit,&ChipPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit};
 
 uint8_t FuncDither[8] = {1,1,1,1,1,1,1,1};

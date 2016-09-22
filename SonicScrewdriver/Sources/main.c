@@ -91,7 +91,6 @@ int denoise(int sw_down, struct denoise_state_t* state)
 		}
 		state->counter = 1;
 		state->down = 1;
-
 	}
 	else if (state->counter > 30)
 	{
@@ -199,7 +198,7 @@ int main(void)
 	PatternGen_Goa(&Pattern, &MainRandom, 16);
 	AD1_Measure(FALSE);
 	int switchmode = 1;
-	int submode = 1;
+	int submode = 2;
 	SW2LED_ClrVal(0);
 	LED1_SetVal(0);
 
@@ -241,7 +240,6 @@ int main(void)
 			switchmode = 0;
 			PatternGen_RandomSeed(&MainRandom,newseed);
 			oldseed = newseed;
-
 
 			switch(patternmode)
 			{
