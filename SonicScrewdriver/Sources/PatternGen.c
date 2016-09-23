@@ -21,7 +21,8 @@ uint8_t PatternGen_RandByte(struct PatternGen_Random *R)
 
 uint8_t PatternGen_BoolChance(struct PatternGen_Random *R)
 {
-	return (((PatternGen_Rand(R) >> 16 )) &1 == 1 ) ?1:0;
+	int r = PatternGen_Rand(R);
+	return ((((r >> 13 )) &1) == 1 ) ?1:0;
 }
 
 uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
@@ -430,10 +431,12 @@ void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct Pa
 void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
 	struct ScaledNote SN;
-	switch(I % 3)
+	switch((I + PS->b2) % 3)
 	{
 		case 0:NOTE(-1,0);break;
-		case 1:NOTE(0,0);break;
+		case 1:NOTE(0,0);
+				if (PatternGen_BoolChance(R)==1)  PS->b2 = (PatternGen_Rand(R) &0x7) ;
+		break;
 		case 2:
 			NOTE(1,PS->b1);
 			if (PatternGen_BoolChance(R)==1)
@@ -442,13 +445,31 @@ void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct
 			};break;
 	}
 
+
 	Output->note = ScaleToNote(&SN, P,S);
 	Output->accent = 0;
 	Output->vel = 255;
 }
 
 
-void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
+{
+
+	struct ScaledNote SN;
+	int idx = PatternGen_BoolChance(R)==1?1:0;
+	SN.note = PS->matrix[PS->b1][PS->b3][idx];
+	PS->b1 = PS->b3;
+	PS->b3 = SN.note;
+
+	SN.oct = PatternGen_BoolChance(R);
+
+
+
+	Output->note = ScaleToNote(&SN, P,S);
+	Output->accent = 0;
+	Output->vel = 255;
+}
+
 void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
 void Pattern6(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
 void Pattern7(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
@@ -463,10 +484,27 @@ void NoInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct P
 
 }
 
+void MarkovInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
+{
+	Output->b1 = (PatternGen_Rand(R) &0x7);
+	Output->b2 = (PatternGen_Rand(R) &0x7);
+	Output->b3 = (PatternGen_Rand(R) &0x7);
+	Output->b4 = (PatternGen_Rand(R) &0x7);
+
+	for (int i = 0;i<8;i++)
+	{
+		for (int j = 0;j<8;j++)
+		{
+			Output->matrix[i][j][0] = (PatternGen_Rand(R) %8);
+			Output->matrix[i][j][1] = (PatternGen_Rand(R) %8);
+		}
+	}
+}
+
 void TranceThingInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
 {
 	Output->b1 = 0;
-	Output->b2 = 0;
+	Output->b2 = (PatternGen_Rand(R) &0x7) ;;
 	Output->b3 = 0;
 	Output->b4 = 0;
 }
@@ -500,7 +538,7 @@ void NoPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,st
 
 
 GenFuncPtr Funcs[8] = {&Pattern1,&Chip1,&Pattern3,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
-InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&TranceThingInit,&FourBool,&NoInit,&NoInit,&NoInit,&NoInit};
+InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&TranceThingInit,&MarkovInit,&NoInit,&NoInit,&NoInit,&NoInit};
 PatternInitFuncPtr PatternInit[8] = {&NoPatternInit,&ChipPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit};
 
 uint8_t FuncDither[8] = {1,1,1,1,1,1,1,1};

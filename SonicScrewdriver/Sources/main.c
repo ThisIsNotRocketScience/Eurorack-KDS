@@ -198,7 +198,7 @@ int main(void)
 	PatternGen_Goa(&Pattern, &MainRandom, 16);
 	AD1_Measure(FALSE);
 	int switchmode = 1;
-	int submode = 2;
+	int submode = 3;
 	SW2LED_ClrVal(0);
 	LED1_SetVal(0);
 

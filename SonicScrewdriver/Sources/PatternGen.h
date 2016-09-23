@@ -28,6 +28,7 @@ struct PatternGen_PatternFuncSpecific
 	uint8_t b2;
 	uint8_t b3;
 	uint8_t b4;
+	uint8_t matrix[8][8][2];
 };
 
 extern void PatternGen_RandomSeed(struct PatternGen_Random *R, unsigned int seed);
