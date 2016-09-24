@@ -428,13 +428,20 @@ void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct Pa
 }
 
 
-void Pattern3(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
+void TranceThing(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
 	struct ScaledNote SN;
 	switch((I + PS->b2) % 3)
 	{
-		case 0:NOTE(-1,0);break;
-		case 1:NOTE(0,0);
+		case 0:
+			if ((PatternGen_BoolChance(&PS->ExtraRandom)==1) &&(PatternGen_BoolChance(&PS->ExtraRandom)==1))
+			{
+				PS->b3 = (PatternGen_Rand(&PS->ExtraRandom) &0x15);
+				if (PS->b3 >= 7) PS->b3 -= 7;else PS->b3 = 0;
+				PS->b3 -= 4;
+			}
+			NOTE(-1,PS->b3);break;
+		case 1:NOTE(0,PS->b3);
 				if (PatternGen_BoolChance(R)==1)  PS->b2 = (PatternGen_Rand(R) &0x7) ;
 		break;
 		case 2:
@@ -503,9 +510,17 @@ void MarkovInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, stru
 
 void TranceThingInit(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output)
 {
-	Output->b1 = 0;
-	Output->b2 = (PatternGen_Rand(R) &0x7) ;;
-	Output->b3 = 0;
+
+	PatternGen_RandomSeed(R, P->seed1>>3);
+	PatternGen_RandomSeed(&Output->ExtraRandom, P->seed2>>3);
+
+	Output->b1 = (PatternGen_Rand(R) &0x7) ;
+	Output->b2 = (PatternGen_Rand(R) &0x7) ;
+
+	Output->b3 = (PatternGen_Rand(&Output->ExtraRandom) &0x15);
+	if (Output->b3 >= 7) Output->b3 -= 7;else Output->b3 = 0;
+	Output->b3 -= 4;
+
 	Output->b4 = 0;
 }
 
@@ -537,7 +552,7 @@ void NoPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,st
 
 
 
-GenFuncPtr Funcs[8] = {&Pattern1,&Chip1,&Pattern3,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
+GenFuncPtr Funcs[8] = {&Pattern1,&Chip1,&TranceThing,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
 InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&TranceThingInit,&MarkovInit,&NoInit,&NoInit,&NoInit,&NoInit};
 PatternInitFuncPtr PatternInit[8] = {&NoPatternInit,&ChipPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit};
 
