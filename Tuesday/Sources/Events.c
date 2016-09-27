@@ -37,11 +37,9 @@ extern "C" {
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "DAC.h"
+#include "CLOCKINT.h"
+#include "main.h"
 
-extern int measured;
-extern int adcchannels[6];
-
-extern void doTimer();
 /*
  ** ===================================================================
  **     Event       :  Cpu_OnNMIINT (module Events)
@@ -172,9 +170,9 @@ void AD1_OnCalibrationEnd(void)
 
 /*
 ** ===================================================================
-**     Event       :  EInt1_OnInterrupt (module Events)
+**     Event       :  CLOCKINT_OnInterrupt (module Events)
 **
-**     Component   :  EInt1 [ExtInt_LDD]
+**     Component   :  CLOCKINT [ExtInt_LDD]
 */
 /*!
 **     @brief
@@ -185,9 +183,33 @@ void AD1_OnCalibrationEnd(void)
 **                           data structure pointer.
 */
 /* ===================================================================*/
-void EInt1_OnInterrupt(LDD_TUserData *UserDataPtr)
+void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  /* Write your code here ... */
+  int D = CLOCKINT_GetVal(CLOCKINT_DeviceData);
+  DoClock(D);
+}
+
+/*
+** ===================================================================
+**     Event       :  RESETINT_OnInterrupt (module Events)
+**
+**     Component   :  RESETINT [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr)
+{
+  if (RESETINT_GetVal(RESETINT_DeviceData) == 0)
+  {
+	  PatternReset();
+  }
 }
 
 /* END Events */

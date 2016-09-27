@@ -19,16 +19,16 @@
         <Line>PE_Const</Line>
         <Line>IO_Map</Line>
       </GenSharedModules>
-      <ShrdHeaderAge0>1228606887</ShrdHeaderAge0>
+      <ShrdHeaderAge0>1228636558</ShrdHeaderAge0>
       <ShrdCodeAge0>-1</ShrdCodeAge0>
       <ShrdAsemblAge0>-1</ShrdAsemblAge0>
-      <ShrdHeaderAge1>1228606595</ShrdHeaderAge1>
+      <ShrdHeaderAge1>1228625008</ShrdHeaderAge1>
       <ShrdCodeAge1>-1</ShrdCodeAge1>
       <ShrdAsemblAge1>-1</ShrdAsemblAge1>
-      <ShrdHeaderAge2>1228606595</ShrdHeaderAge2>
+      <ShrdHeaderAge2>1228625008</ShrdHeaderAge2>
       <ShrdCodeAge2>-1</ShrdCodeAge2>
       <ShrdAsemblAge2>-1</ShrdAsemblAge2>
-      <ShrdHeaderAge3>1228606595</ShrdHeaderAge3>
+      <ShrdHeaderAge3>1228625008</ShrdHeaderAge3>
       <ShrdCodeAge3>-1</ShrdCodeAge3>
       <ShrdAsemblAge3>-1</ShrdAsemblAge3>
       <GenExtraFiles lines_count="24">
@@ -38,8 +38,7 @@
         <Line>Documentation\doxygen\AdcLdd1_component.txt</Line>
         <Line>Documentation\doxygen\PTA_component.txt</Line>
         <Line>Documentation\doxygen\DACSEL_component.txt</Line>
-        <Line>Documentation\doxygen\GATE_component.txt</Line>
-        <Line>Documentation\doxygen\EInt1_component.txt</Line>
+        <Line>Documentation\doxygen\CLOCKINT_component.txt</Line>
         <Line>Documentation\doxygen\SW_ALGO_component.txt</Line>
         <Line>Documentation\doxygen\SW_SCALE_component.txt</Line>
         <Line>Documentation\doxygen\LATCH_component.txt</Line>
@@ -47,6 +46,7 @@
         <Line>Documentation\doxygen\CLOCK_component.txt</Line>
         <Line>Documentation\doxygen\SW_TPB_component.txt</Line>
         <Line>Documentation\doxygen\SW_BEATS_component.txt</Line>
+        <Line>Documentation\doxygen\RESETINT_component.txt</Line>
         <Line>Documentation\doxygen\Tuesday_project.txt</Line>
         <Line>Documentation\doxygen\RoutingReport_component.txt</Line>
         <Line>Documentation\doxygen\pex.doxyfile</Line>
@@ -59,10 +59,10 @@
       </GenExtraFiles>
       <GenExtraFileSrcDir22>lib\Kinetis\startup\</GenExtraFileSrcDir22>
       <GenExtraFileSrcDir18>Repositories\lib\doxygen\</GenExtraFileSrcDir18>
-      <XtraAge19>1228606887</XtraAge19>
-      <XtraAge20>1228606887</XtraAge20>
+      <XtraAge19>1228636558</XtraAge19>
+      <XtraAge20>1228636558</XtraAge20>
       <XtraAge22>1227817020</XtraAge22>
-      <XtraAge23>1228607193</XtraAge23>
+      <XtraAge23>1228636558</XtraAge23>
       <GenExtraFileType23>4</GenExtraFileType23>
       <GenExtraFileType22>5</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
@@ -110,8 +110,9 @@
       <GenEventModules lines_count="1">
         <Line>Events</Line>
       </GenEventModules>
-      <GenMethodsInEvents lines_count="7">
-        <Line>EInt1_OnInterrupt</Line>
+      <GenMethodsInEvents lines_count="8">
+        <Line>RESETINT_OnInterrupt</Line>
+        <Line>CLOCKINT_OnInterrupt</Line>
         <Line>AD1_OnEnd</Line>
         <Line>AD1_OnCalibrationEnd</Line>
         <Line>TI1_OnInterrupt</Line>
@@ -123,18 +124,18 @@
         <Line>AD1</Line>
         <Line>AdcLdd1</Line>
         <Line>CLOCK</Line>
+        <Line>CLOCKINT</Line>
         <Line>Cpu</Line>
         <Line>DACSEL</Line>
         <Line>DATA</Line>
-        <Line>EInt1</Line>
         <Line>Events</Line>
-        <Line>GATE</Line>
         <Line>IO_Map</Line>
         <Line>LATCH</Line>
         <Line>PE_Const</Line>
         <Line>PE_Error</Line>
         <Line>PE_Types</Line>
         <Line>PTA</Line>
+        <Line>RESETINT</Line>
         <Line>SM1</Line>
         <Line>SW_ALGO</Line>
         <Line>SW_BEATS</Line>
@@ -154,8 +155,7 @@
         <Line>AdcLdd1</Line>
         <Line>PTA</Line>
         <Line>DACSEL</Line>
-        <Line>GATE</Line>
-        <Line>EInt1</Line>
+        <Line>CLOCKINT</Line>
         <Line>SW_ALGO</Line>
         <Line>SW_SCALE</Line>
         <Line>LATCH</Line>
@@ -163,11 +163,12 @@
         <Line>CLOCK</Line>
         <Line>SW_TPB</Line>
         <Line>SW_BEATS</Line>
+        <Line>RESETINT</Line>
       </GenBeanModules>
     </GenFiles>
     <SignalListFile>Documentation\Tuesday_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>48</ProjectModificationStamp>
+    <ProjectModificationStamp>52</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -175,8 +176,8 @@
     <GenComponentVersion>01.009</GenComponentVersion>
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228636558</HeaderAge>
+    <CodeAge>1228636558</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -263,8 +264,8 @@
     <GenComponentVersion>01.111</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Init>true</Init>
@@ -387,8 +388,8 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
     <Enable>false</Enable>
@@ -440,8 +441,8 @@
       <GenComponentVersion>01.018</GenComponentVersion>
       <GenDriverVersion>01.02</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1228606595</HeaderAge>
-      <CodeAge>1228606595</CodeAge>
+      <HeaderAge>1228625008</HeaderAge>
+      <CodeAge>1228625008</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>17</GenNumMethods>
       <Init>true</Init>
@@ -507,8 +508,8 @@
     <GenComponentVersion>01.164</GenComponentVersion>
     <GenDriverVersion>01.11</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Init>true</Init>
@@ -604,8 +605,8 @@
     <GenComponentVersion>01.697</GenComponentVersion>
     <GenDriverVersion>01.00</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Enable>false</Enable>
@@ -790,8 +791,8 @@
       <GenComponentVersion>01.183</GenComponentVersion>
       <GenDriverVersion>01.08</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1228606887</HeaderAge>
-      <CodeAge>1228606887</CodeAge>
+      <HeaderAge>1228625008</HeaderAge>
+      <CodeAge>1228625008</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>25</GenNumMethods>
       <Init>true</Init>
@@ -968,8 +969,8 @@
     <GenComponentVersion>01.006</GenComponentVersion>
     <GenDriverVersion>01.06</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>1</GenNumMethods>
     <Init>true</Init>
@@ -1002,8 +1003,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1097,123 +1098,78 @@
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\DACSEL_component.txt</ExtraFile0>
   </ComponentID_24>
-  <ComponentID_25>
-    <Generated>true</Generated>
-    <GenCompName>GATE</GenCompName>
-    <GenComponentVersion>01.033</GenComponentVersion>
-    <GenDriverVersion>01.03</GenDriverVersion>
-    <GenEventModule />
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
-    <AsemblAge>-1</AsemblAge>
-    <GenNumMethods>13</GenNumMethods>
-    <Init>true</Init>
-    <Deinit>false</Deinit>
-    <GetDir>false</GetDir>
-    <SetDir>false</SetDir>
-    <SetInput>false</SetInput>
-    <SetOutput>false</SetOutput>
-    <GetVal>true</GetVal>
-    <PutVal>false</PutVal>
-    <ClrVal>false</ClrVal>
-    <SetVal>false</SetVal>
-    <NegVal>false</NegVal>
-    <ConnectPin>false</ConnectPin>
-    <GetRawVal>false</GetRawVal>
-    <GenNumEvents>0</GenNumEvents>
-    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
-    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
-    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>4</GenMethodPos>
-    <MethodPos>
-      <MethodPos0>Init</MethodPos0>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>117</LineBeg>
-      <LineEnd>140</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos1>GetVal</MethodPos1>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>141</LineBeg>
-      <LineEnd>162</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos2>Init</MethodPos2>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>93</LineBeg>
-      <LineEnd>139</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos3>GetVal</MethodPos3>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>140</LineBeg>
-      <LineEnd>168</LineEnd>
-    </MethodPos>
-    <GenExtraFilesCount>1</GenExtraFilesCount>
-    <ExtraFile0>Documentation\doxygen\GATE_component.txt</ExtraFile0>
-  </ComponentID_25>
   <ComponentID_26>
     <Generated>true</Generated>
-    <GenCompName>EInt1</GenCompName>
+    <GenCompName>CLOCKINT</GenCompName>
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1228606595</HeaderAge>
-    <CodeAge>1228606595</CodeAge>
+    <HeaderAge>1228636558</HeaderAge>
+    <CodeAge>1228636558</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>
     <Deinit>false</Deinit>
     <Enable>false</Enable>
     <Disable>false</Disable>
-    <GetVal>false</GetVal>
+    <GetVal>true</GetVal>
     <SetEdge>false</SetEdge>
     <SetOperationMode>false</SetOperationMode>
     <GetDriverState>false</GetDriverState>
     <ConnectPin>false</ConnectPin>
     <GenNumEvents>1</GenNumEvents>
     <OnInterrupt_Selected>2</OnInterrupt_Selected>
-    <OnInterrupt_Name>EInt1_OnInterrupt</OnInterrupt_Name>
+    <OnInterrupt_Name>CLOCKINT_OnInterrupt</OnInterrupt_Name>
     <OnInterrupt_Priority>interrupts disabled</OnInterrupt_Priority>
     <ISR_IntISRHandle />
     <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
     <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
     <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>4</GenMethodPos>
+    <GenMethodPos>6</GenMethodPos>
     <MethodPos>
       <MethodPos0>Init</MethodPos0>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>109</LineBeg>
-      <LineEnd>129</LineEnd>
+      <LineBeg>114</LineBeg>
+      <LineEnd>134</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>Interrupt</MethodPos1>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>130</LineBeg>
-      <LineEnd>142</LineEnd>
+      <LineBeg>135</LineBeg>
+      <LineEnd>147</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos2>Init</MethodPos2>
+      <MethodPos2>GetVal</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>148</LineBeg>
+      <LineEnd>165</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>Init</MethodPos3>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>90</LineBeg>
-      <LineEnd>152</LineEnd>
+      <LineBeg>91</LineBeg>
+      <LineEnd>153</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos3>Interrupt</MethodPos3>
+      <MethodPos4>Interrupt</MethodPos4>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>153</LineBeg>
-      <LineEnd>176</LineEnd>
+      <LineBeg>154</LineBeg>
+      <LineEnd>177</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos5>GetVal</MethodPos5>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>178</LineBeg>
+      <LineEnd>203</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>1</GenExtraFilesCount>
-    <ExtraFile0>Documentation\doxygen\EInt1_component.txt</ExtraFile0>
+    <ExtraFile0>Documentation\doxygen\CLOCKINT_component.txt</ExtraFile0>
   </ComponentID_26>
   <ComponentID_27>
     <Generated>true</Generated>
@@ -1221,8 +1177,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1280,8 +1236,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1339,8 +1295,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228607193</HeaderAge>
-    <CodeAge>1228607193</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1440,8 +1396,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1541,8 +1497,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228607193</HeaderAge>
-    <CodeAge>1228607193</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1642,8 +1598,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1701,8 +1657,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1228606887</HeaderAge>
-    <CodeAge>1228606887</CodeAge>
+    <HeaderAge>1228625008</HeaderAge>
+    <CodeAge>1228625008</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1754,6 +1710,79 @@
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\SW_BEATS_component.txt</ExtraFile0>
   </ComponentID_33>
+  <ComponentID_34>
+    <Generated>true</Generated>
+    <GenCompName>RESETINT</GenCompName>
+    <GenComponentVersion>02.156</GenComponentVersion>
+    <GenDriverVersion>01.02</GenDriverVersion>
+    <GenEventModule>Events</GenEventModule>
+    <HeaderAge>1228636558</HeaderAge>
+    <CodeAge>1228636558</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>9</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <Enable>false</Enable>
+    <Disable>false</Disable>
+    <GetVal>true</GetVal>
+    <SetEdge>false</SetEdge>
+    <SetOperationMode>false</SetOperationMode>
+    <GetDriverState>false</GetDriverState>
+    <ConnectPin>false</ConnectPin>
+    <GenNumEvents>1</GenNumEvents>
+    <OnInterrupt_Selected>2</OnInterrupt_Selected>
+    <OnInterrupt_Name>RESETINT_OnInterrupt</OnInterrupt_Name>
+    <OnInterrupt_Priority>interrupts disabled</OnInterrupt_Priority>
+    <ISR_IntISRHandle />
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>6</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>114</LineBeg>
+      <LineEnd>134</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>Interrupt</MethodPos1>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>135</LineBeg>
+      <LineEnd>147</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>GetVal</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>148</LineBeg>
+      <LineEnd>165</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>Init</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>91</LineBeg>
+      <LineEnd>153</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos4>Interrupt</MethodPos4>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>154</LineBeg>
+      <LineEnd>177</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos5>GetVal</MethodPos5>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>178</LineBeg>
+      <LineEnd>203</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\RESETINT_component.txt</ExtraFile0>
+  </ComponentID_34>
   <UsedSrcFiles>
     <SrcFile0>Drivers\Common\CheckRegBits8_Rst.prg=1183486427</SrcFile0>
     <SrcFile1>Drivers\Common\ADC_LDDInit.inc=-1</SrcFile1>
@@ -1997,11 +2026,12 @@
     <SrcFile239>Drivers\Common\ADCOnEnd.inc=-1</SrcFile239>
     <SrcFile240>Drivers\Kinetis\IsSupported_FTMRE_PDD.prg=1183486086</SrcFile240>
     <SrcFile241>Drivers\VAR\InitIntRequest.prg=1183486427</SrcFile241>
-    <SrcFile242>Drivers\Common\TimerIntAbstract.inc=-1</SrcFile242>
-    <SrcFile243>Drivers\Common\GeneralReturnNothing.inc=1183486427</SrcFile243>
-    <SrcFile244>Drivers\TimerInt_LDD.src=-1</SrcFile244>
-    <SrcFile245>Drivers\Common\CommonInitialization_FLASH.prg=1183486427</SrcFile245>
-    <SrcFile246>Drivers\Kinetis\ADC.drv=-1</SrcFile246>
+    <SrcFile242>Drivers\Common\ExtInt_LDDGetVal.inc=-1</SrcFile242>
+    <SrcFile243>Drivers\Common\TimerIntAbstract.inc=-1</SrcFile243>
+    <SrcFile244>Drivers\Common\GeneralReturnNothing.inc=1183486427</SrcFile244>
+    <SrcFile245>Drivers\TimerInt_LDD.src=-1</SrcFile245>
+    <SrcFile246>Drivers\Common\CommonInitialization_FLASH.prg=1183486427</SrcFile246>
+    <SrcFile247>Drivers\Kinetis\ADC.drv=-1</SrcFile247>
   </UsedSrcFiles>
 </GenerationInfo_G_C>
 

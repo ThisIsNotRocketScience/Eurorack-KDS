@@ -53,14 +53,14 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AD1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\DATA.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\EInt1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\GATE.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PTA.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SM1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SW_BEATS.c</PathName>
@@ -81,11 +81,10 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AD1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\Cpu.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\DATA.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\EInt1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\GATE.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\IO_Map.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\LATCH.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PE_Const.h</PathName>
@@ -93,6 +92,7 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PE_Types.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\PTA.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SM1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\SW_BEATS.h</PathName>
@@ -104,6 +104,7 @@
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Sources\DAC.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Sources\Events.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Sources\PatternGen.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Sources\main.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>

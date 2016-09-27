@@ -34,8 +34,7 @@
 #include "AdcLdd1.h"
 #include "PTA.h"
 #include "DACSEL.h"
-#include "GATE.h"
-#include "EInt1.h"
+#include "CLOCKINT.h"
 #include "SW_ALGO.h"
 #include "SW_SCALE.h"
 #include "LATCH.h"
@@ -43,6 +42,7 @@
 #include "CLOCK.h"
 #include "SW_TPB.h"
 #include "SW_BEATS.h"
+#include "RESETINT.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
@@ -57,6 +57,13 @@
 #include <math.h>
 int measured = 0;
 int adcchannels[6];
+
+#define GATE_TICK 4
+#define GATE_CLOCK 5
+#define GATE_BEAT 3
+#define GATE_LOOP 2
+#define GATE_ACCENT 1
+#define GATE_GATE 0
 
 #include "PatternGen.h"
 #include "DAC.h"
@@ -103,13 +110,22 @@ int denoise(int sw_down, struct denoise_state_t* state)
 
 	}
 	state->lastcounter = state->counter;
-	return state->down;
+	return state->pressed ;
 }
 
 
 uint32_t t =0 ;
 
-#define VOLT(x) ((int)((4095.0*(x))/6.08))
+//4096 = 2.048v
+
+/*2.5 * (2.048 * INP)/4096
+
+		(x * 4096)
+		/ 2.5 * 2.048
+		 = inp*/
+
+
+#define VOLT(x) ((int)((4096.0*(x))/(2.5 * 2.048)))
 #define NOTE(x) VOLT((x)/12.0)
 
 
@@ -119,7 +135,6 @@ word TickOut = 0;
 word CVOut = 0;
 int Tick = -1;
 long oldseed= -1;
-int beatpwm = 0;
 byte pwm = 0;
 
 int timesincelastclocktick;
@@ -131,14 +146,21 @@ byte gates[6] = {0,0,0,0,0,0};
 
 void ShiftOut()
 {
+	pwm+=16;
+
 	LATCH_ClrVal(LATCH_DeviceData);
+	for(int i =0 ;i< 6;i++)
+	{
+		if (gates[i] >  0) DATA_ClrVal(DATA_DeviceData);else DATA_SetVal(DATA_DeviceData);
+		CLOCK_ClrVal(CLOCK_DeviceData);
+		CLOCK_SetVal(CLOCK_DeviceData);
+	}
 
 	for(int i =0 ;i< 16;i++)
 	{
-		if (leds[i]>0)
+		if (leds[i] > pwm)
 		{
 			DATA_SetVal(DATA_DeviceData);
-
 		}
 		else
 		{
@@ -148,19 +170,90 @@ void ShiftOut()
 		CLOCK_SetVal(CLOCK_DeviceData);
 	}
 
-	for(int i =0 ;i< 6;i++)
-	{
-		if (gates[i]>0) DATA_SetVal(DATA_DeviceData);else DATA_ClrVal(DATA_DeviceData);
-		CLOCK_ClrVal(CLOCK_DeviceData);
-		CLOCK_SetVal(CLOCK_DeviceData);
-	}
 
 	LATCH_SetVal(LATCH_DeviceData);
 }
+
+
+void doTick()
+{
+	if (Pattern.Ticks[Tick].vel >= (255 - ((65535-adcchannels[2]) / 256.0)) )
+	{
+		countdownNote = (countdownTick * 900 ) / 1000;
+
+		if (countdownNote >= countdownTick ) countdownNote = 0;
+
+		TickOut = (Pattern.Ticks[Tick].accent*2048 + 2047);
+		CVOut = NOTE(Pattern.Ticks[Tick].note+24);
+		gates[GATE_GATE] = 1;
+		if (Pattern.Ticks[Tick].accent > 0) gates[GATE_ACCENT] = 1;
+	}
+
+
+	if (Tick == 0) gates[GATE_LOOP] = 1;
+	if (Tick%Pattern.TPB==0) gates[GATE_BEAT] = 1;
+
+	Tick = (Tick + 1) % Pattern.Length;
+
+	gates[GATE_TICK] = 1;
+}
+
+void clearTick()
+{
+	gates[GATE_BEAT] = 0;
+	gates[GATE_TICK] = 0;
+	gates[GATE_GATE] = 0;
+	gates[GATE_ACCENT] = 0;
+	gates[GATE_LOOP] = 0;
+}
+
+int directtick  =0;
+void PatternReset()
+{
+	clearTick();
+	TickOut = 0;
+	Tick = 0 ;
+	countdownTick = 0;
+	directtick = 1;
+}
+int clockup = 0;
+int clockshad =0 ;
+
+
+void DoClock(int state)
+{
+	if (state == 1 && timesincelastclocktick > 2) // slight deadzone debounce
+	{
+		timesincelastclocktick = 0;
+		clockup = 1;
+		clockshad ++;
+		if (clockshad >= 96 / (Pattern.TPB*4) || directtick ==1) {
+			doTick();
+			directtick =0 ;
+			clockshad =0 ;
+		}
+	}
+	else
+	{
+		clearTick();
+		clockup = 0;
+	}
+}
+
+
+
 // half-millisecond timer -> update each dacchannel in turn
 void doTimer()
 {
+
 	timesincelastclocktick++;
+	int clockmode = 1;
+	if (clockup == 0 && timesincelastclocktick > 2000)
+	{
+		timesincelastclocktick = 3000;
+		clockmode = 0;
+	}
+
 	t++;
 
 	if (t %2 == 0)
@@ -170,34 +263,32 @@ void doTimer()
 			countdownNote--;
 			if (countdownNote <= 0)
 			{
-				TickOut = 4095;
+				TickOut = 0;
 				gates[5] = 0;
 			}
 		}
-		int bpm = 1 + (200 * adcchannels[3])/ 65536;
+
+
+		int bpm = 1 + (200 * (65535-adcchannels[3]))/ 65536;
 		int msecperbeat = (1000*60)/(Pattern.TPB*bpm);
 
-		countdownTick--;
-		if (countdownTick > msecperbeat)  countdownTick = msecperbeat;
-		if (countdownTick <= 0)
+
+
+		if (clockmode == 0)
 		{
-			countdownTick = msecperbeat;
+			countdownTick--;
 
-			if (Pattern.Ticks[Tick].vel >= (255 - (adcchannels[5] / 256.0)) )
+			if (countdownTick > msecperbeat)  countdownTick = msecperbeat;
+			if (countdownTick <= 0 || directtick == 1)
 			{
-				countdownNote = (countdownTick * 900 ) / 1000;
-
-				if (countdownNote >= countdownTick ) countdownNote = 0;
-
-				TickOut = 4095-(Pattern.Ticks[Tick].accent*2048 + 2047);
-				CVOut = 4095 - NOTE(Pattern.Ticks[Tick].note+24);
-				gates[5] = 1;
+				directtick = 0;
+				countdownTick = msecperbeat;
+				doTick();
 			}
-
-			beatpwm = (Tick%Pattern.Length==0)?255:((Tick%Pattern.TPB==0)?65:0);
-
-			Tick = (Tick + 1) % Pattern.Length;
-
+			else
+			{
+				clearTick();
+			}
 		}
 		DAC_Write(0, CVOut);
 	}
@@ -205,11 +296,95 @@ void doTimer()
 	{
 		DAC_Write(1, TickOut);
 	}
-	pwm+=16;
-	if (pwm < beatpwm) leds[0] = 0; else leds[0]= 255;
 
 	ShiftOut();
 }
+
+void SetLedNumber(int offset, int number)
+{
+	switch(number %13)
+	{
+	case 0:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 0;
+		break;
+	case 1:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 0;
+		break;
+	case 2:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 0;
+		break;
+	case 3:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 255;
+		break;
+	case 4:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 255;
+		break;
+	case 5:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 0;
+		break;
+	case 6:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 0;
+		break;
+	case 7:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 255;
+		break;
+	case 8:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 0;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 255;
+		break;
+	case 9:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 0;
+		leds[offset + 3] = 255;
+		break;
+	case 10:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 0;
+		break;
+	case 11:
+		leds[offset + 0] = 0;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 255;
+		break;
+	case 12:
+		leds[offset + 0] = 255;
+		leds[offset + 1] = 255;
+		leds[offset + 2] = 255;
+		leds[offset + 3] = 255;
+		break;
+	}
+}
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -223,39 +398,57 @@ int main(void)
 
 	/* Write your code here */
 
-	static struct denoise_state_t triggersw_state = {0};
-	static struct denoise_state_t sonicsw_state = {0};
-	static struct denoise_state_t gatesw_state = {0};
-	int patternmode = 4;
+	static struct denoise_state_t algosw_state = {0};
+	static struct denoise_state_t scalesw_state = {0};
+	static struct denoise_state_t beatsw_state = {0};
+	static struct denoise_state_t tpbsw_state = {0};
 
 	PatternGen_LoadSettings(&Settings, &Params);
 	PatternGen_RandomSeed(&MainRandom, oldseed);
-	PatternGen_Goa(&Pattern, &MainRandom, 16);
 	AD1_Measure(FALSE);
 	int switchmode = 1;
-	int submode = 2;
+	SetLedNumber(8,Params.scale );
+	SetLedNumber(12,Params.algo );
+	SetLedNumber(4,Params.beatopt);
+	SetLedNumber(0,Params.tpbopt);
 
 	for(;;){
-		int sonicsw= denoise(SW_ALGO_GetVal(0), &sonicsw_state);
-		int gatesw = denoise(SW_SCALE_GetVal(0), &gatesw_state);
-		int triggersw = denoise(SW_BEATS_GetVal(0), &triggersw_state);
 
-		if (gatesw_state.pressed == 1)
-		{
-			clocktick++;
-			timesincelastclocktick = 0;
-		}
+		int algosw= denoise(SW_ALGO_GetVal(0), &algosw_state);
+		int scalesw = denoise(SW_SCALE_GetVal(0), &scalesw_state);
+		int beatsw = denoise(SW_BEATS_GetVal(0), &beatsw_state);
+		int tpbsw = denoise(SW_TPB_GetVal(0), &tpbsw_state);
 
-		if (triggersw_state.pressed == 1)
+		if (algosw == 1)
 		{
 			switchmode = 1;
-			submode = (submode + 1)%4;
+			Params.algo = (Params.algo + 1) % PATTERNGEN_MAXALGO;
+			SetLedNumber(12,Params.algo );
 		}
-		if (sonicsw_state.pressed == 1)
+
+		if (scalesw == 1)
 		{
-			switchmode=1;
-			patternmode = (patternmode+ 1) % 5;
+			switchmode = 1;
+			Params.scale = (Params.scale + 1) % PATTERNGEN_MAXSCALE;
+			SetLedNumber(8,Params.scale);
 		}
+
+
+		if (beatsw == 1)
+		{
+			switchmode = 1;
+			Params.beatopt = (Params.beatopt + 1) % PATTERNGEN_MAXBEAT;
+			SetLedNumber(4,Params.beatopt);
+		}
+
+
+		if (tpbsw == 1)
+		{
+			switchmode = 1;
+			Params.tpbopt = (Params.tpbopt + 1) % PATTERNGEN_MAXTPB;
+			SetLedNumber(0,Params.tpbopt);
+		}
+
 
 		if (measured == 1)
 		{
@@ -264,64 +457,25 @@ int main(void)
 		}
 
 		// read the X/Y seed knobs
-		long newseed= (adcchannels[2]>>8) + ((adcchannels[4]>>8)<<8);
+		long newseed= (adcchannels[0]>>8) + ((adcchannels[1]>>8)<<8);
 		if (newseed!= oldseed) switchmode = 1;
 
-		if (switchmode == 1){
+		if (switchmode == 1)
+		{
 			// updated pattern needed for some reason!
 
 			switchmode = 0;
 			PatternGen_RandomSeed(&MainRandom,newseed);
 			oldseed = newseed;
 
-			switch(patternmode)
-			{
-			case 0:
-				PatternGen_Goa(&Pattern, &MainRandom, 16);
-				leds[1] = 0;
-				leds[2] = 0;
-				leds[3] = 0;
-				leds[4] = 0;
-				break;
-			case 1:
-				PatternGen_Flat(&Pattern, &MainRandom, 16);
-				leds[1] = 1;
-				leds[2] = 0;
-				leds[3] = 0;
-				leds[4] = 0;
 
-				break;
-			case 2:
-				PatternGen_Psych(&Pattern, &MainRandom, 16);
-				leds[1] = 0;
-				leds[2] = 1;
-				leds[3] = 0;
-				leds[4] = 0;
+			Params.seed1 = (adcchannels[0]>>8);
+			Params.seed2 = (adcchannels[1]>>8);
 
-				break;
+			PatternGen_Generate(&Pattern,&Params, &Settings);
 
-			case 3:
-				PatternGen_Zeph(&Pattern, &MainRandom, 4, 4, 4);
-				leds[1] = 0;
-				leds[2] = 0;
-				leds[3] = 1;
-				leds[4] = 0;
 
-				break;
-			case 4:
-				Params.seed1 = (adcchannels[2]>>8);
-				Params.seed2 = (adcchannels[4]>>8);
-				Params.algo = submode;
-				PatternGen_Generate(&Pattern,&Params, &Settings);
-				leds[1] = 0;
-				leds[2] = 0;
-				leds[3] = 0;
-				leds[4] = 1;
-
-				break;
-			}
 		}
-
 
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
@@ -342,7 +496,7 @@ int main(void)
 /*
  ** ###################################################################
  **
- **     This file was created by Processor Expert 10.4 [05.10]
+ **     This file was created by Processor Expert 10.5 [05.21]
  **     for the Freescale Kinetis series of microcontrollers.
  **
  ** ###################################################################

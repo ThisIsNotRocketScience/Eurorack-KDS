@@ -38,8 +38,7 @@
 #include "AdcLdd1.h"
 #include "PTA.h"
 #include "DACSEL.h"
-#include "GATE.h"
-#include "EInt1.h"
+#include "CLOCKINT.h"
 #include "SW_ALGO.h"
 #include "SW_SCALE.h"
 #include "LATCH.h"
@@ -47,6 +46,7 @@
 #include "CLOCK.h"
 #include "SW_TPB.h"
 #include "SW_BEATS.h"
+#include "RESETINT.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
@@ -160,9 +160,9 @@ void AD1_OnCalibrationEnd(void);
 
 /*
 ** ===================================================================
-**     Event       :  EInt1_OnInterrupt (module Events)
+**     Event       :  CLOCKINT_OnInterrupt (module Events)
 **
-**     Component   :  EInt1 [ExtInt_LDD]
+**     Component   :  CLOCKINT [ExtInt_LDD]
 */
 /*!
 **     @brief
@@ -173,7 +173,24 @@ void AD1_OnCalibrationEnd(void);
 **                           data structure pointer.
 */
 /* ===================================================================*/
-void EInt1_OnInterrupt(LDD_TUserData *UserDataPtr);
+void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr);
+
+/*
+** ===================================================================
+**     Event       :  RESETINT_OnInterrupt (module Events)
+**
+**     Component   :  RESETINT [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr);
 
 /* END Events */
 

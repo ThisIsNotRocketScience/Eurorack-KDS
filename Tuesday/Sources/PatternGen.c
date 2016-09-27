@@ -36,8 +36,8 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 {
 	P->algo = 0;
 	P->beatopt = 0;
-	P->scale = 1;
-	P->tpbopt = 1;
+	P->scale = 0;
+	P->tpbopt = 0;
 
 	for (int i =0 ;i<16;i++) S->algooptions[i] = i;
 
@@ -363,6 +363,7 @@ int ScaleToNote(struct ScaledNote *SN, struct PatternGen_Params *P, struct Patte
 		scaleidx-= scalecount;octoffset ++;
 	}
 
+	octoffset++;
 	return S->scale[selectedscale][scaleidx] + (12 * (octoffset));
 }
 

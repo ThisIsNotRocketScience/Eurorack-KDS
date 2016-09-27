@@ -39,13 +39,18 @@ extern void PatternGen_Flat(struct PatternGen_Target *T, struct PatternGen_Rando
 extern void PatternGen_Psych(struct PatternGen_Target *T, struct PatternGen_Random *R, int Length);
 extern void PatternGen_Zeph(struct PatternGen_Target *T, struct PatternGen_Random *R, int stepsperbeat, int beats, int fullcycles);
 
+#define PATTERNGEN_MAXALGO 4
+#define PATTERNGEN_MAXSCALE 4
+#define PATTERNGEN_MAXBEAT 4
+#define PATTERNGEN_MAXTPB 4
+
 struct PatternGen_Settings
 {
-	uint8_t tpboptions[4];
-	uint8_t beatoptions[4];
-	uint8_t scale[4][12];
-	uint8_t scalecount[4];
-	uint8_t algooptions[16];
+	uint8_t tpboptions[PATTERNGEN_MAXTPB];
+	uint8_t beatoptions[PATTERNGEN_MAXBEAT];
+	uint8_t scale[PATTERNGEN_MAXSCALE][12];
+	uint8_t scalecount[PATTERNGEN_MAXSCALE];
+	uint8_t algooptions[PATTERNGEN_MAXALGO];
 };
 
 
