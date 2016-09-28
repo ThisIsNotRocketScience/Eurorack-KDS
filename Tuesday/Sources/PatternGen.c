@@ -34,12 +34,12 @@ uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
 
 void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
-	P->algo = 0;
+	P->algo = 7;
 	P->beatopt = 0;
 	P->scale = 0;
 	P->tpbopt = 0;
 
-	for (int i =0 ;i<16;i++) S->algooptions[i] = i;
+	for (int i =0 ;i<PATTERNGEN_MAXALGO;i++) S->algooptions[i] = i;
 
 	S->tpboptions[0] = 3;
 	S->tpboptions[1] = 4;
@@ -51,11 +51,11 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 	S->beatoptions[2] = 16;
 	S->beatoptions[3] = 32;
 
-	for (int j =0 ;j<4;j++)
+	for (int j =0 ;j<PATTERNGEN_MAXSCALE;j++)
 	{
 		for(int i =0 ;i<12;i++)
 		{
-			S->scale[j][i] = 0;
+			S->scale[j][i] = i;
 		}
 		S->scalecount[j] = 1;
 	}
@@ -369,9 +369,8 @@ int ScaleToNote(struct ScaledNote *SN, struct PatternGen_Params *P, struct Patte
 
 #define NOTE(aoct, anote) { SN.note = anote;SN.oct = aoct;};
 
-void Pattern1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
+void ClassicPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
-	// classic arguru goa scale conversion
 
 	Output->vel = PatternGen_RandByte(R);
 	Output->accent = PatternGen_BoolChance(R);
@@ -428,7 +427,6 @@ void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct Pa
 	Output->note = ScaleToNote(&SN, P,S);
 }
 
-
 void TranceThing(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
 	struct ScaledNote SN;
@@ -477,11 +475,19 @@ void Pattern4(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct
 	Output->accent = 0;
 	Output->vel = 255;
 }
-
 void Pattern5(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
 void Pattern6(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
 void Pattern7(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
-void Pattern8(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output){}
+void TestPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
+{
+	struct ScaledNote SN;
+
+	NOTE(I%4,0);
+
+	Output->note = ScaleToNote(&SN, P,S);
+	Output->accent = PatternGen_BoolChance(R);
+	Output->vel = PatternGen_Rand(R);
+}
 
 typedef void (*GenFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output);
 typedef void (*InitFuncPtr)(struct PatternGen_Params *P, struct PatternGen_Settings *S,struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *Output);
@@ -553,7 +559,7 @@ void NoPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,st
 
 
 
-GenFuncPtr Funcs[8] = {&Pattern1,&Chip1,&TranceThing,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&Pattern8};
+GenFuncPtr Funcs[8] = {&ClassicPattern,&Chip1,&TranceThing,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&TestPattern};
 InitFuncPtr InitFuncs[8] = {&FourBool,&ChipInit,&TranceThingInit,&MarkovInit,&NoInit,&NoInit,&NoInit,&NoInit};
 PatternInitFuncPtr PatternInit[8] = {&NoPatternInit,&ChipPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit};
 
