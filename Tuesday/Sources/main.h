@@ -8,5 +8,6 @@ extern int adcchannels[6];
 extern void doTimer();
 extern void PatternReset();
 
-
+extern int i2csending;
+extern int i2creceiving;
 #endif

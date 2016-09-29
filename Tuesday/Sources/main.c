@@ -43,6 +43,7 @@
 #include "SW_TPB.h"
 #include "SW_BEATS.h"
 #include "RESETINT.h"
+#include "CI2C1.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
@@ -399,6 +400,83 @@ void SetLedNumber(int offset, int number)
 		break;
 	}
 }
+#define VERSIONBYTE 0x10
+uint8_t hi(int address)
+{
+    return (uint8_t)((address) >> 8);
+}
+
+uint8_t lo(int address)
+{
+    return (uint8_t)((address & 0xFF));
+}
+
+uint8_t dev(int address)
+{
+#define address_24LC16B 0b1010
+
+	return (uint8_t)((address_24LC16B << 3) | ((hi(address)) & 0x07));
+}
+
+int i2csending = 0;
+int i2creceiving = 0;
+
+void EE24_WriteByte(unsigned short address, byte value)
+{
+	 byte com[2] = {lo(address), value};
+	 byte devaddr = dev(address);
+	 CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
+	 i2csending = 1;
+	 CI2C1_MasterSendBlock(CI2C1_DeviceData, &com, 2, LDD_I2C_SEND_STOP);
+	 while (i2csending == 1) {};
+}
+
+void EE24_WriteBlock(unsigned short address, byte *data, int len)
+{
+	for (int i =0 ;i<len;i++)
+	{
+		EE24_WriteByte(address++, data[i]);
+	}
+}
+
+byte EE24_ReadByte(unsigned short address)
+{
+	 byte com[1] = {lo(address)};
+	 byte devaddr = dev(address);
+	 CI2C1_Init(CI2C1_DeviceData);
+	 CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, 0x50);
+	 i2csending = 1;
+	 CI2C1_MasterSendBlock(CI2C1_DeviceData, &com, 1, LDD_I2C_NO_SEND_STOP);
+	while (i2csending == 1) {};
+	byte out;
+	i2creceiving = 1;
+	CI2C1_MasterReceiveBlock(CI2C1_DeviceData,&out, 1, LDD_I2C_SEND_STOP);
+	while (i2creceiving == 1) {};
+	return out;
+}
+
+
+
+void SaveEeprom(){
+	EE24_WriteByte(0, VERSIONBYTE);
+	int paramsize = sizeof(Params);
+	//EE24_WriteBlock(1,(byte*)&Params, paramsize);
+}
+
+
+void LoadEeprom(){
+	byte Ver;
+	Ver = EE24_ReadByte(0);
+	if (Ver == VERSIONBYTE)
+	{
+		int paramsize = sizeof(Params);
+	//	EE241_ReadBlock(1, (byte*)&Params, paramsize);
+	}
+	else
+	{
+		SaveEeprom();
+	}
+}
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -421,6 +499,8 @@ int main(void)
 	PatternGen_LoadSettings(&Settings, &Params);
 	PatternGen_RandomSeed(&MainRandom, oldseed);
 	AD1_Measure(FALSE);
+
+	LoadEeprom();
 	int switchmode = 1;
 	SetLedNumber(8,Params.scale );
 	SetLedNumber(12,Params.algo );
@@ -488,7 +568,7 @@ int main(void)
 			Params.seed2 = (adcchannels[1]>>8);
 
 			PatternGen_Generate(&Pattern,&Params, &Settings);
-
+			SaveEeprom();
 
 		}
 

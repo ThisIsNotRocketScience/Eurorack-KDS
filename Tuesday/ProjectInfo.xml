@@ -52,6 +52,7 @@
     <GeneratedCs>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AD1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CI2C1.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.c</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\Cpu.c</PathName>
@@ -80,6 +81,7 @@
     <GeneratedHs>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AD1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CI2C1.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.h</PathName>
       <PathName>C:\Projects\Eurorack\Eurorack-KDS\Tuesday\Generated_Code\Cpu.h</PathName>
