@@ -3,7 +3,7 @@
   <Header>
     <Name>Tuesday</Name>
     <SavedBy>Stijn</SavedBy>
-    <ModificationStamp>52</ModificationStamp>
+    <ModificationStamp>53</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -11676,16 +11676,16 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>false</Value>
-        <Expanded>false</Expanded>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinOutput3</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>2</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinInput3FeatureCondGroup</ItemSymbol>
@@ -11707,8 +11707,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <EnumSymbVal>NotChange</EnumSymbVal>
+        <Index>2</Index>
+        <EnumSymbVal>1</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>OpenDrainEnable3FeatureCondGroup</ItemSymbol>
@@ -11735,8 +11735,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>1</Index>
+        <EnumSymbVal>enable</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PullSelect3FeatureCondGroup</ItemSymbol>
@@ -11853,16 +11853,16 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>false</Value>
-        <Expanded>false</Expanded>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinOutput4</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>2</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinInput4FeatureCondGroup</ItemSymbol>
@@ -11912,8 +11912,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>1</Index>
+        <EnumSymbVal>enable</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PullSelect4FeatureCondGroup</ItemSymbol>
@@ -13263,16 +13263,16 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Value>false</Value>
-        <Expanded>false</Expanded>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinOutput12</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>2</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>0</Index>
+        <EnumSymbVal>disabled</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PinInput12FeatureCondGroup</ItemSymbol>
@@ -13322,8 +13322,8 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <EnumSymbVal>noInit</EnumSymbVal>
+        <Index>1</Index>
+        <EnumSymbVal>enable</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>PullSelect12FeatureCondGroup</ItemSymbol>

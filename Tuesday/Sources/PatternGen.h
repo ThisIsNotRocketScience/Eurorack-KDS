@@ -24,10 +24,10 @@ struct PatternGen_Random
 
 struct PatternGen_PatternFuncSpecific
 {
-	uint8_t b1;
-	uint8_t b2;
-	uint8_t b3;
-	uint8_t b4;
+	int16_t b1;
+	int16_t b2;
+	int16_t b3;
+	int16_t b4;
 	uint8_t matrix[8][8][2];
 	struct PatternGen_Random ExtraRandom;
 };

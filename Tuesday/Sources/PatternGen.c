@@ -34,17 +34,18 @@ uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
 
 void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
-	P->algo = 7;
+	P->algo = 2;
 	P->beatopt = 0;
-	P->scale = 0;
-	P->tpbopt = 0;
+	P->scale = 1;
+	P->tpbopt = 2;
 
 	for (int i =0 ;i<PATTERNGEN_MAXALGO;i++) S->algooptions[i] = i;
+	S->algooptions[3] = 7;
 
-	S->tpboptions[0] = 3;
-	S->tpboptions[1] = 4;
-	S->tpboptions[2] = 6;
-	S->tpboptions[3] = 8;
+	S->tpboptions[0] = 2;
+	S->tpboptions[1] = 3;
+	S->tpboptions[2] = 4;
+	S->tpboptions[3] = 5;
 
 	S->beatoptions[0] = 4;
 	S->beatoptions[1] = 8;
@@ -353,11 +354,13 @@ int ScaleToNote(struct ScaledNote *SN, struct PatternGen_Params *P, struct Patte
 	//scaleidx &= 0xf;
 	int32_t selectedscale = P->scale;
 	int32_t scalecount = S->scalecount[selectedscale];
+
 	while (scaleidx<0)
 	{
 		scaleidx+= scalecount;
 		octoffset --;
 	};
+
 	while(scaleidx >= scalecount)
 	{
 		scaleidx-= scalecount;octoffset ++;
@@ -372,8 +375,6 @@ int ScaleToNote(struct ScaledNote *SN, struct PatternGen_Params *P, struct Patte
 void ClassicPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
 
-	Output->vel = PatternGen_RandByte(R);
-	Output->accent = PatternGen_BoolChance(R);
 	int note = 0;
 	struct ScaledNote SN;
 
@@ -412,7 +413,10 @@ void ClassicPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, 
 		if (PS->b2 == 0) SN.note -= 2;
 	}
 
+	Output->vel = PatternGen_RandByte(R);
+	Output->accent = PatternGen_BoolChance(R);
 	Output->note = ScaleToNote(&SN, P,S);
+
 }
 
 void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
@@ -422,14 +426,18 @@ void Chip1(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct Pa
 	SN.note = ((I+PS->b1) % PS->b4)*2;
 	SN.oct = ((I+PS->b2) % PS->b3);
 
-	Output->accent = 0;
-	Output->vel = 255;
 	Output->note = ScaleToNote(&SN, P,S);
+
+	Output->vel = (PatternGen_RandByte(R)/2) + (((I+PS->b2)==0)?127:0);
+	Output->accent = PatternGen_BoolChance(R);
+
 }
 
 void TranceThing(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct PatternGen_Random *R, struct PatternGen_PatternFuncSpecific *PS, int I, struct PatternGen_Tick *Output)
 {
 	struct ScaledNote SN;
+	int veloffs = 0;
+	int accentoffs = 0;
 	switch((I + PS->b2) % 3)
 	{
 		case 0:
@@ -439,22 +447,28 @@ void TranceThing(struct PatternGen_Params *P, struct PatternGen_Settings *S, str
 				if (PS->b3 >= 7) PS->b3 -= 7;else PS->b3 = 0;
 				PS->b3 -= 4;
 			}
-			NOTE(-1,PS->b3);break;
-		case 1:NOTE(0,PS->b3);
+			NOTE(0,PS->b3);break;
+		case 1:NOTE(1,PS->b3);
 				if (PatternGen_BoolChance(R)==1)  PS->b2 = (PatternGen_Rand(R) &0x7) ;
 		break;
 		case 2:
-			NOTE(1,PS->b1);
+			NOTE(2,PS->b1);
+			veloffs = 127;
+			accentoffs = 127;
 			if (PatternGen_BoolChance(R)==1)
 			{
 				PS->b1 = ((PatternGen_Rand(R)>>5)&0x7);
+
 			};break;
 	}
 
+	int32_t n = ScaleToNote(&SN, P,S);
+	Output->note = n;
 
-	Output->note = ScaleToNote(&SN, P,S);
-	Output->accent = 0;
-	Output->vel = 255;
+	Output->vel = (PatternGen_Rand(R)/2) + veloffs;
+	Output->accent = PatternGen_PercChance(R, 100 + accentoffs);
+
+
 }
 
 
@@ -482,7 +496,7 @@ void TestPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, str
 {
 	struct ScaledNote SN;
 
-	NOTE(I%4,0);
+	NOTE((I%5),0);
 
 	Output->note = ScaleToNote(&SN, P,S);
 	Output->accent = PatternGen_BoolChance(R);
@@ -549,7 +563,7 @@ void FourBool(struct PatternGen_Params *P, struct PatternGen_Settings *S, struct
 
 void ChipPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,struct PatternGen_Target *T)
 {
-T->TPB *= 2;
+	T->TPB *= 2;
 }
 
 void NoPatternInit(struct PatternGen_Params *P, struct PatternGen_Settings *S,struct PatternGen_Target *T)

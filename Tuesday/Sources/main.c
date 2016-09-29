@@ -132,7 +132,7 @@ uint32_t t =0 ;
 int countdownTick = 1;
 int countdownNote = 1;
 word TickOut = 0;
-word CVOut = 0;
+int32_t CVOut = 0;
 int Tick = -1;
 long oldseed= -1;
 byte pwm = 0;
@@ -174,6 +174,7 @@ void ShiftOut()
 	LATCH_SetVal(LATCH_DeviceData);
 }
 
+int lastnote =0 ;
 
 void doTick()
 {
@@ -184,7 +185,8 @@ void doTick()
 		if (countdownNote >= countdownTick ) countdownNote = 0;
 
 		TickOut = (Pattern.Ticks[Tick].accent*2048 + 2047);
-		CVOut = NOTE(Pattern.Ticks[Tick].note+24);
+		CVOut = NOTE(Pattern.Ticks[Tick].note);
+		lastnote = Pattern.Ticks[Tick].note;
 		gates[GATE_GATE] = 1;
 		if (Pattern.Ticks[Tick].accent > 0) gates[GATE_ACCENT] = 1;
 	}
@@ -218,19 +220,24 @@ void PatternReset()
 }
 int clockup = 0;
 int clockshad =0 ;
-
+int clockssincereset = 0;
 
 void DoClock(int state)
 {
-	if (state == 1 && timesincelastclocktick > 2) // slight deadzone debounce
+	if (state == 1)
 	{
 		timesincelastclocktick = 0;
 		clockup = 1;
-		clockshad ++;
+		clockshad++;
+		clockssincereset++;
 		if (clockshad >= 96 / (Pattern.TPB*4) || directtick ==1) {
 			doTick();
 			directtick =0 ;
 			clockshad =0 ;
+		}
+		if (clockssincereset >= 96)
+		{
+			clockssincereset  =0 ;
 		}
 	}
 	else
@@ -289,6 +296,14 @@ void doTimer()
 			{
 				clearTick();
 			}
+		}
+		if (CVOut > 4095)
+		{
+			CVOut = 4095;
+		}
+		if (CVOut < 0)
+		{
+			CVOut = 0;
 		}
 		DAC_Write(0, CVOut);
 	}
