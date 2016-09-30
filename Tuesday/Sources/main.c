@@ -44,6 +44,7 @@
 #include "SW_BEATS.h"
 #include "RESETINT.h"
 #include "CI2C1.h"
+#include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
@@ -72,6 +73,7 @@ int adcchannels[6];
 struct PatternGen_Target Pattern;
 struct PatternGen_Settings Settings;
 struct PatternGen_Params Params;
+struct PatternGen_Params LastParams;
 struct PatternGen_Random MainRandom;
 
 struct denoise_state_t
@@ -143,7 +145,7 @@ int clocktick = 0;
 
 
 byte leds[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-byte gates[6] = {0,0,0,0,0,0};
+byte gates[6] = {1,1,1,1,1,1};
 
 void ShiftOut()
 {
@@ -249,11 +251,12 @@ void DoClock(int state)
 }
 
 
+int tickssincecommit = 0;
 
 // half-millisecond timer -> update each dacchannel in turn
 void doTimer()
 {
-
+	tickssincecommit++;
 	timesincelastclocktick++;
 	int clockmode = 1;
 	if (clockup == 0 && timesincelastclocktick > 2000)
@@ -272,7 +275,7 @@ void doTimer()
 			if (countdownNote <= 0)
 			{
 				TickOut = 0;
-				gates[5] = 0;
+				gates[GATE_GATE] = 0;
 			}
 		}
 
@@ -403,12 +406,12 @@ void SetLedNumber(int offset, int number)
 #define VERSIONBYTE 0x10
 uint8_t hi(int address)
 {
-    return (uint8_t)((address) >> 8);
+	return (uint8_t)((address) >> 8);
 }
 
 uint8_t lo(int address)
 {
-    return (uint8_t)((address & 0xFF));
+	return (uint8_t)((address & 0xFF));
 }
 
 uint8_t dev(int address)
@@ -418,49 +421,107 @@ uint8_t dev(int address)
 	return (uint8_t)((address_24LC16B << 3) | ((hi(address)) & 0x07));
 }
 
-int i2csending = 0;
-int i2creceiving = 0;
+volatile int i2csending = 0;
+volatile int i2creceiving = 0;
+
+byte combuffer[2];
 
 void EE24_WriteByte(unsigned short address, byte value)
 {
-	 byte com[2] = {lo(address), value};
-	 byte devaddr = dev(address);
-	 CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
-	 i2csending = 1;
-	 CI2C1_MasterSendBlock(CI2C1_DeviceData, &com, 2, LDD_I2C_SEND_STOP);
-	 while (i2csending == 1) {};
+	//EE241_WriteByte(address, value);
+	combuffer[0] = lo(address);
+	combuffer[1] = value;
+	i2csending = 0;
+
+	byte devaddr = dev(address);
+	int i =0 ;
+
+	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
+	CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 2, LDD_I2C_SEND_STOP);
+	i2csending = 1;
+	while (i2csending == 1)
+	{
+		CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 1, LDD_I2C_SEND_STOP);
+		gates[1] = ((i++)&0b10)?1:0;WAIT1_Waitms(10);ShiftOut();
+	};
+
+	i2csending = 0;
+
+
+
 }
 
 void EE24_WriteBlock(unsigned short address, byte *data, int len)
 {
+	//EE241_WriteBlock(address, data, len);
+
 	for (int i =0 ;i<len;i++)
 	{
+		gates[2] = (i&0b1)?1:0;
+		gates[3] = (i&0b10)?1:0;
+		gates[4] = (i&0b100)?1:0;
+		gates[5] = 1;
+		ShiftOut();
 		EE24_WriteByte(address++, data[i]);
+	//	WAIT1_Waitms(5);
 	}
 }
 
 byte EE24_ReadByte(unsigned short address)
 {
-	 byte com[1] = {lo(address)};
-	 byte devaddr = dev(address);
-	 CI2C1_Init(CI2C1_DeviceData);
-	 CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, 0x50);
-	 i2csending = 1;
-	 CI2C1_MasterSendBlock(CI2C1_DeviceData, &com, 1, LDD_I2C_NO_SEND_STOP);
-	while (i2csending == 1) {};
+//	byte out;
+//	EE241_ReadByte(address, &out);
+	//return out;
+
+
+	byte com[1] = {lo(address)};
+	byte devaddr = dev(address);
+	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
+	i2csending = 1;
+	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_SEND_STOP);
+	while (i2csending == 1) {}
+	gates[2] = 0;ShiftOut();
+
 	byte out;
 	i2creceiving = 1;
 	CI2C1_MasterReceiveBlock(CI2C1_DeviceData,&out, 1, LDD_I2C_SEND_STOP);
 	while (i2creceiving == 1) {};
+	gates[3] = 0;ShiftOut();
+
 	return out;
 }
 
+void EE24_ReadBlock(unsigned short address, byte *out, int len)
+{
+	//EE241_ReadBlock(address, out, len);
+		for (int i =0 ;i<len;i++)
+		{
+		out[i] = EE24_ReadByte(address++);
+		}
+
+	/*
+	byte com[1] = {lo(address)};
+	byte devaddr = dev(address);
+	CI2C1_Init(CI2C1_DeviceData);
+	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
+	i2csending = 1;
+	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_NO_SEND_STOP);
+	while (i2csending == 1) {}
+
+
+	i2creceiving = 1;
+	CI2C1_MasterReceiveBlock(CI2C1_DeviceData,out, len, LDD_I2C_SEND_STOP);
+	while (i2creceiving == 1) {};
+
+	 */
+
+}
 
 
 void SaveEeprom(){
 	EE24_WriteByte(0, VERSIONBYTE);
 	int paramsize = sizeof(Params);
-	//EE24_WriteBlock(1,(byte*)&Params, paramsize);
+	EE24_WriteBlock(1,(byte*)&Params, paramsize);
 }
 
 
@@ -470,14 +531,23 @@ void LoadEeprom(){
 	if (Ver == VERSIONBYTE)
 	{
 		int paramsize = sizeof(Params);
-	//	EE241_ReadBlock(1, (byte*)&Params, paramsize);
+		EE24_ReadBlock(1, (byte*)&Params, paramsize);
+
+		PatternGen_ValidateParams(&Params);
 	}
 	else
 	{
 		SaveEeprom();
 	}
 }
+void SetupLeds()
+{
+	SetLedNumber(8,Params.scale );
+	SetLedNumber(12,Params.algo );
+	SetLedNumber(4,Params.beatopt);
+	SetLedNumber(0,Params.tpbopt);
 
+}
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -496,17 +566,20 @@ int main(void)
 	static struct denoise_state_t beatsw_state = {0};
 	static struct denoise_state_t tpbsw_state = {0};
 
+
+
 	PatternGen_LoadSettings(&Settings, &Params);
 	PatternGen_RandomSeed(&MainRandom, oldseed);
+	LoadEeprom();
+
+	TI1_Enable();
 	AD1_Measure(FALSE);
 
-	LoadEeprom();
 	int switchmode = 1;
-	SetLedNumber(8,Params.scale );
-	SetLedNumber(12,Params.algo );
-	SetLedNumber(4,Params.beatopt);
-	SetLedNumber(0,Params.tpbopt);
+	SetupLeds();
+	ShiftOut( );
 
+	byte commitchange= 0;
 	for(;;){
 
 		int algosw= denoise(SW_ALGO_GetVal(0), &algosw_state);
@@ -518,14 +591,14 @@ int main(void)
 		{
 			switchmode = 1;
 			Params.algo = (Params.algo + 1) % PATTERNGEN_MAXALGO;
-			SetLedNumber(12,Params.algo );
+			commitchange = 1;
 		}
 
 		if (scalesw == 1)
 		{
 			switchmode = 1;
 			Params.scale = (Params.scale + 1) % PATTERNGEN_MAXSCALE;
-			SetLedNumber(8,Params.scale);
+			commitchange = 1;
 		}
 
 
@@ -533,7 +606,8 @@ int main(void)
 		{
 			switchmode = 1;
 			Params.beatopt = (Params.beatopt + 1) % PATTERNGEN_MAXBEAT;
-			SetLedNumber(4,Params.beatopt);
+
+			commitchange = 1;
 		}
 
 
@@ -541,7 +615,8 @@ int main(void)
 		{
 			switchmode = 1;
 			Params.tpbopt = (Params.tpbopt + 1) % PATTERNGEN_MAXTPB;
-			SetLedNumber(0,Params.tpbopt);
+			commitchange = 1;
+
 		}
 
 
@@ -557,6 +632,7 @@ int main(void)
 
 		if (switchmode == 1)
 		{
+			SetupLeds();
 			// updated pattern needed for some reason!
 
 			switchmode = 0;
@@ -567,9 +643,21 @@ int main(void)
 			Params.seed1 = (adcchannels[0]>>8);
 			Params.seed2 = (adcchannels[1]>>8);
 
-			PatternGen_Generate(&Pattern,&Params, &Settings);
-			SaveEeprom();
 
+
+			PatternGen_Generate(&Pattern,&Params, &Settings);
+
+
+
+
+
+		}
+
+		if (commitchange == 1 && tickssincecommit >= 10)
+		{
+			SaveEeprom();
+			commitchange = 0;
+			tickssincecommit= 0;
 		}
 
 	}

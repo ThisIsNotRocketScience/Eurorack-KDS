@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#define PATTERNGEN_MAXTICK 128
+#define PATTERNGEN_MAXTICK 160
 
 struct PatternGen_Tick
 {
@@ -64,6 +64,9 @@ struct PatternGen_Params
 	uint8_t seed1;
 	uint8_t seed2;
 };
+
+extern void PatternGen_ValidateSettings(struct PatternGen_Settings *S);
+extern void PatternGen_ValidateParams(struct PatternGen_Params *P);
 
 extern void PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P);
 extern void PatternGen_Generate(struct PatternGen_Target *T, struct PatternGen_Params *P, struct PatternGen_Settings *S);

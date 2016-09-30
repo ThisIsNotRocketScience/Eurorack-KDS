@@ -212,6 +212,8 @@ void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr)
   }
 }
 
+
+
 /*
 ** ===================================================================
 **     Event       :  CI2C1_OnMasterBlockSent (module Events)
@@ -232,8 +234,8 @@ void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void CI2C1_OnMasterBlockSent(LDD_TUserData *UserDataPtr)
 {
-
 	i2csending = 0;
+  /* Write your code here ... */
 }
 
 /*
@@ -256,8 +258,8 @@ void CI2C1_OnMasterBlockSent(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void CI2C1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr)
 {
-  /* Write your code here ... */
 	i2creceiving = 0;
+  /* Write your code here ... */
 }
 
 /* END Events */

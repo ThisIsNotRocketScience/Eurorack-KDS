@@ -48,6 +48,7 @@
 #include "SW_BEATS.h"
 #include "RESETINT.h"
 #include "CI2C1.h"
+#include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"

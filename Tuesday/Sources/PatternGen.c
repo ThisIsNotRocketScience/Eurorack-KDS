@@ -32,6 +32,15 @@ uint8_t PatternGen_PercChance(struct PatternGen_Random *R, uint8_t perc)
 	return 0;
 }
 
+void PatternGen_ValidateParams(struct PatternGen_Params *P)
+{
+	P->algo = P->algo % PATTERNGEN_MAXALGO;
+	P->beatopt = P->beatopt % PATTERNGEN_MAXBEAT;
+	P->tpbopt = P->tpbopt % PATTERNGEN_MAXTPB;
+	P->scale = P->scale % PATTERNGEN_MAXSCALE;
+
+
+}
 void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Params *P)
 {
 	P->algo = 2;
