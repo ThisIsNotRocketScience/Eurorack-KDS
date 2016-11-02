@@ -61,6 +61,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTB.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SM1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.c</PathName>
@@ -95,6 +96,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_Types.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTB.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SM1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.h</PathName>
