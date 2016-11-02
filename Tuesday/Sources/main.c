@@ -182,7 +182,7 @@ int lastnote =0 ;
 
 void doTick()
 {
-	if (Pattern.Ticks[Tick].vel >= (255 - ((65535-adcchannels[2]) / 256.0)) )
+	if (Pattern.Ticks[Tick].vel >= 0)//(255 - ((65535-adcchannels[2]) / 256.0)) )
 	{
 		countdownNote = (countdownTick * 900 ) / 1000;
 
@@ -443,7 +443,7 @@ void EE24_WriteByte(unsigned short address, byte value)
 	while (i2csending == 1)
 	{
 		CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 1, LDD_I2C_SEND_STOP);
-		gates[1] = ((i++)&0b10)?1:0;WAIT1_Waitms(10);ShiftOut();
+		WAIT1_Waitms(10);ShiftOut();
 	};
 
 	i2csending = 0;
