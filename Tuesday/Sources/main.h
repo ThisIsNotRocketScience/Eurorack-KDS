@@ -3,8 +3,18 @@
 #define MAINH
 
 extern void DoClock(int state);
-extern int measured;
-extern int adcchannels[6];
+extern volatile int measured;
+
+enum
+{
+	ADC_INX,
+	ADC_INY,
+	ADC_INTENSITY,
+	ADC_TEMPO,
+	ADC_Count
+};
+
+extern int adcchannels[ADC_Count];
 extern void doTimer();
 extern void PatternReset();
 

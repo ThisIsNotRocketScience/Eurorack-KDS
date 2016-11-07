@@ -139,10 +139,10 @@ void TI1_OnInterrupt(void)
 void AD1_OnEnd(void)
 {
 	word value;
-	for (int i =0 ;i<6;i++)
+	for (int i =0 ;i<4;i++)
 	{
 		AD1_GetChanValue16(i, &value);
-		adcchannels[i] =  0xffff - value;
+		adcchannels[i] =  value;
 
 	}
 	measured = 1;
