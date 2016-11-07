@@ -13,7 +13,10 @@ enum
 	ADC_TEMPO,
 	ADC_Count
 };
+extern int clockup;
+extern int Measure;
 
+extern int timesincelastclocktick;
 extern int adcchannels[ADC_Count];
 extern void doTimer();
 extern void PatternReset();

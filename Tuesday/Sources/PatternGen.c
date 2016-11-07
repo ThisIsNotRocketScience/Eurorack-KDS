@@ -106,9 +106,9 @@ void PatternGen_LoadDefaults(struct PatternGen_Settings *S, struct PatternGen_Pa
 }
 
 void __attribute__ ((weak)) PatternGen_LoadSettings(struct PatternGen_Settings *S, struct PatternGen_Params *P)
-{
+		{
 	PatternGen_LoadDefaults(S,P);
-}
+		}
 
 void Reverse(struct PatternGen_Target *T, int first, int length)
 {
@@ -407,12 +407,12 @@ void ClassicPattern(struct PatternGen_Params *P, struct PatternGen_Settings *S, 
 		{
 		case 0:
 		case 3:
-		case 7:NOTE( 0, 0);break;
-		case 1:NOTE(-1, 0);break;
-		case 2:NOTE( 0,-1);break;
-		case 4:NOTE( 0, 1);break;
-		case 5:NOTE(-1,-1);break;
-		case 6:NOTE( 0, 1);break;
+		case 7:NOTE(1, 0);break;
+		case 1:NOTE(0, 0);break;
+		case 2:NOTE( 1,-1);break;
+		case 4:NOTE( 1, 1);break;
+		case 5:NOTE(0,-1);break;
+		case 6:NOTE( 1, 1);break;
 		}
 	}
 
@@ -449,26 +449,26 @@ void TranceThing(struct PatternGen_Params *P, struct PatternGen_Settings *S, str
 	int accentoffs = 0;
 	switch((I + PS->b2) % 3)
 	{
-		case 0:
-			if ((PatternGen_BoolChance(&PS->ExtraRandom)==1) &&(PatternGen_BoolChance(&PS->ExtraRandom)==1))
-			{
-				PS->b3 = (PatternGen_Rand(&PS->ExtraRandom) &0x15);
-				if (PS->b3 >= 7) PS->b3 -= 7;else PS->b3 = 0;
-				PS->b3 -= 4;
-			}
-			NOTE(0,PS->b3);break;
-		case 1:NOTE(1,PS->b3);
-				if (PatternGen_BoolChance(R)==1)  PS->b2 = (PatternGen_Rand(R) &0x7) ;
-		break;
-		case 2:
-			NOTE(2,PS->b1);
-			veloffs = 127;
-			accentoffs = 127;
-			if (PatternGen_BoolChance(R)==1)
-			{
-				PS->b1 = ((PatternGen_Rand(R)>>5)&0x7);
+	case 0:
+		if ((PatternGen_BoolChance(&PS->ExtraRandom)==1) &&(PatternGen_BoolChance(&PS->ExtraRandom)==1))
+		{
+			PS->b3 = (PatternGen_Rand(&PS->ExtraRandom) &0x15);
+			if (PS->b3 >= 7) PS->b3 -= 7;else PS->b3 = 0;
+			PS->b3 -= 4;
+		}
+		NOTE(0,PS->b3);break;
+	case 1:NOTE(1,PS->b3);
+	if (PatternGen_BoolChance(R)==1)  PS->b2 = (PatternGen_Rand(R) &0x7) ;
+	break;
+	case 2:
+		NOTE(2,PS->b1);
+		veloffs = 127;
+		accentoffs = 127;
+		if (PatternGen_BoolChance(R)==1)
+		{
+			PS->b1 = ((PatternGen_Rand(R)>>5)&0x7);
 
-			};break;
+		};break;
 	}
 
 	int32_t n = ScaleToNote(&SN, P,S);

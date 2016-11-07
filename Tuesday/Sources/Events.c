@@ -186,7 +186,7 @@ void AD1_OnCalibrationEnd(void)
 void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
   int D = CLOCKINT_GetVal(CLOCKINT_DeviceData);
-  DoClock(D);
+  ExtClockTick(D);
 }
 
 /*
