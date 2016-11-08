@@ -191,36 +191,33 @@ int CoolDown = 0;
 
 void doTick()
 {
+	int CoolDownMax = ((adcchannels[ADC_INTENSITY]) / 256.0);
 	if (CoolDown > 0)
 	{
 		CoolDown--;
+		if (CoolDown > CoolDownMax  ) CoolDown = CoolDownMax;
 		if (CoolDown < 0) CoolDown= 0;
 	}
 	if (Pattern.Ticks[Tick].vel >= CoolDown)
 	{
-		CoolDown = ((adcchannels[ADC_INTENSITY]) / 256.0);
+		CoolDown = CoolDownMax;
 
 		countdownNote =( msecpertick * 900) / 1000;
 
-		if (countdownNote >= msecpertick)
-			countdownNote = 0;
+		if (countdownNote >= msecpertick) countdownNote = 0;
 
 		TickOut = (Pattern.Ticks[Tick].accent * 2048 + 2047);
 		CVOut = NOTE(Pattern.Ticks[Tick].note);
 		lastnote = Pattern.Ticks[Tick].note;
 		gates[GATE_GATE] = 1;
-		if (Pattern.Ticks[Tick].accent > 0)
-			gates[GATE_ACCENT] = 1;
+		if (Pattern.Ticks[Tick].accent > 0) gates[GATE_ACCENT] = 1;
 	}
 
-	if (Tick == 0)
-		gates[GATE_LOOP] = 1;
-	if (Tick % Pattern.TPB == 0)
-		gates[GATE_BEAT] = 1;
-
-//	Tick = (Tick + 1) % Pattern.Length;
+	if (Tick == 0) gates[GATE_LOOP] = 1;
+	if (Tick % Pattern.TPB == 0) gates[GATE_BEAT] = 1;
 
 	gates[GATE_TICK] = 1;
+
 	ShiftOut();
 }
 
@@ -234,9 +231,11 @@ void clearTick()
 }
 
 int directtick = 0;
-int extclockssincereset= 0;
-int extclocksupsincereset =0 ;
+
+int extclockssincereset[6] = {0,0,0,0,0,0};
+int extclocksupsincereset =0;
 int extclocksdowsincereset = 0;
+
 void PatternReset()
 {
 	clearTick();
@@ -246,7 +245,12 @@ void PatternReset()
 	countdownTick = 0;
 	directtick = 1;
 	clockssincereset = 0;
-	extclocksupsincereset = 0;
+	for (int i = 0;i<6;i++)
+	{
+		extclockssincereset[i] = 0;
+		extclockssinceresetcounter[i] = 0;
+	}
+	extclocksupsincereset =0;
 	extclocksdowsincereset = 0;
 }
 
@@ -259,16 +263,20 @@ int KnobOpt(int val)
 	if (val > (65536*4)/5) r++;
 	return 1 + 4 - r;
 }
+
+int lastclocksubdiv= -1;
+
 void ExtClockTick(int state)
 {
 	clockup = state;
-	if (state == 1)
-	{
-		timesincelastclocktick = 0;
-	}
+
 
 	int clocksubdiv = KnobOpt( adcchannels[ADC_TEMPO]);
-
+	if (lastclocksubdiv != clocksubdiv)
+	{
+		clockssincereset = extclockssincereset[clocksubdiv];
+	}
+	lastclocksubdiv = clocksubdiv;
 	if (state == 1 )
 	{
 		if ((extclocksupsincereset % clocksubdiv) == 0)
@@ -287,6 +295,21 @@ void ExtClockTick(int state)
 
 	}
 
+	if (state == 1)
+	{
+		for (int i = 1;i<6;i++)
+		{
+
+			extclockssinceresetcounter[i]++;
+			if (extclockssinceresetcounter[i] == i)
+			{
+				extclockssinceresetcounter[i] = 0;
+				extclockssincereset[i] = (extclockssincereset[i] + 1)%96;
+			}
+		}
+		timesincelastclocktick = 0;
+	}
+
 }
 void DoClock(int state)
 {
@@ -294,7 +317,7 @@ void DoClock(int state)
 	{
 		gates[GATE_CLOCK] = 1;
 
-		
+
 		if (clockssincereset >= 96)
 		{
 			clockssincereset = 0;
@@ -302,12 +325,13 @@ void DoClock(int state)
 			if (Measure * Pattern.TPB * 4 >= Pattern.Length) Measure =0 ;
 		}
 
+
+		//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
 		int NewTick = (Measure * (Pattern.TPB * 4)  + ((clockssincereset * (Pattern.TPB * 4))/96)) % Pattern.Length;
 		if (NewTick != Tick || directtick == 1)
-		//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
 		{
-//#define USE_SEMIHOST
-	//		printf("%d %d\n", Measure, NewTick);
+			//#define USE_SEMIHOST
+			//printf("%d %d\n", Measure, NewTick);
 			if (Tick == -1) Tick = 0;
 
 			doTick();
@@ -371,12 +395,12 @@ void doTimer()
 
 				directtick = 0;
 				countdownTick = msecperbeat;
-//				doTick();
+				//				doTick();
 			}
 			else
 			{
 				DoClock(0);
-//				clearTick();
+				//				clearTick();
 			}
 		}
 		if (CVOut > 4095)
