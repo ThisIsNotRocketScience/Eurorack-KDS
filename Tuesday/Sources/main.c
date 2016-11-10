@@ -233,6 +233,7 @@ void clearTick()
 int directtick = 0;
 
 int extclockssincereset[6] = {0,0,0,0,0,0};
+byte extclockssinceresetcounter[6] = {0,0,0,0,0,0};
 int extclocksupsincereset =0;
 int extclocksdowsincereset = 0;
 
