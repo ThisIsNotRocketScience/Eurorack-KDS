@@ -18,6 +18,7 @@ void AudioReader_Init(AudioReaderStruct *S)
 	S->Bytes = 0;
 	S->CurrentVal = 0;
 	S->Sync = AUDIOREADER_SYNCLOST;
+	S->TotalBytes = 0;
 
 }
 

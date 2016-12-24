@@ -14,3 +14,7 @@ void GUISuccesState();
 void GUIProgress(uint8_t progress) ; // 255 = 99.999%
 void GUIComplete();
 void GUIInit();
+void GUIUpdate();
+int GetErrorLed();
+int GetSucceasLed();
+

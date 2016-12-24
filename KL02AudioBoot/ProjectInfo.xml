@@ -35,78 +35,77 @@
     <FLASHsize>32k</FLASHsize>
   </PROCESSOR>
   <PATHS>
-    <LinkerCommandFile>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
+    <LinkerCommandFile>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
     <IncludePaths>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\IO_Map\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\IO_Map\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\</Path>
     </IncludePaths>
     <SourceCodePaths>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Project_Settings\Startup_Code\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Project_Settings\Startup_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
     <GeneratedCs>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\AD1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\AdcLdd1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\Cpu.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\IFsh1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\IntFlashLdd1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\KSDK1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_LDD.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TI1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TU1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TimerIntLdd1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\Vectors.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Boot.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Events.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\MessageDecoder.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Reader.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\SonicScrewdriver.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\main.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\IFsh1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\IntFlashLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\KSDK1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_LDD.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TI1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TU1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TimerIntLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\Vectors.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Project_Settings\Startup_Code\startup.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Boot.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\MessageDecoder.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Reader.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Tuesday.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\main.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\AD1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\AdcLdd1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\Cpu.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\IFsh1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\IO_Map.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\IntFlashLdd1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\KSDK1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Const.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Error.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_KSDK_Types.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_LDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Types.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TI1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TU1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Generated_Code\TimerIntLdd1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Boot.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Events.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\MessageDecoder.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Sources\Reader.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\IO_Map\MKL02Z4.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\ADC_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\CMP_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\COP_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\FTFA_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\GPIO_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\I2C_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\LPTMR_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\MCG_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\MCM_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\OSC_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\PDD_Types.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\PORT_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SIM_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SPI_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SysTick_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\TPM_PDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\UART0_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\IFsh1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\IntFlashLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\KSDK1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Const.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Error.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_LDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\PE_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TI1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TU1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Generated_Code\TimerIntLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Boot.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\MessageDecoder.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Sources\Reader.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\IO_Map\MKL02Z4.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\ADC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\CMP_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\COP_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\FTFA_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\GPIO_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\I2C_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\LPTMR_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\MCG_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\MCM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\OSC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\PDD_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\PORT_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SIM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SPI_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\SysTick_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\TPM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\KL02AudioBoot\Static_Code\PDD\UART0_PDD.h</PathName>
     </GeneratedHs>
   </FILES>
   <OPTIONS>

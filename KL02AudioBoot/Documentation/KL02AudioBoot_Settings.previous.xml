@@ -56,10 +56,12 @@ PE_DEBUGHALT();
       </enumgroup>
       <group name="User initialization">
         <User_data_declarations>
-          <StrgList></StrgList>
+          <StrgList><![CDATA[#include "Boot.h"
+]]></StrgList>
         </User_data_declarations>
         <User_code_before_PE_initialization>
-          <StrgList></StrgList>
+          <StrgList><![CDATA[Boot_Check();
+]]></StrgList>
         </User_code_before_PE_initialization>
         <User_code_after_PE_initialization>
           <StrgList></StrgList>
@@ -310,7 +312,7 @@ PE_DEBUGHALT();
             <group name="Channel 0">
               <enumgroup name="Channel mode" v="Single Ended">
                 <group name="Input">
-                  <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+                  <A_D_channel__pin_ v="ADC0_SE13/PTB13/TPM1_CH1" />
                 </group>
               </enumgroup>
             </group>
@@ -392,7 +394,7 @@ Autoselect
       </boolgroup>
       <list name="A/D channels" v="1">
         <group name="Channel0">
-          <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+          <A_D_channel__pin_ v="ADC0_SE13/PTB13/TPM1_CH1" />
         </group>
       </list>
       <A_D_resolution sel_value="12 bits">
@@ -462,7 +464,6 @@ Autoselect
     <Enabled v="Y" />
     <Properties>
       <Component_name v="KSDK1" />
-      <SDK_Version v="SDK v2.0" />
     </Properties>
     <Methods>
       <EmptySection_DummyValue />
@@ -612,6 +613,102 @@ Autoselect
       <event name="OnAccessError" v="don&amp;apos;t generate code" />
       <event name="OnReadCollisionError" v="don&amp;apos;t generate code" />
       <event name="OnProtectionViolation" v="don&amp;apos;t generate code" />
+    </Events>
+  </Bean>
+  <Bean name="LATCH" type="BitIO_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="LATCH" />
+      <Pin_for_I_O v="ADC0_SE1/CMP0_IN1/PTB5/IRQ_12/NMI_b" />
+      <Direction v="Output" />
+      <group name="Initialization">
+        <Init__direction v="Output" />
+        <Init__value v="0" />
+        <Auto_initialization v="yes" />
+      </group>
+      <Safe_mode v="no" />
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <GetDir v="don&amp;apos;t generate code" />
+      <SetDir v="don&amp;apos;t generate code" />
+      <SetInput v="don&amp;apos;t generate code" />
+      <SetOutput v="don&amp;apos;t generate code" />
+      <GetVal v="generate code" />
+      <PutVal v="generate code" />
+      <ClrVal v="generate code" />
+      <SetVal v="generate code" />
+      <NegVal v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <GetRawVal v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="DATA" type="BitIO_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="DATA" />
+      <Pin_for_I_O v="PTB7/IRQ_3/TPM1_CH0" />
+      <Direction v="Output" />
+      <group name="Initialization">
+        <Init__direction v="Output" />
+        <Init__value v="0" />
+        <Auto_initialization v="yes" />
+      </group>
+      <Safe_mode v="no" />
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <GetDir v="don&amp;apos;t generate code" />
+      <SetDir v="don&amp;apos;t generate code" />
+      <SetInput v="don&amp;apos;t generate code" />
+      <SetOutput v="don&amp;apos;t generate code" />
+      <GetVal v="generate code" />
+      <PutVal v="generate code" />
+      <ClrVal v="generate code" />
+      <SetVal v="generate code" />
+      <NegVal v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <GetRawVal v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="CLOCK" type="BitIO_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="CLOCK" />
+      <Pin_for_I_O v="PTB6/IRQ_2/LPTMR0_ALT3/TPM1_CH1/TPM_CLKIN1" />
+      <Direction v="Output" />
+      <group name="Initialization">
+        <Init__direction v="Output" />
+        <Init__value v="0" />
+        <Auto_initialization v="yes" />
+      </group>
+      <Safe_mode v="no" />
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <GetDir v="don&amp;apos;t generate code" />
+      <SetDir v="don&amp;apos;t generate code" />
+      <SetInput v="don&amp;apos;t generate code" />
+      <SetOutput v="don&amp;apos;t generate code" />
+      <GetVal v="generate code" />
+      <PutVal v="generate code" />
+      <ClrVal v="generate code" />
+      <SetVal v="generate code" />
+      <NegVal v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <GetRawVal v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>

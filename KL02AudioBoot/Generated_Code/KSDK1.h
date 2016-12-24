@@ -4,15 +4,14 @@
 **     Project     : KL02AudioBoot
 **     Processor   : MKL02Z32VFM4
 **     Component   : KinetisSDK
-**     Version     : Component 01.005, Driver 01.00, CPU db: 3.00.000
-**     Repository  : My Components
+**     Version     : Component 01.001, Driver 01.00, CPU db: 3.00.000
+**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-06, 00:48, # CodeGen: 41
+**     Date/Time   : 2016-11-16, 17:01, # CodeGen: 52
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : KSDK1
-**          SDK Version                                    : SDK v2.0
 **     Contents    :
 **         No public methods
 **
@@ -40,33 +39,18 @@
 #define __KSDK1_H
 
 /* MODULE KSDK1. */
-/* Identifiers used to identify the SDK selected */
-#define KSDK1_SDK_VERSION_NONE    0
-#define KSDK1_SDK_VERSION_1_3    13
-#define KSDK1_SDK_VERSION_2_0    20
 
-/* SDK version used */
-#define KSDK1_SDK_VERSION_USED  KSDK1_SDK_VERSION_2_0
-
-#ifndef __HIWARE__ /* Hiware compiler (S08, S12) only supports C89 */
-  #include <stdint.h> /* uint8_t, int16_t, ... */
-  #include <stdbool.h> /* bool, true, false, ... */
-#endif
-#if KSDK1_SDK_VERSION_USED != KSDK1_SDK_VERSION_NONE
-  #include "PE_KSDK_Types.h"
-#endif
-#if KSDK1_SDK_VERSION_USED == KSDK1_SDK_VERSION_NONE
 /* Include shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
 #include "IO_Map.h"
 /* Include inherited beans */
-#endif
 
-#if KSDK1_SDK_VERSION_USED == KSDK1_SDK_VERSION_NONE
-  #include "Cpu.h"
-#endif
+#include "Cpu.h"
+
+
+
 
 /* END KSDK1. */
 

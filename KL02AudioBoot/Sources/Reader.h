@@ -30,6 +30,7 @@ typedef struct {
 	int Bytes;
 	int Sync;
 	int LastSyncByte;
+	int TotalBytes;
 } AudioReaderStruct;
 
 void AudioReader_Init(AudioReaderStruct *S);

@@ -10,7 +10,7 @@
 /*##                                   */
 /*##     Compiler  : GNU C Compiler    */
 /*##                                   */
-/*##     Date/Time : 2016-08-28, 02:45, # CodeGen: 10 */
+/*##     Date/Time : 2016-11-22, 22:31, # CodeGen: 12 */
 /*##                                   */
 /*##     Abstract  :                   */
 /*##                                   */
@@ -171,7 +171,7 @@ SECTIONS
   ___m_data_20000000_ROMSize = ___m_data_20000000_RAMEnd - ___m_data_20000000_RAMStart;
 
 
-  
+
   /* Uninitialized data section */
   . = ALIGN(4);
   .bss :
@@ -204,17 +204,12 @@ SECTIONS
     LONG(0);
   } > m_data
   
-  text_end = ORIGIN(m_text) + LENGTH(m_text);
-  data_init_end = ___m_data_20000000_ROMStart + SIZEOF(.m_data_20000000) + SIZEOF(.romp);
-  ASSERT( data_init_end <= text_end, "region m_text overflowed with text and data")
-  
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
     . = ALIGN(4);
     PROVIDE ( end = . );
     PROVIDE ( _end = . );
-    PROVIDE ( __end__ = . );
     __heap_addr = .;
     __HeapBase = .;
     . = . + __heap_size;

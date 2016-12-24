@@ -651,8 +651,8 @@ WARN_LOGFILE           =
 INPUT                  += ../../sources 
 INPUT                  += ../../Generated_Code
 INPUT                  += ../doxygen
-INPUT                  += "C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd2\MKL02Z32FM4\peripherals"
-INPUT                  += "C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd2\MKL02Z32FM4\system"
+INPUT                  += "C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd2\MKL02Z32FM4\peripherals"
+INPUT                  += "C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd2\MKL02Z32FM4\system"
 
 
 # This tag can be used to specify the character encoding of the source files

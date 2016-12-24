@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-08-29, 18:45, # CodeGen: 11
+**     Date/Time   : 2016-11-22, 22:31, # CodeGen: 12
 **     Abstract    :
 **
 **     Settings    :
@@ -188,8 +188,6 @@ void Components_Init(void)
 {
   /* ### BitIO_LDD "CODEC_PDN" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)CODEC_PDN_Init(NULL);
-  /* ### KinetisSDK "KSDK1" init code ... */
-  /* Write code here ... */
   /* ### BitIO_LDD "BitIoLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)BitIoLdd1_Init(NULL);
   /* ### BitIO_LDD "BitIoLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
@@ -216,6 +214,8 @@ void Components_Init(void)
   (void)EInt1_Init(NULL);
   /* ### TimerInt_LDD "TI1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)TI1_Init(NULL);
+  /* ### KinetisSDK "KSDK1" init code ... */
+  /* Write code here ... */
 }
 #endif /* CPU_COMPONENTS_INIT */
 

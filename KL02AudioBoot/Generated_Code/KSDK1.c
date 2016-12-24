@@ -4,15 +4,14 @@
 **     Project     : KL02AudioBoot
 **     Processor   : MKL02Z32VFM4
 **     Component   : KinetisSDK
-**     Version     : Component 01.005, Driver 01.00, CPU db: 3.00.000
-**     Repository  : My Components
+**     Version     : Component 01.001, Driver 01.00, CPU db: 3.00.000
+**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-06, 00:48, # CodeGen: 41
+**     Date/Time   : 2016-11-16, 17:01, # CodeGen: 52
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : KSDK1
-**          SDK Version                                    : SDK v2.0
 **     Contents    :
 **         No public methods
 **

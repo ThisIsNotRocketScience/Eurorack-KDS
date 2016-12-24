@@ -7,7 +7,7 @@
 **     Version     : Component 01.697, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-15, 15:14, # CodeGen: 51
+**     Date/Time   : 2016-11-17, 01:16, # CodeGen: 53
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -21,7 +21,7 @@
 **            A/D interrupt priority                       : medium priority
 **          A/D channels                                   : 1
 **            Channel0                                     : 
-**              A/D channel (pin)                          : ADC0_SE2/PTA9/I2C1_SDA
+**              A/D channel (pin)                          : ADC0_SE13/PTB13/TPM1_CH1
 **              A/D channel (pin) signal                   : 
 **          A/D resolution                                 : Autoselect
 **          Conversion time                                : 10.672814 µs
@@ -161,7 +161,7 @@ void AD1_HWEnDi(void)
 **                           ERR_BUSY - A conversion is already running
 */
 /* ===================================================================*/
-byte AD1_Measure(byte WaitForResult)
+byte AD1_Measure(bool WaitForResult)
 {
   if (ModeFlg != STOP) {               /* Is the device in different mode than "stop"? */
     return ERR_BUSY;                   /* If yes then error */

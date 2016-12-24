@@ -7,7 +7,7 @@
 **     Version     : Component 01.183, Driver 01.08, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-05, 17:57, # CodeGen: 27
+**     Date/Time   : 2016-11-17, 01:16, # CodeGen: 53
 **     Abstract    :
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -23,7 +23,7 @@
 **            Channel 0                                    : 
 **              Channel mode                               : Single Ended
 **                Input                                    : 
-**                  A/D channel (pin)                      : ADC0_SE2/PTA9/I2C1_SDA
+**                  A/D channel (pin)                      : ADC0_SE13/PTB13/TPM1_CH1
 **                  A/D channel (pin) signal               : 
 **          Static sample groups                           : Disabled
 **          Max. samples                                   : 8

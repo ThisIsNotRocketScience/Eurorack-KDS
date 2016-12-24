@@ -35,73 +35,75 @@
     <FLASHsize>32k</FLASHsize>
   </PROCESSOR>
   <PATHS>
-    <LinkerCommandFile>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
+    <LinkerCommandFile>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
     <IncludePaths>
-      <Path>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
-      <Path>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\</Path>
+      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
+      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\</Path>
     </IncludePaths>
     <SourceCodePaths>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Project_Settings\Startup_Code\</Path>
-      <Path>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Project_Settings\Startup_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\</Path>
     </SourceCodePaths>
   </PATHS>
   <FILES>
     <GeneratedCs>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\AD1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\AdcLdd1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\Cpu.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\DACSEL.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\EInt1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\GATE.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED2.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED3.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED4.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_LDD.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PTA.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SM1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2LED.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TI1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TU1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TimerIntLdd1.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\Vectors.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Events.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Saiko.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\exit.c</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\main.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\DACSEL.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\EInt1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\GATE.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED3.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED4.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_LDD.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PTA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SM1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2LED.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TI1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TU1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TimerIntLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\Vectors.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Project_Settings\Startup_Code\startup.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\DAC.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\PatternGen.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\exit.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\main.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\AD1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\AdcLdd1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\Cpu.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\DACSEL.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\EInt1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\GATE.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\IO_Map.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED2.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED3.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED4.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Const.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Error.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_LDD.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Types.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\PTA.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SM1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2LED.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TI1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TU1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Generated_Code\TimerIntLdd1.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Events.h</PathName>
-      <PathName>C:\Projects\Eurorack\Eurorack-KDS\SonicScrewdriver\Sources\Saiko.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\DACSEL.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\EInt1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\GATE.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED3.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\LED4.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Const.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Error.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_LDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PE_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\PTA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SM1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\SW2LED.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TI1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TU1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Generated_Code\TimerIntLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\DAC.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\SonicScrewdriver\Sources\PatternGen.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
@@ -120,6 +122,24 @@
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</PathName>
     </GeneratedHs>
   </FILES>
   <OPTIONS>

@@ -7,7 +7,7 @@
 **     Version     : Component 01.106, Driver 01.15, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-06, 01:02, # CodeGen: 42
+**     Date/Time   : 2016-11-16, 17:01, # CodeGen: 52
 **     Abstract    :
 **          This embedded component implements an access to an on-chip flash memory.
 **          Using this component the flash memory could be written to, erased,
@@ -371,18 +371,16 @@ LDD_TError IntFlashLdd1_Write(LDD_TDeviceData *DeviceDataPtr, LDD_TData *FromPtr
 LDD_TError IntFlashLdd1_Erase(LDD_TDeviceData *DeviceDataPtr, LDD_FLASH_TAddress FromAddress, LDD_FLASH_TDataSize Size)
 {
   IntFlashLdd1_TDeviceDataPtr DeviceDataPrv = (IntFlashLdd1_TDeviceDataPtr)DeviceDataPtr; /* Auxiliary variable - pointer to an internal state structure */
-  uint32_t EraseUnitMask;
-  
+
   if (!(DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_IDLE) && /* If some operation is already in progress return error. */\
      !(DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_STOP) && \
      !(DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_FAILED)) {
     return ERR_BUSY;
   }
-  EraseUnitMask = IntFlashLdd1_PFLASH_ERASABLE_UNIT_SIZE - 1U; /* Set the current data size */
   if (RangeCheck(FromAddress, Size) != (LDD_TError)ERR_OK) { /* Is an address range of desired operation out of used flash memory areas? */
     return ERR_PARAM_ADDRESS;          /* If yes, return error. */
   }
-  if (((FromAddress & EraseUnitMask) != 0U) || ((Size & EraseUnitMask) != 0U)){ /* Is the desired area misaligned to erasable unit borders? */
+  if (((FromAddress & IntFlashLdd1_ERASABLE_UNIT_MASK) != 0U) || ((Size & IntFlashLdd1_ERASABLE_UNIT_MASK) != 0U)){ /* Is the desired area misaligned to erasable unit borders? */
     return ERR_PARAM_ADDRESS;          /* If yes, return error. */
   }
   /* Filling of the internal state structure */
@@ -391,7 +389,7 @@ LDD_TError IntFlashLdd1_Erase(LDD_TDeviceData *DeviceDataPtr, LDD_FLASH_TAddress
   DeviceDataPrv->DataCounter = Size;   /* Reset Data counter */
   DeviceDataPrv->CurrentDataPtr = NULL; /* Reset the "Data pointer" for the operation */
   DeviceDataPrv->CurrentFlashAddress = FromAddress; /* Reset the "From address" for the operation */
-  DeviceDataPrv->CurrentDataSize = EraseUnitMask+1; /* Set the current data size */
+  DeviceDataPrv->CurrentDataSize = IntFlashLdd1_ERASABLE_UNIT_SIZE; /* Set the current data size */
   DeviceDataPrv->CurrentCommand = LDD_FLASH_ERASE_SECTOR; /* Set the current operation flash command */
   FTFA_PDD_EnableInterrupts(FTFA_BASE_PTR, FTFA_PDD_COMMAND_COMPLETE_INT); /* Enable the Command complete interrupt */
   return ERR_OK;                       /* Return with no error */
@@ -550,7 +548,7 @@ PE_ISR(IntFlashLdd1_CommandCompleteInterrupt)
   }
   switch(DeviceDataPrv->CurrentOperation) { /* Perform needed actions for the next step of the operation (for the next flash operation command) according to the current operation type */
     case LDD_FLASH_ERASE:              /* Erase operation */
-      DeviceDataPrv->DataCounter -= DeviceDataPrv->CurrentDataSize; /* Update of the Data counter */
+      DeviceDataPrv->DataCounter -= (uint32_t)(IntFlashLdd1_ERASABLE_UNIT_SIZE); /* Update of the Data counter */
       break;
     case LDD_FLASH_ERASE_BLOCK:        /* Erase block operation */
       DeviceDataPrv->DataCounter--;    /* Update of the Data counter (the unit is a block not a byte) */

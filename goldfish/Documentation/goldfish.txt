@@ -80,8 +80,6 @@ Module "I2C1"      (component GenericSWI2C)
                 then reads the block of characters from the bus. The slave address must be specified before by the 
                 "SelectSlave" method or in component initialization section of 'Slave address init' property.  When working as 
                 a SLAVE, this method reads the block of characters from the bus.
-   - I2C1_RecvBlockCustom -Same as RecvBlock(), but with additional flags to control the bus transfer.
-   - I2C1_SendAck -The method sends ACK to the bus.
    - I2C1_SendStop -When working as a MASTER, if the 'Automatic stop condition' property value is 'no', this method sends a 
                 valid stop  condition to the serial data line of the I2C bus to terminate the communication on the bus after 
                 using send methods. This method is enabled only if the component is in MASTER mode and 'Automatic stop 

@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-06, 19:46, # CodeGen: 49
+**     Date/Time   : 2016-11-17, 03:07, # CodeGen: 55
 **     Abstract    :
 **
 **     Settings    :
@@ -51,9 +51,7 @@
 **          Initialization priority                        : interrupts enabled
 **          Watchdog disable                               : yes
 **          Internal peripherals                           : 
-**            NMI pin                                      : Enabled
-**              NMI Pin                                    : ADC0_SE1/CMP0_IN1/PTB5/IRQ_12/NMI_b
-**              NMI Pin signal                             : 
+**            NMI pin                                      : Disabled
 **            Reset control                                : Enabled
 **              Reset pin                                  : PTA1/IRQ_1/LPTMR0_ALT1/RESET_b
 **              Reset pin signal                           : 
@@ -121,7 +119,7 @@
 **                    Protection region 31                 : Unprotected
 **              Peripheral settings                        : 
 **                Reset pin function                       : Enabled
-**                NMI function                             : Enabled
+**                NMI function                             : Disabled
 **                FLASH initialization speed               : Fast
 **                Clock dividers settings                  : Fast clock boot
 **            MCM settings                                 : Disabled
@@ -412,13 +410,6 @@ void PE_low_level_init(void)
     PEX_RTOS_INIT();                   /* Initialization of the selected RTOS. Macro is defined by the RTOS component. */
   #endif
       /* Initialization of the SIM module */
-  /* PORTB_PCR5: ISF=0,MUX=3 */
-  PORTB_PCR5 = (uint32_t)((PORTB_PCR5 & (uint32_t)~(uint32_t)(
-                PORT_PCR_ISF_MASK |
-                PORT_PCR_MUX(0x04)
-               )) | (uint32_t)(
-                PORT_PCR_MUX(0x03)
-               ));
         /* Initialization of the RCM module */
   /* RCM_RPFW: RSTFLTSEL=0 */
   RCM_RPFW &= (uint8_t)~(uint8_t)(RCM_RPFW_RSTFLTSEL(0x1F));
@@ -501,8 +492,8 @@ void PE_low_level_init(void)
     0xFFU,
    /* NV_FSEC: KEYEN=1,MEEN=3,FSLACC=3,SEC=2 */
     0x7EU,
-   /* NV_FOPT: ??=1,??=1,FAST_INIT=1,LPBOOT1=1,RESET_PIN_CFG=1,NMI_DIS=1,??=1,LPBOOT0=1 */
-    0xFFU,
+   /* NV_FOPT: ??=1,??=1,FAST_INIT=1,LPBOOT1=1,RESET_PIN_CFG=1,NMI_DIS=0,??=1,LPBOOT0=1 */
+    0xFBU,
     0xFFU,
     0xFFU
   };

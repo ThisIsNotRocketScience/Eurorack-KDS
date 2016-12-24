@@ -24,6 +24,7 @@ int flasherror = 0;
 
 int ErrorCountDown =0 ;
 int SuccesCountDown  =0;
+
 int GetErrorLed()
 {
 	if (ErrorCountDown >0)
@@ -53,6 +54,7 @@ void __attribute__ ((weak)) GUIErrorState()	{ErrorCountDown = 20000;}
 void __attribute__ ((weak)) GUISuccesState() {SuccesCountDown = 20000;}
 void __attribute__ ((weak)) GUIProgress(byte progress) {} // 255 = 99.999%
 void __attribute__ ((weak)) GUIComplete(){ Reboot(); }
+void __attribute__ ((weak)) GUIUpdate(){};
 
 uint32_t CalcCrc(uint32_t crc, uint8_t *buf, uint32_t length)
 {
@@ -99,6 +101,8 @@ uint32_t ReadInt(uint8_t *buf, int offs)
 	res = a+b+c+d;
 	return res;
 }
+
+
 void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 {
 	SuccesCountDown+= 60;
@@ -163,7 +167,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 		flasherror = 0 ;
 		for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
 		for(int i =0 ;i<FULLBLOCKS;i++) fullblockshad[i] = 0;
-
+		GUIProgress(0);
 		totalblocks = ReadInt(rcvbuf, 4);
 	}
 	break;
@@ -181,6 +185,8 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 				if (blockshad[i] == 1) complete++;
 			}
 
+
+
 			if (complete == CHUNKS && crcblock == crccheck)
 			{
 				if (Boot_FlashProg(MIN_APP_FLASH_ADDRESS + off, wribuf, 1024) == ERR_FAILED)
@@ -192,6 +198,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 				}
 				else
 				{
+
 					fullblockshad[off/FLASH_PAGE_SIZE] = 1;
 					//GUISuccesState();
 					SuccesCountDown = 50000;
@@ -208,6 +215,14 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 			for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
 			for(int i =0 ;i<1024;i++) wribuf[i] = 0;
 			AudioReader_NewPacket(&Reader);
+			uint32_t progress = 0;
+			for (int i =0 ;i<FULLBLOCKS;i++)
+			{
+				if (fullblockshad[i] == 1) progress++;
+			}
+			progress*=255;
+			progress = progress/totalblocks;
+			GUIProgress(progress);
 		}
 	}break;
 	}

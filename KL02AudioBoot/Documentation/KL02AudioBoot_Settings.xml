@@ -312,7 +312,7 @@ PE_DEBUGHALT();
             <group name="Channel 0">
               <enumgroup name="Channel mode" v="Single Ended">
                 <group name="Input">
-                  <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+                  <A_D_channel__pin_ v="ADC0_SE13/PTB13/TPM1_CH1" />
                 </group>
               </enumgroup>
             </group>
@@ -394,7 +394,7 @@ Autoselect
       </boolgroup>
       <list name="A/D channels" v="1">
         <group name="Channel0">
-          <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+          <A_D_channel__pin_ v="ADC0_SE13/PTB13/TPM1_CH1" />
         </group>
       </list>
       <A_D_resolution sel_value="12 bits">
@@ -464,7 +464,6 @@ Autoselect
     <Enabled v="Y" />
     <Properties>
       <Component_name v="KSDK1" />
-      <SDK_Version v="SDK v2.0" />
     </Properties>
     <Methods>
       <EmptySection_DummyValue />

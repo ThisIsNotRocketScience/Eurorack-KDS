@@ -142,6 +142,7 @@ void Cpu_OnNMIINT(void)
 void Cpu_OnHardFault(void)
 {
   /* Write your code here ... */
+
 	PE_DEBUGHALT();
 }
 

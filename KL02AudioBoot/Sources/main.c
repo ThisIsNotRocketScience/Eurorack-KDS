@@ -46,6 +46,8 @@
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "MessageDecoder.h"
 
+
+
 void *memcpy(void *dst, const void *src, uint32_t len)
 {
 	uint32_t i;
@@ -72,7 +74,6 @@ void *memcpy(void *dst, const void *src, uint32_t len)
 
 	return dst;
 }
-
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -82,19 +83,18 @@ int main(void)
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
-
 	/* Write your code here */
 	//AD1_Calibrate(TRUE);
 	DecoderInit();
 	GUIInit();
 	GUISuccesState();
 //	TU1_Enable(NULL);
-	for(;;){
-		if (GetErrorLed()==1) ErrorLedOn();else ErrorLedOff();
-		if (GetSuccesLed()==1) SuccesLedOn();else SuccesLedOff();
-		//	WAIT1_Waitms(1000);
 
+
+	for(;;){
+		GUIUpdate();
 	}
+
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START
