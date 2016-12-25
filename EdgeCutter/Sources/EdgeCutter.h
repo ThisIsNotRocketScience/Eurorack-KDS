@@ -23,6 +23,13 @@ struct EdgeCutter_Settings
 #define ENVMODE_GATE 1
 #define ENVMODE_LOOP 2
 
+#define GATE_ATTACKEND 3
+#define GATE_DECAYEND 2
+#define GATE_RELEASESTART 1
+#define GATE_RELEASEEND 0
+
+#define GATE_COUNTDOWN 30;
+
 
 struct EdgeCutter_Envelope
 {
@@ -39,6 +46,17 @@ struct EdgeCutter_Envelope
 
 	int State;
 	
+	unsigned char Gates[5];
+	unsigned char StateLeds[14];
+
+	float AttackStart;
+	float DecayStart;
+	float ReleaseStart;
+	
+	float AttackProgress;
+	float DecayProgress;
+	float ReleaseProgress;
+
 
 	float Current;
 	float CurrentTarget;

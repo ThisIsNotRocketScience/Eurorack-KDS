@@ -19,7 +19,7 @@
         <Line>PE_Const</Line>
         <Line>IO_Map</Line>
       </GenSharedModules>
-      <ShrdHeaderAge0>1234702647</ShrdHeaderAge0>
+      <ShrdHeaderAge0>1234739986</ShrdHeaderAge0>
       <ShrdCodeAge0>-1</ShrdCodeAge0>
       <ShrdAsemblAge0>-1</ShrdAsemblAge0>
       <ShrdHeaderAge1>1234700835</ShrdHeaderAge1>
@@ -45,7 +45,7 @@
         <Line>Documentation\doxygen\CLOCK_component.txt</Line>
         <Line>Documentation\doxygen\SW_TRIGGER_component.txt</Line>
         <Line>Documentation\doxygen\SW_SPEED_component.txt</Line>
-        <Line>Documentation\doxygen\RESETINT_component.txt</Line>
+        <Line>Documentation\doxygen\RETRIGGERINT_component.txt</Line>
         <Line>Documentation\doxygen\CI2C1_component.txt</Line>
         <Line>Documentation\doxygen\PTB_component.txt</Line>
         <Line>Documentation\doxygen\EdgeCutter_project.txt</Line>
@@ -61,9 +61,9 @@
       <GenExtraFileSrcDir23>lib\Kinetis\startup\</GenExtraFileSrcDir23>
       <GenExtraFileSrcDir19>Repositories\lib\doxygen\</GenExtraFileSrcDir19>
       <XtraAge20>1234701244</XtraAge20>
-      <XtraAge21>1234702647</XtraAge21>
+      <XtraAge21>1234739986</XtraAge21>
       <XtraAge23>1228700989</XtraAge23>
-      <XtraAge24>1234703251</XtraAge24>
+      <XtraAge24>1234744393</XtraAge24>
       <GenExtraFileType24>4</GenExtraFileType24>
       <GenExtraFileType23>5</GenExtraFileType23>
       <GenExtraFileType22>4</GenExtraFileType22>
@@ -115,7 +115,7 @@
       <GenMethodsInEvents lines_count="10">
         <Line>CI2C1_OnMasterBlockSent</Line>
         <Line>CI2C1_OnMasterBlockReceived</Line>
-        <Line>RESETINT_OnInterrupt</Line>
+        <Line>RETRIGGERINT_OnInterrupt</Line>
         <Line>CLOCKINT_OnInterrupt</Line>
         <Line>AD1_OnEnd</Line>
         <Line>AD1_OnCalibrationEnd</Line>
@@ -142,7 +142,7 @@
         <Line>PE_Types</Line>
         <Line>PTA</Line>
         <Line>PTB</Line>
-        <Line>RESETINT</Line>
+        <Line>RETRIGGERINT</Line>
         <Line>SM1</Line>
         <Line>SW_MODE</Line>
         <Line>SW_SPEED</Line>
@@ -169,7 +169,7 @@
         <Line>CLOCK</Line>
         <Line>SW_TRIGGER</Line>
         <Line>SW_SPEED</Line>
-        <Line>RESETINT</Line>
+        <Line>RETRIGGERINT</Line>
         <Line>WAIT1</Line>
         <Line>CI2C1</Line>
         <Line>PTB</Line>
@@ -178,7 +178,7 @@
     </GenFiles>
     <SignalListFile>Documentation\EdgeCutter_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>83</ProjectModificationStamp>
+    <ProjectModificationStamp>89</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -186,8 +186,8 @@
     <GenComponentVersion>01.009</GenComponentVersion>
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234702647</CodeAge>
+    <HeaderAge>1234739986</HeaderAge>
+    <CodeAge>1234739986</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -398,8 +398,8 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234744316</HeaderAge>
+    <CodeAge>1234744316</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
     <Enable>true</Enable>
@@ -465,8 +465,8 @@
       <GenComponentVersion>01.018</GenComponentVersion>
       <GenDriverVersion>01.02</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1234700835</HeaderAge>
-      <CodeAge>1234700835</CodeAge>
+      <HeaderAge>1234744316</HeaderAge>
+      <CodeAge>1234744316</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>17</GenNumMethods>
       <Init>true</Init>
@@ -546,8 +546,8 @@
     <GenComponentVersion>01.164</GenComponentVersion>
     <GenDriverVersion>01.11</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234744316</HeaderAge>
+    <CodeAge>1234744316</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Init>true</Init>
@@ -657,8 +657,8 @@
     <GenComponentVersion>01.697</GenComponentVersion>
     <GenDriverVersion>01.00</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234739986</HeaderAge>
+    <CodeAge>1234739986</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>25</GenNumMethods>
     <Enable>false</Enable>
@@ -707,134 +707,134 @@
       <MethodPos0>HWEnDi</MethodPos0>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>126</LineBeg>
-      <LineEnd>138</LineEnd>
+      <LineBeg>129</LineBeg>
+      <LineEnd>141</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>Measure</MethodPos1>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>139</LineBeg>
-      <LineEnd>173</LineEnd>
+      <LineBeg>142</LineBeg>
+      <LineEnd>176</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos2>MeasureChan</MethodPos2>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>174</LineBeg>
-      <LineEnd>206</LineEnd>
+      <LineBeg>177</LineBeg>
+      <LineEnd>209</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos3>GetChanValue</MethodPos3>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>207</LineBeg>
-      <LineEnd>244</LineEnd>
+      <LineBeg>210</LineBeg>
+      <LineEnd>247</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos4>GetValue16</MethodPos4>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>245</LineBeg>
-      <LineEnd>274</LineEnd>
+      <LineBeg>248</LineBeg>
+      <LineEnd>277</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos5>GetChanValue16</MethodPos5>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>275</LineBeg>
-      <LineEnd>310</LineEnd>
+      <LineBeg>278</LineBeg>
+      <LineEnd>313</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos6>Calibrate</MethodPos6>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>311</LineBeg>
-      <LineEnd>337</LineEnd>
+      <LineBeg>314</LineBeg>
+      <LineEnd>340</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos7>ADC_LDD OnMeasurementComplete</MethodPos7>
       <MethodType>inherited_event</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>338</LineBeg>
-      <LineEnd>339</LineEnd>
+      <LineBeg>341</LineBeg>
+      <LineEnd>342</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos8>Init</MethodPos8>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>340</LineBeg>
-      <LineEnd>352</LineEnd>
+      <LineBeg>343</LineBeg>
+      <LineEnd>355</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos9>ClrSumV</MethodPos9>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>126</LineBeg>
-      <LineEnd>143</LineEnd>
+      <LineBeg>129</LineBeg>
+      <LineEnd>147</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos10>HWEnDi</MethodPos10>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>144</LineBeg>
-      <LineEnd>173</LineEnd>
+      <LineBeg>148</LineBeg>
+      <LineEnd>177</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos11>Measure</MethodPos11>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>174</LineBeg>
-      <LineEnd>219</LineEnd>
+      <LineBeg>178</LineBeg>
+      <LineEnd>223</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos12>MeasureChan</MethodPos12>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>220</LineBeg>
-      <LineEnd>273</LineEnd>
+      <LineBeg>224</LineBeg>
+      <LineEnd>277</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos13>GetChanValue</MethodPos13>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>274</LineBeg>
-      <LineEnd>328</LineEnd>
+      <LineBeg>278</LineBeg>
+      <LineEnd>332</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos14>GetValue16</MethodPos14>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>329</LineBeg>
-      <LineEnd>368</LineEnd>
+      <LineBeg>333</LineBeg>
+      <LineEnd>373</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos15>GetChanValue16</MethodPos15>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>369</LineBeg>
-      <LineEnd>414</LineEnd>
+      <LineBeg>374</LineBeg>
+      <LineEnd>419</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos16>Calibrate</MethodPos16>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>415</LineBeg>
-      <LineEnd>458</LineEnd>
+      <LineBeg>420</LineBeg>
+      <LineEnd>463</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos17>ADC_LDD OnMeasurementComplete</MethodPos17>
       <MethodType>inherited_event</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>459</LineBeg>
-      <LineEnd>500</LineEnd>
+      <LineBeg>464</LineBeg>
+      <LineEnd>505</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos18>Init</MethodPos18>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>501</LineBeg>
-      <LineEnd>518</LineEnd>
+      <LineBeg>506</LineBeg>
+      <LineEnd>523</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
     <InhrCompID_19>
@@ -843,8 +843,8 @@
       <GenComponentVersion>01.183</GenComponentVersion>
       <GenDriverVersion>01.08</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1234700835</HeaderAge>
-      <CodeAge>1234700835</CodeAge>
+      <HeaderAge>1234739986</HeaderAge>
+      <CodeAge>1234739986</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>25</GenNumMethods>
       <Init>true</Init>
@@ -889,127 +889,127 @@
         <MethodPos0>Init</MethodPos0>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>217</LineBeg>
-        <LineEnd>241</LineEnd>
+        <LineBeg>222</LineBeg>
+        <LineEnd>246</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos1>StartSingleMeasurement</MethodPos1>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>242</LineBeg>
-        <LineEnd>281</LineEnd>
+        <LineBeg>247</LineBeg>
+        <LineEnd>286</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos2>CancelMeasurement</MethodPos2>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>282</LineBeg>
-        <LineEnd>304</LineEnd>
+        <LineBeg>287</LineBeg>
+        <LineEnd>309</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos3>CreateSampleGroup</MethodPos3>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>305</LineBeg>
-        <LineEnd>347</LineEnd>
+        <LineBeg>310</LineBeg>
+        <LineEnd>352</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos4>GetMeasuredValues</MethodPos4>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>348</LineBeg>
-        <LineEnd>381</LineEnd>
+        <LineBeg>353</LineBeg>
+        <LineEnd>386</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos5>GetMeasurementCompleteStatus</MethodPos5>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>382</LineBeg>
-        <LineEnd>403</LineEnd>
+        <LineBeg>387</LineBeg>
+        <LineEnd>408</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos6>StartCalibration</MethodPos6>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>404</LineBeg>
-        <LineEnd>426</LineEnd>
+        <LineBeg>409</LineBeg>
+        <LineEnd>431</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos7>GetCalibrationResultStatus</MethodPos7>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>427</LineBeg>
-        <LineEnd>447</LineEnd>
+        <LineBeg>432</LineBeg>
+        <LineEnd>452</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos8>MeasurementCompleteInterrupt</MethodPos8>
         <MethodType>method</MethodType>
         <ModuleType>Header</ModuleType>
-        <LineBeg>448</LineBeg>
-        <LineEnd>459</LineEnd>
+        <LineBeg>453</LineBeg>
+        <LineEnd>464</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos9>Init</MethodPos9>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>168</LineBeg>
-        <LineEnd>247</LineEnd>
+        <LineBeg>175</LineBeg>
+        <LineEnd>256</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos10>StartSingleMeasurement</MethodPos10>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>248</LineBeg>
-        <LineEnd>297</LineEnd>
+        <LineBeg>257</LineBeg>
+        <LineEnd>306</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos11>CancelMeasurement</MethodPos11>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>298</LineBeg>
-        <LineEnd>327</LineEnd>
+        <LineBeg>307</LineBeg>
+        <LineEnd>336</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos12>CreateSampleGroup</MethodPos12>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>328</LineBeg>
-        <LineEnd>390</LineEnd>
+        <LineBeg>337</LineBeg>
+        <LineEnd>399</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos13>GetMeasuredValues</MethodPos13>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>391</LineBeg>
-        <LineEnd>435</LineEnd>
+        <LineBeg>400</LineBeg>
+        <LineEnd>444</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos14>GetMeasurementCompleteStatus</MethodPos14>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>436</LineBeg>
-        <LineEnd>468</LineEnd>
+        <LineBeg>445</LineBeg>
+        <LineEnd>477</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos15>StartCalibration</MethodPos15>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>469</LineBeg>
-        <LineEnd>501</LineEnd>
+        <LineBeg>478</LineBeg>
+        <LineEnd>510</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos16>GetCalibrationResultStatus</MethodPos16>
         <MethodType>method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>502</LineBeg>
-        <LineEnd>541</LineEnd>
+        <LineBeg>511</LineBeg>
+        <LineEnd>550</LineEnd>
       </MethodPos>
       <MethodPos>
         <MethodPos17>MeasurementCompleteInterrupt</MethodPos17>
         <MethodType>internal_method</MethodType>
         <ModuleType>Code</ModuleType>
-        <LineBeg>542</LineBeg>
-        <LineEnd>559</LineEnd>
+        <LineBeg>551</LineBeg>
+        <LineEnd>568</LineEnd>
       </MethodPos>
       <GenExtraFilesCount>1</GenExtraFilesCount>
       <ExtraFile0>Documentation\doxygen\AdcLdd1_component.txt</ExtraFile0>
@@ -1156,8 +1156,8 @@
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234739986</HeaderAge>
+    <CodeAge>1234739986</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>
@@ -1229,8 +1229,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1234702647</HeaderAge>
-    <CodeAge>1234702647</CodeAge>
+    <HeaderAge>1234739535</HeaderAge>
+    <CodeAge>1234739535</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1650,8 +1650,8 @@
     <GenComponentVersion>01.033</GenComponentVersion>
     <GenDriverVersion>01.03</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1234702647</HeaderAge>
-    <CodeAge>1234702647</CodeAge>
+    <HeaderAge>1234739535</HeaderAge>
+    <CodeAge>1234739535</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>13</GenNumMethods>
     <Init>true</Init>
@@ -1705,12 +1705,12 @@
   </ComponentID_33>
   <ComponentID_34>
     <Generated>true</Generated>
-    <GenCompName>RESETINT</GenCompName>
+    <GenCompName>RETRIGGERINT</GenCompName>
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234739986</HeaderAge>
+    <CodeAge>1234739986</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>
@@ -1724,7 +1724,7 @@
     <ConnectPin>false</ConnectPin>
     <GenNumEvents>1</GenNumEvents>
     <OnInterrupt_Selected>2</OnInterrupt_Selected>
-    <OnInterrupt_Name>RESETINT_OnInterrupt</OnInterrupt_Name>
+    <OnInterrupt_Name>RETRIGGERINT_OnInterrupt</OnInterrupt_Name>
     <OnInterrupt_Priority>interrupts disabled</OnInterrupt_Priority>
     <ISR_IntISRHandle />
     <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
@@ -1774,7 +1774,7 @@
       <LineEnd>203</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>1</GenExtraFilesCount>
-    <ExtraFile0>Documentation\doxygen\RESETINT_component.txt</ExtraFile0>
+    <ExtraFile0>Documentation\doxygen\RETRIGGERINT_component.txt</ExtraFile0>
   </ComponentID_34>
   <ComponentID_42>
     <Generated>true</Generated>
@@ -2117,8 +2117,8 @@
     <GenComponentVersion>01.006</GenComponentVersion>
     <GenDriverVersion>01.06</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1234700835</HeaderAge>
-    <CodeAge>1234700835</CodeAge>
+    <HeaderAge>1234740887</HeaderAge>
+    <CodeAge>1234740887</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>1</GenNumMethods>
     <Init>true</Init>
@@ -2132,15 +2132,15 @@
       <MethodPos0>Init</MethodPos0>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>130</LineBeg>
-      <LineEnd>144</LineEnd>
+      <LineBeg>134</LineBeg>
+      <LineEnd>148</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>Init</MethodPos1>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>122</LineBeg>
-      <LineEnd>143</LineEnd>
+      <LineBeg>126</LineBeg>
+      <LineEnd>147</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\PTB_component.txt</ExtraFile0>

@@ -140,7 +140,7 @@ void TI1_OnInterrupt(void)
 void AD1_OnEnd(void)
 {
 	word value;
-	for (int i =0 ;i<4;i++)
+	for (int i =0 ;i<ADC_Count;i++)
 	{
 		AD1_GetChanValue16(i, &value);
 		adcchannels[i] =  value;
@@ -192,9 +192,9 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 
 /*
 ** ===================================================================
-**     Event       :  RESETINT_OnInterrupt (module Events)
+**     Event       :  RETRIGGERINT_OnInterrupt (module Events)
 **
-**     Component   :  RESETINT [ExtInt_LDD]
+**     Component   :  RETRIGGERINT [ExtInt_LDD]
 */
 /*!
 **     @brief
@@ -205,9 +205,9 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 **                           data structure pointer.
 */
 /* ===================================================================*/
-void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr)
+void RETRIGGERINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  EnvelopeTrigger(RESETINT_GetVal(RESETINT_DeviceData));
+  EnvelopeTrigger(RETRIGGERINT_GetVal(RETRIGGERINT_DeviceData));
 }
 
 

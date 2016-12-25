@@ -45,7 +45,7 @@
 #include "CLOCK.h"
 #include "SW_TRIGGER.h"
 #include "SW_SPEED.h"
-#include "RESETINT.h"
+#include "RETRIGGERINT.h"
 #include "CI2C1.h"
 #include "PTB.h"
 #include "KSDK1.h"
@@ -180,9 +180,9 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr);
 
 /*
 ** ===================================================================
-**     Event       :  RESETINT_OnInterrupt (module Events)
+**     Event       :  RETRIGGERINT_OnInterrupt (module Events)
 **
-**     Component   :  RESETINT [ExtInt_LDD]
+**     Component   :  RETRIGGERINT [ExtInt_LDD]
 */
 /*!
 **     @brief
@@ -193,7 +193,7 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr);
 **                           data structure pointer.
 */
 /* ===================================================================*/
-void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr);
+void RETRIGGERINT_OnInterrupt(LDD_TUserData *UserDataPtr);
 
 /*
 ** ===================================================================

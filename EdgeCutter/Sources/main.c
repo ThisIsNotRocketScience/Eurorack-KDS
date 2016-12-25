@@ -40,7 +40,7 @@
 #include "CLOCK.h"
 #include "SW_TRIGGER.h"
 #include "SW_SPEED.h"
-#include "RESETINT.h"
+#include "RETRIGGERINT.h"
 #include "CI2C1.h"
 #include "PTB.h"
 #include "KSDK1.h"
@@ -64,10 +64,6 @@ volatile int measured = 0;
 
 int adcchannels[ADC_Count];
 
-#define GATE_ATTACKEND 3
-#define GATE_DECAYEND 2
-#define GATE_RELEASESTART 1
-#define GATE_RELEASEEND 0
 
 #include "EdgeCutter.h"
 #include "DAC.h"
@@ -129,7 +125,7 @@ uint32_t t = 0;
 
 byte leds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
 //                    13                 5, 6, 7, 8, 9,10, 4, 3,2,1,0
-byte gates[4] = {1, 1, 1, 1};
+
 byte ledorder[13] = {19,18,17,16,15, 8,9, 10,11,12,13,14, 2};
 unsigned char pwm = 3;
 int counter = 0;
@@ -137,21 +133,14 @@ int counter = 0;
 void ShiftOut()
 {
 	counter++;
-	pwm += 16;
+	pwm += 9;
 
 	LATCH_ClrVal(LATCH_DeviceData);
 
 	for(int i =0 ;i<13;i++)
 	{
-		if (i == (counter/50)%13)
-		{
-			leds[ledorder[i]] = 255;
-		}
-		else
-		{
-			leds[ledorder[i]] = 0;
+		leds[ledorder[i]] = Envelope.StateLeds[i];
 
-		}
 	}
 
 	for (int i = 0; i < 20; i++)
@@ -168,31 +157,18 @@ void ShiftOut()
 		CLOCK_SetVal(CLOCK_DeviceData);
 	}
 	for (int i = 0; i < 4; i++)
-		{
-			if (gates[i] > 0)
-				DATA_ClrVal(DATA_DeviceData);
-			else
-				DATA_SetVal(DATA_DeviceData);
-			CLOCK_ClrVal(CLOCK_DeviceData);
-			CLOCK_SetVal(CLOCK_DeviceData);
-		}
+	{
+		if (Envelope.Gates[3-i] > 0)
+			DATA_ClrVal(DATA_DeviceData);
+		else
+			DATA_SetVal(DATA_DeviceData);
+		CLOCK_ClrVal(CLOCK_DeviceData);
+		CLOCK_SetVal(CLOCK_DeviceData);
+	}
 	LATCH_SetVal(LATCH_DeviceData);
 }
 
-void clearTick()
-{
 
-	gates[GATE_ATTACKEND] = 0;
-	gates[GATE_DECAYEND] = 0;
-	gates[GATE_RELEASEEND] = 0;
-	gates[GATE_RELEASESTART] = 0;
-}
-
-
-void PatternReset()
-{
-	clearTick();
-}
 
 int KnobOpt(int val)
 {
@@ -214,36 +190,43 @@ int CurvedOut = 0;
 void doTimer()
 {
 	tickssincecommit++;
-
-	if (t % 2 == 0)
+	t++;
+	switch(t%2)
 	{
-		DAC_Write(0, LinearOut);
-	}
-	else
-	{
-		DAC_Write(1, CurvedOut);
-	}
+		case 0:
+		{
+			LinearOut = EdgeCutter_GetEnv(&Envelope, &Params);
+			DAC_Write(0, LinearOut);
+		}
+		break;
+		case 1:
+		{
+			CurvedOut = (int)(Envelope.CurvedOutput * 2047);
+			DAC_Write(1, CurvedOut);
+		}
 
+		break;
+	}
 	ShiftOut();
 }
 
 void SetModeLeds(int mode)
 {
 	switch(mode)
-		{
-		case 0: leds[5]=255; leds[6] = 0;leds[7] =0 ;break;
-		case 1: leds[5]=0; leds[6] = 255;leds[7] =0 ;break;
-		case 2: leds[5]=0; leds[6] = 0;leds[7] =255 ;break;
-		}
+	{
+	case 0: leds[5]=0; leds[6] = 0;leds[7] =255 ;break;
+	case 1: leds[5]=0; leds[6] = 255;leds[7] =0 ;break;
+	case 2: leds[5]=255; leds[6] = 0;leds[7] =0 ;break;
+	}
 }
 void SetSpeedLeds(int speed)
 {
 	switch(speed)
-		{
-		case 0: leds[3]=255; leds[4] = 0;break;
-		case 1: leds[3]=0; leds[4] = 255;break;
+	{
+	case 0: leds[3]=255; leds[4] = 0;break;
+	case 1: leds[3]=0; leds[4] = 255;break;
 
-		}
+	}
 }
 
 
@@ -391,7 +374,7 @@ void SetupLeds()
 
 void EnvelopeTrigger(int sw)
 {
-	EdgeCutter_Trigger(&Envelope, sw);
+	EdgeCutter_Trigger(&Envelope, sw, &Params);
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -419,6 +402,7 @@ int main(void)
 	LoadEeprom();
 
 	TI1_Enable();
+	AD1_Calibrate(TRUE);
 	AD1_Measure(FALSE);
 
 
@@ -445,8 +429,8 @@ int main(void)
 	{
 
 		int triggersw = denoise(SW_TRIGGER_GetVal(0), &triggersw_state);
-		int modesw = denoise(SW_SPEED_GetVal(0), &modesw_state);
-		int speedsw = denoise(SW_MODE_GetVal(0), &speedsw_state);
+		int modesw = denoise(SW_MODE_GetVal(0), &modesw_state);
+		int speedsw = denoise(SW_SPEED_GetVal(0), &speedsw_state);
 
 		if (modesw == 1)
 		{
@@ -464,11 +448,11 @@ int main(void)
 
 		if (triggersw_state.pressed	>0 )
 		{
-			EdgeCutter_Trigger(&Envelope, 1);
+			EdgeCutter_Trigger(&Envelope, 1, &Params);
 		}
-		if (triggersw_state.pressed	>0 )
+		if (triggersw_state.released	>0 )
 		{
-			EdgeCutter_Trigger(&Envelope, 0);
+			EdgeCutter_Trigger(&Envelope, 0 ,&Params);
 		}
 
 
