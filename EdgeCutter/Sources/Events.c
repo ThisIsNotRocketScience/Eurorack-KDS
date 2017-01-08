@@ -186,8 +186,8 @@ void AD1_OnCalibrationEnd(void)
 /* ===================================================================*/
 void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  int D = CLOCKINT_GetVal(CLOCKINT_DeviceData);
-
+	EnvelopeTrigger(CLOCKINT_GetVal(CLOCKINT_DeviceData));
+  //int D = CLOCKINT_GetVal(CLOCKINT_DeviceData);
 }
 
 /*
@@ -207,7 +207,7 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void RETRIGGERINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  EnvelopeTrigger(RETRIGGERINT_GetVal(RETRIGGERINT_DeviceData));
+  //EnvelopeTrigger(RETRIGGERINT_GetVal(RETRIGGERINT_DeviceData));
 }
 
 

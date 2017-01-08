@@ -2,7 +2,7 @@
 #include "SM1.h"
 #include "DACSEL.h"
 
-unsigned char DACSENDDONE = 1;
+volatile unsigned char DACSENDDONE = 1;
 void DAC_Done()
 {
 	DACSEL_SetVal(0);

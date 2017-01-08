@@ -65,21 +65,19 @@ volatile int measured = 0;
 
 int adcchannels[ADC_Count];
 
-#define GATE_TICK 4
-#define GATE_CLOCK 5
-#define GATE_BEAT 3
-#define GATE_LOOP 2
-#define GATE_ACCENT 1
-#define GATE_GATE 0
 
-#include "PatternGen.h"
+
+#include "Tuesday.h"
 #include "DAC.h"
 
-struct PatternGen_Target Pattern;
-struct PatternGen_Settings Settings;
-struct PatternGen_Params Params;
-struct PatternGen_Params LastParams;
-struct PatternGen_Random MainRandom;
+struct Tuesday_PatternGen Tuesday;
+struct Tuesday_Settings Settings;
+struct Tuesday_Params Params;
+struct Tuesday_Params LastParams;
+struct Tuesday_RandomGen MainRandom;
+
+int tickssincecommit = 0;
+
 
 struct denoise_state_t
 {
@@ -121,37 +119,12 @@ int denoise(int sw_down, struct denoise_state_t *state)
 	return state->pressed;
 }
 
-uint32_t t = 0;
 
-//4096 = 2.048v
-/*2.5 * (2.048 * INP)/4096
-		(x * 4096)
-		/ 2.5 * 2.048
-		 = inp*/
-
-#define VOLT(x) ((int)((4096.0 * (x)) / (2.5 * 2.048)))
-#define NOTE(x) VOLT((x) / 12.0)
-
-int countdownTick = 1;
-int countdownNote = 1;
-int msecpertick = 10 ;
-word TickOut = 0;
-int32_t CVOut = 0;
-int Tick = -1;
-int Measure = 0;
-
-int clockup = 0;
-int clockshad = 0;
-int clockssincereset = 0;
 
 long oldseed = -1;
 byte pwm = 0;
 
-int timesincelastclocktick;
-int clocktick = 0;
 
-byte leds[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-byte gates[6] = {1, 1, 1, 1, 1, 1};
 
 void ShiftOut()
 {
@@ -160,7 +133,7 @@ void ShiftOut()
 	LATCH_ClrVal(LATCH_DeviceData);
 	for (int i = 0; i < 6; i++)
 	{
-		if (gates[i] > 0)
+		if (Tuesday.Gates[i] > 0)
 			DATA_ClrVal(DATA_DeviceData);
 		else
 			DATA_SetVal(DATA_DeviceData);
@@ -170,7 +143,7 @@ void ShiftOut()
 
 	for (int i = 0; i < 16; i++)
 	{
-		if (leds[i] > pwm)
+		if (Tuesday.StateLeds[i] > pwm)
 		{
 			DATA_SetVal(DATA_DeviceData);
 		}
@@ -185,238 +158,42 @@ void ShiftOut()
 	LATCH_SetVal(LATCH_DeviceData);
 }
 
-int lastnote = 0;
-
-int CoolDown = 0;
-
 void doTick()
 {
-	int CoolDownMax = ((adcchannels[ADC_INTENSITY]) / 256.0);
-	if (CoolDown > 0)
-	{
-		CoolDown--;
-		if (CoolDown > CoolDownMax  ) CoolDown = CoolDownMax;
-		if (CoolDown < 0) CoolDown= 0;
-	}
-	if (Pattern.Ticks[Tick].vel >= CoolDown)
-	{
-		CoolDown = CoolDownMax;
-
-		countdownNote =( msecpertick * 900) / 1000;
-
-		if (countdownNote >= msecpertick) countdownNote = 0;
-
-		TickOut = (Pattern.Ticks[Tick].accent * 2048 + 2047);
-		CVOut = NOTE(Pattern.Ticks[Tick].note);
-		lastnote = Pattern.Ticks[Tick].note;
-		gates[GATE_GATE] = 1;
-		if (Pattern.Ticks[Tick].accent > 0) gates[GATE_ACCENT] = 1;
-	}
-
-	if (Tick == 0) gates[GATE_LOOP] = 1;
-	if (Tick % Pattern.TPB == 0) gates[GATE_BEAT] = 1;
-
-	gates[GATE_TICK] = 1;
-
+	Tuesday_Tick(&Tuesday,&Params);
 	ShiftOut();
 }
 
-void clearTick()
-{
-	gates[GATE_BEAT] = 0;
-	gates[GATE_TICK] = 0;
-	//gates[GATE_GATE] = 0;
-	gates[GATE_ACCENT] = 0;
-	gates[GATE_LOOP] = 0;
-}
-
-int directtick = 0;
-
-int extclockssincereset[6] = {0,0,0,0,0,0};
-byte extclockssinceresetcounter[6] = {0,0,0,0,0,0};
-int extclocksupsincereset =0;
-int extclocksdowsincereset = 0;
-
 void PatternReset()
 {
-	clearTick();
-	TickOut = 0;
-	Tick = -1;
-	CoolDown = 0;
-	countdownTick = 0;
-	directtick = 1;
-	clockssincereset = 0;
-	for (int i = 0;i<6;i++)
-	{
-		extclockssincereset[i] = 0;
-		extclockssinceresetcounter[i] = 0;
-	}
-	extclocksupsincereset =0;
-	extclocksdowsincereset = 0;
+	Tuesday_Reset(&Tuesday);
 }
-
-int KnobOpt(int val)
-{
-	int r = 0;
-	if (val > (65536*1)/5) r++;
-	if (val > (65536*2)/5) r++;
-	if (val > (65536*3)/5) r++;
-	if (val > (65536*4)/5) r++;
-	return 1 + 4 - r;
-}
-
-int lastclocksubdiv= -1;
 
 void ExtClockTick(int state)
 {
-	clockup = state;
-
-
-	int clocksubdiv = KnobOpt( adcchannels[ADC_TEMPO]);
-	if (lastclocksubdiv != clocksubdiv)
-	{
-		clockssincereset = extclockssincereset[clocksubdiv];
-	}
-	lastclocksubdiv = clocksubdiv;
-	if (state == 1 )
-	{
-		if ((extclocksupsincereset % clocksubdiv) == 0)
-		{
-			DoClock(1);
-		}
-		extclocksupsincereset = (extclocksupsincereset + 1)%clocksubdiv;
-	}
-	else
-	{
-		if ((extclocksdowsincereset % clocksubdiv) == 0)
-		{
-			DoClock(0);
-		}
-		extclocksdowsincereset  = (extclocksdowsincereset  + 1)%clocksubdiv;
-
-	}
-
-	if (state == 1)
-	{
-		for (int i = 1;i<6;i++)
-		{
-
-			extclockssinceresetcounter[i]++;
-			if (extclockssinceresetcounter[i] == i)
-			{
-				extclockssinceresetcounter[i] = 0;
-				extclockssincereset[i] = (extclockssincereset[i] + 1)%96;
-			}
-		}
-		timesincelastclocktick = 0;
-	}
-
+	Tuesday_ExtClock(&Tuesday,&Params, state);
 }
+
+
 void DoClock(int state)
 {
-	if (state == 1)
-	{
-		gates[GATE_CLOCK] = 1;
-
-
-		if (clockssincereset >= 96)
-		{
-			clockssincereset = 0;
-			Measure++;
-			if (Measure * Pattern.TPB * 4 >= Pattern.Length) Measure =0 ;
-		}
-
-
-		//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
-		int NewTick = (Measure * (Pattern.TPB * 4)  + ((clockssincereset * (Pattern.TPB * 4))/96)) % Pattern.Length;
-		if (NewTick != Tick || directtick == 1)
-		{
-			//#define USE_SEMIHOST
-			//printf("%d %d\n", Measure, NewTick);
-			if (Tick == -1) Tick = 0;
-
-			doTick();
-			Tick = NewTick;
-			directtick = 0;
-			clockshad = 0;
-		}
-
-		clockshad++;
-		clockssincereset++;
-
-	}
-	else
-	{
-		clearTick();
-		gates[GATE_CLOCK] = 0 ;
-	}
+	Tuesday_Clock(&Tuesday, state);
 }
 
-int tickssincecommit = 0;
 
 // half-millisecond timer -> update each dacchannel in turn
 void doTimer()
 {
 	tickssincecommit++;
-	timesincelastclocktick++;
-	int clockmode = 1;
-	if (clockup == 0 && timesincelastclocktick > 2000)
+	Tuesday_TimerTick(&Tuesday, &Params);
+
+	if (Tuesday.T%2==0)
 	{
-		timesincelastclocktick = 3000;
-		clockmode = 0;
-	}
-
-	t++;
-
-	if (t % 2 == 0)
-	{
-		if (countdownNote >= 0)
-		{
-			countdownNote--;
-			if (countdownNote <= 0)
-			{
-				TickOut = 0;
-				gates[GATE_GATE] = 0;
-			}
-		}
-
-		int bpm = 1 + (200 * (adcchannels[ADC_TEMPO])) / 65536;
-		int msecperbeat = (1000 * 60) / (96 * (bpm/4));
-
-
-		if (clockmode == 0)
-		{
-			countdownTick--;
-
-			if (countdownTick > msecperbeat)
-				countdownTick = msecperbeat;
-			if (countdownTick <= 0 || directtick == 1)
-			{
-				DoClock(1);
-
-				directtick = 0;
-				countdownTick = msecperbeat;
-				//				doTick();
-			}
-			else
-			{
-				DoClock(0);
-				//				clearTick();
-			}
-		}
-		if (CVOut > 4095)
-		{
-			CVOut = 4095;
-		}
-		if (CVOut < 0)
-		{
-			CVOut = 0;
-		}
-		DAC_Write(0, CVOut);
+		DAC_Write(0, Tuesday.CVOut);
 	}
 	else
 	{
-		DAC_Write(1, TickOut);
+		DAC_Write(1, Tuesday.TickOut);
 	}
 
 	ShiftOut();
@@ -427,82 +204,82 @@ void SetLedNumber(int offset, int number)
 	switch (number % 13)
 	{
 	case 0:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 1:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 2:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 3:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 4:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 5:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 6:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 7:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 8:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 0;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 0;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 9:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 0;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 0;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 10:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 0;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 0;
 		break;
 	case 11:
-		leds[offset + 0] = 0;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 0;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	case 12:
-		leds[offset + 0] = 255;
-		leds[offset + 1] = 255;
-		leds[offset + 2] = 255;
-		leds[offset + 3] = 255;
+		Tuesday.StateLeds[offset + 0] = 255;
+		Tuesday.StateLeds[offset + 1] = 255;
+		Tuesday.StateLeds[offset + 2] = 255;
+		Tuesday.StateLeds[offset + 3] = 255;
 		break;
 	}
 }
@@ -578,7 +355,7 @@ byte EE24_ReadByte(unsigned short address)
 	while (i2csending == 1)
 	{
 	}
-	gates[2] = 0;
+	Tuesday.Gates[TUESDAY_GATES] = 0;
 	ShiftOut();
 
 	byte out;
@@ -587,7 +364,7 @@ byte EE24_ReadByte(unsigned short address)
 	while (i2creceiving == 1)
 	{
 	};
-	gates[3] = 0;
+	Tuesday.Gates[TUESDAY_GATES] = 0;
 	ShiftOut();
 
 	return out;
@@ -634,7 +411,7 @@ void LoadEeprom()
 		int paramsize = sizeof(Params);
 		EE24_ReadBlock(1, (byte *)&Params, paramsize);
 
-		PatternGen_ValidateParams(&Params);
+		Tuesday_ValidateParams(&Params);
 	}
 	else
 	{
@@ -670,8 +447,9 @@ int main(void)
 	initialise_monitor_handles();
 #endif
 
-	PatternGen_LoadSettings(&Settings, &Params);
-	PatternGen_RandomSeed(&MainRandom, oldseed);
+	Tuesday_Init(&Tuesday);
+	Tuesday_LoadSettings(&Settings, &Params);
+	Tuesday_RandomSeed(&MainRandom, oldseed);
 	LoadEeprom();
 
 	TI1_Enable();
@@ -682,14 +460,14 @@ int main(void)
 	{
 		for (int i =0 ;i<16;i++)
 		{
-			leds[15-i] = j==i?255:0;
+			Tuesday.StateLeds[15-i] = j==i?255:0;
 		}
 		ShiftOut();
 		WAIT1_Waitms(40);
 	}
 	for (int i =0 ;i<16;i++)
 	{
-		leds[i] = 0;
+		Tuesday.StateLeds[i] = 0;
 	}
 	ShiftOut();
 	int switchmode = 1;
@@ -708,21 +486,21 @@ int main(void)
 		if (algosw == 1)
 		{
 			switchmode = 1;
-			Params.algo = (Params.algo + 1) % PATTERNGEN_MAXALGO;
+			Params.algo = (Params.algo + 1) % TUESDAY_MAXALGO;
 			commitchange = 1;
 		}
 
 		if (scalesw == 1)
 		{
 			switchmode = 1;
-			Params.scale = (Params.scale + 1) % PATTERNGEN_MAXSCALE;
+			Params.scale = (Params.scale + 1) % TUESDAY_MAXSCALE;
 			commitchange = 1;
 		}
 
 		if (beatsw == 1)
 		{
 			switchmode = 1;
-			Params.beatopt = (Params.beatopt + 1) % PATTERNGEN_MAXBEAT;
+			Params.beatopt = (Params.beatopt + 1) % TUESDAY_MAXBEAT;
 
 			commitchange = 1;
 		}
@@ -733,13 +511,17 @@ int main(void)
 
 			Settings.beatoptions[Params.beatopt];
 
-			Params.tpbopt = (Params.tpbopt + 1) % PATTERNGEN_MAXTPB;
+			Params.tpbopt = (Params.tpbopt + 1) % TUESDAY_MAXTPB;
 			commitchange = 1;
 		}
 
 		if (measured == 1)
 		{
 			measured = 0;
+			Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
+			Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
+			Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
+			Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
 			AD1_Measure(FALSE);
 		}
 
@@ -754,13 +536,12 @@ int main(void)
 			// updated pattern needed for some reason!
 
 			switchmode = 0;
-			PatternGen_RandomSeed(&MainRandom, newseed);
+			Tuesday_RandomSeed(&MainRandom, newseed);
 			oldseed = newseed;
 
-			Params.seed1 = (adcchannels[0] >> 8);
-			Params.seed2 = (adcchannels[1] >> 8);
 
-			PatternGen_Generate(&Pattern, &Params, &Settings);
+
+			Tuesday_Generate(&Tuesday, &Params, &Settings);
 		}
 
 		if (commitchange == 1 && tickssincecommit >= 10)

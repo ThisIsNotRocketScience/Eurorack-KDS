@@ -20,7 +20,7 @@ extern int timesincelastclocktick;
 extern int adcchannels[ADC_Count];
 extern void doTimer();
 extern void PatternReset();
-
+extern void ExtClockTick(int state);
 extern volatile int i2csending;
 extern volatile int i2creceiving;
 #endif

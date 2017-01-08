@@ -195,13 +195,14 @@ void doTimer()
 	{
 		case 0:
 		{
-			LinearOut = EdgeCutter_GetEnv(&Envelope, &Params);
+			EdgeCutter_GetEnv(&Envelope, &Params);
+			LinearOut = Envelope.LinearOutput;
 			DAC_Write(0, LinearOut);
 		}
 		break;
 		case 1:
 		{
-			CurvedOut = (int)(Envelope.CurvedOutput * 2047);
+			CurvedOut = Envelope.CurvedOutput;
 			DAC_Write(1, CurvedOut);
 		}
 
@@ -405,20 +406,6 @@ int main(void)
 	AD1_Calibrate(TRUE);
 	AD1_Measure(FALSE);
 
-
-	for(int j =0 ;j<20;j++)
-	{
-		for (int i =0 ;i<20;i++)
-		{
-			leds[15-i] = j==i?255:0;
-		}
-		ShiftOut();
-		WAIT1_Waitms(40);
-	}
-	for (int i =0 ;i<20;i++)
-	{
-		leds[i] = 0;
-	}
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();
@@ -463,11 +450,11 @@ int main(void)
 			AD1_Measure(FALSE);
 		}
 
-		Envelope.A = (adcchannels[ADC_A] >> 8);
-		Envelope.D = (adcchannels[ADC_D] >> 8);
-		Envelope.S = (adcchannels[ADC_S] >> 8);
-		Envelope.R = (adcchannels[ADC_R] >> 8);
-		Envelope.Curvature = (adcchannels[ADC_CURVATURE] >> 8);
+		Envelope.A = ~(adcchannels[ADC_A] >> 8);
+		Envelope.D = ~(adcchannels[ADC_D] >> 8);
+		Envelope.S = ~(adcchannels[ADC_S] >> 8);
+		Envelope.R = ~(adcchannels[ADC_R] >> 8);
+		Envelope.Curvature = ~(adcchannels[ADC_CURVATURE] >> 8);
 
 		if (switchmode == 1)
 		{

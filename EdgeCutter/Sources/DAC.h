@@ -4,5 +4,5 @@
 
 extern void DAC_Write(int channel, int value);
 extern void DAC_Done();
-extern unsigned char DACSENDDONE;
+extern volatile unsigned char DACSENDDONE;
 #endif

@@ -1,5 +1,6 @@
 #include "EdgeCutter.h"
 #include <math.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -25,17 +26,19 @@ extern "C"
 	{
 		switch (Env->State)
 		{
-
 		case ENVSTATE_SUSTAIN:
 			Env->StateLeds[7] = 0;
 			Env->StateLeds[8] = 0;
 			break;
+
 		case ENVSTATE_ATTACK:
 			Env->Gates[GATE_ATTACKEND] = GATE_COUNTDOWN;
 			break;
+
 		case ENVSTATE_DECAY:
 			Env->Gates[GATE_DECAYEND] = GATE_COUNTDOWN;
 			break;
+
 		case ENVSTATE_RELEASE:
 			Env->Gates[GATE_RELEASEEND] = GATE_COUNTDOWN;
 			break;
@@ -50,37 +53,38 @@ extern "C"
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			break;
+
 		case ENVSTATE_RELEASE:
-			Env->AttackProgress = 1;
-			Env->DecayProgress = 1;
+			Env->AttackProgress = FIXED(1);
+			Env->DecayProgress = FIXED(1);
 			Env->ReleaseProgress = 0;
 			Env->ReleaseStart = Env->Current;
 			Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN;
 			break;
+
 		case ENVSTATE_DECAY:
-			Env->AttackProgress = 1;
+			Env->AttackProgress = FIXED(1);
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->DecayStart = Env->Current;
-
 			break;
+
 		case ENVSTATE_ATTACK:
 			Env->AttackProgress = 0;
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->AttackStart = Env->Current;
-
 			break;
+
 		case ENVSTATE_SUSTAIN:
-			Env->AttackProgress = 1;
-			Env->DecayProgress = 1;
+			Env->AttackProgress = FIXED(1);
+			Env->DecayProgress = FIXED(1);
 			Env->ReleaseProgress = 0;
 			Env->StateLeds[7] = 255;
 			Env->StateLeds[8] = 255;
 			break;
 		}
 	}
-
 
 	void EdgeCutter_Trigger(struct EdgeCutter_Envelope *Env, unsigned char N, struct EdgeCutter_Params *Params)
 	{
@@ -95,7 +99,6 @@ extern "C"
 			{
 				//retrigger?
 			}
-
 		}
 		else
 		{
@@ -121,29 +124,20 @@ extern "C"
 
 	}
 
-	unsigned long EnvelopeRange(float V, float SR)
+	unsigned long EnvelopeRange(uint32_t V, int speed)
 	{
-		return (unsigned long)(64 * pow((float)((SR * 6) / 64.0), pow((float)V, 0.54f)));
+		return 1 + ((speed?1:10) * V) >> 8;
 	}
 
-
-	float EnvelopeLength(int inp, int speed)
+	int32_t EnvelopeLength(int inp, int speed)
 	{
-		//int I = EnvelopeRange(0, 2000) - 64 + 1;
-	//int I2 = EnvelopeRange(1, 2000) - 64 + 1;
-		if (speed == 1)
-		{
-			//inp *= 10;
-			inp += 255;
-		}
-		return EnvelopeRange(inp / 255.0, 2000) - 64 + 1;
+		return 1 + (((speed ? 200 : 2000) * inp) >> 8);
 	}
 
-	float SustainLevel(int sus)
+	int32_t SustainLevel(int sus)
 	{
-		return sus * 1.0f / 255.0f;
+		return (sus * FIXED(1)) >> 8;
 	}
-
 
 	int EdgeCutter_GetEnv(struct EdgeCutter_Envelope *Env, struct EdgeCutter_Params *Params)
 	{
@@ -154,126 +148,136 @@ extern "C"
 
 		switch (Env->State)
 		{
-		case ENVSTATE_ATTACK:
-		{
-			Env->CurrentTarget = 1.0;
-			float Delta = 1.0f / EnvelopeLength(Env->A, Params->speed);
-			Env->Current += Delta;
-			Env->AttackProgress = Env->Current / (1.0f - Env->AttackStart);
-			if (Env->Current >= 1.0f)
+			case ENVSTATE_ATTACK:
 			{
-				Env->Current = 1.0f;
-				SwitchToState(Env, ENVSTATE_DECAY);
-			}
-		}
-		break;
-
-		case ENVSTATE_DECAY:
-		{
-			float SusLev = SustainLevel(Env->S);
-			Env->CurrentTarget = SusLev;
-
-			float Delta = -(1.0f - SusLev) / EnvelopeLength(Env->D, Params->speed);
-			Env->Current += Delta;
-
-			Env->DecayProgress = 1 - ((Env->Current - SusLev) / (Env->DecayStart - SusLev));
-
-
-
-			if (Env->Current <= SusLev)
-			{
-				Env->Current = SusLev;
-				if (Params->mode == ENVMODE_TRIGGER || Params->mode == ENVMODE_LOOP)
+				Env->CurrentTarget = FIXED(1);
+				int L = EnvelopeLength(Env->A, Params->speed);;
+				int32_t Delta = FIXED(1) / L;
+				Env->Current += Delta;
+				Env->AttackProgress = (Env->Current * FIXED(1)) / (FIXED(1) - Env->AttackStart);
+				if (Env->Current >= FIXED(1))
 				{
-					SwitchToState(Env, ENVSTATE_RELEASE);
+					Env->Current = FIXED(1);
+					SwitchToState(Env, ENVSTATE_DECAY);
+				}
+			}
+			break;
+
+			case ENVSTATE_DECAY:
+			{
+				int32_t SusLev = SustainLevel(Env->S);
+				Env->CurrentTarget = SusLev;
+
+				int32_t Delta = -(FIXED(1) - SusLev) / EnvelopeLength(Env->D, Params->speed);
+				Env->Current += Delta;
+				if (Env->DecayStart > SusLev)
+				{
+			
+					Env->DecayProgress = (((FIXED(1) - (Env->Current - SusLev)) * FIXED(1)) / (Env->DecayStart - SusLev));
 				}
 				else
 				{
-					SwitchToState(Env, ENVSTATE_SUSTAIN);
+					Env->DecayProgress = FIXED(1);
+					Env->Current = SusLev;
+				}
+				if (Env->Current <= SusLev)
+				{
+					Env->Current = SusLev;
+					if (Params->mode == ENVMODE_TRIGGER || Params->mode == ENVMODE_LOOP)
+					{
+						SwitchToState(Env, ENVSTATE_RELEASE);
+					}
+					else
+					{
+						SwitchToState(Env, ENVSTATE_SUSTAIN);
+					}
 				}
 			}
-		}
-		break;
+			break;
 
-		case ENVSTATE_SUSTAIN:
-		{
-			float SusLev = SustainLevel(Env->S);
-			Env->CurrentTarget = SusLev;
-
-			float Delta = (SustainLevel(Env->S) - Env->Current)*0.2f;
-			Env->Current += Delta;
-
-		}
-		break;
-
-		case ENVSTATE_RELEASE:
-		{
-			Env->CurrentTarget = 0;
-
-			float Delta = -Env->ReleaseStart / EnvelopeLength(Env->R, Params->speed);
-			Env->Current += Delta;
-			Env->ReleaseProgress = 1.0f - ((Env->Current) / (Env->ReleaseStart));
-
-			if (Env->Current <= 0)
+			case ENVSTATE_SUSTAIN:
 			{
-				Env->Current = 0;
+				int32_t SusLev = SustainLevel(Env->S);
+				Env->CurrentTarget = SusLev;
 
-				if (Params->mode == ENVMODE_LOOP && Env->TriggerState)
-				{
-					SwitchToState(Env, ENVSTATE_ATTACK);
+				int32_t Delta = (SustainLevel(Env->S) - Env->Current)*0.2f;
+				Env->Current += Delta;
 
-				}
-				else
+			}
+			break;
+
+			case ENVSTATE_RELEASE:
+			{
+				Env->CurrentTarget = 0;
+
+				int32_t Delta = -Env->ReleaseStart / EnvelopeLength(Env->R, Params->speed);
+				Env->Current += Delta;
+				Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * FIXED(1)) / (Env->ReleaseStart);
+
+				if (Env->Current <= 0)
 				{
-					SwitchToState(Env, ENVSTATE_IDLE);
+					Env->Current = 0;
+
+					if (Params->mode == ENVMODE_LOOP && Env->TriggerState)
+					{
+						SwitchToState(Env, ENVSTATE_ATTACK);
+
+					}
+					else
+					{
+						SwitchToState(Env, ENVSTATE_IDLE);
+					}
 				}
 			}
-		}
-		break;
-		case ENVSTATE_IDLE:
-			Env->CurrentTarget = 0;
+			break;
+
+			case ENVSTATE_IDLE:
+				Env->CurrentTarget = 0;
 			break;
 		}
 
 		switch (Env->State)
 		{
 			case ENVSTATE_ATTACK:
-				{
-					float DCurved = (Env->CurrentTarget - Env->CurvedOutput) * 0.1f / 255.0f * (256 - Env->A);
-					Env->CurvedOutput += DCurved;
-				}
-				break;
-			case ENVSTATE_SUSTAIN:
-			case ENVSTATE_DECAY:
 			{
-				float DCurved = (Env->CurrentTarget - Env->CurvedOutput) * 0.1f / 255.0f * (256 - Env->D);
+				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->A) / 255.0));
 				Env->CurvedOutput += DCurved;
 			}
 			break;
+			
+			case ENVSTATE_SUSTAIN:
+			case ENVSTATE_DECAY:
+			{
+				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->D) / 255.0));
+				Env->CurvedOutput += DCurved;
+			}
+			break;
+			
 			case ENVSTATE_IDLE:
 			case ENVSTATE_RELEASE:
 			{
-				float DCurved = (Env->CurrentTarget - Env->CurvedOutput) * 0.1f / 255.0f * (256 - Env->R);
+				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->R) / 255.0));
 				Env->CurvedOutput += DCurved;
 			}
 			break;
 		}
-
-
 
 		for (int i = 0; i < 13; i++)
 		{
 			Env->StateLeds[i] = 0;
 		}
+
 		if (Env->State != ENVSTATE_IDLE)
 		{
-			float L1 = (Env->AttackProgress + Env->DecayProgress) * (7.0f / 2.0f);
-
-			int idx = (int)floor(L1);
-			float frac = L1 - (float)idx;
-
-			if (idx < 7)Env->StateLeds[(idx + 1)] = (int)((frac)*255.0f);
-			if (idx < 7)Env->StateLeds[(idx)] = (int)((1.0f - frac)*255.0f);
+			int32_t L1 = (Env->AttackProgress * 7 + Env->DecayProgress * 7) / 2 ;
+			int idx = L1 >> FIXEDBITS;
+			uint8_t frac = (uint8_t)((L1 & FRACMASK) >> (FIXEDBITS-8));
+			
+			if (idx >= 0)
+			{
+				if (idx <= 7) Env->StateLeds[(idx + 1)] = frac;
+				if (idx < 7)  Env->StateLeds[(idx)] = ~frac;
+			}
 
 			if (Env->State == ENVSTATE_SUSTAIN)
 			{
@@ -283,16 +287,18 @@ extern "C"
 
 			if (Env->State == ENVSTATE_RELEASE)
 			{
-				L1 = (Env->ReleaseProgress) * (5.0f) + 8;
-				idx = (int)floor(L1);
-				frac = L1 - (float)idx;
+				L1 = (Env->ReleaseProgress) * (4.0f) + (0);
+				idx = (L1 >> FIXEDBITS) + 9;
+				frac = (uint8_t)((L1 & FRACMASK) >> (FIXEDBITS - 8));
 
-				if (idx < 12)Env->StateLeds[(idx + 1)] = (int)((frac)*255.0f);
-				if (idx < 13)Env->StateLeds[(idx)] = (int)((1.0f - frac)*255.0f);
-
+				if (idx < 12) Env->StateLeds[(idx + 1)] = frac;
+				if (idx < 13) Env->StateLeds[(idx)] = ~frac;
 			}
 		}
-		return (int)(Env->Current * 2047.0f);
+
+		Env->LinearOutput = (Env->Current * 4095) / (FIXED(1));
+		Env->CurvedOutput = (Env->Current * 4095) / (FIXED(1));
+		return Env->LinearOutput;
 	}
 
 #ifdef __cplusplus

@@ -1,6 +1,14 @@
 
 #define EDGECUTTER_MAXMODE 3
 #define EDGECUTTER_MAXSPEED 2
+#include <stdint.h>
+
+#define FIXEDBITS 15
+
+#define FRACMASK ((1<<FIXEDBITS) - 1)
+
+#define FIXED(x) ((int32_t)( x * (float)(1<<FIXEDBITS)))
+
 
 struct EdgeCutter_Params
 {
@@ -41,25 +49,25 @@ struct EdgeCutter_Envelope
 
 	unsigned char TriggerState;
 	
-	int LinearOutput;
-	float CurvedOutput;
+	int32_t LinearOutput;
+	int32_t CurvedOutput;
 
 	int State;
 	
 	unsigned char Gates[5];
 	unsigned char StateLeds[14];
 
-	float AttackStart;
-	float DecayStart;
-	float ReleaseStart;
+	int32_t AttackStart;
+	int32_t DecayStart;
+	int32_t ReleaseStart;
 	
-	float AttackProgress;
-	float DecayProgress;
-	float ReleaseProgress;
+	int32_t AttackProgress;
+	int32_t DecayProgress;
+	int32_t ReleaseProgress;
 
 
-	float Current;
-	float CurrentTarget;
+	int32_t Current;
+	int32_t CurrentTarget;
 };
 
 #ifdef __cplusplus
