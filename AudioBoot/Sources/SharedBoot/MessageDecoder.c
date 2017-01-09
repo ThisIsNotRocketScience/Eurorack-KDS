@@ -3,6 +3,10 @@
 #include "Boot.h"
 #include "Cpu.h"
 
+#include "Eeprom.h"
+
+void ShiftOut(){}
+
 int32_t avg = 9000;
 int32_t min = 9000;
 int32_t max = 9000;
@@ -104,6 +108,28 @@ uint32_t ReadInt(uint8_t *buf, int offs)
 	return res;
 }
 
+uint16_t ReadShort(uint8_t *buf, int offs)
+{
+	uint16_t res = 0;
+	buf += offs;
+	uint16_t c =(buf[0] << 8) & 0xff00;
+	uint32_t d =buf[1];
+	res = c+d;
+	return res;
+}
+
+unsigned char command(unsigned char *buf, const unsigned char *cmd, int siz)
+{
+	for (int i =0 ;i< siz;i++)
+	{
+		if(buf[i] != cmd[i])
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
 void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 {
 	SuccesCountDown+= 60;
@@ -119,7 +145,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 	{
 	case EXPECTEDPACKAGE:
 	{
-		if (rcvbuf[0] == 'B' && rcvbuf[1] == 'L' && rcvbuf[2] == 'O')
+		if (command(rcvbuf, "BLO", 3))// rcvbuf[0] == 'B' && rcvbuf[1] == 'L' && rcvbuf[2] == 'O')
 		{
 			uint32_t idx = rcvbuf[3];
 
@@ -155,17 +181,17 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 
 	case 8:
 
-		if (rcvbuf[0] == 'K' && rcvbuf[1] == 'I' && rcvbuf[2] == 'L' && rcvbuf[3] == 'L')
+		if (command(rcvbuf, "KILL",4))//[0] == 'K' && rcvbuf[1] == 'I' && rcvbuf[2] == 'L' && rcvbuf[3] == 'L')
 		{
 			Boot_EraseAll();
 			AudioReader_NewPacket(&Reader);
 		}
 
-		if (rcvbuf[0] == 'B' && rcvbuf[1] == 'O' && rcvbuf[2] == 'O' && rcvbuf[3] == 'T')
+		if (command( rcvbuf, "BOOT",4))//[0] == 'B' && rcvbuf[1] == 'O' && rcvbuf[2] == 'O' && rcvbuf[3] == 'T')
 		{
 			Reboot();
 		}
-	if (rcvbuf[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
+	if (command(rcvbuf, "DOIT",4))//[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
 	{
 		flasherror = 0 ;
 		for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
@@ -179,7 +205,22 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 	break;
 	case 12:
 	{
-		if (rcvbuf[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
+		if (command(rcvbuf,"EEPR",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
+		{
+			uint16_t off1 = ReadShort(rcvbuf, 4);
+			uint16_t off2 = ReadShort(rcvbuf, 10);
+			uint8_t val1 = rcvbuf[7];
+			uint8_t val2 = rcvbuf[9];
+			if (off1 == off2 && val1 == val2)
+			{
+				EE24_WriteByte(off1, val1);
+			}
+			else
+			{
+				GUIErrorState();
+			}
+		}
+		if (command(rcvbuf,"FLAS",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
 		{
 			uint32_t off = ReadInt(rcvbuf, 4);
 			uint32_t crccheck = ReadInt(rcvbuf, 8);

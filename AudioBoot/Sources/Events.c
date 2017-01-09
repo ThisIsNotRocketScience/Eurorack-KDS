@@ -35,8 +35,10 @@ extern "C" {
 
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-#include "MessageDecoder.h"
-#include "Reader.h"
+#include "SharedBoot/MessageDecoder.h"
+#include "SharedBoot/Reader.h"
+#include "SharedBoot/Eeprom.h"
+
 /*
  ** ===================================================================
  **     Event       :  Cpu_OnNMIINT (module Events)
@@ -139,6 +141,54 @@ void AD1_OnCalibrationEnd(void)
 void IFsh1_OnWriteEnd(void)
 {
 	/* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  CI2C1_OnMasterBlockSent (module Events)
+**
+**     Component   :  CI2C1 [I2C_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when I2C in master mode finishes the
+**         transmission of the data successfully. This event is not
+**         available for the SLAVE mode and if MasterSendBlock is
+**         disabled. 
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. This pointer is passed
+**                           as the parameter of Init method.
+*/
+/* ===================================================================*/
+void CI2C1_OnMasterBlockSent(LDD_TUserData *UserDataPtr)
+{
+	i2csending = 0;
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  CI2C1_OnMasterBlockReceived (module Events)
+**
+**     Component   :  CI2C1 [I2C_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when I2C is in master mode and finishes
+**         the reception of the data successfully. This event is not
+**         available for the SLAVE mode and if MasterReceiveBlock is
+**         disabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. This pointer is passed
+**                           as the parameter of Init method.
+*/
+/* ===================================================================*/
+void CI2C1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr)
+{
+	i2creceiving = 0;
+  /* Write your code here ... */
 }
 
 /* END Events */

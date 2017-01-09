@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-06, 16:33, # CodeGen: 26
+**     Date/Time   : 2017-01-09, 03:20, # CodeGen: 30
 **     Abstract    :
 **
 **     Settings    :
@@ -69,7 +69,8 @@
 ** Array of initialized device structures of LDD components.
 ** ===========================================================================
 */
-LDD_TDeviceData *PE_LDD_DeviceDataList[4] = {
+LDD_TDeviceData *PE_LDD_DeviceDataList[5] = {
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -149,6 +150,8 @@ bool PE_PeripheralUsed(uint32_t PrphBaseAddress)
     case 0x40038000UL:
     /* Base address allocated by peripheral(s) FTFA */
     case 0x40020000UL:
+    /* Base address allocated by peripheral(s) I2C0 */
+    case 0x40066000UL:
       result = TRUE;
       break;
     default:

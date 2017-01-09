@@ -39,16 +39,18 @@
 #include "IntFlashLdd1.h"
 #include "PTA.h"
 #include "PTB.h"
+#include "CI2C1.h"
+#include "WAIT1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
 #include "IO_Map.h"
 /* User includes (#include below this line is not maintained by Processor Expert) */
-#include "Boot.h"
-#include "Reader.h"
+#include "SharedBoot/Boot.h"
+#include "SharedBoot/Reader.h"
 
-#include "LEDS.h"
+#include "SharedBoot/LEDS.h"
 
 extern AudioReaderStruct Reader;
 byte theprogress =0 ;

@@ -45,6 +45,43 @@ Module "PTB"       (component Init_GPIO_VAR0)
                 this method in user code to initialize the module. By default, the method is called by PE automatically; see 
                 "Call Init method" property of the component for more details.
 
+Module "CI2C1"     (component I2C_LDD)
+   - CI2C1_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
+                interrupt priority, sets pin routing, sets timing, etc.   If the "Enable in init. code" is set to "yes" value 
+                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
+                is not necessary and needn't to be generated.    This method can be called only once. Before the second call of 
+                Init() the Deinit() must be called first.
+   - CI2C1_MasterSendBlock -This method writes one (7-bit addressing) or two (10-bit addressing) slave address bytes inclusive 
+                of R/W bit = 0 to the I2C bus and then writes the block of characters to the bus. The slave address must be 
+                specified before, by the "SelectSlaveDevice" method or in component initialization section, "Target slave 
+                address init" property. If the method returns ERR_OK, it doesn't mean that transmission was successful. The 
+                state of transmission is detectable by means of events (OnMasterSendComplete or OnError). Data to be sent are 
+                not copied to an internal buffer and remains in the original location. Therefore the content of the buffer 
+                should not be changed until the transmission is complete. Event "OnMasterBlockSent"can be used to detect the 
+                end of the transmission. This method is available only for the MASTER or MASTER - SLAVE mode.
+   - CI2C1_MasterReceiveBlock -This method writes one (7-bit addressing) or two (10-bit addressing) slave address bytes 
+                inclusive of R/W bit = 1 to the I2C bus and then receives the block of characters from the bus. The slave 
+                address must be specified before, by the "SelectSlaveDevice" method or in component initialization section, 
+                "Target slave address init" property. If the method returns ERR_OK, it doesn't mean that reception was 
+                successful. The state of reception is detectable by means of events (OnMasterSendComplete  or OnError). Data to 
+                be received are not copied to an internal buffer and remains in the original location. Therefore the content of 
+                the buffer should not be changed until the transmission is complete. Event "OnMasterBlockReceived"can be used 
+                to detect the end of the reception. This method is available only for the MASTER or MASTER - SLAVE mode.
+   - CI2C1_SelectSlaveDevice -This method selects a new slave for communication by its 7-bit slave, 10-bit address or general 
+                call value. Any send or receive method directs to or from selected device, until a new slave device is selected 
+                by this method. This method is available for the MASTER mode.
+
+Module "WAIT1"     (component Wait)
+   - WAIT1_Wait10Cycles -Wait for 10 CPU cycles.
+   - WAIT1_Wait100Cycles -Wait for 100 CPU cycles.
+   - WAIT1_WaitCycles -Wait for a specified number of CPU cycles (16bit data type).
+   - WAIT1_WaitLongCycles -Wait for a specified number of CPU cycles (32bit data type).
+   - WAIT1_Waitms -Wait for a specified time in milliseconds.
+   - WAIT1_Waitus -Wait for a specified time in microseconds.
+   - WAIT1_Waitns -Wait for a specified time in nano seconds.
+   - WAIT1_WaitOSms -If an RTOS is enabled, this routine will use a non-blocking wait method. Otherwise it will do a 
+                busy/blocking wait.
+
 Module "Cpu"       (component MKL02Z32FM4)
 
 ===================================================================================
