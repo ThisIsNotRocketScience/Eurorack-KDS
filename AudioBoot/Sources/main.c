@@ -50,7 +50,9 @@
 #include "SharedBoot/Boot.h"
 #include "SharedBoot/Reader.h"
 
-#include "SharedBoot/LEDS.h"
+#include "../../EurorackShared/LEDS.c"
+#include "../../EurorackShared/Eeprom.c"
+
 
 extern AudioReaderStruct Reader;
 byte theprogress =0 ;

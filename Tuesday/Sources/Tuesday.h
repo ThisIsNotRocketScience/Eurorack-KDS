@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "../../EurorackShared/EurorackShared.h"
 
 #define TUESDAY_MAXTICK 160
 #define TUESDAY_GATES 6
@@ -121,6 +122,7 @@ struct Tuesday_Settings
 };
 
 
+
 struct Tuesday_Params
 {
 	// buttons
@@ -128,10 +130,7 @@ struct Tuesday_Params
 	uint8_t beatopt;
 	uint8_t scale;
 	uint8_t algo;
-
-
 };
-
 
 #ifdef __cplusplus
 extern "C"
@@ -145,7 +144,6 @@ extern "C"
 	extern void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
 	extern void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
 	extern void Tuesday_ValidateParams(struct Tuesday_Params *P);
-
 
 	extern void Tuesday_ValidateSettings(struct Tuesday_Settings *S);
 	extern void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P);

@@ -3,7 +3,7 @@
 #include "Boot.h"
 #include "Cpu.h"
 
-#include "Eeprom.h"
+#include "../../EurorackShared/Eeprom.h"
 
 void ShiftOut(){}
 

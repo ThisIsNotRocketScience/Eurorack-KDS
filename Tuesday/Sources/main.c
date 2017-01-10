@@ -68,7 +68,8 @@ int adcchannels[ADC_Count];
 
 
 #include "Tuesday.h"
-#include "DAC.h"
+
+#include "../../EurorackShared/EurorackShared.c"
 
 struct Tuesday_PatternGen Tuesday;
 struct Tuesday_Settings Settings;
@@ -284,7 +285,6 @@ void SetLedNumber(int offset, int number)
 	}
 }
 
-#include "Eeprom.h"
 #define VERSIONBYTE 0x10
 
 void SaveEeprom()
@@ -347,7 +347,6 @@ int main(void)
 	TI1_Enable();
 	AD1_Measure(FALSE);
 
-
 	for(int j =0 ;j<16;j++)
 	{
 		for (int i =0 ;i<16;i++)
@@ -357,10 +356,12 @@ int main(void)
 		ShiftOut();
 		WAIT1_Waitms(40);
 	}
-	for (int i =0 ;i<16;i++)
+
+	for (int i = 0;i < 16;i++)
 	{
 		Tuesday.StateLeds[i] = 0;
 	}
+
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();

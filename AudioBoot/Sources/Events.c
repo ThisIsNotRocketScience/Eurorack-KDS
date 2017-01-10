@@ -37,7 +37,7 @@ extern "C" {
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "SharedBoot/MessageDecoder.h"
 #include "SharedBoot/Reader.h"
-#include "SharedBoot/Eeprom.h"
+#include "../../EurorackShared/Eeprom.h"
 
 /*
  ** ===================================================================

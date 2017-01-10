@@ -4,21 +4,18 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Sources/DAC.c \
 ../Sources/Events.c \
 ../Sources/Wobbler.c \
 ../Sources/exit.c \
 ../Sources/main.c 
 
 OBJS += \
-./Sources/DAC.o \
 ./Sources/Events.o \
 ./Sources/Wobbler.o \
 ./Sources/exit.o \
 ./Sources/main.o 
 
 C_DEPS += \
-./Sources/DAC.d \
 ./Sources/Events.d \
 ./Sources/Wobbler.d \
 ./Sources/exit.d \

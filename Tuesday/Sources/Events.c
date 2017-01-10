@@ -36,9 +36,9 @@ extern "C" {
 
 
 /* User includes (#include below this line is not maintained by Processor Expert) */
-#include "DAC.h"
 #include "CLOCKINT.h"
 #include "main.h"
+#include "../../EurorackShared/DAC.h"
 
 /*
  ** ===================================================================

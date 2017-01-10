@@ -70,7 +70,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Generated_Code\Vectors.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\DAC.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\exit.c</PathName>
@@ -99,7 +98,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Generated_Code\TimerIntLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Generated_Code\WAIT1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\DAC.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\main.h</PathName>
