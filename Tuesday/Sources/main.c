@@ -80,48 +80,6 @@ struct Tuesday_RandomGen MainRandom;
 int tickssincecommit = 0;
 
 
-struct denoise_state_t
-{
-	int counter;
-	int down;
-	int pressed;
-	int released;
-	int lastcounter;
-};
-
-int denoise(int sw_down, struct denoise_state_t *state)
-{
-	if (sw_down)
-		state->counter++;
-	else
-		state->counter--;
-	state->pressed = 0;
-	state->released = 0;
-
-	if (state->counter < 2)
-	{
-		if (state->lastcounter == 2)
-		{
-			state->pressed = 1;
-		}
-		state->counter = 1;
-		state->down = 1;
-	}
-	else if (state->counter > 30)
-	{
-		if (state->lastcounter == 30)
-		{
-			state->released = 1;
-		}
-		state->counter = 31;
-		state->down = 0;
-	}
-	state->lastcounter = state->counter;
-	return state->pressed;
-}
-
-
-
 long oldseed = -1;
 byte pwm = 0;
 
@@ -342,6 +300,8 @@ int main(void)
 	Tuesday_Init(&Tuesday);
 	Tuesday_LoadSettings(&Settings, &Params);
 	Tuesday_RandomSeed(&MainRandom, oldseed);
+	EuroRack_InitCalibration();
+
 	LoadEeprom();
 
 	TI1_Enable();

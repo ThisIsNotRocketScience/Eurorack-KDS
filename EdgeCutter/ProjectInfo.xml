@@ -74,7 +74,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\Vectors.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\DAC.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\exit.c</PathName>
@@ -107,7 +106,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\TimerIntLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\WAIT1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\DAC.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutterBoard.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\Events.h</PathName>

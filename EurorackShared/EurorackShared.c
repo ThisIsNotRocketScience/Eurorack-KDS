@@ -33,3 +33,35 @@ void EuroRack_InitCalibration()
 		InitDAC(&MasterCalibration.DAC[i]);
 	}
 }
+
+int denoise(int sw_down, struct denoise_state_t *state)
+{
+	if (sw_down)
+		state->counter++;
+	else
+		state->counter--;
+	state->pressed = 0;
+	state->released = 0;
+
+	if (state->counter < 2)
+	{
+		if (state->lastcounter == 2)
+		{
+			state->pressed = 1;
+		}
+		state->counter = 1;
+		state->down = 1;
+	}
+	else if (state->counter > 30)
+	{
+		if (state->lastcounter == 30)
+		{
+			state->released = 1;
+		}
+		state->counter = 31;
+		state->down = 0;
+	}
+	state->lastcounter = state->counter;
+	return state->pressed;
+}
+

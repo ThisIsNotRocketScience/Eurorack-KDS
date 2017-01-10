@@ -67,45 +67,6 @@ struct Wobbler_LFO LFO;
 struct Wobbler_Settings Settings;
 struct Wobbler_Params Params;
 
-struct denoise_state_t
-{
-	int counter;
-	int down;
-	int pressed;
-	int released;
-	int lastcounter;
-};
-
-int denoise(int sw_down, struct denoise_state_t *state)
-{
-	if (sw_down)
-		state->counter++;
-	else
-		state->counter--;
-	state->pressed = 0;
-	state->released = 0;
-
-	if (state->counter < 2)
-	{
-		if (state->lastcounter == 2)
-		{
-			state->pressed = 1;
-		}
-		state->counter = 1;
-		state->down = 1;
-	}
-	else if (state->counter > 30)
-	{
-		if (state->lastcounter == 30)
-		{
-			state->released = 1;
-		}
-		state->counter = 31;
-		state->down = 0;
-	}
-	state->lastcounter = state->counter;
-	return state->pressed;
-}
 
 uint32_t t = 0;
 
@@ -254,6 +215,8 @@ int main(void)
 #endif
 
 	Wobbler_LoadSettings(&Settings, &Params);
+	EuroRack_InitCalibration();
+
 	LoadEeprom();
 
 	TI1_Enable();

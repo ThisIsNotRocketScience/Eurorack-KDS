@@ -66,51 +66,11 @@ int adcchannels[ADC_Count];
 
 
 #include "EdgeCutter.h"
-#include "DAC.h"
+#include "../../EurorackShared/EurorackShared.c"
 
 struct EdgeCutter_Envelope Envelope;
 struct EdgeCutter_Settings Settings;
 struct EdgeCutter_Params Params;
-
-struct denoise_state_t
-{
-	int counter;
-	int down;
-	int pressed;
-	int released;
-	int lastcounter;
-};
-
-int denoise(int sw_down, struct denoise_state_t *state)
-{
-	if (sw_down)
-		state->counter++;
-	else
-		state->counter--;
-	state->pressed = 0;
-	state->released = 0;
-
-	if (state->counter < 2)
-	{
-		if (state->lastcounter == 2)
-		{
-			state->pressed = 1;
-		}
-		state->counter = 1;
-		state->down = 1;
-	}
-	else if (state->counter > 30)
-	{
-		if (state->lastcounter == 30)
-		{
-			state->released = 1;
-		}
-		state->counter = 31;
-		state->down = 0;
-	}
-	state->lastcounter = state->counter;
-	return state->pressed;
-}
 
 uint32_t t = 0;
 
@@ -220,6 +180,7 @@ void SetModeLeds(int mode)
 	case 2: leds[5]=255; leds[6] = 0;leds[7] =0 ;break;
 	}
 }
+
 void SetSpeedLeds(int speed)
 {
 	switch(speed)
@@ -230,118 +191,7 @@ void SetSpeedLeds(int speed)
 	}
 }
 
-
 #define VERSIONBYTE 0x10
-uint8_t hi(int address)
-{
-	return (uint8_t)((address) >> 8);
-}
-
-uint8_t lo(int address)
-{
-	return (uint8_t)((address & 0xFF));
-}
-
-uint8_t dev(int address)
-{
-#define address_24LC16B 0b1010
-
-	return (uint8_t)((address_24LC16B << 3) | ((hi(address)) & 0x07));
-}
-
-volatile int i2csending = 0;
-volatile int i2creceiving = 0;
-
-byte combuffer[2];
-
-void EE24_WriteByte(unsigned short address, byte value)
-{
-	//EE241_WriteByte(address, value);
-	combuffer[0] = lo(address);
-	combuffer[1] = value;
-	i2csending = 0;
-
-	byte devaddr = dev(address);
-	int i = 0;
-
-	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
-	CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 2, LDD_I2C_SEND_STOP);
-	i2csending = 1;
-	while (i2csending == 1)
-	{
-		CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 1, LDD_I2C_SEND_STOP);
-		WAIT1_Waitms(10);
-		ShiftOut();
-	};
-
-	i2csending = 0;
-}
-
-void EE24_WriteBlock(unsigned short address, byte *data, int len)
-{
-	//EE241_WriteBlock(address, data, len);
-
-	for (int i = 0; i < len; i++)
-	{
-
-		EE24_WriteByte(address++, data[i]);
-		//	WAIT1_Waitms(5);
-	}
-}
-
-byte EE24_ReadByte(unsigned short address)
-{
-	//	byte out;
-	//	EE241_ReadByte(address, &out);
-	//return out;
-
-	byte com[1] = {lo(address)};
-	byte devaddr = dev(address);
-	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
-	i2csending = 1;
-	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_SEND_STOP);
-	while (i2csending == 1)
-	{
-	}
-
-	ShiftOut();
-
-	byte out;
-	i2creceiving = 1;
-	CI2C1_MasterReceiveBlock(CI2C1_DeviceData, &out, 1, LDD_I2C_SEND_STOP);
-	while (i2creceiving == 1)
-	{
-	};
-
-	ShiftOut();
-
-	return out;
-}
-
-void EE24_ReadBlock(unsigned short address, byte *out, int len)
-{
-	//EE241_ReadBlock(address, out, len);
-	for (int i = 0; i < len; i++)
-	{
-		out[i] = EE24_ReadByte(address++);
-	}
-
-	/*
-	byte com[1] = {lo(address)};
-	byte devaddr = dev(address);
-	CI2C1_Init(CI2C1_DeviceData);
-	CI2C1_SelectSlaveDevice(CI2C1_DeviceData, LDD_I2C_ADDRTYPE_7BITS, devaddr);
-	i2csending = 1;
-	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_NO_SEND_STOP);
-	while (i2csending == 1) {}
-
-
-	i2creceiving = 1;
-	CI2C1_MasterReceiveBlock(CI2C1_DeviceData,out, len, LDD_I2C_SEND_STOP);
-	while (i2creceiving == 1) {};
-
-	 */
-}
 
 void SaveEeprom()
 {
