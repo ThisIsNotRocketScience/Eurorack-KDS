@@ -23,6 +23,7 @@ void InitADC(struct EuroRack_ADC_Calibration *ADC)
 
 void EuroRack_InitCalibration()
 {
+	
 	for (int i = 0; i < EURORACK_MAX_ADC; i++)
 	{
 		InitADC(&MasterCalibration.ADC[i]);

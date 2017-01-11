@@ -2,6 +2,7 @@
 #include <math.h>
 
 #define __max(a,b) ((a)>(b)?(a):(b))
+#define __min(a,b) ((a)<(b)?(a):(b))
 
 #ifdef __cplusplus
 extern "C"
@@ -37,7 +38,7 @@ extern "C"
 	unsigned long LFOelopeRange(int32_t V, int32_t SR)
 	{
 		return 1 + V*SR* 64.0f;
-		return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+	//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
 	/// A sine approximation via a fourth-order cosine approx.
@@ -122,18 +123,22 @@ extern "C"
 
 	}
 
-
 	int Wobbler_Get(struct Wobbler_LFO *LFO, struct Wobbler_Params *Params)
 	{
-		if (LFO->Gate[0] > 0) LFO->Gate[0]--;
-		if (LFO->Gate[1] > 0) LFO->Gate[1]--;
+		if (LFO->Gate[0] > 0)
+			{
+			LFO->Gate[0]--;
+			}
+		if (LFO->Gate[1] > 0){
+			LFO->Gate[1]--;
+		}
 
 		
 		uint32_t DP = LFOelopeRange(LFO->Speed, 2000);;
 		LFO->Phase1 += DP;
 
-		uint32_t DP2 = LFO->Phasing;
-		DP2 <<= 24;
+		uint32_t DP2 = LFO->Phasing*0x1000000;
+		//DP2 <<= 24;
 		LFO->Phase2 = LFO->Phase1 + DP2;
 
 		for (int i = 0; i < 12; i++)
@@ -141,8 +146,23 @@ extern "C"
 			LFO->Led[i] = 0;
 		}
 
-		if (LFO->Phase1 < LFO->OldPhase1) LFO->Gate[0] = WOBBLER_GATECOUNTDOWN;
-		if (LFO->Phase2 < LFO->OldPhase2) LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
+		if (LFO->Phase1 < LFO->OldPhase1)
+		{
+			LFO->Gate[0] = WOBBLER_GATECOUNTDOWN;
+			if (LFO->PhasedCountdown > 0)
+			{
+				LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
+			}
+			LFO->PhasedCountdown = LFO->Phasing << 24;
+		}
+
+		uint32_t last = LFO->PhasedCountdown;
+		LFO->PhasedCountdown -= __min(DP, LFO->PhasedCountdown);
+		if (LFO->PhasedCountdown == 0 && last != 0)
+		{
+			LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
+		}
+		
 		LFO->OldPhase1 = LFO->Phase1;
 		LFO->OldPhase2 = LFO->Phase2;
 		

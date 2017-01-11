@@ -22,15 +22,18 @@ struct Wobbler_LFO
 	unsigned char Phasing;
 
 	uint32_t Phase1;
-	uint32_t Phase2;
 	uint32_t OldPhase1;
+	uint32_t Phase2;
 	uint32_t OldPhase2;
+
 
 	int32_t OutputPhased;
 	int32_t Output;
 
 	unsigned char Gate[2];
 	unsigned char Led[12];
+
+	uint32_t PhasedCountdown;
 };
 
 #ifdef __cplusplus
