@@ -16,13 +16,18 @@ extern "C"
 		LFO->Phase1 = 0;
 		LFO->Gate[0] = 0;
 		LFO->Gate[1] = 0;
+		LFO->EnvelopeVal = 0;
+		LFO->PhasedCountdown = 0;
+		LFO->EnvelopeState = WOBBLER_IDLE;
 	}
-
-
 
 	void Wobbler_Trigger(struct Wobbler_LFO *LFO, unsigned char N, struct Wobbler_Params *Params)
 	{
-		if (N == 0) LFO->Phase1 = 0;
+		if (N == 0)
+		{
+			LFO->Phase1 = 0;
+			Wobbler_StartTwang(LFO);
+		}
 	}
 
 	void Wobbler_LoadSettings(struct Wobbler_Settings *settings, struct Wobbler_Params *params)
@@ -123,6 +128,18 @@ extern "C"
 
 	}
 
+	void Wobbler_StartTwang(struct Wobbler_LFO *LFO)
+	{
+		LFO->EnvelopeVal = 0;
+		LFO->EnvelopeState = WOBBLER_ATTACK;
+	}
+
+
+	int Twang(struct Wobbler_LFO *LFO, uint32_t phase, struct Wobbler_Params *Params)
+	{
+		return (Sine(phase)>>16) * (LFO->EnvelopeVal>>8);
+	}
+
 	int Wobbler_Get(struct Wobbler_LFO *LFO, struct Wobbler_Params *Params)
 	{
 		if (LFO->Gate[0] > 0)
@@ -133,7 +150,46 @@ extern "C"
 			LFO->Gate[1]--;
 		}
 
-		
+		if (LFO->EnvelopeState != WOBBLER_IDLE)
+		{
+			uint32_t A = 0;
+			uint32_t R = LFOelopeRange(128, 2000) >> 14;
+			if (LFO->Mod < 128)
+			{
+				int R = LFOelopeRange(LFO->Mod, 2000)>>14;
+
+			}
+			else
+			{
+				int A = LFOelopeRange(LFO->Mod-128, 2000)>>14;
+			}
+			if (LFO->EnvelopeState == WOBBLER_ATTACK)
+			{
+				if (A == 0)
+				{
+					LFO->EnvelopeState = WOBBLER_RELEASE;
+					LFO->EnvelopeVal = 1 << 24;
+				}
+				else
+				{
+					LFO->EnvelopeVal += ((1 << 24) - 1) / A ;
+					if (LFO->EnvelopeVal >= 1 << 24)
+					{
+						LFO->EnvelopeVal = 1 << 24;
+						LFO->EnvelopeState = WOBBLER_RELEASE;
+					}
+				}
+			}
+			else
+			{
+				LFO->EnvelopeVal -= ((1 << 24) - 1) / R;
+				if (LFO->EnvelopeVal <= 0)
+				{
+					LFO->EnvelopeState = WOBBLER_IDLE;
+					LFO->EnvelopeVal = 0;
+				}
+			}
+		}
 		uint32_t DP = LFOelopeRange(LFO->Speed, 2000);;
 		LFO->Phase1 += DP;
 
@@ -171,12 +227,12 @@ extern "C"
 
 
 		O[0] = BasicShapes(LFO->Phase1, LFO->Mod);
-		O[1] = 0;
+		O[1] = Twang(LFO, LFO->Phase1, LFO->Mod);
 		O[2] = 0;
 		O[3] = -BasicShapes(LFO->Phase1, LFO->Mod);
 
 		P[0] = BasicShapes(LFO->Phase2, LFO->Mod);
-		P[1] = 0;
+		P[1] = Twang(LFO, LFO->Phase2, LFO->Mod);
 		P[2] = 0;
 		P[3] = -BasicShapes(LFO->Phase2, LFO->Mod);
 

@@ -13,6 +13,9 @@ struct Wobbler_Settings
 	unsigned char SlowSpeedMult;
 };
 
+#define WOBBLER_ATTACK 2
+#define WOBBLER_IDLE 3
+#define WOBBLER_RELEASE 4
 
 struct Wobbler_LFO
 {
@@ -34,6 +37,8 @@ struct Wobbler_LFO
 	unsigned char Led[12];
 
 	uint32_t PhasedCountdown;
+	int32_t EnvelopeVal;
+	uint8_t EnvelopeState;
 };
 
 #ifdef __cplusplus
@@ -45,6 +50,7 @@ extern "C"
 	extern void Wobbler_Trigger(struct Wobbler_LFO *LFO, unsigned char N, struct Wobbler_Params *Params);
 	extern void Wobbler_LoadSettings(struct Wobbler_Settings *settings, struct Wobbler_Params *params);
 	extern void Wobbler_ValidateParams(struct Wobbler_Params *params);
+	extern void Wobbler_StartTwang(struct Wobbler_LFO *LFO);
 
 	extern int32_t LERP(int32_t *V, int total, int fade);
 #ifdef __cplusplus
