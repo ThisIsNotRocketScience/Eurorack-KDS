@@ -6,7 +6,7 @@
 **     Component   : PE_Types
 **     Version     : Driver 01.01
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-09, 23:28, # CodeGen: 33
+**     Date/Time   : 2017-01-12, 00:35, # CodeGen: 34
 **     Abstract    :
 **         PE_Types.h - contains definitions of basic types,
 **         register access macros and hardware specific macros
@@ -124,10 +124,8 @@ typedef unsigned long int       uint32;
  } while(0)
 
 
-
 extern void EnterCritical();
 extern void ExitCritical();
-
 
 #define PE_DEBUGHALT() \
   /*lint -save  -e586 -e950 Disable MISRA rule (2.1,1.1) checking. */\

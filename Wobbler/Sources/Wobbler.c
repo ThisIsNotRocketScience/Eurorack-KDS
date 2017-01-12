@@ -43,7 +43,7 @@ extern "C"
 	unsigned long LFOelopeRange(int32_t V, int32_t SR)
 	{
 		return 1 + V*SR* 64.0f;
-	//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
 	/// A sine approximation via a fourth-order cosine approx.
@@ -71,32 +71,32 @@ extern "C"
 	int32_t Sine(uint32_t phase)
 	{
 		int32_t P = phase >> 17;
-		return isin_S4(P) <<17;
-		
+		return isin_S4(P) << 17;
+
 	}
 
 	int32_t SawTooth(uint32_t phase)
 	{
-		return (*(int32_t*)&phase)>>2;
+		return (*(int32_t*)&phase) >> 2;
 	}
 
 	int32_t Pulse(uint32_t phase)
 	{
 		if (phase & 0x80000000)
 		{
-			return INT32_MIN>>2;
+			return INT32_MIN >> 2;
 		}
 		else
 		{
-			return INT32_MAX>>2;
-		}		
+			return INT32_MAX >> 2;
+		}
 	}
 
 	int32_t Triangle(uint32_t phase)
 	{
 		if (phase & 0x80000000)
 		{
-			return (~ (*(int32_t*)&(phase)) - 0x40000000) >> 1;
+			return (~(*(int32_t*)&(phase)) - 0x40000000) >> 1;
 		}
 		else
 		{
@@ -108,60 +108,59 @@ extern "C"
 	{
 		int T = fade * total;
 		unsigned char frac = T & 0xff;
-		if (frac & frac<255) frac += 1;
+		if (frac & frac < 255) frac += 1;
 		int I = T >> 8;
-		return ((V[I]>>8) *(255-frac) + (V[I+1]>>8) * frac);
+		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
 	}
 
 	int BasicShapes(uint32_t phase, int mod)
 	{
 		int32_t O[4];
-		
+
 
 		O[0] = Sine(phase);
 		O[1] = SawTooth(phase);
 		O[2] = Triangle(phase);
 		O[3] = Pulse(phase);
-		return LERP(O, 3, mod) ;
+		return LERP(O, 3, mod);
 
-	
+
 
 	}
 
 	void Wobbler_StartTwang(struct Wobbler_LFO *LFO)
 	{
-		LFO->EnvelopeVal = 0;
+		//LFO->EnvelopeVal = 0;
 		LFO->EnvelopeState = WOBBLER_ATTACK;
 	}
 
 
-	int Twang(struct Wobbler_LFO *LFO, uint32_t phase, struct Wobbler_Params *Params)
+	int Twang(struct Wobbler_LFO *LFO, uint32_t phase)
 	{
-		return (Sine(phase)>>16) * (LFO->EnvelopeVal>>8);
+		return (Sine(phase) >> 16) * (LFO->EnvelopeVal >> 8);
 	}
 
 	int Wobbler_Get(struct Wobbler_LFO *LFO, struct Wobbler_Params *Params)
 	{
 		if (LFO->Gate[0] > 0)
-			{
+		{
 			LFO->Gate[0]--;
-			}
-		if (LFO->Gate[1] > 0){
+		}
+		if (LFO->Gate[1] > 0) {
 			LFO->Gate[1]--;
 		}
 
 		if (LFO->EnvelopeState != WOBBLER_IDLE)
 		{
 			uint32_t A = 0;
-			uint32_t R = LFOelopeRange(128, 2000) >> 14;
+			uint32_t R = LFOelopeRange(128, 2000) >> 12;
 			if (LFO->Mod < 128)
 			{
-				int R = LFOelopeRange(LFO->Mod, 2000)>>14;
-
+				R = 1 + LFOelopeRange(LFO->Mod, 2000) >> 12;
 			}
 			else
 			{
-				int A = LFOelopeRange(LFO->Mod-128, 2000)>>14;
+				A = 1 + LFOelopeRange(LFO->Mod - 128, 2000) >> 12;
 			}
 			if (LFO->EnvelopeState == WOBBLER_ATTACK)
 			{
@@ -172,7 +171,7 @@ extern "C"
 				}
 				else
 				{
-					LFO->EnvelopeVal += ((1 << 24) - 1) / A ;
+					LFO->EnvelopeVal += ((1 << 24) - 1) / A;
 					if (LFO->EnvelopeVal >= 1 << 24)
 					{
 						LFO->EnvelopeVal = 1 << 24;
@@ -193,7 +192,7 @@ extern "C"
 		uint32_t DP = LFOelopeRange(LFO->Speed, 2000);;
 		LFO->Phase1 += DP;
 
-		uint32_t DP2 = LFO->Phasing*0x1000000;
+		uint32_t DP2 = LFO->Phasing * 0x1000000;
 		//DP2 <<= 24;
 		LFO->Phase2 = LFO->Phase1 + DP2;
 
@@ -218,21 +217,21 @@ extern "C"
 		{
 			LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
 		}
-		
+
 		LFO->OldPhase1 = LFO->Phase1;
 		LFO->OldPhase2 = LFO->Phase2;
-		
+
 		int32_t O[4];
 		int32_t P[4];
 
 
 		O[0] = BasicShapes(LFO->Phase1, LFO->Mod);
-		O[1] = Twang(LFO, LFO->Phase1, LFO->Mod);
+		O[1] = Twang(LFO, LFO->Phase1);
 		O[2] = 0;
 		O[3] = -BasicShapes(LFO->Phase1, LFO->Mod);
 
 		P[0] = BasicShapes(LFO->Phase2, LFO->Mod);
-		P[1] = Twang(LFO, LFO->Phase2, LFO->Mod);
+		P[1] = Twang(LFO, LFO->Phase2);
 		P[2] = 0;
 		P[3] = -BasicShapes(LFO->Phase2, LFO->Mod);
 
@@ -240,17 +239,17 @@ extern "C"
 
 		LFO->Output = LERP(O, 3, LFO->Shape) / (0xffff * 4);
 		LFO->OutputPhased = LERP(P, 3, LFO->Shape) / (0xffff * 4);
-		
-		LFO->Output += 2048;
-		LFO->OutputPhased += 2048;
 
-		if (LFO->Output > 4096) LFO->Output = 4096; else if (LFO->Output < 0) LFO->Output = 0;
-		if (LFO->OutputPhased > 4096) LFO->OutputPhased = 4096; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;
+		LFO->Output += 2048 + (2540 - 2048);
+		LFO->OutputPhased += 2048 +(2540 - 2048);
+
+		if (LFO->Output > 4095) LFO->Output = 4095; else if (LFO->Output < 0) LFO->Output = 0;
+		if (LFO->OutputPhased > 4095) LFO->OutputPhased = 4095; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;
 		//if (LFO->Output > 1) LFO->Output = 1; else if (LFO->Output < -1) LFO->Output = -1;
 
 		int32_t LedIdxB = (LFO->Output * 11);
 		int iLedIdxB = LedIdxB >> 12;
-		int IdxB = ((LedIdxB - (iLedIdxB<<12) ))>>4;
+		int IdxB = ((LedIdxB - (iLedIdxB << 12))) >> 4;
 
 		LFO->Led[(iLedIdxB + 12) % 12] = 255 - IdxB;
 		LFO->Led[(iLedIdxB + 13) % 12] = IdxB;
@@ -260,7 +259,7 @@ extern "C"
 		int IdxA = ((LedIdxA - (iLedIdxA << 12))) >> 4;
 
 		LFO->Led[(iLedIdxA + 12) % 12] = __max(LFO->Led[(iLedIdxA + 12) % 12], 255 - IdxA);
-		LFO->Led[(iLedIdxA + 13) % 12] = __max(LFO->Led[(iLedIdxA + 13) % 12] , IdxA);
+		LFO->Led[(iLedIdxA + 13) % 12] = __max(LFO->Led[(iLedIdxA + 13) % 12], IdxA);
 
 
 		return LFO->Output;

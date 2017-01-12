@@ -68,8 +68,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Boot.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Eeprom.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\LEDS.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\MessageDecoder.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Reader.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\SizeTweaks.c</PathName>
@@ -95,8 +93,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Boot.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Eeprom.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\LEDS.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\MessageDecoder.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Sources\SharedBoot\Reader.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Static_Code\IO_Map\MKL02Z4.h</PathName>

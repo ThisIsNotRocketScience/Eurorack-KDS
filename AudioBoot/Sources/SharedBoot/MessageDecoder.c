@@ -4,6 +4,7 @@
 #include "Cpu.h"
 
 #include "../../EurorackShared/Eeprom.h"
+#include "../../EurorackShared/DAC_BitBang.h"
 
 void ShiftOut(){}
 
@@ -191,77 +192,93 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 		{
 			Reboot();
 		}
-	if (command(rcvbuf, "DOIT",4))//[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
-	{
-		flasherror = 0 ;
-		for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
-		for(int i =0 ;i<FULLBLOCKS;i++) fullblockshad[i] = 0;
+		if (command(rcvbuf, "DOIT",4))//[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
+		{
+			flasherror = 0 ;
+			for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
+			for(int i =0 ;i<FULLBLOCKS;i++) fullblockshad[i] = 0;
 
-		totalblocks = ReadInt(rcvbuf, 4);
-		totalblocksflashed = 0;
-		totalchunksreceived = 0;
-		GUIReset();
-	}
-	break;
+			totalblocks = ReadInt(rcvbuf, 4);
+			totalblocksflashed = 0;
+			totalchunksreceived = 0;
+			GUIReset();
+		}
+		break;
 	case 12:
 	{
-		if (command(rcvbuf,"EEPR",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
+		if (command(rcvbuf,"DACS",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
 		{
-			uint16_t off1 = ReadShort(rcvbuf, 4);
-			uint16_t off2 = ReadShort(rcvbuf, 10);
-			uint8_t val1 = rcvbuf[7];
-			uint8_t val2 = rcvbuf[9];
-			if (off1 == off2 && val1 == val2)
+			uint16_t val1 = ReadShort(rcvbuf, 4);
+			uint16_t val1check = ReadShort(rcvbuf, 10);
+			uint16_t val2 = ReadShort(rcvbuf, 6);
+			uint16_t val2check = ReadShort(rcvbuf, 8);
+
+			if (val1 == val1check && val2 == val2check)
 			{
-				EE24_WriteByte(off1, val1);
+				DACBITBANG_Update(val1, val2);
 			}
 			else
 			{
 				GUIErrorState();
 			}
-		}
-		if (command(rcvbuf,"FLAS",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
-		{
-			uint32_t off = ReadInt(rcvbuf, 4);
-			uint32_t crccheck = ReadInt(rcvbuf, 8);
-
-			uint32_t crcblock = CalcCrc(0, wribuf, 1024);
-			int complete =0 ;
-			for (int i =0 ;i<CHUNKS;i++)
+		} else
+			if (command(rcvbuf,"EEPR",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
 			{
-				if (blockshad[i] ==	 1) complete++;
-			}
-
-			if (complete == CHUNKS && crcblock == crccheck)
-			{
-				if (Boot_FlashProg(MIN_APP_FLASH_ADDRESS + off, wribuf, 1024) == ERR_FAILED)
+				uint16_t off1 = ReadShort(rcvbuf, 4);
+				uint16_t off2 = ReadShort(rcvbuf, 10);
+				uint8_t val1 = rcvbuf[7];
+				uint8_t val2 = rcvbuf[9];
+				if (off1 == off2 && val1 == val2)
 				{
-					GUIErrorState();
-					flasherror++;
-
-					fullblockshad[off/FLASH_PAGE_SIZE] = 2;
+					EE24_WriteByte(off1, val1);
 				}
 				else
 				{
-					totalblocksflashed ++;
-					if (totalblocks == totalblocksflashed) Reboot();
-					fullblockshad[off/FLASH_PAGE_SIZE] = 1;
-					//GUISuccesState();
-					SuccesCountDown = 50000;
-
+					GUIErrorState();
 				}
-			}
-			else
-			{
-				flasherror++;
-				fullblockshad[off/FLASH_PAGE_SIZE] = 2;
+			} else
+				if (command(rcvbuf,"FLAS",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
+				{
+					uint32_t off = ReadInt(rcvbuf, 4);
+					uint32_t crccheck = ReadInt(rcvbuf, 8);
 
-				GUIErrorState();
-			}
-			for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
-			for(int i =0 ;i<1024;i++) wribuf[i] = 0;
-			AudioReader_NewPacket(&Reader);
-		}
+					uint32_t crcblock = CalcCrc(0, wribuf, 1024);
+					int complete =0 ;
+					for (int i =0 ;i<CHUNKS;i++)
+					{
+						if (blockshad[i] ==	 1) complete++;
+					}
+
+					if (complete == CHUNKS && crcblock == crccheck)
+					{
+						if (Boot_FlashProg(MIN_APP_FLASH_ADDRESS + off, wribuf, 1024) == ERR_FAILED)
+						{
+							GUIErrorState();
+							flasherror++;
+
+							fullblockshad[off/FLASH_PAGE_SIZE] = 2;
+						}
+						else
+						{
+							totalblocksflashed ++;
+							if (totalblocks == totalblocksflashed) Reboot();
+							fullblockshad[off/FLASH_PAGE_SIZE] = 1;
+							//GUISuccesState();
+							SuccesCountDown = 50000;
+
+						}
+					}
+					else
+					{
+						flasherror++;
+						fullblockshad[off/FLASH_PAGE_SIZE] = 2;
+
+						GUIErrorState();
+					}
+					for(int i =0 ;i<CHUNKS;i++) blockshad[i] = 0;
+					for(int i =0 ;i<1024;i++) wribuf[i] = 0;
+					AudioReader_NewPacket(&Reader);
+				}
 	}break;
 	}
 	busy = 0;

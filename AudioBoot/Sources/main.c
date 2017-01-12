@@ -52,6 +52,7 @@
 
 #include "../../EurorackShared/LEDS.c"
 #include "../../EurorackShared/Eeprom.c"
+#include "../../EurorackShared/DAC_BitBang.c"
 
 
 extern AudioReaderStruct Reader;
@@ -103,6 +104,7 @@ int main(void)
 
 	AD1_Calibrate(TRUE);
 	LEDS_InitHardware();
+	DACBITBANG_InitHardware();
 
 	InitSequence();
 
