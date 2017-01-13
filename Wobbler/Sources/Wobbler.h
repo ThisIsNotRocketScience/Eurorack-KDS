@@ -17,6 +17,12 @@ struct Wobbler_Settings
 #define WOBBLER_IDLE 3
 #define WOBBLER_RELEASE 4
 
+struct Wobbler_LFO_SNH
+{
+	uint32_t countdown;
+	uint16_t lastval;
+};
+
 struct Wobbler_LFO
 {
 	unsigned char Speed;
@@ -39,6 +45,8 @@ struct Wobbler_LFO
 	uint32_t PhasedCountdown;
 	int32_t EnvelopeVal;
 	uint8_t EnvelopeState;
+
+	struct Wobbler_LFO_SNH SNH[2];
 };
 
 #ifdef __cplusplus

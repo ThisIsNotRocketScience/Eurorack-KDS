@@ -75,8 +75,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Vectors.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\DAC.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Eeprom.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\exit.c</PathName>
@@ -110,8 +108,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TimerIntLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\WAIT1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\DAC.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Eeprom.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\TuesdayBoard.h</PathName>

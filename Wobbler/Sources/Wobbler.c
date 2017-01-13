@@ -134,6 +134,10 @@ extern "C"
 		LFO->EnvelopeState = WOBBLER_ATTACK;
 	}
 
+	int SampleHold(struct Wobbler_LFO_SNH *sh, struct Wobbler_LFO *lfo, uint32_t phase, uint16_t mod)
+	{
+		return phase&0xfff;
+	}
 
 	int Twang(struct Wobbler_LFO *LFO, uint32_t phase)
 	{
@@ -227,12 +231,12 @@ extern "C"
 
 		O[0] = BasicShapes(LFO->Phase1, LFO->Mod);
 		O[1] = Twang(LFO, LFO->Phase1);
-		O[2] = 0;
+		O[2] = SampleHold(&LFO->SNH[0],LFO, LFO->Phase1, LFO->Mod);
 		O[3] = -BasicShapes(LFO->Phase1, LFO->Mod);
 
 		P[0] = BasicShapes(LFO->Phase2, LFO->Mod);
 		P[1] = Twang(LFO, LFO->Phase2);
-		P[2] = 0;
+		P[2] = SampleHold(&LFO->SNH[1], LFO, LFO->Phase2, LFO->Mod);
 		P[3] = -BasicShapes(LFO->Phase2, LFO->Mod);
 
 
@@ -240,8 +244,8 @@ extern "C"
 		LFO->Output = LERP(O, 3, LFO->Shape) / (0xffff * 4);
 		LFO->OutputPhased = LERP(P, 3, LFO->Shape) / (0xffff * 4);
 
-		LFO->Output += 2048 + (2540 - 2048);
-		LFO->OutputPhased += 2048 +(2540 - 2048);
+		LFO->Output += 2048;// + (2540 - 2048);
+		LFO->OutputPhased += 2048;// +(2540 - 2048);
 
 		if (LFO->Output > 4095) LFO->Output = 4095; else if (LFO->Output < 0) LFO->Output = 0;
 		if (LFO->OutputPhased > 4095) LFO->OutputPhased = 4095; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;
