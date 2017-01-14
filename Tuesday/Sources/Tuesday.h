@@ -18,7 +18,8 @@ struct Tuesday_Tick
 {
 	unsigned char vel;
 	signed char note;
-	unsigned char accent;
+	int accent :1;
+	int slide : 1;
 };
 
 struct Tuesday_PatternContainer
@@ -112,6 +113,33 @@ struct Tuesday_PatternGen
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
 
+
+// classic saiko things, mapped to other scales
+#define TUESDAY_ALGO_SAIKO_BASS 0
+#define TUESDAY_ALGO_SAIKO_PSY 1
+#define TUESDAY_ALGO_SAIKO_LEAD 2
+
+// german style minimal melodies
+#define TUESDAY_ALGO_TRITRANCE 3
+
+// fishyfishy! with slides? 
+#define TUESDAY_ALGO_STOMPER 3
+
+
+// tests to build:
+// - all octaves
+// - one octave updown
+// - one octave, 12tonal
+// - full range walk
+#define TUESDAY_ALGO_TESTS 4
+
+
+#define TUESDAY_ALGO_PACHEDECO 5
+#define TUESDAY_ALGO_WOBBLE 5
+#define TUESDAY_ALFO_CHIPARP1 5
+#define TUESDAY_ALFO_CHIPARP2 5
+
+
 struct Tuesday_Settings
 {
 	uint8_t tpboptions[TUESDAY_MAXTPB];
@@ -119,6 +147,8 @@ struct Tuesday_Settings
 	uint8_t scale[TUESDAY_MAXSCALE][12];
 	uint8_t scalecount[TUESDAY_MAXSCALE];
 	uint8_t algooptions[TUESDAY_MAXALGO];
+
+	uint32_t RandomSeed;
 };
 
 

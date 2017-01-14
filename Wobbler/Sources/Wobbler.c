@@ -9,6 +9,16 @@ extern "C"
 {
 #endif
 
+	void Wobbler_RandomSeed(struct Wobbler_RandomGen *R, unsigned int seed)
+	{
+		R->RandomMemory = (long)seed;
+	}
+
+	int Wobbler_Rand(struct Wobbler_RandomGen *R)
+	{
+		return (((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
+	}
+
 	void Wobbler_Init(struct Wobbler_LFO *LFO)
 	{
 		LFO->Output = 0;
@@ -136,7 +146,17 @@ extern "C"
 
 	int SampleHold(struct Wobbler_LFO_SNH *sh, struct Wobbler_LFO *lfo, uint32_t phase, uint16_t mod)
 	{
-		return phase&0xfff;
+		int newseg = (phase >> 29);
+		if (newseg != sh->lastseg)
+		{
+			if (newseg == 0)
+			{
+				Wobbler_RandomSeed(&sh->random, mod);
+			}
+			sh->lastseg = newseg;
+			sh->lastval = (Wobbler_Rand(&sh->random)<<15) - 0x8000000;
+		}
+		return sh->lastval;
 	}
 
 	int Twang(struct Wobbler_LFO *LFO, uint32_t phase)

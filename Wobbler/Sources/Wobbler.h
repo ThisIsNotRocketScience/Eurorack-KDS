@@ -17,10 +17,18 @@ struct Wobbler_Settings
 #define WOBBLER_IDLE 3
 #define WOBBLER_RELEASE 4
 
+struct Wobbler_RandomGen
+{
+	long RandomMemory;
+};
+
+
 struct Wobbler_LFO_SNH
 {
 	uint32_t countdown;
-	uint16_t lastval;
+	uint32_t lastval;
+	uint8_t lastseg;
+	struct Wobbler_RandomGen random;
 };
 
 struct Wobbler_LFO
