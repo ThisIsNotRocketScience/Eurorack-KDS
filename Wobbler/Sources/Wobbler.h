@@ -22,13 +22,25 @@ struct Wobbler_RandomGen
 	long RandomMemory;
 };
 
+struct Wobbler_SVF
+{
+	uint16_t Cutoff;
+	uint32_t Resonance;
+	int32_t lo;
+	int32_t mid;
+	int32_t hi;
+};
 
 struct Wobbler_LFO_SNH
 {
 	uint32_t countdown;
+	
 	uint32_t lastval;
+	
+	
 	uint8_t lastseg;
-	struct Wobbler_RandomGen random;
+	struct Wobbler_RandomGen random;	
+	struct Wobbler_SVF filt;
 };
 
 struct Wobbler_LFO

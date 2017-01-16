@@ -29,6 +29,7 @@ extern "C"
 		LFO->EnvelopeVal = 0;
 		LFO->PhasedCountdown = 0;
 		LFO->EnvelopeState = WOBBLER_IDLE;
+
 	}
 
 	void Wobbler_Trigger(struct Wobbler_LFO *LFO, unsigned char N, struct Wobbler_Params *Params)
@@ -50,7 +51,7 @@ extern "C"
 
 	}
 
-	unsigned long LFOelopeRange(int32_t V, int32_t SR)
+	unsigned long LFORange(int32_t V, int32_t SR)
 	{
 		return 1 + V*SR* 64.0f;
 		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
@@ -137,6 +138,31 @@ extern "C"
 
 
 	}
+	#define HI16(x) (x>>16)
+	#define LO16(x) (x&65535)
+
+	void SetSVF(struct Wobbler_SVF *filt, uint16_t cut  , uint16_t res)
+	{
+	
+		filt->Cutoff = cut << 8;
+		filt->Resonance = res << 8;
+		//unsigned short R = (unsigned short)((res << 8) + (64 << 9));
+		//unsigned short Max = (0xf200 - filt->Cutoff);
+		//u/nsigned long fR = R * Max;
+		//filt->Resonance = ~HI16(fR);
+	
+		//filt->Resonance = ~(res << 9);
+
+	};
+
+	void ProcessSVF(struct Wobbler_SVF *filt, uint32_t RR)
+	{
+		signed short const tMid = HI16(filt->mid);
+
+		filt->hi = (RR << 12) - filt->lo - filt->Resonance * tMid;
+		filt->mid += filt->Cutoff * HI16(filt->hi);
+		filt->lo += filt->Cutoff * tMid;
+	}
 
 	void Wobbler_StartTwang(struct Wobbler_LFO *LFO)
 	{
@@ -147,16 +173,19 @@ extern "C"
 	int SampleHold(struct Wobbler_LFO_SNH *sh, struct Wobbler_LFO *lfo, uint32_t phase, uint16_t mod)
 	{
 		int newseg = (phase >> 29);
+		SetSVF(&sh->filt, 0x10 + mod/4,  0x150 );
+
 		if (newseg != sh->lastseg)
 		{
 			if (newseg == 0)
 			{
-				Wobbler_RandomSeed(&sh->random, mod);
+				Wobbler_RandomSeed(&sh->random, lfo->Phasing);
 			}
 			sh->lastseg = newseg;
-			sh->lastval = (Wobbler_Rand(&sh->random)<<15) - 0x8000000;
+			sh->lastval = (Wobbler_Rand(&sh->random)<<14) - (1<<28);
 		}
-		return sh->lastval;
+		ProcessSVF(&sh->filt, sh->lastval>>16);
+		return sh->filt.lo;
 	}
 
 	int Twang(struct Wobbler_LFO *LFO, uint32_t phase)
@@ -177,14 +206,14 @@ extern "C"
 		if (LFO->EnvelopeState != WOBBLER_IDLE)
 		{
 			uint32_t A = 0;
-			uint32_t R = LFOelopeRange(128, 2000) >> 12;
+			uint32_t R = LFORange(128, 2000) >> 12;
 			if (LFO->Mod < 128)
 			{
-				R = 1 + LFOelopeRange(LFO->Mod, 2000) >> 12;
+				R = 1 + LFORange(LFO->Mod, 2000) >> 12;
 			}
 			else
 			{
-				A = 1 + LFOelopeRange(LFO->Mod - 128, 2000) >> 12;
+				A = 1 + LFORange(LFO->Mod - 128, 2000) >> 12;
 			}
 			if (LFO->EnvelopeState == WOBBLER_ATTACK)
 			{
@@ -213,7 +242,7 @@ extern "C"
 				}
 			}
 		}
-		uint32_t DP = LFOelopeRange(LFO->Speed, 2000);;
+		uint32_t DP = LFORange(LFO->Speed, 2000);;
 		LFO->Phase1 += DP;
 
 		uint32_t DP2 = LFO->Phasing * 0x1000000;

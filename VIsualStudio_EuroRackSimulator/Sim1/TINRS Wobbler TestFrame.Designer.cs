@@ -130,7 +130,7 @@
             this.Shape.Size = new System.Drawing.Size(358, 25);
             this.Shape.TabIndex = 1;
             this.Shape.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.Shape.Value = 30;
+            this.Shape.Value = 170;
             this.Shape.Scroll += new System.EventHandler(this.Decay_Scroll);
             // 
             // label3
