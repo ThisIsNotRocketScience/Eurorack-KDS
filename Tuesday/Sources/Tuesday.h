@@ -113,32 +113,34 @@ struct Tuesday_PatternGen
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
 
+typedef enum
+{
+	// tests to build:
+	// - all octaves
+	// - one octave updown
+	// - one octave, 12tonal
+	// - full range walk
+	ALGO_TESTS,
 
-// classic saiko things, mapped to other scales
-#define TUESDAY_ALGO_SAIKO_BASS 0
-#define TUESDAY_ALGO_SAIKO_PSY 1
-#define TUESDAY_ALGO_SAIKO_LEAD 2
+	// german style minimal melodies
+	ALGO_TRITRANCE,
 
-// german style minimal melodies
-#define TUESDAY_ALGO_TRITRANCE 3
+	// fishyfishy! with slides? 
+	ALGO_STOMPER,
 
-// fishyfishy! with slides? 
-#define TUESDAY_ALGO_STOMPER 3
+	
+	ALGO_MARKOV,
+	ALGO_PACHEDECO,
+	ALGO_WOBBLE,
+	ALGO_CHIPARP1,
+	ALGO_CHIPARP2,
 
-
-// tests to build:
-// - all octaves
-// - one octave updown
-// - one octave, 12tonal
-// - full range walk
-#define TUESDAY_ALGO_TESTS 4
-
-
-#define TUESDAY_ALGO_PACHEDECO 5
-#define TUESDAY_ALGO_WOBBLE 5
-#define TUESDAY_ALFO_CHIPARP1 5
-#define TUESDAY_ALFO_CHIPARP2 5
-
+	// classic saiko things, mapped to other scales
+	ALGO_SAIKO_BASS,
+	ALGO_SAIKO_PSY,
+	ALGO_SAIKO_LEAD,
+	__ALGO_COUNT
+} TUESDAY_ALGO;
 
 struct Tuesday_Settings
 {

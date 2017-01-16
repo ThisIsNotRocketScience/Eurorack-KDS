@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Tuesday\Sources\Algo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Tuesday\Sources\Tuesday.h">
@@ -36,6 +39,30 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_ChipArps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_Markov.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_SaikoSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_Stomper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_Test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

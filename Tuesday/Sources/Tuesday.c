@@ -1,8 +1,19 @@
 #include "Tuesday.h"
 #include <stdint.h>
 
-void Rotate(struct Tuesday_PatternContainer *T, int first, int length, int rotate);
-void Reverse(struct Tuesday_PatternContainer *T, int first, int length);
+#include "Algo.h"
+#include "AlgoImpl.h"
+
+struct PatternFunctions PatternTypes[__ALGO_COUNT];
+
+void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
+{
+	struct PatternFunctions *PF = &PatternTypes[i];
+	PF->Gen = Gen;
+	PF->Init = Init;
+	PF->PatternInit = PatternInit;		
+	PF->Dither = dither;
+}
 
 void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed)
 {
@@ -16,6 +27,17 @@ int Tuesday_Rand(struct Tuesday_RandomGen *R)
 
 void Tuesday_Init(struct Tuesday_PatternGen *P)
 {
+	for (int i = 0; i < __ALGO_COUNT; i++)
+	{
+		SetPatternFunc(i, NoPattern, NoInit, NoPatternInit,1);
+	}
+
+	SetPatternFunc(ALGO_SAIKO_LEAD, &Algo_Saiko_Lead_Gen, &Algo_Init_Generic_FourBool, &NoPatternInit,1);
+	SetPatternFunc(ALGO_CHIPARP1, Algo_ChipArp_1_Gen, Algo_ChipArp_1_Init, Algo_ChipArp_1_PatternInit,1);	
+	SetPatternFunc(ALGO_TRITRANCE, &Algo_TriTrance_Gen, &Algo_TriTrance_Init, &NoPatternInit,1);
+	SetPatternFunc(ALGO_TESTS, &Algo_Test_Gen, &NoInit, &NoPatternInit,1);
+	SetPatternFunc(ALGO_MARKOV, &Algo_Markov_Gen, &Algo_Markov_Init, &NoPatternInit,1);
+
 	P->ClockConnected = 0;
 	P->lastnote = 0;
 	P->CoolDown = 0;
@@ -76,9 +98,6 @@ void Tuesday_ClearTick(struct Tuesday_PatternGen *T)
 	T->Gates[GATE_LOOP] = 0;
 }
 
-
-
-
 void Tuesday_Reset(struct Tuesday_PatternGen *T)
 {
 	Tuesday_ClearTick(T);
@@ -95,9 +114,7 @@ void Tuesday_Reset(struct Tuesday_PatternGen *T)
 	}
 	T->extclocksupsincereset =0;
 	T->extclocksdowsincereset = 0;
-
 }
-
 
 void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 {
@@ -108,6 +125,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->CoolDown > CoolDownMax  ) T->CoolDown = CoolDownMax;
 		if (T->CoolDown < 0) T->CoolDown= 0;
 	}
+
 	if (T->CurrentPattern.Ticks[T->Tick].vel >= T->CoolDown)
 	{
 		T->CoolDown = CoolDownMax;
@@ -127,7 +145,6 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 	if (T->Tick % T->CurrentPattern.TPB == 0) T->Gates[GATE_BEAT] = 1;
 
 	T->Gates[GATE_TICK] = 1;
-
 }
 
 void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
@@ -228,7 +245,6 @@ void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 }
 
 
-
 int KnobOpt(int val)
 {
 	int r = 0;
@@ -286,24 +302,6 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params
 
 }
 
-uint8_t Tuesday_RandByte(struct Tuesday_RandomGen *R)
-{
-	return (Tuesday_Rand(R) >> 7) & 0xff;
-}
-
-uint8_t Tuesday_BoolChance(struct Tuesday_RandomGen *R)
-{
-	int r = Tuesday_Rand(R);
-	return ((((r >> 13)) & 1) == 1) ? 1 : 0;
-}
-
-uint8_t Tuesday_PercChance(struct Tuesday_RandomGen *R, uint8_t perc)
-{
-	int Res = (Tuesday_Rand(R) >> 6);
-	if ((Res & 0xff) >= perc) return 1;
-	return 0;
-}
-
 void Tuesday_ValidateParams(struct Tuesday_Params *P)
 {
 	P->algo = P->algo % TUESDAY_MAXALGO;
@@ -319,8 +317,10 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	P->scale = 1;
 	P->tpbopt = 2;
 
-	for (int i = 0; i < TUESDAY_MAXALGO; i++) S->algooptions[i] = i;
-	S->algooptions[3] = 7;
+	S->algooptions[0] = ALGO_TESTS;
+	S->algooptions[1] = ALGO_TRITRANCE;
+	S->algooptions[2] = ALGO_STOMPER;
+	S->algooptions[3] = ALGO_PACHEDECO;
 
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;
@@ -381,219 +381,8 @@ void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	Tuesday_LoadDefaults(S, P);
 }
 
-void Reverse(struct Tuesday_PatternContainer *T, int first, int length)
-{
-	int last = first + length;
-	if (last > T->Length) last = T->Length;
-	for (int j = first; j < last - 1; j++)
-	{
-		Rotate(T, j, last - j, 1);
-	}
-}
 
-void Rotate(struct Tuesday_PatternContainer *T, int first, int length, int rotate)
-{
-	int last = first + length;
-	if (last > T->Length) last = T->Length;
-
-	for (int i = 0; i < rotate; i++)
-	{
-		float V = T->Ticks[first].vel;
-		int N = T->Ticks[first].note;
-		int A = T->Ticks[first].accent;
-		for (int j = first; j < last - 1; j++)
-		{
-			T->Ticks[j].vel = T->Ticks[j + 1].vel;
-			T->Ticks[j].note = T->Ticks[j + 1].note;
-			T->Ticks[j].accent = T->Ticks[j + 1].accent;
-		}
-		T->Ticks[last - 1].note = N;
-		T->Ticks[last - 1].vel = V;
-		T->Ticks[last - 1].accent = A;
-	}
-}
-
-void Transpose(struct Tuesday_PatternContainer *T, int first, int length, int transpose)
-{
-	int last = first + length;
-	if (last > T->Length) last = T->Length;
-	for (int i = first; i < last; i++)
-	{
-		T->Ticks[i].note += transpose;
-	}
-}
-
-void Tuesday_Psych(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
-{
-	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
-
-	T->Length = Length;
-	T->TPB = 4;
-
-	for (int i = 0; i < TUESDAY_MAXTICK; i++)
-	{
-		T->Ticks[i].vel = Tuesday_RandByte(R);
-
-		uint64_t a = Tuesday_Rand(R) & 32767;
-		a *= 0x57619F1ULL;
-		a = (a >> (32 + 9)) + ((uint32_t)a >> 31);
-
-		T->Ticks[i].accent = (a != 0);
-
-		int r = (Tuesday_Rand(R) & 32767) >> 12;
-		switch (r)
-		{
-		case 0:
-		case 1:
-		case 6:
-			T->Ticks[i].note = 0;
-			break;
-		case 2:
-			T->Ticks[i].note = -2;
-			break;
-		case 3:
-			T->Ticks[i].note = 3;
-			break;
-		case 4:
-			T->Ticks[i].note = 15;
-			break;
-		case 5:
-			T->Ticks[i].note = 10;
-			break;
-		case 7:
-			T->Ticks[i].note = 12;
-			break;
-		default:
-			// don't change note value!
-			break;
-		}
-	}
-}
-
-void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
-{
-	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
-
-	T->TPB = 4;
-	T->Length = Length;
-	for (int i = 0; i < TUESDAY_MAXTICK; i++)
-	{
-
-
-		T->Ticks[i].vel = Tuesday_RandByte(R);
-
-		uint64_t a = Tuesday_Rand(R) & 32767;
-		a *= 0x57619F1ULL;
-		a = (a >> (32 + 9)) + ((uint32_t)a >> 31);
-
-		T->Ticks[i].accent = (a != 0);
-
-		int r = (Tuesday_Rand(R) & 32767) >> 12;
-		switch (r)
-		{
-		case 0:
-		case 2:
-		case 4:
-		case 5:
-		case 6:
-			T->Ticks[i].note = 0; break;
-		case 1: T->Ticks[i].note = -12; break;
-		case 3: T->Ticks[i].note = 0xD; break;
-		case 7: T->Ticks[i].note = 0xC; break;
-		default:
-			// don't change note value!
-			break;
-		}
-
-	}
-
-};
-
-void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
-{
-	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
-	T->TPB = 4;
-	T->Length = Length;
-	for (int i = 0; i < TUESDAY_MAXTICK; i++)
-	{
-		T->Ticks[i].vel = Tuesday_RandByte(R);
-		T->Ticks[i].accent = (Tuesday_BoolChance(R)) ? 1 : 0;
-
-		int RandNote = Tuesday_Rand(R) % 8;
-		switch (RandNote)
-		{
-		case 0:
-		case 2:
-			T->Ticks[i].note = 0; break;
-		case 1: T->Ticks[i].note = (char)0xf4; break;
-		case 3: T->Ticks[i].note = 1; break;
-		case 4: T->Ticks[i].note = 3; break;
-		case 5: T->Ticks[i].note = 7; break;
-		case 6: T->Ticks[i].note = 0xc; break;
-		case 7: T->Ticks[i].note = 0xd; break;
-		}
-
-		if (T->Ticks[i].accent)
-		{
-			switch (RandNote)
-			{
-			case 0:
-			case 3:
-			case 7: T->Ticks[i].note = 0; break;
-			case 1:T->Ticks[i].note = (char)0xf4; break;
-			case 2:T->Ticks[i].note = (char)0xfe; break;
-			case 4:T->Ticks[i].note = 3; break;
-			case 5:T->Ticks[i].note = (char)0xf2; break;
-			case 6:T->Ticks[i].note = 1; break;
-			}
-		}
-
-	}
-
-	if (Tuesday_BoolChance(R))
-	{
-		Transpose(T, 0, 7, 3);
-	}
-
-	if (Tuesday_BoolChance(R))
-	{
-		Transpose(T, 0, 7, -5);
-	}
-}
-
-void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles)
-{
-	int totalticks = stepsperbeat * beats * fullcycles;
-	int subpattern = stepsperbeat * beats;
-	if (totalticks > TUESDAY_MAXTICK)
-	{
-		return;
-	}
-	Tuesday_Goa(T, R, subpattern);
-	T->Length = totalticks;
-	T->TPB = stepsperbeat;
-	for (int i = 1; i < fullcycles; i++)
-	{
-		for (int j = 0; j < subpattern; j++)
-		{
-			T->Ticks[i*subpattern + j].note = T->Ticks[j].note;
-			T->Ticks[i*subpattern + j].vel = T->Ticks[j].vel;
-			T->Ticks[i*subpattern + j].accent = T->Ticks[j].accent;
-		}
-		if (Tuesday_PercChance(R, 128))
-		{
-			Rotate(T, (fullcycles - 1)*subpattern, subpattern, 3);
-		}
-		if (Tuesday_PercChance(R, 128))
-		{
-			Reverse(T, (fullcycles - 1)*subpattern + subpattern / 2, subpattern / 2);
-		}
-	}
-	if (Tuesday_PercChance(R, 128)) Transpose(T, (fullcycles - 1)*subpattern, subpattern, 3);
-	if (Tuesday_PercChance(R, 128)) Transpose(T, 2 * subpattern, 7, -5);
-}
-
-unsigned char dither[24 * 3] =
+const unsigned char dither[24 * 3] =
 {
 		0b0001, 0b0011, 0b0111,
 		0b0001, 0b0011, 0b1011,
@@ -620,241 +409,6 @@ unsigned char dither[24 * 3] =
 		0b1000, 0b1100, 0b1101,
 		0b1000, 0b1100, 0b1110
 };
-
-struct ScaledNote
-{
-	int32_t oct;
-	int32_t note;
-};
-
-int ScaleToNote(struct ScaledNote *SN,struct Tuesday_PatternGen *T,  struct Tuesday_Params *P, struct Tuesday_Settings *S)
-{
-	int32_t octoffset = SN->oct;
-	int32_t scaleidx = SN->note;
-	//scaleidx &= 0xf;
-	int32_t selectedscale = P->scale;
-	int32_t scalecount = S->scalecount[selectedscale];
-
-	while (scaleidx < 0)
-	{
-		scaleidx += scalecount;
-		octoffset--;
-	};
-
-	while (scaleidx >= scalecount)
-	{
-		scaleidx -= scalecount; octoffset++;
-	}
-
-	octoffset++;
-	return S->scale[selectedscale][scaleidx] + (12 * (octoffset));
-}
-
-#define NOTE(aoct, anote) { SN.note = anote;SN.oct = aoct;};
-
-void ClassicPattern(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
-{
-	int note = 0;
-	struct ScaledNote SN;
-
-	int RandNote = Tuesday_Rand(R) % 8;
-
-	switch (RandNote)
-	{
-	case 0:
-	case 2: NOTE(0, 0); break;
-	case 1: NOTE(-1, 0); break; // -12
-	case 3: NOTE(0, 1); break;
-	case 4: NOTE(0, 2); break;
-	case 5: NOTE(0, 4); break;
-	case 6: NOTE(1, 0); break; // 12
-	case 7: NOTE(1, 1); break; // 13
-	}
-
-	if (Output->accent)
-	{
-		switch (RandNote)
-		{
-		case 0:
-		case 3:
-		case 7:NOTE(1, 0); break;
-		case 1:NOTE(0, 0); break;
-		case 2:NOTE(1, -1); break;
-		case 4:NOTE(1, 1); break;
-		case 5:NOTE(0, -1); break;
-		case 6:NOTE(1, 1); break;
-		}
-	}
-
-	if (I < 7)
-	{
-		if (PS->b1 == 0) SN.note += 1;
-		if (PS->b2 == 0) SN.note -= 2;
-	}
-
-	Output->vel = Tuesday_RandByte(R);
-	Output->accent = Tuesday_BoolChance(R);
-	Output->note = ScaleToNote(&SN, T, P, S);
-}
-
-void Chip1(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
-{
-	struct ScaledNote SN;
-
-	SN.note = ((I + PS->b1) % PS->b4) * 2;
-	SN.oct = ((I + PS->b2) % PS->b3);
-
-	Output->note = ScaleToNote(&SN, T, P, S);
-
-	Output->vel = (Tuesday_RandByte(R) / 2) + (((I + PS->b2) == 0) ? 127 : 0);
-	Output->accent = Tuesday_BoolChance(R);
-
-}
-
-void TranceThing(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
-{
-	struct ScaledNote SN;
-	int veloffs = 0;
-	int accentoffs = 0;
-	switch ((I + PS->b2) % 3)
-	{
-	case 0:
-		if ((Tuesday_BoolChance(&PS->ExtraRandom) == 1) && (Tuesday_BoolChance(&PS->ExtraRandom) == 1))
-		{
-			PS->b3 = (Tuesday_Rand(&PS->ExtraRandom) & 0x15);
-			if (PS->b3 >= 7) PS->b3 -= 7; else PS->b3 = 0;
-			PS->b3 -= 4;
-		}
-		NOTE(0, PS->b3); break;
-	case 1:NOTE(1, PS->b3);
-	if (Tuesday_BoolChance(R) == 1)  PS->b2 = (Tuesday_Rand(R) & 0x7);
-	break;
-	case 2:
-		NOTE(2, PS->b1);
-		veloffs = 127;
-		accentoffs = 127;
-		if (Tuesday_BoolChance(R) == 1)
-		{
-			PS->b1 = ((Tuesday_Rand(R) >> 5) & 0x7);
-
-		}; break;
-	}
-
-	int32_t n = ScaleToNote(&SN, T,P, S);
-	Output->note = n;
-
-	Output->vel = (Tuesday_Rand(R) / 2) + veloffs;
-	Output->accent = Tuesday_PercChance(R, 100 + accentoffs);
-
-
-}
-
-
-void Pattern4(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
-{
-
-	struct ScaledNote SN;
-	int idx = Tuesday_BoolChance(R) == 1 ? 1 : 0;
-	SN.note = PS->matrix[PS->b1][PS->b3][idx];
-	PS->b1 = PS->b3;
-	PS->b3 = SN.note;
-
-	SN.oct = Tuesday_BoolChance(R);
-
-
-
-	Output->note = ScaleToNote(&SN, T, P, S);
-	Output->accent = 0;
-	Output->vel = 255;
-}
-void Pattern5(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output) {}
-void Pattern6(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output) {}
-void Pattern7(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output) {}
-void TestPattern(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
-{
-	struct ScaledNote SN;
-
-	NOTE((I % 5), 0);
-
-	Output->note = ScaleToNote(&SN, T, P, S);
-	Output->accent = Tuesday_BoolChance(R);
-	Output->vel = Tuesday_Rand(R);
-}
-
-typedef void(*GenFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output);
-typedef void(*InitFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output);
-typedef void(*PatternInitFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT);
-
-void NoInit(struct Tuesday_PatternGen *T,struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
-{
-
-}
-
-void MarkovInit(struct Tuesday_PatternGen *T,struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
-{
-	Output->b1 = (Tuesday_Rand(R) & 0x7);
-	Output->b2 = (Tuesday_Rand(R) & 0x7);
-	Output->b3 = (Tuesday_Rand(R) & 0x7);
-	Output->b4 = (Tuesday_Rand(R) & 0x7);
-
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			Output->matrix[i][j][0] = (Tuesday_Rand(R) % 8);
-			Output->matrix[i][j][1] = (Tuesday_Rand(R) % 8);
-		}
-	}
-}
-
-void TranceThingInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
-{
-
-	Tuesday_RandomSeed(R, T->seed1 >> 3);
-	Tuesday_RandomSeed(&Output->ExtraRandom, T->seed2 >> 3);
-
-	Output->b1 = (Tuesday_Rand(R) & 0x7);
-	Output->b2 = (Tuesday_Rand(R) & 0x7);
-
-	Output->b3 = (Tuesday_Rand(&Output->ExtraRandom) & 0x15);
-	if (Output->b3 >= 7) Output->b3 -= 7; else Output->b3 = 0;
-	Output->b3 -= 4;
-
-	Output->b4 = 0;
-}
-
-void ChipInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
-{
-	Output->b1 = (Tuesday_Rand(R) & 0x7);
-	Output->b2 = (Tuesday_Rand(R) & 0x7);
-	Output->b3 = (Tuesday_Rand(R) & 0x3) + 1;
-	Output->b4 = (Tuesday_Rand(R) & 0x3) + 2;
-}
-
-void FourBool(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
-{
-	Output->b1 = Tuesday_BoolChance(R);
-	Output->b2 = Tuesday_BoolChance(R);
-	Output->b3 = Tuesday_BoolChance(R);
-	Output->b4 = Tuesday_BoolChance(R);
-}
-
-void ChipPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
-{
-	T->CurrentPattern.TPB *= 2;
-}
-
-void NoPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
-{
-
-}
-
-
-GenFuncPtr Funcs[8] = { &ClassicPattern,&Chip1,&TranceThing,&Pattern4,&Pattern5,&Pattern6,&Pattern7,&TestPattern };
-InitFuncPtr InitFuncs[8] = { &FourBool,&ChipInit,&TranceThingInit,&MarkovInit,&NoInit,&NoInit,&NoInit,&NoInit };
-PatternInitFuncPtr PatternInit[8] = { &NoPatternInit,&ChipPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit,&NoPatternInit };
-
-uint8_t FuncDither[8] = { 1,1,1,1,1,1,1,1 };
 
 struct Tuesday_PatternFuncSpecific FuncSpecific[4];
 
@@ -908,27 +462,27 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Tuesday_RandomSeed(&Randoms[1], X + Y * 32 + 1);
 	Tuesday_RandomSeed(&Randoms[2], X + Y * 32 + 32);
 	Tuesday_RandomSeed(&Randoms[3], X + Y * 32 + 33);
-
-
+	
 	int CurrentAlgo = S->algooptions[P->algo];
-	GenFuncPtr TheFunc = Funcs[CurrentAlgo];
-	InitFuncPtr InitFunc = InitFuncs[CurrentAlgo];
+	
+	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
+
 
 	for (int j = 0; j < 4; j++)
 	{
-		InitFunc(T,P, S, &Randoms[j], &FuncSpecific[j]);
+		Algo->Init(T,P, S, &Randoms[j], &FuncSpecific[j]);
 	}
 
-	PatternInit[CurrentAlgo](T,P, S, &T->CurrentPattern);
+	Algo->PatternInit(T,P, S, &T->CurrentPattern);
 
-	if (FuncDither[CurrentAlgo] == 1)
+	if (Algo->Dither == 1)
 	{
 		for (int i = 0; i < len; i++)
 		{
 			for (int j = 0; j < 4; j++)
 			{
 
-				TheFunc(T,P, S, &Randoms[j], &FuncSpecific[j], i, &Ticks[j]);
+				Algo->Gen(T,P, S, &Randoms[j], &FuncSpecific[j], i, &Ticks[j]);
 			}
 
 			ApplyDither(i, ditherx, &Ticks[0], &Ticks[1], &Top);
@@ -940,7 +494,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	{
 		for (int i = 0; i < len; i++)
 		{
-			TheFunc(T, P, S, &Randoms[0], &FuncSpecific[0], i, &T->CurrentPattern.Ticks[i]);
+			Algo->Gen(T, P, S, &Randoms[0], &FuncSpecific[0], i, &T->CurrentPattern.Ticks[i]);
 		}
 	}
 }
