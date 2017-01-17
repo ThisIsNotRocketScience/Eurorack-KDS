@@ -148,7 +148,17 @@ void doTimer()
 
 	if (Tuesday.T%2==0)
 	{
-		DAC_Write(0, Tuesday.CVOut);
+		if (Tuesday.CVOutCountDown > 0)
+		{
+			Tuesday.CVOut  += Tuesday.CVOutDelta;
+			Tuesday.CVOutCountDown--;
+			if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
+		}
+		else
+		{
+			Tuesday.CVOut = Tuesday.CVOutTarget;
+		}
+		DAC_Write(0, Tuesday.CVOut >> 16) ;
 	}
 	else
 	{

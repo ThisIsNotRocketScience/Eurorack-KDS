@@ -60,3 +60,39 @@ void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length
 	}
 }
 
+void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed)
+{
+	R->RandomMemory = (long)seed;
+}
+
+int Tuesday_Rand(struct Tuesday_RandomGen *R)
+{
+	return (((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
+}
+
+int ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S)
+{
+	if (SN->note == TUESDAY_NOTEOFF)
+	{
+		return TUESDAY_NOTEOFF;
+	}
+	int32_t octoffset = SN->oct;
+	int32_t scaleidx = SN->note;
+	//scaleidx &= 0xf;
+	int32_t selectedscale = P->scale;
+	int32_t scalecount = S->scalecount[selectedscale];
+
+	while (scaleidx < 0)
+	{
+		scaleidx += scalecount;
+		octoffset--;
+	};
+
+	while (scaleidx >= scalecount)
+	{
+		scaleidx -= scalecount; octoffset++;
+	}
+
+	octoffset++;
+	return S->scale[selectedscale][scaleidx] + (12 * (octoffset));
+}

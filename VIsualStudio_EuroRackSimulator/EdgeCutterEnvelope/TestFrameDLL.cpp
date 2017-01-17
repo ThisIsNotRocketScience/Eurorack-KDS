@@ -187,7 +187,7 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall Tuesday_GetCV()
 	{
-		return Tuesday.CVOut;
+		return Tuesday.CVOut >> 16;
 	}
 
 	__declspec(dllexport) bool __stdcall  Tuesday_GetGate()

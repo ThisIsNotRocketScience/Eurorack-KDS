@@ -13,13 +13,15 @@
 #define GATE_GATE 0
 
 #define TUESDAY_LEDS 16
+#define TUESDAY_NOTEOFF -255
 
 struct Tuesday_Tick
 {
 	unsigned char vel;
-	signed char note;
-	int accent :1;
-	int slide : 1;
+	signed short note;
+	unsigned char accent :1;
+	unsigned char slide : 2;
+	unsigned char hold : 1;
 };
 
 struct Tuesday_PatternContainer
@@ -34,15 +36,6 @@ struct Tuesday_RandomGen
 	long RandomMemory;
 };
 
-struct Tuesday_PatternFuncSpecific
-{
-	int16_t b1;
-	int16_t b2;
-	int16_t b3;
-	int16_t b4;
-	uint8_t matrix[8][8][2];
-	struct Tuesday_RandomGen ExtraRandom;
-};
 
 //4096 = 2.048v
 /*2.5 * (2.048 * INP)/4096
@@ -74,7 +67,12 @@ struct Tuesday_PatternGen
 	int lastnote;
 	int CoolDown;
 	uint16_t TickOut;
+	
 	int32_t CVOut;
+	int32_t CVOutTarget;
+	int32_t CVOutDelta;
+	int32_t CVOutCountDown;
+
 	int Tick;
 	int Measure;
 
@@ -130,14 +128,14 @@ typedef enum
 
 	
 	ALGO_MARKOV,
-	ALGO_PACHEDECO,
-	ALGO_WOBBLE,
+//	ALGO_PACHEDECO,
+	//ALGO_WOBBLE,
 	ALGO_CHIPARP1,
-	ALGO_CHIPARP2,
+	//ALGO_CHIPARP2,
 
 	// classic saiko things, mapped to other scales
-	ALGO_SAIKO_BASS,
-	ALGO_SAIKO_PSY,
+	//ALGO_SAIKO_BASS,
+	//ALGO_SAIKO_PSY,
 	ALGO_SAIKO_LEAD,
 	__ALGO_COUNT
 } TUESDAY_ALGO;

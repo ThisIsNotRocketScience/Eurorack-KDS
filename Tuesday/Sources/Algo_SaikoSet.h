@@ -36,8 +36,8 @@ void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 
 	if (I < 7)
 	{
-		if (PS->b1 == 0) SN.note += 1;
-		if (PS->b2 == 0) SN.note -= 2;
+		if (PS->GENERIC.b1 == 0) SN.note += 1;
+		if (PS->GENERIC.b2 == 0) SN.note -= 2;
 	}
 
 	Output->vel = Tuesday_RandByte(R);

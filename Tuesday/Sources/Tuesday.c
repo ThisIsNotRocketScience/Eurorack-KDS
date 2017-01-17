@@ -15,16 +15,6 @@ void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr 
 	PF->Dither = dither;
 }
 
-void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed)
-{
-	R->RandomMemory = (long)seed;
-}
-
-int Tuesday_Rand(struct Tuesday_RandomGen *R)
-{
-	return (((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
-}
-
 void Tuesday_Init(struct Tuesday_PatternGen *P)
 {
 	for (int i = 0; i < __ALGO_COUNT; i++)
@@ -35,8 +25,9 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	SetPatternFunc(ALGO_SAIKO_LEAD, &Algo_Saiko_Lead_Gen, &Algo_Init_Generic_FourBool, &NoPatternInit,1);
 	SetPatternFunc(ALGO_CHIPARP1, Algo_ChipArp_1_Gen, Algo_ChipArp_1_Init, Algo_ChipArp_1_PatternInit,1);	
 	SetPatternFunc(ALGO_TRITRANCE, &Algo_TriTrance_Gen, &Algo_TriTrance_Init, &NoPatternInit,1);
-	SetPatternFunc(ALGO_TESTS, &Algo_Test_Gen, &NoInit, &NoPatternInit,1);
+	SetPatternFunc(ALGO_TESTS, &Algo_Test_Gen, &Algo_Test_Init, &NoPatternInit,1);
 	SetPatternFunc(ALGO_MARKOV, &Algo_Markov_Gen, &Algo_Markov_Init, &NoPatternInit,1);
+	SetPatternFunc(ALGO_STOMPER, &Algo_Stomper_Gen, &Algo_Stomper_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -44,6 +35,10 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 
 	P->TickOut = 0;
 	P->CVOut = 0;
+	P->CVOutDelta = 0;
+	P->CVOutCountDown = 0;
+	P->CVOutTarget = 0;
+
 	P->Tick = -1;
 	P->Measure = 0;
 
@@ -125,8 +120,8 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->CoolDown > CoolDownMax  ) T->CoolDown = CoolDownMax;
 		if (T->CoolDown < 0) T->CoolDown= 0;
 	}
-
-	if (T->CurrentPattern.Ticks[T->Tick].vel >= T->CoolDown)
+	struct Tuesday_Tick *Tick = &T->CurrentPattern.Ticks[T->Tick];
+	if (Tick->vel >= T->CoolDown)
 	{
 		T->CoolDown = CoolDownMax;
 
@@ -135,9 +130,28 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
 
 		T->TickOut = (T->CurrentPattern.Ticks[T->Tick].accent * 2048 + 2047);
-		T->CVOut = DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note);
-		T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
-		T->Gates[GATE_GATE] = 1;
+		
+		if (T->CurrentPattern.Ticks[T->Tick].note != TUESDAY_NOTEOFF)
+		{
+			T->CVOutTarget = (DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note))<<16;
+			if (Tick->slide > 0)
+			{
+				T->CVOutDelta = (T->CVOutTarget - T->CVOut)/ (Tick->slide * 100);
+				T->CVOutCountDown = Tick->slide *100 ;
+			}
+			else
+			{
+				T->CVOut = T->CVOutTarget;
+			}
+			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
+			T->Gates[GATE_GATE] = 1;
+		}
+		if (T->CurrentPattern.Ticks[T->Tick].note == TUESDAY_NOTEOFF)
+		{
+			T->TickOut  =0;
+			T->Gates[GATE_GATE] = 0;
+			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
+		}
 		if (T->CurrentPattern.Ticks[T->Tick].accent > 0) T->Gates[GATE_ACCENT] = 1;
 	}
 
@@ -193,14 +207,7 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 				DoClock(0);
 			}
 		}
-		if (T->CVOut > 4095)
-		{
-			T->CVOut = 4095;
-		}
-		if (T->CVOut < 0)
-		{
-			T->CVOut = 0;
-		}
+		
 	}
 }
 
@@ -320,7 +327,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	S->algooptions[0] = ALGO_TESTS;
 	S->algooptions[1] = ALGO_TRITRANCE;
 	S->algooptions[2] = ALGO_STOMPER;
-	S->algooptions[3] = ALGO_PACHEDECO;
+	S->algooptions[3] = ALGO_CHIPARP1;
 
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;
@@ -422,6 +429,7 @@ void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
 	Out->accent = A->accent;
 	Out->note = A->note;
 	Out->vel = A->vel;
+	Out->slide = A->slide;
 }
 
 void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struct Tuesday_Tick *B, struct Tuesday_Tick *Out)
@@ -466,7 +474,6 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	int CurrentAlgo = S->algooptions[P->algo];
 	
 	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
-
 
 	for (int j = 0; j < 4; j++)
 	{
