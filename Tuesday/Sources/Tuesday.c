@@ -88,10 +88,6 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 
 void Tuesday_ClearTick(struct Tuesday_PatternGen *T)
 {
-	T->Gates[GATE_BEAT] = 0;
-	T->Gates[GATE_TICK] = 0;
-	T->Gates[GATE_ACCENT] = 0;
-	T->Gates[GATE_LOOP] = 0;
 }
 
 void Tuesday_Reset(struct Tuesday_PatternGen *T)
@@ -253,7 +249,7 @@ void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 }
 
 
-int KnobOpt(int val)
+uint32_t KnobOpt(uint32_t val)
 {
 	int r = 0;
 	if (val > (65536*1)/5) r++;
@@ -267,7 +263,7 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params
 {
 	P->clockup = state;
 
-	int clocksubdiv = KnobOpt(P->tempo);
+	int clocksubdiv = KnobOpt(P->tempo<<8);
 
 	if (P->lastclocksubdiv != clocksubdiv)
 	{
