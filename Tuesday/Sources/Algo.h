@@ -82,6 +82,9 @@ typedef struct PatternStruct_Algo_Wobble
 {
 	uint32_t Phase;
 	uint32_t PhaseSpeed;
+	uint32_t Phase2;
+	uint32_t PhaseSpeed2;
+	unsigned char LastWasHigh : 1;
 } PatternStruct_Algo_Wobble;
 
 struct Tuesday_PatternFuncSpecific
