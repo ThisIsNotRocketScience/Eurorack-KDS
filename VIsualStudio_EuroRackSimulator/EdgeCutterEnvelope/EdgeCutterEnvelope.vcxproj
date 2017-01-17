@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\EdgeCutter\Sources\EdgeCutter.c" />
+    <Text Include="..\..\EurorackShared\Math.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
@@ -157,6 +158,7 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Stomper.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Test.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Tuesday.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
   </ItemGroup>

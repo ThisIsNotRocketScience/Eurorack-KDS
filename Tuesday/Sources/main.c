@@ -70,6 +70,7 @@ int adcchannels[ADC_Count];
 #include "Tuesday.h"
 
 #include "../../EurorackShared/EurorackShared.c"
+#include "../../EurorackShared/Math.c"
 
 struct Tuesday_PatternGen Tuesday;
 struct Tuesday_Settings Settings;
@@ -93,9 +94,15 @@ void ShiftOut()
 	for (int i = 0; i < 6; i++)
 	{
 		if (Tuesday.Gates[i] > 0)
+		{
+			Tuesday.Gates[i]--;
 			DATA_ClrVal(DATA_DeviceData);
+		}
 		else
+		{
+			Tuesday.Gates[i] = -Tuesday.Gates[i];
 			DATA_SetVal(DATA_DeviceData);
+		}
 		CLOCK_ClrVal(CLOCK_DeviceData);
 		CLOCK_SetVal(CLOCK_DeviceData);
 	}

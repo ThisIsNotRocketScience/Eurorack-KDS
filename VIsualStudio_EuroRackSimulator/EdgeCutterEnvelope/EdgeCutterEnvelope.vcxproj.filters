@@ -65,5 +65,13 @@
     <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\EurorackShared\Math.c">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

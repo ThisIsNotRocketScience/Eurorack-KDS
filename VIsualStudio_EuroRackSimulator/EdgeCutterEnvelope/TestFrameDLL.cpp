@@ -22,6 +22,8 @@ struct  Wobbler_Params LFOParams;
 
 extern "C"
 {
+	#include "../../EurorackShared/Math.c" 
+
 	void __cdecl doTick()
 	{
 		Tuesday_Tick(&Tuesday, &TuesdayParams);

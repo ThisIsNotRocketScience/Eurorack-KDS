@@ -77,6 +77,13 @@ typedef struct PatternStruct_Algo_Test
 	signed short Note;
 } PatternStruct_Algo_Test;
 
+
+typedef struct PatternStruct_Algo_Wobble
+{
+	uint32_t Phase;
+	uint32_t PhaseSpeed;
+} PatternStruct_Algo_Wobble;
+
 struct Tuesday_PatternFuncSpecific
 {
 	union
@@ -85,15 +92,12 @@ struct Tuesday_PatternFuncSpecific
 		struct PatternStruct_Algo_Stomper Stomper;
 		struct PatternStruct_Algo_Markov Markov;
 		struct PatternStruct_Algo_Test Test;
+		struct PatternStruct_Algo_Wobble Wobble;
 	};
 	struct Tuesday_RandomGen ExtraRandom;
 };
 
-
-
-
 int ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
-
 
 typedef void(*GenFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output);
 typedef void(*InitFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output);

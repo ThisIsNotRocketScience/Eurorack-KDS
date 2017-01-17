@@ -11,7 +11,7 @@
 #define GATE_LOOP 2
 #define GATE_ACCENT 1
 #define GATE_GATE 0
-
+#define GATE_MINGATETIME 10
 #define TUESDAY_LEDS 16
 #define TUESDAY_NOTEOFF -255
 
@@ -57,7 +57,7 @@ struct Tuesday_PatternGen
 	uint8_t ClockConnected;
 
 
-	uint8_t Gates[TUESDAY_GATES+1];
+	int32_t Gates[TUESDAY_GATES+1];
 	uint8_t StateLeds[TUESDAY_LEDS];
 
 	uint16_t NoteOut;
@@ -129,7 +129,7 @@ typedef enum
 	
 	ALGO_MARKOV,
 //	ALGO_PACHEDECO,
-	//ALGO_WOBBLE,
+	ALGO_WOBBLE,
 	ALGO_CHIPARP1,
 	//ALGO_CHIPARP2,
 

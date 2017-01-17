@@ -28,6 +28,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	SetPatternFunc(ALGO_TESTS, &Algo_Test_Gen, &Algo_Test_Init, &NoPatternInit,1);
 	SetPatternFunc(ALGO_MARKOV, &Algo_Markov_Gen, &Algo_Markov_Init, &NoPatternInit,1);
 	SetPatternFunc(ALGO_STOMPER, &Algo_Stomper_Gen, &Algo_Stomper_Init, &NoPatternInit, 1);
+	SetPatternFunc(ALGO_WOBBLE, &Algo_Wobble_Gen, &Algo_Wobble_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -136,15 +137,15 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 			T->CVOutTarget = (DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note))<<16;
 			if (Tick->slide > 0)
 			{
-				T->CVOutDelta = (T->CVOutTarget - T->CVOut)/ (Tick->slide * 100);
-				T->CVOutCountDown = Tick->slide *100 ;
+				T->CVOutDelta = (T->CVOutTarget - T->CVOut)/ (Tick->slide * 50);
+				T->CVOutCountDown = Tick->slide *50 ;
 			}
 			else
 			{
 				T->CVOut = T->CVOutTarget;
 			}
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
-			T->Gates[GATE_GATE] = 1;
+			T->Gates[GATE_GATE] = GATE_MINGATETIME;
 		}
 		if (T->CurrentPattern.Ticks[T->Tick].note == TUESDAY_NOTEOFF)
 		{
@@ -152,13 +153,13 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 			T->Gates[GATE_GATE] = 0;
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
 		}
-		if (T->CurrentPattern.Ticks[T->Tick].accent > 0) T->Gates[GATE_ACCENT] = 1;
+		if (T->CurrentPattern.Ticks[T->Tick].accent > 0) T->Gates[GATE_ACCENT] = GATE_MINGATETIME;
 	}
 
-	if (T->Tick == 0) T->Gates[GATE_LOOP] = 1;
-	if (T->Tick % T->CurrentPattern.TPB == 0) T->Gates[GATE_BEAT] = 1;
+	if (T->Tick == 0) T->Gates[GATE_LOOP] = GATE_MINGATETIME;
+	if (T->Tick % T->CurrentPattern.TPB == 0) T->Gates[GATE_BEAT] = GATE_MINGATETIME;
 
-	T->Gates[GATE_TICK] = 1;
+	T->Gates[GATE_TICK] = GATE_MINGATETIME;
 }
 
 void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
@@ -215,7 +216,7 @@ void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 {
 	if (ClockVal == 1)
 		{
-			P->Gates[GATE_CLOCK] = 1;
+			P->Gates[GATE_CLOCK] = GATE_MINGATETIME;
 
 
 			if (P->clockssincereset >= 96)
@@ -327,7 +328,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	S->algooptions[0] = ALGO_TESTS;
 	S->algooptions[1] = ALGO_TRITRANCE;
 	S->algooptions[2] = ALGO_STOMPER;
-	S->algooptions[3] = ALGO_CHIPARP1;
+	S->algooptions[3] = ALGO_WOBBLE;
 
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;

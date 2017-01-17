@@ -37,9 +37,29 @@ struct denoise_state_t
 	int lastcounter;
 };
 
-int denoise(int sw_down, struct denoise_state_t *state);
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
+	int denoise(int sw_down, struct denoise_state_t *state);
+
+	/// A sine approximation via a fourth-order cosine approx.
+	/// @param x   angle (with 2^15 units/circle)
+	/// @return     Sine value (Q12)
+	int32_t isin_S4(int32_t x);
+	int32_t LERP(int32_t *V, int total, int fade);
+
+	int32_t Sine(uint32_t phase);
+	int32_t SawTooth(uint32_t phase);
+	int32_t Pulse(uint32_t phase);
+	int32_t Triangle(uint32_t phase);
+	int32_t BasicShapes(uint32_t phase, int mod);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif
