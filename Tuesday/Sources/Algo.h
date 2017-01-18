@@ -13,6 +13,36 @@ struct ScaledNote
 #define NOTE(aoct, anote) { SN.note = anote;SN.oct = aoct;};
 #define NOTEOFF() { SN.note = TUESDAY_NOTEOFF;SN.oct = 0;};
 
+typedef enum
+{
+	// tests to build:
+	// - all octaves
+	// - one octave updown
+	// - one octave, 12tonal
+	// - full range walk
+	ALGO_TESTS,
+
+	// german style minimal melodies
+	ALGO_TRITRANCE,
+
+	// fishyfishy! with slides! 
+	ALGO_STOMPER,
+
+	// Random walking with mr. Markov.
+	ALGO_MARKOV,
+
+	//	ALGO_PACHEDECO,
+	ALGO_WOBBLE,
+	ALGO_CHIPARP1,
+	//ALGO_CHIPARP2,
+
+	// classic saiko things, reimagined
+	//ALGO_SAIKO_BASS,
+	//ALGO_SAIKO_PSY,
+	ALGO_SAIKO_LEAD,
+	__ALGO_COUNT
+} TUESDAY_ALGO;
+
 enum STOMPERACTIONS
 {
 	STOMPER_PAUSE1,

@@ -85,6 +85,20 @@ long oldseed = -1;
 byte pwm = 0;
 
 
+void UpdateGates()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (Tuesday.Gates[i] > 0)
+		{
+			Tuesday.Gates[i]--;
+		}
+		else
+		{
+			Tuesday.Gates[i] = -Tuesday.Gates[i];
+		}
+	}
+}
 
 void ShiftOut()
 {
@@ -95,12 +109,10 @@ void ShiftOut()
 	{
 		if (Tuesday.Gates[i] > 0)
 		{
-			Tuesday.Gates[i]--;
 			DATA_ClrVal(DATA_DeviceData);
 		}
 		else
 		{
-			Tuesday.Gates[i] = -Tuesday.Gates[i];
 			DATA_SetVal(DATA_DeviceData);
 		}
 		CLOCK_ClrVal(CLOCK_DeviceData);
@@ -171,6 +183,7 @@ void doTimer()
 	{
 		DAC_Write(1, Tuesday.TickOut);
 	}
+	UpdateGates();
 
 	ShiftOut();
 }
@@ -422,14 +435,14 @@ int main(void)
 		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+	/*** End of RTOS startup code.  ***/
+	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for(;;){}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

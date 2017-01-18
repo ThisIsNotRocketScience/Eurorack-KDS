@@ -86,13 +86,8 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	}
 }
 
-void Tuesday_ClearTick(struct Tuesday_PatternGen *T)
-{
-}
-
 void Tuesday_Reset(struct Tuesday_PatternGen *T)
 {
-	Tuesday_ClearTick(T);
 	T->TickOut = 0;
 	T->Tick = -1;
 	T->CoolDown = 0;
@@ -127,7 +122,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
 
 		T->TickOut = (T->CurrentPattern.Ticks[T->Tick].accent * 2048 + 2047);
-		
+
 		if (T->CurrentPattern.Ticks[T->Tick].note != TUESDAY_NOTEOFF)
 		{
 			T->CVOutTarget = (DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note))<<16;
@@ -204,48 +199,47 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 				DoClock(0);
 			}
 		}
-		
+
 	}
 }
 
 void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 {
 	if (ClockVal == 1)
+	{
+		P->Gates[GATE_CLOCK] = GATE_MINGATETIME;
+
+
+		if (P->clockssincereset >= 96)
 		{
-			P->Gates[GATE_CLOCK] = GATE_MINGATETIME;
-
-
-			if (P->clockssincereset >= 96)
-			{
-				P->clockssincereset = 0;
-				P->Measure++;
-				if (P->Measure * P->CurrentPattern.TPB * 4 >= P->CurrentPattern.Length) P->Measure =0 ;
-			}
-
-
-			//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
-			int NewTick = (P->Measure * (P->CurrentPattern.TPB * 4)  + ((P->clockssincereset * (P->CurrentPattern.TPB * 4))/96)) % P->CurrentPattern.Length;
-			if (NewTick != P->Tick || P->directtick == 1)
-			{
-				//#define USE_SEMIHOST
-				//printf("%d %d\n", Measure, NewTick);
-				if (P->Tick == -1) P->Tick = 0;
-
-				doTick();
-				P->Tick = NewTick;
-				P->directtick = 0;
-				P->clockshad = 0;
-			}
-
-			P->clockshad++;
-			P->clockssincereset++;
-
+			P->clockssincereset = 0;
+			P->Measure++;
+			if (P->Measure * P->CurrentPattern.TPB * 4 >= P->CurrentPattern.Length) P->Measure =0 ;
 		}
-		else
+
+
+		//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
+		int NewTick = (P->Measure * (P->CurrentPattern.TPB * 4)  + ((P->clockssincereset * (P->CurrentPattern.TPB * 4))/96)) % P->CurrentPattern.Length;
+		if (NewTick != P->Tick || P->directtick == 1)
 		{
-			Tuesday_ClearTick(P);
-			P->Gates[GATE_CLOCK] = 0 ;
+			//#define USE_SEMIHOST
+			//printf("%d %d\n", Measure, NewTick);
+			if (P->Tick == -1) P->Tick = 0;
+
+			doTick();
+			P->Tick = NewTick;
+			P->directtick = 0;
+			P->clockshad = 0;
 		}
+
+		P->clockshad++;
+		P->clockssincereset++;
+
+	}
+	else
+	{
+		P->Gates[GATE_CLOCK] = 0 ;
+	}
 }
 
 
@@ -377,7 +371,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	S->scale[3][2] = 5;
 	S->scale[3][3] = 7;
 	S->scale[3][4] = 9;
-	S->scalecount[3] = 5; // Penta
+	S->scalecount[3] = 5; // Pentatonic
 }
 
 void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P)
@@ -467,9 +461,9 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Tuesday_RandomSeed(&Randoms[1], X + Y * 32 + 1);
 	Tuesday_RandomSeed(&Randoms[2], X + Y * 32 + 32);
 	Tuesday_RandomSeed(&Randoms[3], X + Y * 32 + 33);
-	
+
 	int CurrentAlgo = S->algooptions[P->algo];
-	
+
 	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
 	for (int j = 0; j < 4; j++)
