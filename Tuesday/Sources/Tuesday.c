@@ -85,7 +85,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 		P->StateLeds[i] = 0;
 	}
 
-	P->UIMode = UI_CALIBRATION;
+	P->UIMode = UI_NORMAL;
 }
 
 void Tuesday_Reset(struct Tuesday_PatternGen *T)

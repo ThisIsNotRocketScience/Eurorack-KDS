@@ -65,8 +65,6 @@ volatile int measured = 0;
 
 int adcchannels[ADC_Count];
 
-
-
 #include "Tuesday.h"
 
 #include "../../EurorackShared/EurorackShared.c"
@@ -324,29 +322,29 @@ void SetupLeds()
 		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLeds[i] = 0;
 		switch(Tuesday.CalibTarget)
 		{
-			case CALIBRATION_VEL:
+		case CALIBRATION_VEL:
 			Tuesday.StateLeds[0] = 255;
 			Tuesday.StateLeds[1] = 255;
 			Tuesday.StateLeds[2] = 255;
 			Tuesday.StateLeds[3] = 255;
-		break;
-			case CALIBRATION_NOTE:
+			break;
+		case CALIBRATION_NOTE:
 
 			Tuesday.StateLeds[4] = 255;
 			Tuesday.StateLeds[5] = 255;
 			Tuesday.StateLeds[6] = 255;
 			Tuesday.StateLeds[7] = 255;
-		break;
-			case CALIBRATION_NOTARGET:
-			{
-				unsigned char T = Triangle(tickssincecommit << 24)>>24;
-				for(int i = 0;i<4;i++)
-				{
-					Tuesday.StateLeds[i] = T;
-					Tuesday.StateLeds[i+4] = ~T;
-				}
-			}
 			break;
+		case CALIBRATION_NOTARGET:
+		{
+			unsigned char T = Triangle(tickssincecommit << 24)>>24;
+			for(int i = 0;i<4;i++)
+			{
+				Tuesday.StateLeds[i] = T;
+				Tuesday.StateLeds[i+4] = ~T;
+			}
+		}
+		break;
 		}
 		break;
 	}
@@ -357,6 +355,25 @@ void SwitchToOptionMode(int mode)
 	Tuesday.OptionSelect = mode;
 	Tuesday.UIMode = UI_SELECTOPTION;
 }
+
+int algosw = 0;
+int scalesw = 0;
+int beatsw = 0;
+int tpbsw = 0;
+struct denoise_state_t algosw_state = {0};
+struct denoise_state_t scalesw_state = {0};
+struct denoise_state_t beatsw_state = {0};
+struct denoise_state_t tpbsw_state = {0};
+
+
+void UpdateButtons()
+{
+	algosw = denoise(SW_ALGO_GetVal(0), &algosw_state);
+	scalesw = denoise(SW_SCALE_GetVal(0), &scalesw_state);
+	beatsw = denoise(SW_BEATS_GetVal(0), &beatsw_state);
+	tpbsw = denoise(SW_TPB_GetVal(0), &tpbsw_state);
+}
+
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -370,10 +387,6 @@ int main(void)
 
 	/* Write your code here */
 
-	static struct denoise_state_t algosw_state = {0};
-	static struct denoise_state_t scalesw_state = {0};
-	static struct denoise_state_t beatsw_state = {0};
-	static struct denoise_state_t tpbsw_state = {0};
 
 #ifdef USE_SEMIHOST
 	initialise_monitor_handles();
@@ -388,12 +401,14 @@ int main(void)
 
 	TI1_Enable();
 	AD1_Measure(FALSE);
-
+	int StartWithCalibration =0 ;
 	for(int j =0 ;j<16;j++)
 	{
 		for (int i =0 ;i<16;i++)
 		{
 			Tuesday.StateLeds[15-i] = j==i?255:0;
+			UpdateButtons();
+			StartWithCalibration += scalesw_state.down;
 		}
 		ShiftOut();
 		WAIT1_Waitms(40);
@@ -407,18 +422,24 @@ int main(void)
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();
-	ShiftOut();
+
+
+
+	if (StartWithCalibration > 16*5)
+	{
+		Tuesday.UIMode = UI_CALIBRATION;
+		Tuesday.CalibTarget =CALIBRATION_NOTARGET;
+
+	};
 
 	byte commitchange = 0;
 	for (;;)
 	{
-		int algosw = denoise(SW_ALGO_GetVal(0), &algosw_state);
-		int scalesw = denoise(SW_SCALE_GetVal(0), &scalesw_state);
-		int beatsw = denoise(SW_BEATS_GetVal(0), &beatsw_state);
-		int tpbsw = denoise(SW_TPB_GetVal(0), &tpbsw_state);
+		UpdateButtons();
 
 		switch (Tuesday.UIMode)
 		{
+
 
 		case UI_SELECTOPTION:
 		{
@@ -499,6 +520,7 @@ int main(void)
 				{
 					if (Tuesday.CalibTarget == CALIBRATION_NOTE)
 					{
+
 						//					Write Velocity output calibration value!
 						Tuesday.CalibTarget = CALIBRATION_NOTARGET;
 					}
@@ -518,7 +540,6 @@ int main(void)
 						//					Write Note output calibration value!
 						Tuesday.CalibTarget = CALIBRATION_NOTARGET;
 					}
-
 				}
 			}
 			SetupLeds();
@@ -527,13 +548,7 @@ int main(void)
 
 		case UI_NORMAL:
 		{
-			if (algosw == 2 && scalesw == 2 && beatsw == 2 && tpbsw == 2)
-			{
-				Tuesday.UIMode = UI_CALIBRATION;
-				Tuesday.CalibTarget =CALIBRATION_NOTARGET;
 
-			}
-			else
 			{
 				if (algosw == 1)
 				{

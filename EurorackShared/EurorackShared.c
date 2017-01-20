@@ -71,7 +71,7 @@ int denoise(int sw_down, struct denoise_state_t *state)
 		}
 	}
 
-	if (state->pressed > 0)
+	if (state->down > 0)
 	{
 		state->longpressed++;
 	}
@@ -82,9 +82,9 @@ int denoise(int sw_down, struct denoise_state_t *state)
 
 	state->lastcounter = state->counter;
 	
-	if (state->longpressed >= 2000)
+	if (state->longpressed >= 200000)
 	{
-		state->longpressed = 2000;
+		state->longpressed = 200000;
 		return 2;
 	}
 
