@@ -146,6 +146,7 @@ void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length
 
 int Tuesday_Rand(struct Tuesday_RandomGen *R);
 uint8_t Tuesday_BoolChance(struct Tuesday_RandomGen *R);
+uint8_t Tuesday_RandByte(struct Tuesday_RandomGen *R);
 
 struct PatternFunctions
 {

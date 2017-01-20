@@ -38,9 +38,14 @@ void EuroRack_InitCalibration()
 int denoise(int sw_down, struct denoise_state_t *state)
 {
 	if (sw_down)
+	{
 		state->counter++;
+	}
 	else
+	{
 		state->counter--;
+	}
+
 	state->pressed = 0;
 	state->released = 0;
 
@@ -53,16 +58,36 @@ int denoise(int sw_down, struct denoise_state_t *state)
 		state->counter = 1;
 		state->down = 1;
 	}
-	else if (state->counter > 30)
+	else
 	{
-		if (state->lastcounter == 30)
+		if (state->counter > 30)
 		{
-			state->released = 1;
+			if (state->lastcounter == 30)
+			{
+				state->released = 1;
+			}
+			state->counter = 31;
+			state->down = 0;
 		}
-		state->counter = 31;
-		state->down = 0;
 	}
+
+	if (state->pressed > 0)
+	{
+		state->longpressed++;
+	}
+	else
+	{
+		state->longpressed = 0;
+	}
+
 	state->lastcounter = state->counter;
+	
+	if (state->longpressed >= 2000)
+	{
+		state->longpressed = 2000;
+		return 2;
+	}
+
 	return state->pressed;
 }
 

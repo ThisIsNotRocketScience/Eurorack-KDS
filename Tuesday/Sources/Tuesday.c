@@ -84,6 +84,8 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	{
 		P->StateLeds[i] = 0;
 	}
+
+	P->UIMode = UI_CALIBRATION;
 }
 
 void Tuesday_Reset(struct Tuesday_PatternGen *T)
@@ -330,48 +332,78 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	S->beatoptions[2] = 16;
 	S->beatoptions[3] = 32;
 
-	for (int j = 0; j < TUESDAY_MAXSCALE; j++)
+	for (int j = 0; j < __SCALE_COUNT; j++)
 	{
 		for (int i = 0; i < 12; i++)
 		{
-			S->scale[j][i] = i;
+			S->scales[j].notes[i] = i;
 		}
-		S->scalecount[j] = 1;
+		S->scales[j].count = 1;
 	}
 
-	S->scale[0][0] = 0;
-	S->scale[0][1] = 2;
-	S->scale[0][2] = 4;
-	S->scale[0][3] = 5;
-	S->scale[0][4] = 7;
-	S->scale[0][5] = 9;
-	S->scale[0][6] = 11;
-	S->scalecount[0] = 7; // Major scale
+	S->scale[0] = SCALE_MAJOR;
+	S->scale[1] = SCALE_MINOR;
+	S->scale[2] = SCALE_DORIAN;
+	S->scale[3] = SCALE_BLUES;
 
-	S->scale[1][0] = 0;
-	S->scale[1][1] = 2;
-	S->scale[1][2] = 3;
-	S->scale[1][3] = 5;
-	S->scale[1][4] = 7;
-	S->scale[1][5] = 8;
-	S->scale[1][6] = 10;
-	S->scalecount[1] = 7; // Minor scale
+	S->scales[SCALE_MAJOR].notes[0] = 0;
+	S->scales[SCALE_MAJOR].notes[1] = 2;
+	S->scales[SCALE_MAJOR].notes[2] = 4;
+	S->scales[SCALE_MAJOR].notes[3] = 5;
+	S->scales[SCALE_MAJOR].notes[4] = 7;
+	S->scales[SCALE_MAJOR].notes[5] = 9;
+	S->scales[SCALE_MAJOR].notes[6] = 11;
+	S->scales[SCALE_MAJOR].count = 7; // Major scale
 
-	S->scale[2][0] = 0;
-	S->scale[2][1] = 2;
-	S->scale[2][2] = 3;
-	S->scale[2][3] = 6;
-	S->scale[2][4] = 7;
-	S->scale[2][5] = 9;
-	S->scale[2][6] = 10;
-	S->scalecount[2] = 7; // Dorian scale
+	S->scales[SCALE_MINOR].notes[0] = 0;
+	S->scales[SCALE_MINOR].notes[1] = 2;
+	S->scales[SCALE_MINOR].notes[2] = 3;
+	S->scales[SCALE_MINOR].notes[3] = 5;
+	S->scales[SCALE_MINOR].notes[4] = 7;
+	S->scales[SCALE_MINOR].notes[5] = 8;
+	S->scales[SCALE_MINOR].notes[6] = 10;
+	S->scales[SCALE_MINOR].count = 7; // Minor scale
 
-	S->scale[3][0] = 0;
-	S->scale[3][1] = 2;
-	S->scale[3][2] = 5;
-	S->scale[3][3] = 7;
-	S->scale[3][4] = 9;
-	S->scalecount[3] = 5; // Pentatonic
+	S->scales[SCALE_DORIAN].notes[0] = 0;
+	S->scales[SCALE_DORIAN].notes[1] = 2;
+	S->scales[SCALE_DORIAN].notes[2] = 3;
+	S->scales[SCALE_DORIAN].notes[3] = 6;
+	S->scales[SCALE_DORIAN].notes[4] = 7;
+	S->scales[SCALE_DORIAN].notes[5] = 9;
+	S->scales[SCALE_DORIAN].notes[6] = 10;
+	S->scales[SCALE_DORIAN].count = 7; // Dorian scale
+
+	S->scales[SCALE_PENTA].notes[0] = 0;
+	S->scales[SCALE_PENTA].notes[1] = 2;
+	S->scales[SCALE_PENTA].notes[2] = 5;
+	S->scales[SCALE_PENTA].notes[3] = 7;
+	S->scales[SCALE_PENTA].notes[4] = 9;
+	S->scales[SCALE_PENTA].count = 5; // Pentatonic
+
+
+	S->scales[SCALE_BLUES].notes[0] = 0;
+	S->scales[SCALE_BLUES].notes[1] = 3;
+	S->scales[SCALE_BLUES].notes[2] = 5;
+	S->scales[SCALE_BLUES].notes[3] = 6;
+	S->scales[SCALE_BLUES].notes[4] = 7;
+	S->scales[SCALE_BLUES].notes[5] = 10;
+	S->scales[SCALE_BLUES].count = 6; // Blues
+
+
+
+	S->scales[SCALE_12TONE].notes[0] = 0;
+	S->scales[SCALE_12TONE].notes[1] = 1;
+	S->scales[SCALE_12TONE].notes[2] = 2;
+	S->scales[SCALE_12TONE].notes[3] = 3;
+	S->scales[SCALE_12TONE].notes[4] = 4;
+	S->scales[SCALE_12TONE].notes[5] = 5;
+	S->scales[SCALE_12TONE].notes[6] = 6;
+	S->scales[SCALE_12TONE].notes[7] = 7;
+	S->scales[SCALE_12TONE].notes[8] = 8;
+	S->scales[SCALE_12TONE].notes[9] = 9;
+	S->scales[SCALE_12TONE].notes[10] = 10;
+	S->scales[SCALE_12TONE].notes[11] = 11;
+	S->scales[SCALE_12TONE].count = 12; // 12tone
 }
 
 void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P)

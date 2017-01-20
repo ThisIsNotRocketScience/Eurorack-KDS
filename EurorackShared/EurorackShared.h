@@ -32,8 +32,9 @@ struct denoise_state_t
 {
 	int counter;
 	int down;
-	int pressed;
-	int released;
+	unsigned char pressed:4;
+	unsigned char released:4;
+	int longpressed;
 	int lastcounter;
 };
 

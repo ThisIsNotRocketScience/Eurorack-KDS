@@ -163,27 +163,38 @@ void DoClock(int state)
 void doTimer()
 {
 	tickssincecommit++;
-	Tuesday_TimerTick(&Tuesday, &Params);
-
-	if (Tuesday.T%2==0)
+	switch(Tuesday.UIMode)
 	{
-		if (Tuesday.CVOutCountDown > 0)
+	case UI_NORMAL:
+	case UI_SELECTOPTION:
+	{
+
+		Tuesday_TimerTick(&Tuesday, &Params);
+
+		if (Tuesday.T%2==0)
 		{
-			Tuesday.CVOut  += Tuesday.CVOutDelta;
-			Tuesday.CVOutCountDown--;
-			if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
+			if (Tuesday.CVOutCountDown > 0)
+			{
+				Tuesday.CVOut  += Tuesday.CVOutDelta;
+				Tuesday.CVOutCountDown--;
+				if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
+			}
+			else
+			{
+				Tuesday.CVOut = Tuesday.CVOutTarget;
+			}
+			DAC_Write(0, Tuesday.CVOut >> 16) ;
 		}
 		else
 		{
-			Tuesday.CVOut = Tuesday.CVOutTarget;
+			DAC_Write(1, Tuesday.TickOut);
 		}
-		DAC_Write(0, Tuesday.CVOut >> 16) ;
+		UpdateGates();}
+	break;
+
+	case UI_CALIBRATION:
+		break;
 	}
-	else
-	{
-		DAC_Write(1, Tuesday.TickOut);
-	}
-	UpdateGates();
 
 	ShiftOut();
 }
@@ -301,11 +312,52 @@ void LoadEeprom()
 
 void SetupLeds()
 {
-	SetLedNumber(8, Params.scale);
-	SetLedNumber(12, Params.algo);
-	SetLedNumber(4, Params.beatopt);
-	SetLedNumber(0, Params.tpbopt);
+	switch(Tuesday.UIMode)
+	{
+	case UI_NORMAL:
+		SetLedNumber(8, Params.scale);
+		SetLedNumber(12, Params.algo);
+		SetLedNumber(4, Params.beatopt);
+		SetLedNumber(0, Params.tpbopt);
+		break;
+	case UI_CALIBRATION:
+		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLeds[i] = 0;
+		switch(Tuesday.CalibTarget)
+		{
+			case CALIBRATION_VEL:
+			Tuesday.StateLeds[0] = 255;
+			Tuesday.StateLeds[1] = 255;
+			Tuesday.StateLeds[2] = 255;
+			Tuesday.StateLeds[3] = 255;
+		break;
+			case CALIBRATION_NOTE:
+
+			Tuesday.StateLeds[4] = 255;
+			Tuesday.StateLeds[5] = 255;
+			Tuesday.StateLeds[6] = 255;
+			Tuesday.StateLeds[7] = 255;
+		break;
+			case CALIBRATION_NOTARGET:
+			{
+				unsigned char T = Triangle(tickssincecommit << 24)>>24;
+				for(int i = 0;i<4;i++)
+				{
+					Tuesday.StateLeds[i] = T;
+					Tuesday.StateLeds[i+4] = ~T;
+				}
+			}
+			break;
+		}
+		break;
+	}
 }
+
+void SwitchToOptionMode(int mode)
+{
+	Tuesday.OptionSelect = mode;
+	Tuesday.UIMode = UI_SELECTOPTION;
+}
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -360,79 +412,228 @@ int main(void)
 	byte commitchange = 0;
 	for (;;)
 	{
-
 		int algosw = denoise(SW_ALGO_GetVal(0), &algosw_state);
 		int scalesw = denoise(SW_SCALE_GetVal(0), &scalesw_state);
 		int beatsw = denoise(SW_BEATS_GetVal(0), &beatsw_state);
 		int tpbsw = denoise(SW_TPB_GetVal(0), &tpbsw_state);
 
-		if (algosw == 1)
+		switch (Tuesday.UIMode)
 		{
-			switchmode = 1;
-			Params.algo = (Params.algo + 1) % TUESDAY_MAXALGO;
-			commitchange = 1;
-		}
 
-		if (scalesw == 1)
+		case UI_SELECTOPTION:
 		{
-			switchmode = 1;
-			Params.scale = (Params.scale + 1) % TUESDAY_MAXSCALE;
-			commitchange = 1;
-		}
+			int butconf,but1, but2, but3;
+			switch(Tuesday.OptionSelect)
+			{
+			case OPTION_ALGO:
+			{
+				butconf = algosw;
+				but1 = scalesw;
+				but2 = beatsw;
+				but3 = tpbsw;
+			};
+			break;
+			case OPTION_SCALE:
+			{
+				butconf = scalesw;
+				but1 = algosw;
+				but2 = beatsw;
+				but3 = tpbsw;
+			};
+			break;
+			case OPTION_BEATS:
+			{
+				butconf = beatsw;
+				but1 = algosw;
+				but2 = scalesw;
+				but3 = tpbsw;
 
-		if (beatsw == 1)
-		{
-			switchmode = 1;
-			Params.beatopt = (Params.beatopt + 1) % TUESDAY_MAXBEAT;
-
-			commitchange = 1;
-		}
-
-		if (tpbsw == 1)
-		{
-			switchmode = 1;
-
-			Settings.beatoptions[Params.beatopt];
-
-			Params.tpbopt = (Params.tpbopt + 1) % TUESDAY_MAXTPB;
-			commitchange = 1;
-		}
-
-		if (measured == 1)
-		{
-			measured = 0;
-			Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
-			Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
-			Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
-			Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
-			AD1_Measure(FALSE);
-		}
-
-		// read the X/Y seed knobs
-		long newseed = (adcchannels[0] >> 8) + ((adcchannels[1] >> 8) << 8);
-		if (newseed != oldseed)
-			switchmode = 1;
-
-		if (switchmode == 1)
-		{
+			};
+			break;
+			case OPTION_TPB:
+			{
+				butconf = tpbsw;
+				but1 = algosw;
+				but2 = scalesw;
+				but3 = beatsw;
+			};
+			break;
+			}
+			if (measured == 1)
+			{
+				measured = 0;
+				Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
+				Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
+				Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
+				Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
+				AD1_Measure(FALSE);
+			}
 			SetupLeds();
-			// updated pattern needed for some reason!
-
-			switchmode = 0;
-			Tuesday_RandomSeed(&MainRandom, newseed);
-			oldseed = newseed;
-
-
-
-			Tuesday_Generate(&Tuesday, &Params, &Settings);
 		}
+		break;
 
-		if (commitchange == 1 && tickssincecommit >= 10)
+		case UI_CALIBRATION:
 		{
-			SaveEeprom();
-			commitchange = 0;
-			tickssincecommit = 0;
+			if (algosw == 1)
+			{
+				Tuesday.UIMode = UI_NORMAL;
+			}
+
+			if (measured == 1)
+			{
+				measured = 0;
+				Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
+				Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
+				Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
+				Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
+				AD1_Measure(FALSE);
+			}
+
+			if (beatsw == 1)
+			{
+				Tuesday.CalibTarget = CALIBRATION_NOTE;
+			}
+			else
+			{
+				if (beatsw == 2)
+				{
+					if (Tuesday.CalibTarget == CALIBRATION_NOTE)
+					{
+						//					Write Velocity output calibration value!
+						Tuesday.CalibTarget = CALIBRATION_NOTARGET;
+					}
+				}
+			}
+
+			if (tpbsw == 1)
+			{
+				Tuesday.CalibTarget = CALIBRATION_VEL;
+			}
+			else
+			{
+				if (tpbsw == 2)
+				{
+					if (Tuesday.CalibTarget == CALIBRATION_VEL)
+					{
+						//					Write Note output calibration value!
+						Tuesday.CalibTarget = CALIBRATION_NOTARGET;
+					}
+
+				}
+			}
+			SetupLeds();
 		}
+		break;
+
+		case UI_NORMAL:
+		{
+			if (algosw == 2 && scalesw == 2 && beatsw == 2 && tpbsw == 2)
+			{
+				Tuesday.UIMode = UI_CALIBRATION;
+				Tuesday.CalibTarget =CALIBRATION_NOTARGET;
+
+			}
+			else
+			{
+				if (algosw == 1)
+				{
+					switchmode = 1;
+					Params.algo = (Params.algo + 1) % TUESDAY_MAXALGO;
+					commitchange = 1;
+				}
+				else
+				{
+					if (algosw == 2) // longpress!
+					{
+						SwitchToOptionMode(OPTION_ALGO);
+					}
+				}
+
+				if (scalesw == 1)
+				{
+					switchmode = 1;
+					Params.scale = (Params.scale + 1) % TUESDAY_MAXSCALE;
+					commitchange = 1;
+				}
+				else
+				{
+					if (scalesw == 2) // longpress!
+					{
+						SwitchToOptionMode(OPTION_SCALE);
+					}
+				}
+
+				if (beatsw == 1)
+				{
+					switchmode = 1;
+					Params.beatopt = (Params.beatopt + 1) % TUESDAY_MAXBEAT;
+
+					commitchange = 1;
+				}
+				else
+				{
+					if (beatsw == 2) // longpress!
+					{
+						SwitchToOptionMode(OPTION_BEATS);
+					}
+				}
+
+				if (tpbsw == 1)
+				{
+					switchmode = 1;
+
+					Settings.beatoptions[Params.beatopt];
+
+					Params.tpbopt = (Params.tpbopt + 1) % TUESDAY_MAXTPB;
+					commitchange = 1;
+				}
+				else
+				{
+					if (tpbsw == 2) // longpress!
+					{
+						SwitchToOptionMode(OPTION_TPB);
+					}
+				}
+			}
+
+			if (measured == 1)
+			{
+				measured = 0;
+				Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
+				Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
+				Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
+				Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
+				AD1_Measure(FALSE);
+			}
+
+			// read the X/Y seed knobs
+			long newseed = (adcchannels[0] >> 8) + ((adcchannels[1] >> 8) << 8);
+			if (newseed != oldseed)
+				switchmode = 1;
+
+			if (switchmode == 1)
+			{
+				SetupLeds();
+				// updated pattern needed for some reason!
+
+				switchmode = 0;
+				Tuesday_RandomSeed(&MainRandom, newseed);
+				oldseed = newseed;
+
+
+
+				Tuesday_Generate(&Tuesday, &Params, &Settings);
+			}
+
+			if (commitchange == 1 && tickssincecommit >= 10)
+			{
+				SaveEeprom();
+				commitchange = 0;
+				tickssincecommit = 0;
+			}
+		}
+		break;
+		};
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
 	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

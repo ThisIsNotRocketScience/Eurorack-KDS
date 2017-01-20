@@ -22,6 +22,7 @@ struct Tuesday_Tick
 	unsigned char accent :1;
 	unsigned char slide : 2;
 	unsigned char hold : 1;
+	unsigned char maxsubticklength : 4;
 };
 
 struct Tuesday_PatternContainer
@@ -101,7 +102,9 @@ struct Tuesday_PatternGen
 	uint8_t intensity;
 	uint8_t tempo;
 
-
+	int UIMode;
+	int CalibTarget;
+	int OptionSelect;
 	struct Tuesday_PatternContainer CurrentPattern;
 };
 
@@ -111,14 +114,31 @@ struct Tuesday_PatternGen
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
 
+typedef enum
+{
+	SCALE_MAJOR,
+	SCALE_MINOR,
+	SCALE_DORIAN,
+	SCALE_BLUES,
+	SCALE_PENTA,
+	SCALE_12TONE,
+	__SCALE_COUNT
+} TUESDAY_SCALES;
+
+struct Tuesday_Scale
+{
+	uint8_t notes[12];
+	uint8_t count;
+};
+
 struct Tuesday_Settings
 {
 	uint8_t tpboptions[TUESDAY_MAXTPB];
 	uint8_t beatoptions[TUESDAY_MAXBEAT];
-	uint8_t scale[TUESDAY_MAXSCALE][12];
-	uint8_t scalecount[TUESDAY_MAXSCALE];
+	uint8_t scale[TUESDAY_MAXSCALE];
 	uint8_t algooptions[TUESDAY_MAXALGO];
 
+	struct Tuesday_Scale scales[__SCALE_COUNT];
 	uint32_t RandomSeed;
 };
 
@@ -130,6 +150,29 @@ struct Tuesday_Params
 	uint8_t scale;
 	uint8_t algo;
 };
+
+typedef enum{
+	UI_NORMAL,
+	UI_CALIBRATION,
+	UI_SELECTOPTION,
+	__TUESDAY_UIMODE_COUNT
+} TUESDAY_UIMODE;
+
+typedef enum{
+	CALIBRATION_NOTARGET,
+	CALIBRATION_VEL,
+	CALIBRATION_NOTE,
+	__TUESDAY_CALIBRATION_SETTING_COUNT
+} TUESDAY_CALIBRATION_SETTING;
+
+typedef enum{
+	OPTION_ALGO,
+	OPTION_SCALE,
+	OPTION_BEATS,
+	OPTION_TPB,
+	__TUESDAY_OPTION_SETTING_COUNT
+} TUESDAY_OPTION_SETTING;
+
 
 #ifdef __cplusplus
 extern "C"
