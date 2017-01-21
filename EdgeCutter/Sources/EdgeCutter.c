@@ -221,7 +221,6 @@ extern "C"
 					if (Params->mode == ENVMODE_LOOP && Env->TriggerState)
 					{
 						SwitchToState(Env, ENVSTATE_ATTACK);
-
 					}
 					else
 					{

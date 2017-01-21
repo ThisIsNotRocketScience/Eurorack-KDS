@@ -45,6 +45,7 @@ extern "C"
 #endif
 
 	int denoise(int sw_down, struct denoise_state_t *state);
+	int islongpress(struct denoise_state_t *state);
 
 	/// A sine approximation via a fourth-order cosine approx.
 	/// @param x   angle (with 2^15 units/circle)

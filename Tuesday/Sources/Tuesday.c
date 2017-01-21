@@ -114,7 +114,9 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->CoolDown > CoolDownMax  ) T->CoolDown = CoolDownMax;
 		if (T->CoolDown < 0) T->CoolDown= 0;
 	}
+
 	struct Tuesday_Tick *Tick = &T->CurrentPattern.Ticks[T->Tick];
+
 	if (Tick->vel >= T->CoolDown)
 	{
 		T->CoolDown = CoolDownMax;

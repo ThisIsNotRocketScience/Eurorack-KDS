@@ -102,9 +102,10 @@ struct Tuesday_PatternGen
 	uint8_t intensity;
 	uint8_t tempo;
 
-	int UIMode;
-	int CalibTarget;
-	int OptionSelect;
+	uint8_t UIMode;
+	uint8_t CalibTarget;
+	uint8_t OptionSelect;
+	uint8_t OptionIndex;
 	struct Tuesday_PatternContainer CurrentPattern;
 };
 
