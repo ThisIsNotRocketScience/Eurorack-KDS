@@ -38,6 +38,15 @@ struct denoise_state_t
 	int lastcounter;
 };
 
+struct EURORACK_SVF
+{
+	uint16_t Cutoff;
+	uint32_t Resonance;
+	int32_t lo;
+	int32_t mid;
+	int32_t hi;
+};
+
 
 #ifdef __cplusplus
 extern "C"
@@ -58,6 +67,10 @@ extern "C"
 	int32_t Pulse(uint32_t phase);
 	int32_t Triangle(uint32_t phase);
 	int32_t BasicShapes(uint32_t phase, int mod);
+
+	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);
+	void ProcessSVF(struct EURORACK_SVF *filt, uint32_t RR);
+
 
 #ifdef __cplusplus
 }

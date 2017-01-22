@@ -6,6 +6,34 @@ extern "C"
 {
 #endif
 
+
+#define SVFHI16(x) (x>>16)
+#define SVFLO16(x) (x&65535)
+
+	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res)
+	{
+
+		filt->Cutoff = cut << 8;
+		filt->Resonance = res << 8;
+		//unsigned short R = (unsigned short)((res << 8) + (64 << 9));
+		//unsigned short Max = (0xf200 - filt->Cutoff);
+		//u/nsigned long fR = R * Max;
+		//filt->Resonance = ~HI16(fR);
+
+		//filt->Resonance = ~(res << 9);
+
+	};
+
+	void ProcessSVF(struct EURORACK_SVF *filt, uint32_t RR)
+	{
+		signed short const tMid = SVFHI16(filt->mid);
+
+		filt->hi = (RR << 12) - filt->lo - filt->Resonance * tMid;
+		filt->mid += filt->Cutoff * SVFHI16(filt->hi);
+		filt->lo += filt->Cutoff * tMid;
+	}
+
+
 	/// A sine approximation via a fourth-order cosine approx.
 	/// @param x   angle (with 2^15 units/circle)
 	/// @return     Sine value (Q12)

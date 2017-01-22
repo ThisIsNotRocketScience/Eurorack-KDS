@@ -7,6 +7,7 @@
 #include "Algo_Test.h"
 #include "Algo_TriTrance.h"
 #include "Algo_Wobble.h"
+#include "Algo_SNH.h"
 
 void Algo_Init_Generic_FourBool(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
 {

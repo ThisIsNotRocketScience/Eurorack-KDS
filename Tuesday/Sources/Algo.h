@@ -39,6 +39,7 @@ typedef enum
 	// classic saiko things, reimagined
 	//ALGO_SAIKO_BASS,
 	//ALGO_SAIKO_PSY,
+	ALGO_SNH,
 	ALGO_SAIKO_LEAD,
 	__ALGO_COUNT
 } TUESDAY_ALGO;
@@ -117,6 +118,14 @@ typedef struct PatternStruct_Algo_Wobble
 	unsigned char LastWasHigh : 1;
 } PatternStruct_Algo_Wobble;
 
+
+typedef struct PatternStruct_Algo_SNH
+{
+	uint32_t Phase;
+	uint32_t PhaseSpeed;
+	struct EURORACK_SVF Filt;
+} PatternStruct_Algo_SNH; 
+
 struct Tuesday_PatternFuncSpecific
 {
 	union
@@ -126,6 +135,7 @@ struct Tuesday_PatternFuncSpecific
 		struct PatternStruct_Algo_Markov Markov;
 		struct PatternStruct_Algo_Test Test;
 		struct PatternStruct_Algo_Wobble Wobble;
+		struct PatternStruct_Algo_SNH SNH;
 	};
 	struct Tuesday_RandomGen ExtraRandom;
 };

@@ -1,7 +1,7 @@
 
 #define WOBBLER_GATECOUNTDOWN 100
 #include <stdint.h>
-
+#include "../../EurorackShared/EURORACKSHARED.H"
 
 struct Wobbler_Params
 {
@@ -22,14 +22,6 @@ struct Wobbler_RandomGen
 	long RandomMemory;
 };
 
-struct Wobbler_SVF
-{
-	uint16_t Cutoff;
-	uint32_t Resonance;
-	int32_t lo;
-	int32_t mid;
-	int32_t hi;
-};
 
 struct Wobbler_LFO_SNH
 {
@@ -40,7 +32,7 @@ struct Wobbler_LFO_SNH
 	
 	uint8_t lastseg;
 	struct Wobbler_RandomGen random;	
-	struct Wobbler_SVF filt;
+	struct EURORACK_SVF filt;
 };
 
 struct Wobbler_LFO

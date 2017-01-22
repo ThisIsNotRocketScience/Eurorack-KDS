@@ -29,6 +29,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	SetPatternFunc(ALGO_MARKOV, &Algo_Markov_Gen, &Algo_Markov_Init, &NoPatternInit,1);
 	SetPatternFunc(ALGO_STOMPER, &Algo_Stomper_Gen, &Algo_Stomper_Init, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_WOBBLE, &Algo_Wobble_Gen, &Algo_Wobble_Init, &NoPatternInit, 1);
+	SetPatternFunc(ALGO_SNH, &Algo_SNH_Gen, &Algo_SNH_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -496,7 +497,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Tuesday_RandomSeed(&Randoms[2], X + Y * 32 + 32);
 	Tuesday_RandomSeed(&Randoms[3], X + Y * 32 + 33);
 
-	int CurrentAlgo = S->algooptions[P->algo];
+	int CurrentAlgo = S->algooptions[P->algo] % __ALGO_COUNT;
 
 	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
