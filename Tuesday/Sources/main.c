@@ -85,6 +85,21 @@ byte pwm = 0;
 
 void _SetupLeds();
 
+struct denoise_state_t algosw_state = {0};
+struct denoise_state_t scalesw_state = {0};
+struct denoise_state_t beatsw_state = {0};
+struct denoise_state_t tpbsw_state = {0};
+
+
+void UpdateButtons()
+{
+	 denoise(SW_ALGO_GetVal(0), &algosw_state);
+	denoise(SW_SCALE_GetVal(0), &scalesw_state);
+	denoise(SW_BEATS_GetVal(0), &beatsw_state);
+	denoise(SW_TPB_GetVal(0), &tpbsw_state);
+}
+
+
 void UpdateGates()
 {
 	for (int i = 0; i < 6; i++)
@@ -163,6 +178,8 @@ void DoClock(int state)
 void doTimer()
 {
 	tickssincecommit++;
+	UpdateButtons();
+
 	switch(Tuesday.UIMode)
 	{
 	case UI_NORMAL:
@@ -193,7 +210,43 @@ void doTimer()
 	break;
 
 	case UI_CALIBRATION:
-		break;
+	{
+		uint32_t CalibPattern = 0;
+		if (Tuesday.intensity < 100)
+		{
+			CalibPattern = 10;
+		}
+		else
+		{
+			if (Tuesday.intensity > 128+28)
+			{
+				CalibPattern = 1000;
+			}
+			else
+			{
+				CalibPattern = ((Tuesday.T >> 4)& 0x01) ? 10: 1000;
+			}
+		}
+		uint32_t CalibNote =0 ;
+		uint32_t CalibVel =0 ;
+		Tuesday.T++;
+		switch(Tuesday.CalibTarget)
+		{
+		case CALIBRATION_NOTE: CalibNote = CalibPattern; CalibVel= 0;break;
+		case CALIBRATION_VEL: CalibNote = 0; CalibVel= CalibPattern;break;
+		}
+		if (Tuesday.T%2==0)
+		{
+			DAC_Write(0,CalibNote );
+
+		}
+		else
+		{
+			DAC_Write(1,CalibVel );
+
+		}
+	}
+	break;
 	}
 	_SetupLeds();
 	ShiftOut();
@@ -395,17 +448,17 @@ void _SetupLeds()
 		}
 		break;
 		case OPTION_BEATS:
-			{
-				int S = Settings.beatoptions[Tuesday.OptionIndex]-1;
-				ShowSets( S&0x3, (S>>2)&0x03, (S>>4)&0x03, D);
-			}
-			break;
+		{
+			int S = Settings.beatoptions[Tuesday.OptionIndex]-1;
+			ShowSets( S&0x3, (S>>2)&0x03, (S>>4)&0x03, D);
+		}
+		break;
 		case OPTION_TPB:
-			{
-				int S = Settings.tpboptions[Tuesday.OptionIndex]-1;
-				ShowSets( S&0x3, (S>>2)&0x03, D, (S>>4)&0x03);
-			}
-			break;
+		{
+			int S = Settings.tpboptions[Tuesday.OptionIndex]-1;
+			ShowSets( S&0x3, (S>>2)&0x03, D, (S>>4)&0x03);
+		}
+		break;
 		}
 	}break;
 
@@ -448,23 +501,6 @@ void SwitchToOptionMode(int mode, int startoption)
 	Tuesday.UIMode = UI_SELECTOPTION;
 }
 
-int algosw = 0;
-int scalesw = 0;
-int beatsw = 0;
-int tpbsw = 0;
-struct denoise_state_t algosw_state = {0};
-struct denoise_state_t scalesw_state = {0};
-struct denoise_state_t beatsw_state = {0};
-struct denoise_state_t tpbsw_state = {0};
-
-
-void UpdateButtons()
-{
-	algosw = denoise(SW_ALGO_GetVal(0), &algosw_state);
-	scalesw = denoise(SW_SCALE_GetVal(0), &scalesw_state);
-	beatsw = denoise(SW_BEATS_GetVal(0), &beatsw_state);
-	tpbsw = denoise(SW_TPB_GetVal(0), &tpbsw_state);
-}
 
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -499,7 +535,7 @@ int main(void)
 		for (int i =0 ;i<16;i++)
 		{
 			Tuesday.StateLeds[15-i] = j==i?255:0;
-			UpdateButtons();
+			//	UpdateButtons();
 			StartWithCalibration += scalesw_state.down;
 		}
 		ShiftOut();
@@ -527,7 +563,7 @@ int main(void)
 	byte commitchange = 0;
 	for (;;)
 	{
-		UpdateButtons();
+		//		UpdateButtons();
 
 		switch (Tuesday.UIMode)
 		{
@@ -543,50 +579,50 @@ int main(void)
 			{
 			case OPTION_ALGO:
 			{
-				butconf = algosw;
+				butconf = pressed(&algosw_state);
 				butconflong = islongpress(&algosw_state);
 				S = Settings.algooptions[Tuesday.OptionIndex];
 				//MaxS = __ALGO_COUNT;
 
-				but1 = scalesw;
-				but3 = beatsw;
-				but2 = tpbsw;
+				but1 =pressed(&scalesw_state);
+				but3 = pressed(&beatsw_state);
+				but2 = pressed(&tpbsw_state);
 			};
 			break;
 
 			case OPTION_SCALE:
 			{
-				butconf = scalesw;
+				butconf = pressed(&scalesw_state);
 				butconflong = islongpress(&scalesw_state);
 				S = Settings.scale[Tuesday.OptionIndex];
-		//		MaxS = __SCALE_COUNT;
+				//		MaxS = __SCALE_COUNT;
 
-				but1 = algosw;
-				but3 = beatsw;
-				but2 = tpbsw;
+				but1 = pressed(&algosw_state);
+				but3 = pressed(&beatsw_state);
+				but2 = pressed(&tpbsw_state);
 
 			};
 			break;
 
 			case OPTION_BEATS:
 			{
-				butconf = beatsw;
+				butconf = pressed(&beatsw_state);
 				butconflong = islongpress(&beatsw_state);
 				//Settings.beatoptions[]
-				but1 = algosw;
-				but2 = scalesw;
-				but3 = tpbsw;
+				but1 = pressed(&algosw_state);
+				but2 = pressed(&scalesw_state);
+				but3 = pressed(&tpbsw_state);
 			};
 			break;
 
 			case OPTION_TPB:
 			{
-				butconf = tpbsw;
+				butconf = pressed(&tpbsw_state);
 				butconflong = islongpress(&tpbsw_state);
 
-				but1 = algosw;
-				but2 = scalesw;
-				but3 = beatsw;
+				but1 = pressed(&algosw_state);
+				but2 = pressed(&scalesw_state);
+				but3 = pressed(&beatsw_state);
 			};
 			break;
 			}
@@ -644,7 +680,7 @@ int main(void)
 
 		case UI_CALIBRATION:
 		{
-			if (algosw == 1)
+			if (pressed(&algosw_state))
 			{
 				Tuesday.UIMode = UI_NORMAL;
 			}
@@ -659,13 +695,13 @@ int main(void)
 				AD1_Measure(FALSE);
 			}
 
-			if (beatsw == 1)
+			if (pressed(&beatsw_state))
 			{
 				Tuesday.CalibTarget = CALIBRATION_NOTE;
 			}
 			else
 			{
-				if (beatsw == 2)
+				if (islongpress(&beatsw_state))
 				{
 					if (Tuesday.CalibTarget == CALIBRATION_NOTE)
 					{
@@ -675,13 +711,13 @@ int main(void)
 				}
 			}
 
-			if (tpbsw == 1)
+			if (pressed(&tpbsw_state))
 			{
 				Tuesday.CalibTarget = CALIBRATION_VEL;
 			}
 			else
 			{
-				if (tpbsw == 2)
+				if ( islongpress(&tpbsw_state ))
 				{
 					if (Tuesday.CalibTarget == CALIBRATION_VEL)
 					{
@@ -697,7 +733,7 @@ int main(void)
 		{
 
 			{
-				if (algosw == 1)
+				if (pressed(&algosw_state))
 				{
 					switchmode = 1;
 					Params.algo = (Params.algo + 1) % TUESDAY_MAXALGO;
@@ -712,7 +748,7 @@ int main(void)
 					}
 				}
 
-				if (scalesw == 1)
+				if (pressed(&scalesw_state))
 				{
 					switchmode = 1;
 					Params.scale = (Params.scale + 1) % TUESDAY_MAXSCALE;
@@ -727,7 +763,7 @@ int main(void)
 					}
 				}
 
-				if (beatsw == 1)
+				if (pressed(&beatsw_state))
 				{
 					switchmode = 1;
 					Params.beatopt = (Params.beatopt + 1) % TUESDAY_MAXBEAT;
@@ -744,7 +780,7 @@ int main(void)
 					}
 				}
 
-				if (tpbsw == 1)
+				if (pressed(&tpbsw_state))
 				{
 					switchmode = 1;
 
@@ -804,14 +840,14 @@ int main(void)
 		};
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-	/*** End of RTOS startup code.  ***/
-	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for(;;){}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

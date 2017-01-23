@@ -35,7 +35,7 @@ void EuroRack_InitCalibration()
 	}
 }
 
-#define LONGPRESSCYCLES 100000
+#define LONGPRESSCYCLES 2000
 
 int islongpress( struct denoise_state_t *state)
 {
@@ -47,7 +47,18 @@ int islongpress( struct denoise_state_t *state)
 	return 0;
 }
 
-int denoise(int sw_down, struct denoise_state_t *state)
+
+int pressed(struct denoise_state_t *state)
+{
+	if (state->pressed == 1)
+	{
+		state->pressed = 0;
+		return 1;
+	}
+	return 0;
+}
+
+void denoise(int sw_down, struct denoise_state_t *state)
 {
 	if (sw_down)
 	{
@@ -58,8 +69,8 @@ int denoise(int sw_down, struct denoise_state_t *state)
 		state->counter--;
 	}
 
-	state->pressed = 0;
-	state->released = 0;
+//	state->pressed = 0;
+	//state->released = 0;
 
 	if (state->counter < 2)
 	{
@@ -99,6 +110,6 @@ int denoise(int sw_down, struct denoise_state_t *state)
 		state->longpressed = LONGPRESSCYCLES;	
 	}
 
-	return state->pressed;
+
 }
 
