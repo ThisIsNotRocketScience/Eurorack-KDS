@@ -134,13 +134,14 @@ struct Tuesday_Scale
 
 struct Tuesday_Settings
 {
+	uint32_t RandomSeed;
+
 	uint8_t tpboptions[TUESDAY_MAXTPB];
 	uint8_t beatoptions[TUESDAY_MAXBEAT];
 	uint8_t scale[TUESDAY_MAXSCALE];
 	uint8_t algooptions[TUESDAY_MAXALGO];
 
 	struct Tuesday_Scale scales[__SCALE_COUNT];
-	uint32_t RandomSeed;
 };
 
 struct Tuesday_Params
@@ -173,6 +174,9 @@ typedef enum{
 	OPTION_TPB,
 	__TUESDAY_OPTION_SETTING_COUNT
 } TUESDAY_OPTION_SETTING;
+
+#define EEPROM_SETTINGSBASE 256
+#define EEPROM_CALIBRATIONBASE 512
 
 
 #ifdef __cplusplus

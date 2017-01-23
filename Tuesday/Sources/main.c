@@ -83,6 +83,7 @@ int tickssincecommit = 0;
 long oldseed = -1;
 byte pwm = 0;
 
+void _SetupLeds();
 
 void UpdateGates()
 {
@@ -287,9 +288,54 @@ void SetLedNumber(int offset, int number)
 
 void SaveEeprom()
 {
-	EE24_WriteByte(0, VERSIONBYTE);
 	int paramsize = sizeof(Params);
+	EE24_WriteByte(0, VERSIONBYTE);
 	EE24_WriteBlock(1, (byte *)&Params, paramsize);
+}
+
+void SaveSettingsEeprom()
+{
+	int settingssize = sizeof(Settings);
+	EE24_WriteByte(EEPROM_SETTINGSBASE, VERSIONBYTE);
+	EE24_WriteBlock(EEPROM_SETTINGSBASE+1, (byte *)&Settings, settingssize);
+}
+
+void SaveCalibrationEeprom()
+{
+	int calibrationsize = sizeof(MasterCalibration);
+	EE24_WriteByte(EEPROM_CALIBRATIONBASE, VERSIONBYTE);
+	EE24_WriteBlock(EEPROM_CALIBRATIONBASE+1, (byte *)&MasterCalibration, calibrationsize);
+}
+
+void LoadEepromSettings()
+{
+	byte Ver;
+	Ver = EE24_ReadByte(EEPROM_SETTINGSBASE);
+	if (Ver == VERSIONBYTE)
+	{
+		int settingssize = sizeof(Settings);
+
+		EE24_ReadBlock(EEPROM_SETTINGSBASE+ 1, (byte *)&Settings, settingssize);
+	}
+	else
+	{
+		SaveSettingsEeprom();
+	}
+}
+
+void LoadEepromCalibration()
+{
+	byte Ver;
+	Ver = EE24_ReadByte(EEPROM_CALIBRATIONBASE);
+	if (Ver == VERSIONBYTE)
+	{
+		int calibrationsize = sizeof(MasterCalibration);
+		EE24_ReadBlock(EEPROM_CALIBRATIONBASE+ 1, (byte *)&MasterCalibration, calibrationsize);
+	}
+	else
+	{
+		SaveCalibrationEeprom();
+	}
 }
 
 void LoadEeprom()
@@ -676,7 +722,7 @@ int main(void)
 				{
 					if (islongpress(&scalesw_state)) // longpress!
 					{
-						//Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE;
+
 						SwitchToOptionMode(OPTION_SCALE, Params.scale);
 					}
 				}
