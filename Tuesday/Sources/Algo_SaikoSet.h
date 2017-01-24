@@ -4,6 +4,7 @@ void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 {
 	int note = 0;
 	struct ScaledNote SN;
+	DefaultTick(Output);
 
 	int RandNote = Tuesday_Rand(R) % 8;
 

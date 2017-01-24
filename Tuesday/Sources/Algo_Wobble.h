@@ -20,7 +20,9 @@ void Algo_Wobble_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 	unsigned char veloffset = 0;
 
 	struct ScaledNote SN;
-	Output->slide = 0;
+	DefaultTick(Output);
+
+
 	PS->Wobble.Phase += PS->Wobble.PhaseSpeed;
 	PS->Wobble.Phase2 += PS->Wobble.PhaseSpeed2;
 	

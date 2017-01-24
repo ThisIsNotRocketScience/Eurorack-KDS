@@ -20,6 +20,8 @@ void Algo_Markov_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 {
 
 	struct ScaledNote SN;
+	DefaultTick(Output);
+
 	int idx = Tuesday_BoolChance(R) == 1 ? 1 : 0;
 	SN.note = PS->Markov.matrix[PS->Markov.NoteHistory1][PS->Markov.NoteHistory3][idx];
 	PS->Markov.NoteHistory1 = PS->Markov.NoteHistory3;

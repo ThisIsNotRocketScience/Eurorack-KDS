@@ -34,7 +34,7 @@ typedef enum
 	//	ALGO_PACHEDECO,
 	ALGO_WOBBLE,
 	ALGO_CHIPARP1,
-	//ALGO_CHIPARP2,
+	ALGO_CHIPARP2,
 
 	// classic saiko things, reimagined
 	//ALGO_SAIKO_BASS,
@@ -108,7 +108,6 @@ typedef struct PatternStruct_Algo_Test
 	signed short Note;
 } PatternStruct_Algo_Test;
 
-
 typedef struct PatternStruct_Algo_Wobble
 {
 	uint32_t Phase;
@@ -118,7 +117,6 @@ typedef struct PatternStruct_Algo_Wobble
 	unsigned char LastWasHigh : 1;
 } PatternStruct_Algo_Wobble;
 
-
 typedef struct PatternStruct_Algo_SNH
 {
 	uint32_t Phase;
@@ -126,6 +124,7 @@ typedef struct PatternStruct_Algo_SNH
 	uint32_t LastVal;
 	int32_t Target;
 	int32_t Current;
+	int32_t CurrentDelta;
 	struct EURORACK_SVF Filt;
 } PatternStruct_Algo_SNH; 
 
@@ -156,6 +155,8 @@ void NoPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 void Pattern_Rotate(struct Tuesday_PatternContainer *T, int first, int length, int rotate);
 void Pattern_Reverse(struct Tuesday_PatternContainer *T, int first, int length);
 void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length, int transpose);
+
+void DefaultTick(struct Tuesday_Tick *Out);
 
 int Tuesday_Rand(struct Tuesday_RandomGen *R);
 uint8_t Tuesday_BoolChance(struct Tuesday_RandomGen *R);

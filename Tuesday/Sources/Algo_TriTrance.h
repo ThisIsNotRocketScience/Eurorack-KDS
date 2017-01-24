@@ -16,8 +16,8 @@ void Algo_TriTrance_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 
 void Algo_TriTrance_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
 {
-	Output->slide = 0;
 	struct ScaledNote SN;
+	DefaultTick(Output);
 	int veloffs = 0;
 	int accentoffs = 0;
 	switch ((I + PS->GENERIC.b2) % 3)

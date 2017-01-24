@@ -26,7 +26,7 @@ void Algo_Stomper_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	unsigned char veloffset = 0;
 
 	struct ScaledNote SN;
-	Output->slide = 0;
+	DefaultTick(Output);
 
 	if (PS->Stomper.CountDown > 0)
 	{

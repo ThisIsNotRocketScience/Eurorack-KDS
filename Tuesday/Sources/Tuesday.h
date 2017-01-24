@@ -14,6 +14,7 @@
 #define GATE_MINGATETIME 10
 #define TUESDAY_LEDS 16
 #define TUESDAY_NOTEOFF -255
+#define TUESDAY_SUBTICKRES 6
 
 struct Tuesday_Tick
 {
