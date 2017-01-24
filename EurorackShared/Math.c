@@ -9,6 +9,12 @@ extern "C"
 
 #define SVFHI16(x) (x>>16)
 #define SVFLO16(x) (x&65535)
+	void ResetSVF(struct EURORACK_SVF *filt)
+	{
+		filt->lo = 0;
+		filt->mid = 0;
+		filt->hi = 0;
+	}
 
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res)
 	{

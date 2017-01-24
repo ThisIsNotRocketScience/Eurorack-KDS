@@ -83,10 +83,11 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 
 	for (int i = 0; i < TUESDAY_LEDS; i++)
 	{
-		P->StateLeds[i] = 0;
+		P->StateLedTargets[i] = 0;
+		P->RStateLeds[i] = 0;
 	}
 
-	P->UIMode = UI_NORMAL;
+	P->UIMode = UI_STARTUP;
 }
 
 void Tuesday_Reset(struct Tuesday_PatternGen *T)
@@ -320,7 +321,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	P->scale = 1;
 	P->tpbopt = 2;
 
-	S->algooptions[0] = ALGO_TESTS;
+	S->algooptions[0] = ALGO_SNH;
 	S->algooptions[1] = ALGO_TRITRANCE;
 	S->algooptions[2] = ALGO_STOMPER;
 	S->algooptions[3] = ALGO_WOBBLE;

@@ -59,7 +59,8 @@ struct Tuesday_PatternGen
 
 
 	int32_t Gates[TUESDAY_GATES+1];
-	uint8_t StateLeds[TUESDAY_LEDS];
+	uint8_t RStateLeds[TUESDAY_LEDS];
+	uint8_t StateLedTargets[TUESDAY_LEDS];
 
 	uint16_t NoteOut;
 	uint16_t VelocityOut;
@@ -154,6 +155,7 @@ struct Tuesday_Params
 };
 
 typedef enum{
+	UI_STARTUP,
 	UI_NORMAL,
 	UI_CALIBRATION,
 	UI_SELECTOPTION,

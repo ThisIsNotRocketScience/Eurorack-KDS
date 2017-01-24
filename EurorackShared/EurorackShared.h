@@ -69,6 +69,7 @@ extern "C"
 	int32_t Triangle(uint32_t phase);
 	int32_t BasicShapes(uint32_t phase, int mod);
 
+	void ResetSVF(struct EURORACK_SVF *filt);
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);
 	void ProcessSVF(struct EURORACK_SVF *filt, uint32_t RR);
 

@@ -123,6 +123,9 @@ typedef struct PatternStruct_Algo_SNH
 {
 	uint32_t Phase;
 	uint32_t PhaseSpeed;
+	uint32_t LastVal;
+	int32_t Target;
+	int32_t Current;
 	struct EURORACK_SVF Filt;
 } PatternStruct_Algo_SNH; 
 

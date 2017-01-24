@@ -93,12 +93,11 @@ struct denoise_state_t tpbsw_state = {0};
 
 void UpdateButtons()
 {
-	 denoise(SW_ALGO_GetVal(0), &algosw_state);
+	denoise(SW_ALGO_GetVal(0), &algosw_state);
 	denoise(SW_SCALE_GetVal(0), &scalesw_state);
 	denoise(SW_BEATS_GetVal(0), &beatsw_state);
 	denoise(SW_TPB_GetVal(0), &tpbsw_state);
 }
-
 
 void UpdateGates()
 {
@@ -136,7 +135,7 @@ void ShiftOut()
 
 	for (int i = 0; i < 16; i++)
 	{
-		if (Tuesday.StateLeds[i] > pwm)
+		if (Tuesday.RStateLeds[i] > pwm)
 		{
 			DATA_SetVal(DATA_DeviceData);
 		}
@@ -167,12 +166,10 @@ void ExtClockTick(int state)
 	Tuesday_ExtClock(&Tuesday,&Params, state);
 }
 
-
 void DoClock(int state)
 {
 	Tuesday_Clock(&Tuesday, state);
 }
-
 
 // half-millisecond timer -> update each dacchannel in turn
 void doTimer()
@@ -184,30 +181,31 @@ void doTimer()
 	{
 	case UI_NORMAL:
 	case UI_SELECTOPTION:
-	{
-
-		Tuesday_TimerTick(&Tuesday, &Params);
-
-		if (Tuesday.T%2==0)
 		{
-			if (Tuesday.CVOutCountDown > 0)
+
+			Tuesday_TimerTick(&Tuesday, &Params);
+
+			if (Tuesday.T%2==0)
 			{
-				Tuesday.CVOut  += Tuesday.CVOutDelta;
-				Tuesday.CVOutCountDown--;
-				if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
+				if (Tuesday.CVOutCountDown > 0)
+				{
+					Tuesday.CVOut  += Tuesday.CVOutDelta;
+					Tuesday.CVOutCountDown--;
+					if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
+				}
+				else
+				{
+					Tuesday.CVOut = Tuesday.CVOutTarget;
+				}
+				DAC_Write(0, Tuesday.CVOut >> 16) ;
 			}
 			else
 			{
-				Tuesday.CVOut = Tuesday.CVOutTarget;
+				DAC_Write(1, Tuesday.TickOut);
 			}
-			DAC_Write(0, Tuesday.CVOut >> 16) ;
+			UpdateGates();
 		}
-		else
-		{
-			DAC_Write(1, Tuesday.TickOut);
-		}
-		UpdateGates();}
-	break;
+		break;
 
 	case UI_CALIBRATION:
 	{
@@ -227,28 +225,34 @@ void doTimer()
 				CalibPattern = ((Tuesday.T >> 4)& 0x01) ? 10: 1000;
 			}
 		}
+
 		uint32_t CalibNote =0 ;
 		uint32_t CalibVel =0 ;
 		Tuesday.T++;
+
 		switch(Tuesday.CalibTarget)
 		{
 		case CALIBRATION_NOTE: CalibNote = CalibPattern; CalibVel= 0;break;
 		case CALIBRATION_VEL: CalibNote = 0; CalibVel= CalibPattern;break;
 		}
-		if (Tuesday.T%2==0)
-		{
-			DAC_Write(0,CalibNote );
 
+		if (Tuesday.T%2 == 0)
+		{
+			DAC_Write(0,CalibNote);
 		}
 		else
 		{
-			DAC_Write(1,CalibVel );
-
+			DAC_Write(1,CalibVel);
 		}
 	}
 	break;
 	}
-	_SetupLeds();
+
+	if (Tuesday.T%2 ==0)
+	{
+		_SetupLeds();
+	}
+
 	ShiftOut();
 }
 
@@ -257,82 +261,82 @@ void SetLedNumber(int offset, int number)
 	switch (number % 13)
 	{
 	case 0:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 1:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 2:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 3:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 4:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 5:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 6:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 7:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 8:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 0;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 0;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 9:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 0;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 0;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 10:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 0;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 0;
 		break;
 	case 11:
-		Tuesday.StateLeds[offset + 0] = 0;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 0;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	case 12:
-		Tuesday.StateLeds[offset + 0] = 255;
-		Tuesday.StateLeds[offset + 1] = 255;
-		Tuesday.StateLeds[offset + 2] = 255;
-		Tuesday.StateLeds[offset + 3] = 255;
+		Tuesday.StateLedTargets[offset + 0] = 255;
+		Tuesday.StateLedTargets[offset + 1] = 255;
+		Tuesday.StateLedTargets[offset + 2] = 255;
+		Tuesday.StateLedTargets[offset + 3] = 255;
 		break;
 	}
 }
@@ -399,7 +403,6 @@ void LoadEeprom()
 	{
 		int paramsize = sizeof(Params);
 		EE24_ReadBlock(1, (byte *)&Params, paramsize);
-
 		Tuesday_ValidateParams(&Params);
 	}
 	else
@@ -420,6 +423,10 @@ void _SetupLeds()
 {
 	switch(Tuesday.UIMode)
 	{
+	case UI_STARTUP:
+		// give the opening animation some breathing space
+		break;
+
 	case UI_NORMAL:
 		SetLedNumber(0, Params.tpbopt);
 		SetLedNumber(4, Params.beatopt);
@@ -429,9 +436,9 @@ void _SetupLeds()
 
 	case UI_SELECTOPTION:
 	{
-		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLeds[i] = 0;
+		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
 		int D = -1 ;
-		if ((tickssincecommit>>7) & 0x1) D = Tuesday.OptionIndex;
+		if ((tickssincecommit>>8) & 0x1) D = Tuesday.OptionIndex;
 
 		switch(Tuesday.OptionSelect)
 		{
@@ -463,34 +470,60 @@ void _SetupLeds()
 	}break;
 
 	case UI_CALIBRATION:
-		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLeds[i] = 0;
+		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLedTargets[i] = 0;
 		switch(Tuesday.CalibTarget)
 		{
 		case CALIBRATION_VEL:
-			Tuesday.StateLeds[0] = 255;
-			Tuesday.StateLeds[1] = 255;
-			Tuesday.StateLeds[2] = 255;
-			Tuesday.StateLeds[3] = 255;
+			Tuesday.Gates[GATE_ACCENT] = 1;
+			Tuesday.Gates[GATE_GATE] = 0;
+			Tuesday.StateLedTargets[0] = 255;
+			Tuesday.StateLedTargets[1] = 255;
+			Tuesday.StateLedTargets[2] = 255;
+			Tuesday.StateLedTargets[3] = 255;
 			break;
-		case CALIBRATION_NOTE:
 
-			Tuesday.StateLeds[4] = 255;
-			Tuesday.StateLeds[5] = 255;
-			Tuesday.StateLeds[6] = 255;
-			Tuesday.StateLeds[7] = 255;
+		case CALIBRATION_NOTE:
+			Tuesday.Gates[GATE_ACCENT] = 0;
+			Tuesday.Gates[GATE_GATE] = 1;
+			Tuesday.StateLedTargets[4] = 255;
+			Tuesday.StateLedTargets[5] = 255;
+			Tuesday.StateLedTargets[6] = 255;
+			Tuesday.StateLedTargets[7] = 255;
 			break;
+
 		case CALIBRATION_NOTARGET:
-		{
-			unsigned char T = Triangle(tickssincecommit << 24)>>24;
-			for(int i = 0;i<4;i++)
 			{
-				Tuesday.StateLeds[i] = T;
-				Tuesday.StateLeds[i+4] = ~T;
+				Tuesday.Gates[GATE_ACCENT] = 0;
+				Tuesday.Gates[GATE_GATE] = 0;
+				unsigned char T = Triangle(tickssincecommit << 23)>>24;
+				for(int i = 0;i<4;i++)
+				{
+					Tuesday.StateLedTargets[i] = T;
+					Tuesday.StateLedTargets[i+4] = ~T;
+				}
+			}
+			break;
+		}
+		break;
+	}
+
+	for (int i = 0; i < TUESDAY_LEDS; i++)
+	{
+		if (Tuesday.StateLedTargets[i] > Tuesday.RStateLeds[i])
+		{
+			Tuesday.RStateLeds[i]++;
+		}
+		else
+		{
+			if (Tuesday.StateLedTargets[i] < Tuesday.RStateLeds[i])
+			{
+				Tuesday.RStateLeds[i]--;
+			}
+			if (Tuesday.StateLedTargets[i] < Tuesday.RStateLeds[i])
+			{
+				Tuesday.RStateLeds[i]--;
 			}
 		}
-		break;
-		}
-		break;
 	}
 }
 
@@ -529,36 +562,46 @@ int main(void)
 
 	TI1_Enable();
 	AD1_Measure(FALSE);
-	int StartWithCalibration =0 ;
+
+#define G(a,b) (((a+1)%4)*4 + (b))
+	unsigned char a[16] =
+	{
+				G(0,0),G(1,1),G(2,2),G(3,3),
+				G(0,1),G(1,2),G(2,3),G(3,0),
+				G(0,2),G(1,3),G(2,0),G(3,1),
+				G(0,3),G(1,0),G(2,1),G(3,2)
+
+	};
 	for(int j =0 ;j<16;j++)
 	{
-		for (int i =0 ;i<16;i++)
-		{
-			Tuesday.StateLeds[15-i] = j==i?255:0;
-			//	UpdateButtons();
-			StartWithCalibration += scalesw_state.down;
-		}
+		int idx = a[15-j];
+		Tuesday.StateLedTargets[idx] = 255;
 		ShiftOut();
-		WAIT1_Waitms(40);
+		WAIT1_Waitms(70);
 	}
+
+
 
 	for (int i = 0;i < 16;i++)
 	{
-		Tuesday.StateLeds[i] = 0;
+		Tuesday.StateLedTargets[i] = 0;
 	}
 
-	_SetupLeds();
 	ShiftOut();
 	int switchmode = 1;
 
 
 
-	if (StartWithCalibration > 16*5)
+	if (islongpress( &scalesw_state))
 	{
 		Tuesday.UIMode = UI_CALIBRATION;
 		Tuesday.CalibTarget =CALIBRATION_NOTARGET;
 
-	};
+	}
+	else
+	{
+		Tuesday.UIMode = UI_NORMAL;
+	}
 
 	byte commitchange = 0;
 	for (;;)
@@ -840,14 +883,14 @@ int main(void)
 		};
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+	/*** End of RTOS startup code.  ***/
+	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for(;;){}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */
