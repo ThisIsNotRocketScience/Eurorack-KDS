@@ -1,6 +1,6 @@
-#include "..\..\EdgeCutter\Sources\EdgeCutter.h"
-#include "..\..\Wobbler\Sources\Wobbler.h"
-#include "..\..\Tuesday\Sources\Tuesday.h"
+#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.h"
+#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.h"
+#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
 
 
 struct Tuesday_PatternGen Tuesday;
@@ -22,8 +22,6 @@ struct  Wobbler_Params LFOParams;
 
 extern "C"
 {
-	#include "../../EurorackShared/Math.c" 
-
 	void __cdecl doTick()
 	{
 		Tuesday_Tick(&Tuesday, &TuesdayParams);
@@ -141,6 +139,16 @@ extern "C"
 		return Tuesday.CurrentPattern.Ticks[tick].vel>0 ? 1 : 0;
 	}
 
+	__declspec(dllexport) int __stdcall Tuesday_GetTickSlide(int tick)
+	{
+		return Tuesday.CurrentPattern.Ticks[tick].slide;
+	}
+
+	__declspec(dllexport) int __stdcall Tuesday_GetTickLength(int tick)
+	{
+		return Tuesday.CurrentPattern.Ticks[tick].maxsubticklength;
+	}
+
 	__declspec(dllexport) int __stdcall Tuesday_GetTickAccent(int tick)
 	{
 		return Tuesday.CurrentPattern.Ticks[tick].accent;
@@ -189,7 +197,7 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall Tuesday_GetCV()
 	{
-		return Tuesday.CVOut >> 16;
+		return Tuesday.CVOut;
 	}
 
 	__declspec(dllexport) bool __stdcall  Tuesday_GetGate()
@@ -215,15 +223,17 @@ BOOL WINAPI DllMain(
 	Wobbler_Init(&LFORunning);
 	Wobbler_Init(&LFOStatic);
 	LFOStatic.Speed = 0x80;
-
-	for (int i = 0; i < 256; i++)
+	if (0)
 	{
-		LFOStatic.Phasing = 80 + ((i / 80) % 2);
+		for (int i = 0; i < 256; i++)
+		{
+			LFOStatic.Phasing = 80 + ((i / 80) % 2);
 
-		Wobbler_Get(&LFOStatic, &LFOParams);
+			Wobbler_Get(&LFOStatic, &LFOParams);
 
-		printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
+			printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
 
+		}
 	}
 	return TRUE;
 }

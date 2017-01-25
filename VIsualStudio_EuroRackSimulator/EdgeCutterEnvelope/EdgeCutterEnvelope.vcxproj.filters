@@ -33,14 +33,11 @@
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\EurorackShared\Math.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Tuesday\Sources\Tuesday.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\EdgeCutter\Sources\EdgeCutter.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -74,10 +71,5 @@
     <ClInclude Include="..\..\EurorackShared\EURORACKSHARED.H">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\EurorackShared\Math.c">
-      <Filter>Source Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

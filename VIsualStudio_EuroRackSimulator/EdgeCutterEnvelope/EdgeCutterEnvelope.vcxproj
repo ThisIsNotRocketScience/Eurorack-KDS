@@ -142,15 +142,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\EdgeCutter\Sources\EdgeCutter.c" />
-    <Text Include="..\..\EurorackShared\Math.c" />
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
+    <ClCompile Include="..\..\EurorackShared\Math.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
     <ClCompile Include="TestFrameDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\EdgeCutter\Sources\EdgeCutter.h" />
     <ClInclude Include="..\..\EurorackShared\EURORACKSHARED.H" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo.h" />
     <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h" />
@@ -161,7 +160,6 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Test.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Tuesday.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

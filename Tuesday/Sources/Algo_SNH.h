@@ -1,6 +1,6 @@
 
 #include "../../EurorackShared/EURORACKSHARED.H"
-
+#include <math.h>
 
 void Algo_SNH_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
 {
