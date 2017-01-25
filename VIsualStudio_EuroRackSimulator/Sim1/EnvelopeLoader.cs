@@ -29,6 +29,12 @@ namespace Sim1
         public static extern int Tuesday_GetTickAccent(int tick);
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int Tuesday_GetTickSlide(int tick);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int Tuesday_GetTickLength(int tick);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void Tuesday_UpdatePattern(int algo, int scale, int ticks, int beats, int tempo, int x, int y, int i);
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
@@ -72,6 +78,7 @@ namespace Sim1
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLed(int led);
+
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFOLed(int led);

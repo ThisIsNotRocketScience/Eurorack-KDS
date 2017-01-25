@@ -113,11 +113,34 @@ namespace Sim1
            
             for(int i =0;i<Pattern.Count;i++)
             {
-                G.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), i * TickW, 0, i * TickW, pictureBox1.Height);
-                R.X = i * TickW+2;
-                R.Y = Pattern[i].note * BarH + 2;
-                Brush Box = new SolidBrush(Color.FromArgb(230, Pattern[i].vel, 50));
-                G.FillRectangle(Box, R);
+                if (Pattern[i].note != 255)
+                {
+                    G.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), i * TickW, 0, i * TickW, pictureBox1.Height);
+                    R.X = i * TickW + 2;
+                    R.Y = Pattern[i].note * BarH + 2;
+                    R.Width = ((TickW / 6) * Pattern[i].length) - 2;
+                    R.Height = BarH - 3;
+
+                    Brush Box = new SolidBrush(Color.FromArgb(230, Pattern[i].vel, 50));
+                    if (Pattern[i].accent)
+                    {
+                        R.Y -= 5;
+                        R.Height += 10;
+                    }
+                    G.FillRectangle(Box, R);
+                    if (Pattern[i].accent)
+                    { 
+                        G.DrawRectangle(new Pen(Color.White, 1) , new Rectangle((int)R.X, (int)R.Y, (int)R.Width, (int)R.Height));
+                    }
+                    
+                    R.Width = 10;
+                    R.Y -= R.Height + 2;
+                    if (Pattern[i].slide > 0)
+                    {
+                        R.Width *= Pattern[i].slide;
+                        G.FillRectangle(new SolidBrush(Color.FromArgb(0, (byte)(Pattern[i].slide * 40), 0)), R);
+                    }                    
+                }
             }
         }
 
@@ -127,6 +150,8 @@ namespace Sim1
             public bool accent;
             public bool gate;
             public int vel;
+            internal int length;
+            internal int slide;
         }
 
         List<Tick> Pattern = new List<Tick>();
@@ -170,6 +195,8 @@ namespace Sim1
                 T.vel = TestFrameLoader.Tuesday_GetTickVel(i);
                 T.accent = TestFrameLoader.Tuesday_GetTickAccent(i)>0;
                 T.gate = TestFrameLoader.Tuesday_GetTickGate(i)>0;
+                T.slide = TestFrameLoader.Tuesday_GetTickSlide(i);
+                T.length = TestFrameLoader.Tuesday_GetTickLength(i);
 
                 Pattern.Add(T);
             }

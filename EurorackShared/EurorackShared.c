@@ -58,6 +58,16 @@ int pressed(struct denoise_state_t *state)
 	return 0;
 }
 
+int released(struct denoise_state_t *state)
+{
+	if (state->released== 1)
+	{
+		state->released = 0;
+		return 1;
+	}
+	return 0;
+}
+
 void denoise(int sw_down, struct denoise_state_t *state)
 {
 	if (sw_down)

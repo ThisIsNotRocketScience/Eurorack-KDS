@@ -72,6 +72,17 @@ struct EdgeCutter_Envelope Envelope;
 struct EdgeCutter_Settings Settings;
 struct EdgeCutter_Params Params;
 
+static struct denoise_state_t speedsw_state = {0};
+static struct denoise_state_t modesw_state = {0};
+static struct denoise_state_t triggersw_state = {0};
+
+void UpdateButtons()
+{
+	denoise(SW_TRIGGER_GetVal(0), &triggersw_state);
+	 denoise(SW_MODE_GetVal(0), &modesw_state);
+	denoise(SW_SPEED_GetVal(0), &speedsw_state);
+
+}
 uint32_t t = 0;
 
 //4096 = 2.048v
@@ -83,29 +94,27 @@ uint32_t t = 0;
 #define VOLT(x) ((int)((4096.0 * (x)) / (2.5 * 2.048)))
 #define NOTE(x) VOLT((x) / 12.0)
 
-byte leds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
+byte outleds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
+byte targetleds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
 //                    13                 5, 6, 7, 8, 9,10, 4, 3,2,1,0
 
 byte ledorder[13] = {19,18,17,16,15, 8,9, 10,11,12,13,14, 2};
 unsigned char pwm = 3;
-int counter = 0;
+//int counter = 0;
 
 void ShiftOut()
 {
-	counter++;
+	//counter++;
 	pwm += 9;
 
 	LATCH_ClrVal(LATCH_DeviceData);
 
-	for(int i =0 ;i<13;i++)
-	{
-		leds[ledorder[i]] = Envelope.StateLeds[i];
 
-	}
+
 
 	for (int i = 0; i < 20; i++)
 	{
-		if (leds[i] > pwm)
+		if (outleds[i] > pwm)
 		{
 			DATA_SetVal(DATA_DeviceData);
 		}
@@ -149,6 +158,7 @@ int CurvedOut = 0;
 
 void doTimer()
 {
+	UpdateButtons();
 	tickssincecommit++;
 	t++;
 	switch(t%2)
@@ -158,6 +168,29 @@ void doTimer()
 			EdgeCutter_GetEnv(&Envelope, &Params);
 			LinearOut = Envelope.LinearOutput;
 			DAC_Write(0, LinearOut);
+
+			for(int i =0 ;i<13;i++)
+				{
+					targetleds[ledorder[i]] = Envelope.StateLeds[i];
+					if (outleds[ledorder[i]] < targetleds[ledorder[i]]) outleds[ledorder[i]] = Envelope.StateLeds[i];;
+
+				}
+				for (int i = 0; i < 20; i++)
+					{
+						if (targetleds[i] > outleds[i])
+						{
+							outleds[i]++;
+						}
+						else
+						{
+							if (targetleds[i] < outleds[i])
+							{
+								outleds[i]--;
+							}
+
+						}
+					}
+
 		}
 		break;
 		case 1:
@@ -175,9 +208,9 @@ void SetModeLeds(int mode)
 {
 	switch(mode)
 	{
-	case 0: leds[5]=0; leds[6] = 0;leds[7] =255 ;break;
-	case 1: leds[5]=0; leds[6] = 255;leds[7] =0 ;break;
-	case 2: leds[5]=255; leds[6] = 0;leds[7] =0 ;break;
+	case 0: targetleds[5]=0; targetleds[6] = 0;targetleds[7] =255 ;break;
+	case 1: targetleds[5]=0; targetleds[6] = 255;targetleds[7] =0 ;break;
+	case 2: targetleds[5]=255; targetleds[6] = 0;targetleds[7] =0 ;break;
 	}
 }
 
@@ -185,8 +218,8 @@ void SetSpeedLeds(int speed)
 {
 	switch(speed)
 	{
-	case 0: leds[3]=255; leds[4] = 0;break;
-	case 1: leds[3]=0; leds[4] = 255;break;
+	case 0: targetleds[3]=255; targetleds[4] = 0;break;
+	case 1: targetleds[3]=0; targetleds[4] = 255;break;
 
 	}
 }
@@ -240,9 +273,7 @@ int main(void)
 
 	/* Write your code here */
 
-	static struct denoise_state_t speedsw_state = {0};
-	static struct denoise_state_t modesw_state = {0};
-	static struct denoise_state_t triggersw_state = {0};
+
 	EdgeCutter_Init(&Envelope);
 
 #ifdef USE_SEMIHOST
@@ -265,29 +296,26 @@ int main(void)
 	for (;;)
 	{
 
-		int triggersw = denoise(SW_TRIGGER_GetVal(0), &triggersw_state);
-		int modesw = denoise(SW_MODE_GetVal(0), &modesw_state);
-		int speedsw = denoise(SW_SPEED_GetVal(0), &speedsw_state);
 
-		if (modesw == 1)
+		if (pressed(&modesw_state))
 		{
 			switchmode = 1;
 			Params.mode = (Params.mode + 1) % EDGECUTTER_MAXMODE;
 			commitchange = 1;
 		}
 
-		if (speedsw == 1)
+		if (pressed(&speedsw_state))
 		{
 			switchmode = 1;
 			Params.speed = (Params.speed + 1) % EDGECUTTER_MAXSPEED;
 			commitchange = 1;
 		}
 
-		if (triggersw_state.pressed	>0 )
+		if (pressed(&triggersw_state) )
 		{
 			EdgeCutter_Trigger(&Envelope, 1, &Params);
 		}
-		if (triggersw_state.released	>0 )
+		if (released(&triggersw_state) )
 		{
 			EdgeCutter_Trigger(&Envelope, 0 ,&Params);
 		}
