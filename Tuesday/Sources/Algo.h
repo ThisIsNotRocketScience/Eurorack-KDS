@@ -128,6 +128,14 @@ typedef struct PatternStruct_Algo_SNH
 	struct EURORACK_SVF Filt;
 } PatternStruct_Algo_SNH; 
 
+typedef struct PatternStruct_Algo_Chip1
+{
+	struct Tuesday_RandomGen R;
+	uint32_t ChordSeed;
+	unsigned char Base;
+	unsigned char Dir:1;
+} PatternStruct_Algo_Chip1;
+
 struct Tuesday_PatternFuncSpecific
 {
 	union
@@ -138,6 +146,7 @@ struct Tuesday_PatternFuncSpecific
 		struct PatternStruct_Algo_Test Test;
 		struct PatternStruct_Algo_Wobble Wobble;
 		struct PatternStruct_Algo_SNH SNH;
+		struct PatternStruct_Algo_Chip1 Chip1;
 	};
 	struct Tuesday_RandomGen ExtraRandom;
 };
