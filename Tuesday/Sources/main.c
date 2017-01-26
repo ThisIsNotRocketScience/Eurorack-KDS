@@ -181,31 +181,31 @@ void doTimer()
 	{
 	case UI_NORMAL:
 	case UI_SELECTOPTION:
+	{
+
+		Tuesday_TimerTick(&Tuesday, &Params);
+
+		if (Tuesday.T%2==0)
 		{
-
-			Tuesday_TimerTick(&Tuesday, &Params);
-
-			if (Tuesday.T%2==0)
+			if (Tuesday.CVOutCountDown > 0)
 			{
-				if (Tuesday.CVOutCountDown > 0)
-				{
-					Tuesday.CVOut  += Tuesday.CVOutDelta;
-					Tuesday.CVOutCountDown--;
-					if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
-				}
-				else
-				{
-					Tuesday.CVOut = Tuesday.CVOutTarget;
-				}
-				DAC_Write(0, Tuesday.CVOut >> 16) ;
+				Tuesday.CVOut  += Tuesday.CVOutDelta;
+				Tuesday.CVOutCountDown--;
+				if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
 			}
 			else
 			{
-				DAC_Write(1, Tuesday.TickOut);
+				Tuesday.CVOut = Tuesday.CVOutTarget;
 			}
-			UpdateGates();
+			DAC_Write(0, Tuesday.CVOut >> 16) ;
 		}
-		break;
+		else
+		{
+			DAC_Write(1, Tuesday.TickOut);
+		}
+		UpdateGates();
+	}
+	break;
 
 	case UI_CALIBRATION:
 	{
@@ -492,17 +492,17 @@ void _SetupLeds()
 			break;
 
 		case CALIBRATION_NOTARGET:
+		{
+			Tuesday.Gates[GATE_ACCENT] = 0;
+			Tuesday.Gates[GATE_GATE] = 0;
+			unsigned char T = Triangle(tickssincecommit << 23)>>24;
+			for(int i = 0;i<4;i++)
 			{
-				Tuesday.Gates[GATE_ACCENT] = 0;
-				Tuesday.Gates[GATE_GATE] = 0;
-				unsigned char T = Triangle(tickssincecommit << 23)>>24;
-				for(int i = 0;i<4;i++)
-				{
-					Tuesday.StateLedTargets[i] = T;
-					Tuesday.StateLedTargets[i+4] = ~T;
-				}
+				Tuesday.StateLedTargets[i] = T;
+				Tuesday.StateLedTargets[i+4] = ~T;
 			}
-			break;
+		}
+		break;
 		}
 		break;
 	}
@@ -566,10 +566,10 @@ int main(void)
 #define G(a,b) (((a+1)%4)*4 + (b))
 	unsigned char a[16] =
 	{
-				G(0,0),G(1,1),G(2,2),G(3,3),
-				G(0,1),G(1,2),G(2,3),G(3,0),
-				G(0,2),G(1,3),G(2,0),G(3,1),
-				G(0,3),G(1,0),G(2,1),G(3,2)
+			G(0,0),G(1,1),G(2,2),G(3,3),
+			G(0,1),G(1,2),G(2,3),G(3,0),
+			G(0,2),G(1,3),G(2,0),G(3,1),
+			G(0,3),G(1,0),G(2,1),G(3,2)
 
 	};
 	for(int j =0 ;j<16;j++)
@@ -687,16 +687,12 @@ int main(void)
 				case OPTION_TPB:   Settings.tpboptions[Tuesday.OptionIndex] =  (S+1) ; break;
 				case OPTION_SCALE: Settings.scale[Tuesday.OptionIndex] =  S ; break;
 				}
-
+				switchmode = 1;
 				// save to eeprom
 			}
 			if (butconf == 1)
 			{
 				Tuesday.OptionIndex = (Tuesday.OptionIndex + 1) % 4;
-			}
-			if (butconflong == 1)
-			{
-				// save eeprom here and exit!
 
 				switch(Tuesday.OptionSelect)
 				{
@@ -705,6 +701,13 @@ int main(void)
 				case OPTION_TPB:   Params.tpbopt = Tuesday.OptionIndex; break;
 				case OPTION_SCALE: Params.scale = Tuesday.OptionIndex; break;
 				}
+
+				switchmode = 1;
+
+			}
+			if (butconflong == 1)
+			{
+				// save eeprom here and exit!
 
 
 				Tuesday.UIMode = UI_NORMAL;
@@ -843,34 +846,7 @@ int main(void)
 				}
 			}
 
-			if (measured == 1)
-			{
-				measured = 0;
-				Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
-				Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
-				Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
-				Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
-				AD1_Measure(FALSE);
-			}
 
-			// read the X/Y seed knobs
-			long newseed = (adcchannels[0] >> 8) + ((adcchannels[1] >> 8) << 8);
-			if (newseed != oldseed)
-				switchmode = 1;
-
-			if (switchmode == 1)
-			{
-				//SetupLeds();
-				// updated pattern needed for some reason!
-
-				switchmode = 0;
-				Tuesday_RandomSeed(&MainRandom, newseed);
-				oldseed = newseed;
-
-
-
-				Tuesday_Generate(&Tuesday, &Params, &Settings);
-			}
 
 			if (commitchange == 1 && tickssincecommit >= 10)
 			{
@@ -881,6 +857,35 @@ int main(void)
 		}
 		break;
 		};
+
+		if (measured == 1)
+		{
+			measured = 0;
+			Tuesday.seed1 = (adcchannels[ADC_INX] >> 8);
+			Tuesday.seed2 = (adcchannels[ADC_INY] >> 8);
+			Tuesday.intensity = (adcchannels[ADC_INTENSITY] >> 8);
+			Tuesday.tempo = (adcchannels[ADC_TEMPO] >> 8);
+			AD1_Measure(FALSE);
+		}
+
+		// read the X/Y seed knobs
+		long newseed = (adcchannels[0] >> 8) + ((adcchannels[1] >> 8) << 8);
+		if (newseed != oldseed)
+			switchmode = 1;
+
+		if (switchmode == 1)
+		{
+			//SetupLeds();
+			// updated pattern needed for some reason!
+
+			switchmode = 0;
+			Tuesday_RandomSeed(&MainRandom, newseed);
+			oldseed = newseed;
+
+
+
+			Tuesday_Generate(&Tuesday, &Params, &Settings);
+		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
 	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
