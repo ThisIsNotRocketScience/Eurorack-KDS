@@ -5,6 +5,7 @@
 #include "AlgoImpl.h"
 
 struct PatternFunctions PatternTypes[__ALGO_COUNT];
+#define __max(a,b) (((a)>(b))?(a):(b))
 
 void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
@@ -46,9 +47,9 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	P->Measure = 0;
 
 	P->countdownTick = 1;
-	P->countdownNote = 1;
+	//P->countdownNote = 1;
 	P->msecpertick = 10 ;
-
+	P->msecsincelasttick =0 ;
 	P->clockup = 0;
 	P->clockshad = 0;
 	P->clockssincereset = 0;
@@ -80,6 +81,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	for (int i = 0; i < TUESDAY_GATES; i++)
 	{
 		P->Gates[i] = 0;
+		P->GatesGap[i] = 0;
 	}
 
 	for (int i = 0; i < TUESDAY_LEDS; i++)
@@ -110,6 +112,8 @@ void Tuesday_Reset(struct Tuesday_PatternGen *T)
 
 void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 {
+	T->msecpertick = __max(1,T->msecsincelasttick);
+	T->msecsincelasttick = 0 ;
 	int CoolDownMax = T->intensity;
 	if (T->CoolDown > 0)
 	{
@@ -124,9 +128,9 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 	{
 		T->CoolDown = CoolDownMax;
 
-		T->countdownNote =( T->msecpertick * 900) / 1000;
+	//	T->countdownNote =( T->msecpertick * 900) / 1000;
 
-		if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
+	//	if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
 
 		T->TickOut = (T->CurrentPattern.Ticks[T->Tick].accent * 2048 + 2047);
 
@@ -143,15 +147,27 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 				T->CVOut = T->CVOutTarget;
 			}
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
-			T->Gates[GATE_GATE] = GATE_MINGATETIME;
+			int Ticks =  (T->msecpertick * T->CurrentPattern.Ticks[T->Tick].maxsubticklength);;
+			if (T->Gates[GATE_GATE] > 0){ T->Gates[GATE_GATE] = - Ticks;T->GatesGap[GATE_GATE] = GATE_MINGATETIME;  }else T->Gates[GATE_GATE] = Ticks;
+
+			if (T->CurrentPattern.Ticks[T->Tick].accent > 0)
+			{
+				T->Gates[GATE_ACCENT] = T->Gates[GATE_GATE];
+				T->GatesGap[GATE_ACCENT] = T->GatesGap[GATE_GATE];
+			}else
+				{
+					T->Gates[GATE_ACCENT] = 0;
+				}
+
 		}
 		if (T->CurrentPattern.Ticks[T->Tick].note == TUESDAY_NOTEOFF)
 		{
 			T->TickOut  =0;
 			T->Gates[GATE_GATE] = 0;
+			T->Gates[GATE_ACCENT] = 0;
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
 		}
-		if (T->CurrentPattern.Ticks[T->Tick].accent > 0) T->Gates[GATE_ACCENT] = GATE_MINGATETIME;
+
 	}
 
 	if (T->Tick == 0) T->Gates[GATE_LOOP] = GATE_MINGATETIME;
@@ -163,6 +179,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 {
 	T->timesincelastclocktick++;
+	T->msecsincelasttick++;
 	int clockmode = 1;
 	if (T->clockup == 0 && T->timesincelastclocktick > 2000)
 	{
@@ -174,15 +191,15 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 
 	if (T->T % 2 == 0)
 	{
-		if (T->countdownNote >= 0)
-		{
-			T->countdownNote--;
-			if (T->countdownNote <= 0)
-			{
-				T->TickOut = 0;
-				T->Gates[GATE_GATE] = 0;
-			}
-		}
+		//if (T->countdownNote >= 0)
+	//	{
+		//	T->countdownNote--;
+		//	if (T->countdownNote <= 0)
+	//		{
+	//			T->TickOut = 0;
+//				T->Gates[GATE_GATE] = 0;
+	//		}
+	//	}
 
 		int bpm = 1 + (200 * T->tempo) / 256;
 		int msecperbeat = (1000 * 60) / (96 * (bpm/4));

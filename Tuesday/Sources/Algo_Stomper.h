@@ -129,6 +129,11 @@ void Algo_Stomper_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 
 	int32_t n = ScaleToNote(&SN, T, P, S);
 	Output->note = n;
+	if (PS->Stomper.CountDown > 0)   Output->maxsubticklength = (PS->Stomper.CountDown * TUESDAY_SUBTICKRES)  - 2;
+	if (Tuesday_PercChance(R, 50 + accentoffs))
+	{
+		   Output->maxsubticklength = ((1 + ( Tuesday_Rand(R) % 4)) * TUESDAY_SUBTICKRES)  - 2;
+	}
 	Output->vel = (Tuesday_Rand(&PS->ExtraRandom) / 4) + veloffset;
 	Output->accent = Tuesday_PercChance(R, 50 + accentoffs);
 

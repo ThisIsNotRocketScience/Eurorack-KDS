@@ -106,10 +106,18 @@ void UpdateGates()
 		if (Tuesday.Gates[i] > 0)
 		{
 			Tuesday.Gates[i]--;
+			Tuesday.GatesGap[i] = 0;
 		}
 		else
 		{
-			Tuesday.Gates[i] = -Tuesday.Gates[i];
+			if (Tuesday.GatesGap[i] > 0)
+			{
+				Tuesday.GatesGap[i]--;
+			}
+			else
+			{
+				Tuesday.Gates[i] = -Tuesday.Gates[i];
+			}
 		}
 	}
 }
@@ -534,7 +542,12 @@ void SwitchToOptionMode(int mode, int startoption)
 	Tuesday.UIMode = UI_SELECTOPTION;
 }
 
-
+// reset basic options, but not calibration
+void FactoryReset()
+{
+	Tuesday_LoadDefaults(&Settings, &Params);
+	SaveSettingsEeprom();
+}
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -600,6 +613,13 @@ int main(void)
 	}
 	else
 	{
+		if (islongpress( &tpbsw_state))
+		{
+
+			FactoryReset();
+		}
+
+
 		Tuesday.UIMode = UI_NORMAL;
 	}
 
@@ -688,7 +708,8 @@ int main(void)
 				case OPTION_SCALE: Settings.scale[Tuesday.OptionIndex] =  S ; break;
 				}
 				switchmode = 1;
-				// save to eeprom
+				SaveSettingsEeprom();
+
 			}
 			if (butconf == 1)
 			{
@@ -707,9 +728,6 @@ int main(void)
 			}
 			if (butconflong == 1)
 			{
-				// save eeprom here and exit!
-
-
 				Tuesday.UIMode = UI_NORMAL;
 			}
 			if (measured == 1)

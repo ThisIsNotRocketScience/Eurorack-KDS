@@ -60,6 +60,7 @@ struct Tuesday_PatternGen
 
 
 	int32_t Gates[TUESDAY_GATES+1];
+	int32_t GatesGap[TUESDAY_GATES+1];
 	uint8_t RStateLeds[TUESDAY_LEDS];
 	uint8_t StateLedTargets[TUESDAY_LEDS];
 
@@ -80,8 +81,9 @@ struct Tuesday_PatternGen
 	int Measure;
 
 	int countdownTick;
-	int countdownNote;
+	//int countdownNote;
 	int msecpertick;
+	int msecsincelasttick;
 
 	int clockup;
 	int clockshad;
@@ -197,6 +199,7 @@ extern "C"
 
 	extern void Tuesday_ValidateSettings(struct Tuesday_Settings *S);
 	extern void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P);
+	extern void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P);
 	extern void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
 	extern void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed);
 
