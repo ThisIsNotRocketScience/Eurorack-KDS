@@ -21,8 +21,7 @@ struct Tuesday_Tick
 	unsigned char vel;
 	signed short note;
 	unsigned char accent :1;
-	unsigned char slide : 2;
-	unsigned char hold : 1;
+	unsigned char slide : 2;	
 	unsigned char maxsubticklength : 4;
 };
 

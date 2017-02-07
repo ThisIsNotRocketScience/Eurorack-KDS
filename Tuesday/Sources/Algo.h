@@ -36,11 +36,10 @@ typedef enum
 	ALGO_CHIPARP1,
 	ALGO_CHIPARP2,
 
-	// classic saiko things, reimagined
-	//ALGO_SAIKO_BASS,
-	//ALGO_SAIKO_PSY,
 	ALGO_SNH,
+	// classic saiko things, reimagined
 	ALGO_SAIKO_LEAD,
+	ALGO_SAIKO_CLASSIC,
 	__ALGO_COUNT
 } TUESDAY_ALGO;
 
@@ -166,6 +165,7 @@ void Pattern_Reverse(struct Tuesday_PatternContainer *T, int first, int length);
 void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length, int transpose);
 
 void DefaultTick(struct Tuesday_Tick *Out);
+void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R);
 
 int Tuesday_Rand(struct Tuesday_RandomGen *R);
 uint8_t Tuesday_BoolChance(struct Tuesday_RandomGen *R);

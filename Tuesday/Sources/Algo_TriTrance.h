@@ -46,6 +46,10 @@ void Algo_TriTrance_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 
 	int32_t n = ScaleToNote(&SN, T, P, S);
 	Output->note = n;
+	if (Tuesday_PercChance(R, 50 + accentoffs))
+	{
+		   Output->maxsubticklength = ((1 + ( Tuesday_Rand(R) % 4)) * TUESDAY_SUBTICKRES)  - 2;
+	}
 
 	Output->vel = (Tuesday_Rand(R) / 2) + veloffs;
 	Output->accent = Tuesday_PercChance(R, 100 + accentoffs);

@@ -215,3 +215,146 @@ void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *
 	if (Tuesday_PercChance(R, 128)) Pattern_Transpose(T, (fullcycles - 1)*subpattern, subpattern, 3);
 	if (Tuesday_PercChance(R, 128)) Pattern_Transpose(T, 2 * subpattern, 7, -5);
 }
+
+
+
+
+void Saiko_PsychTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+	Output->vel = Tuesday_RandByte(R);
+
+	uint64_t a = Tuesday_Rand(R) & 32767;
+	a *= 0x57619F1ULL;
+	a = (a >> (32 + 9)) + ((uint32_t)a >> 31);
+
+	Output->accent = (a != 0);
+
+	int r = (Tuesday_Rand(R) & 32767) >> 12;
+	switch (r)
+	{
+	case 0:
+	case 1:
+	case 6:
+		Output->note = 0;
+		break;
+	case 2:
+		Output->note = -2;
+		break;
+	case 3:
+		Output->note = 3;
+		break;
+	case 4:
+		Output->note = 15;
+		break;
+	case 5:
+		Output->note = 10;
+		break;
+	case 7:
+		Output->note = 12;
+		break;
+	default:
+		// don't change note value!
+		break;
+	}
+	
+}
+
+void Saiko_FlatTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+
+		Output->vel = Tuesday_RandByte(R);
+
+		uint64_t a = Tuesday_Rand(R) & 32767;
+		a *= 0x57619F1ULL;
+		a = (a >> (32 + 9)) + ((uint32_t)a >> 31);
+
+		Output->accent = (a != 0);
+
+		int r = (Tuesday_Rand(R) & 32767) >> 12;
+		switch (r)
+		{
+		case 0:
+		case 2:
+		case 4:
+		case 5:
+		case 6:
+			Output->note = 0; break;
+		case 1: Output->note = -12; break;
+		case 3: Output->note = 0xD; break;
+		case 7: Output->note = 0xC; break;
+		default:
+			// don't change note value!
+			break;
+		}
+
+
+};
+
+void Saiko_GoaTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+		Output->vel = Tuesday_RandByte(R);
+		Output->accent = (Tuesday_BoolChance(R)) ? 1 : 0;
+
+		int RandNote = Tuesday_Rand(R) % 8;
+		switch (RandNote)
+		{
+		case 0:
+		case 2:
+			Output->note = 0; break;
+		case 1: Output->note = (char)0xf4; break;
+		case 3: Output->note = 1; break;
+		case 4: Output->note = 3; break;
+		case 5: Output->note = 7; break;
+		case 6: Output->note = 0xc; break;
+		case 7: Output->note = 0xd; break;
+		}
+
+		if (Output->accent)
+		{
+			switch (RandNote)
+			{
+			case 0:
+			case 3:
+			case 7: Output->note = 0; break;
+			case 1:Output->note = (char)0xf4; break;
+			case 2:Output->note = (char)0xfe; break;
+			case 4:Output->note = 3; break;
+			case 5:Output->note = (char)0xf2; break;
+			case 6:Output->note = 1; break;
+			}
+		}
+
+
+	if (PS->GENERIC.b1 && I <= 7 )
+	{
+		Output->note += 3;
+	}
+
+	if (PS->GENERIC.b2 && I <= 7)
+	{
+		Output->note -= 5;
+	}
+	
+
+}
+
+
+
+void Algo_Saiko_Classic(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+	DefaultTick(Output);
+
+	switch (((T->seed1 * 3) / 255)%3)
+	{
+	case 0:
+		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
+	case 1:
+		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
+	case 2:
+		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
+	}
+
+	Output->note += 24;
+	Output->vel = (Tuesday_Rand(R) / 4);
+	RandomSlideAndLength(Output, R);
+}

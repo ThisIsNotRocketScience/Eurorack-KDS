@@ -10,6 +10,20 @@ namespace Sim1
     class TestFrameLoader
     {
 
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void Init();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void ResetStatic();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void Trigger(int value, int staticenv, int mode);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetGate(int gate);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetLed(int led);
 
         #region TUESDAY
 
@@ -42,16 +56,9 @@ namespace Sim1
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void Tuesday_DoTimer();
-
-        #endregion
-
-
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern void Init();
-
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern bool Tuesday_GetAccent();
-        
+
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int Tuesday_GetVel();
 
@@ -60,25 +67,18 @@ namespace Sim1
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern bool Tuesday_GetGate();
-        
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern void ResetStatic();
 
+        #endregion
+
+        #region EDGECUTTER
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetEnv(int staticenv, int attack, int decay, int sustain, int release, int curvature, int speed, int mode);
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetEnvCurve(int staticenv);
+        #endregion
 
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern void Trigger(int value, int staticenv, int mode);
-
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern int GetGate(int gate);
-
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern int GetLed(int led);
-
+        #region WOBBLER
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFOLed(int led);
@@ -95,6 +95,6 @@ namespace Sim1
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void LFOTrigger(int value, int staticlfo);
 
-
+        #endregion
     }
 }

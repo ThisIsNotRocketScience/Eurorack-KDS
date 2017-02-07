@@ -23,6 +23,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 		SetPatternFunc(i, NoPattern, NoInit, NoPatternInit,1);
 	}
 
+	SetPatternFunc(ALGO_SAIKO_CLASSIC, &Algo_Saiko_Classic, &Algo_Init_Generic_FourBool, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_SAIKO_LEAD, &Algo_Saiko_Lead_Gen, &Algo_Init_Generic_FourBool, &NoPatternInit,1);
 	SetPatternFunc(ALGO_CHIPARP1, Algo_ChipArp_1_Gen, Algo_ChipArp_1_Init, Algo_ChipArp_1_PatternInit,1);	
 	SetPatternFunc(ALGO_CHIPARP2, Algo_ChipArp_2_Gen, Algo_ChipArp_2_Init, Algo_ChipArp_2_PatternInit, 1);
@@ -340,7 +341,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	P->tpbopt = 2;
 
 	S->algooptions[0] = ALGO_SNH;
-	S->algooptions[1] = ALGO_CHIPARP1;//ALGO_TRITRANCE;
+	S->algooptions[1] = ALGO_SAIKO_CLASSIC;
 	S->algooptions[2] = ALGO_STOMPER;
 	S->algooptions[3] = ALGO_WOBBLE;
 
@@ -474,7 +475,28 @@ void DefaultTick(struct Tuesday_Tick *Out)
 	Out->note = 12;
 	Out->accent = 0;
 	Out->vel = 255;
-	Out->hold = 0;
+}
+
+void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R)
+{
+	if (Tuesday_PercChance(R, 50))
+	{
+		Out->maxsubticklength = ((1 + (Tuesday_Rand(R) % 4)) * TUESDAY_SUBTICKRES) - 2;
+	}
+	else
+	{
+		Out->maxsubticklength = (TUESDAY_SUBTICKRES * 3) / 4;
+	}
+
+	if (Tuesday_BoolChance(R) && Tuesday_BoolChance(R))
+	{
+		Out->slide = (Tuesday_Rand(R) % 3) + 1;;
+	
+	}
+	else
+	{
+		Out->slide = 0;
+	}
 }
 
 void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
@@ -484,7 +506,7 @@ void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
 	Out->vel = A->vel;
 	Out->slide = A->slide;
 	Out->maxsubticklength = A->maxsubticklength;
-	Out->hold = A->hold;
+
 }
 
 void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struct Tuesday_Tick *B, struct Tuesday_Tick *Out)
