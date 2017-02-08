@@ -39,10 +39,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TempoSlider = new System.Windows.Forms.TrackBar();
             this.Mode = new System.Windows.Forms.GroupBox();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.chiparp1button = new System.Windows.Forms.RadioButton();
+            this.TritranceButton = new System.Windows.Forms.RadioButton();
+            this.saikoButton = new System.Windows.Forms.RadioButton();
+            this.TestPatternButton = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
@@ -67,6 +67,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.stomperButton = new System.Windows.Forms.RadioButton();
+            this.markovButton = new System.Windows.Forms.RadioButton();
+            this.snhButton = new System.Windows.Forms.RadioButton();
+            this.chipArp2Button = new System.Windows.Forms.RadioButton();
+            this.SaikoClassicButton = new System.Windows.Forms.RadioButton();
+            this.wobbleButton = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.XSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YSlider)).BeginInit();
@@ -194,62 +200,68 @@
             // Mode
             // 
             this.Mode.AutoSize = true;
-            this.Mode.Controls.Add(this.radioButton4);
-            this.Mode.Controls.Add(this.radioButton3);
-            this.Mode.Controls.Add(this.radioButton1);
-            this.Mode.Controls.Add(this.radioButton2);
+            this.Mode.Controls.Add(this.wobbleButton);
+            this.Mode.Controls.Add(this.SaikoClassicButton);
+            this.Mode.Controls.Add(this.chipArp2Button);
+            this.Mode.Controls.Add(this.snhButton);
+            this.Mode.Controls.Add(this.markovButton);
+            this.Mode.Controls.Add(this.stomperButton);
+            this.Mode.Controls.Add(this.chiparp1button);
+            this.Mode.Controls.Add(this.TritranceButton);
+            this.Mode.Controls.Add(this.saikoButton);
+            this.Mode.Controls.Add(this.TestPatternButton);
             this.Mode.Location = new System.Drawing.Point(3, 195);
             this.Mode.Name = "Mode";
-            this.Mode.Size = new System.Drawing.Size(103, 132);
+            this.Mode.Size = new System.Drawing.Size(125, 278);
             this.Mode.TabIndex = 14;
             this.Mode.TabStop = false;
             this.Mode.Text = "Algo";
             // 
-            // radioButton4
+            // chiparp1button
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(11, 44);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(57, 21);
-            this.radioButton4.TabIndex = 4;
-            this.radioButton4.Text = "Chip";
-            this.radioButton4.UseVisualStyleBackColor = true;
-            this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
+            this.chiparp1button.AutoSize = true;
+            this.chiparp1button.Location = new System.Drawing.Point(11, 44);
+            this.chiparp1button.Name = "chiparp1button";
+            this.chiparp1button.Size = new System.Drawing.Size(65, 21);
+            this.chiparp1button.TabIndex = 4;
+            this.chiparp1button.Text = "Chip1";
+            this.chiparp1button.UseVisualStyleBackColor = true;
+            this.chiparp1button.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
             // 
-            // radioButton3
+            // TritranceButton
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(11, 67);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(86, 21);
-            this.radioButton3.TabIndex = 3;
-            this.radioButton3.Text = "Tritrance";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
+            this.TritranceButton.AutoSize = true;
+            this.TritranceButton.Location = new System.Drawing.Point(11, 90);
+            this.TritranceButton.Name = "TritranceButton";
+            this.TritranceButton.Size = new System.Drawing.Size(86, 21);
+            this.TritranceButton.TabIndex = 3;
+            this.TritranceButton.Text = "Tritrance";
+            this.TritranceButton.UseVisualStyleBackColor = true;
+            this.TritranceButton.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
             // 
-            // radioButton1
+            // saikoButton
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(11, 21);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(64, 21);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Saiko";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.saikoButton.AutoSize = true;
+            this.saikoButton.Checked = true;
+            this.saikoButton.Location = new System.Drawing.Point(11, 21);
+            this.saikoButton.Name = "saikoButton";
+            this.saikoButton.Size = new System.Drawing.Size(64, 21);
+            this.saikoButton.TabIndex = 1;
+            this.saikoButton.TabStop = true;
+            this.saikoButton.Text = "Saiko";
+            this.saikoButton.UseVisualStyleBackColor = true;
+            this.saikoButton.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // radioButton2
+            // TestPatternButton
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(11, 90);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(57, 21);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.Text = "Test";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.TestPatternButton.AutoSize = true;
+            this.TestPatternButton.Location = new System.Drawing.Point(11, 113);
+            this.TestPatternButton.Name = "TestPatternButton";
+            this.TestPatternButton.Size = new System.Drawing.Size(57, 21);
+            this.TestPatternButton.TabIndex = 2;
+            this.TestPatternButton.Text = "Test";
+            this.TestPatternButton.UseVisualStyleBackColor = true;
+            this.TestPatternButton.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -258,7 +270,7 @@
             this.groupBox1.Controls.Add(this.radioButton6);
             this.groupBox1.Controls.Add(this.radioButton7);
             this.groupBox1.Controls.Add(this.radioButton8);
-            this.groupBox1.Location = new System.Drawing.Point(3, 333);
+            this.groupBox1.Location = new System.Drawing.Point(3, 479);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(88, 123);
             this.groupBox1.TabIndex = 15;
@@ -318,7 +330,7 @@
             this.groupBox2.Controls.Add(this.radioButton10);
             this.groupBox2.Controls.Add(this.radioButton11);
             this.groupBox2.Controls.Add(this.radioButton12);
-            this.groupBox2.Location = new System.Drawing.Point(97, 333);
+            this.groupBox2.Location = new System.Drawing.Point(97, 479);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(61, 126);
             this.groupBox2.TabIndex = 16;
@@ -378,7 +390,7 @@
             this.groupBox3.Controls.Add(this.radioButton14);
             this.groupBox3.Controls.Add(this.radioButton15);
             this.groupBox3.Controls.Add(this.radioButton16);
-            this.groupBox3.Location = new System.Drawing.Point(3, 465);
+            this.groupBox3.Location = new System.Drawing.Point(3, 611);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 126);
             this.groupBox3.TabIndex = 17;
@@ -548,6 +560,73 @@
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // stomperButton
+            // 
+            this.stomperButton.AutoSize = true;
+            this.stomperButton.Location = new System.Drawing.Point(11, 136);
+            this.stomperButton.Name = "stomperButton";
+            this.stomperButton.Size = new System.Drawing.Size(82, 21);
+            this.stomperButton.TabIndex = 5;
+            this.stomperButton.Text = "Stomper";
+            this.stomperButton.UseVisualStyleBackColor = true;
+            this.stomperButton.CheckedChanged += new System.EventHandler(this.stomperButton_CheckedChanged);
+            // 
+            // markovButton
+            // 
+            this.markovButton.AutoSize = true;
+            this.markovButton.Location = new System.Drawing.Point(11, 159);
+            this.markovButton.Name = "markovButton";
+            this.markovButton.Size = new System.Drawing.Size(75, 21);
+            this.markovButton.TabIndex = 6;
+            this.markovButton.Text = "Markov";
+            this.markovButton.UseVisualStyleBackColor = true;
+            this.markovButton.CheckedChanged += new System.EventHandler(this.markovButton_CheckedChanged);
+            // 
+            // snhButton
+            // 
+            this.snhButton.AutoSize = true;
+            this.snhButton.Location = new System.Drawing.Point(11, 182);
+            this.snhButton.Name = "snhButton";
+            this.snhButton.Size = new System.Drawing.Size(58, 21);
+            this.snhButton.TabIndex = 7;
+            this.snhButton.Text = "SNH";
+            this.snhButton.UseVisualStyleBackColor = true;
+            this.snhButton.CheckedChanged += new System.EventHandler(this.snhButton_CheckedChanged);
+            // 
+            // chipArp2Button
+            // 
+            this.chipArp2Button.AutoSize = true;
+            this.chipArp2Button.Location = new System.Drawing.Point(11, 67);
+            this.chipArp2Button.Name = "chipArp2Button";
+            this.chipArp2Button.Size = new System.Drawing.Size(65, 21);
+            this.chipArp2Button.TabIndex = 8;
+            this.chipArp2Button.Text = "Chip2";
+            this.chipArp2Button.UseVisualStyleBackColor = true;
+            this.chipArp2Button.CheckedChanged += new System.EventHandler(this.chipArp2Button_CheckedChanged);
+            // 
+            // SaikoClassicButton
+            // 
+            this.SaikoClassicButton.AutoSize = true;
+            this.SaikoClassicButton.Checked = true;
+            this.SaikoClassicButton.Location = new System.Drawing.Point(11, 209);
+            this.SaikoClassicButton.Name = "SaikoClassicButton";
+            this.SaikoClassicButton.Size = new System.Drawing.Size(108, 21);
+            this.SaikoClassicButton.TabIndex = 9;
+            this.SaikoClassicButton.TabStop = true;
+            this.SaikoClassicButton.Text = "SaikoClassic";
+            this.SaikoClassicButton.UseVisualStyleBackColor = true;
+            this.SaikoClassicButton.CheckedChanged += new System.EventHandler(this.SaikoClassicButton_CheckedChanged);
+            // 
+            // wobbleButton
+            // 
+            this.wobbleButton.AutoSize = true;
+            this.wobbleButton.Location = new System.Drawing.Point(6, 236);
+            this.wobbleButton.Name = "wobbleButton";
+            this.wobbleButton.Size = new System.Drawing.Size(77, 21);
+            this.wobbleButton.TabIndex = 10;
+            this.wobbleButton.Text = "Wobble";
+            this.wobbleButton.UseVisualStyleBackColor = true;
+            // 
             // TINRS_Tuesday_TestFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -598,10 +677,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar ISlider;
         private System.Windows.Forms.GroupBox Mode;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton chiparp1button;
+        private System.Windows.Forms.RadioButton TritranceButton;
+        private System.Windows.Forms.RadioButton saikoButton;
+        private System.Windows.Forms.RadioButton TestPatternButton;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton5;
         private System.Windows.Forms.RadioButton radioButton6;
@@ -627,5 +706,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TrackBar TempoSlider;
+        private System.Windows.Forms.RadioButton chipArp2Button;
+        private System.Windows.Forms.RadioButton snhButton;
+        private System.Windows.Forms.RadioButton markovButton;
+        private System.Windows.Forms.RadioButton stomperButton;
+        private System.Windows.Forms.RadioButton SaikoClassicButton;
+        private System.Windows.Forms.RadioButton wobbleButton;
     }
 }

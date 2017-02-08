@@ -165,10 +165,16 @@ namespace Sim1
             int Beats = 0;
             int Ticks = 0;
 
-            if (radioButton1.Checked) Algo = 0;
-            if (radioButton4.Checked) Algo = 1;
-            if (radioButton3.Checked) Algo = 2;
-            if (radioButton2.Checked) Algo = 3;
+            if (TestPatternButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_TESTS;
+            if (TritranceButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_TRITRANCE;
+            if (stomperButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_STOMPER;
+            if (markovButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_MARKOV; ;
+            if (wobbleButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_WOBBLE;
+            if (chiparp1button.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_CHIPARP1;
+            if (chipArp2Button.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_CHIPARP2;
+            if (snhButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_SNH;
+            if (saikoButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_SAIKO_LEAD;
+            if (SaikoClassicButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_SAIKO_CLASSIC; 
 
             if (radioButton5.Checked) Scale = 0;
             if (radioButton6.Checked) Scale = 1;
@@ -323,6 +329,35 @@ namespace Sim1
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
+        }
+
+        private void chipArp2Button_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void snhButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void markovButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void stomperButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void SaikoClassicButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
         }
     }
 }

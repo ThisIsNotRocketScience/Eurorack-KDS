@@ -27,6 +27,30 @@ namespace Sim1
 
         #region TUESDAY
 
+        public enum ALGONAMES {
+            ALGO_TESTS,
+
+            // german style minimal melodies
+            ALGO_TRITRANCE,
+
+            // fishyfishy! with slides! 
+            ALGO_STOMPER,
+
+            // Random walking with mr. Markov.
+            ALGO_MARKOV,
+
+            //	ALGO_PACHEDECO,
+            ALGO_WOBBLE,
+            ALGO_CHIPARP1,
+            ALGO_CHIPARP2,
+
+            ALGO_SNH,
+            // classic saiko things, reimagined
+            ALGO_SAIKO_LEAD,
+            ALGO_SAIKO_CLASSIC,
+            __ALGO_COUNT
+        }
+
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int Tuesday_GetPatternLength();
 

@@ -161,7 +161,8 @@ extern "C"
 
 	__declspec(dllexport) void __stdcall Tuesday_UpdatePattern(int algo, int scale, int ticks, int beats, int tempo, int x, int y, int i)
 	{
-		TuesdayParams.algo = algo;
+		TuesdayParams.algo = 0;
+		TuesdaySettings.algooptions[0] = algo;
 		TuesdayParams.beatopt = beats;
 		TuesdayParams.scale = scale;
 		Tuesday.seed2 = y;
