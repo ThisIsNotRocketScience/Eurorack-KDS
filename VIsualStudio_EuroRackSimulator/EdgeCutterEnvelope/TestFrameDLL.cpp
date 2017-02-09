@@ -1,6 +1,7 @@
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
+#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Algo.h"
 
 
 struct Tuesday_PatternGen Tuesday;
@@ -66,8 +67,8 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall GetEnvCurve(int staticenv)
 	{
-		if (staticenv == 0) return (int)(EnvRunning.CurvedOutput );
-		return (int)(EnvStatic.CurvedOutput );
+		if (staticenv == 0) return (int)(EnvRunning.CurvedOutput);
+		return (int)(EnvStatic.CurvedOutput);
 	}
 
 	__declspec(dllexport) int __stdcall GetLed(int Led)
@@ -112,7 +113,7 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall GetLFOPhased(int staticlfo)
 	{
-		if (staticlfo) return (int)(LFOStatic.OutputPhased );
+		if (staticlfo) return (int)(LFOStatic.OutputPhased);
 		return (int)(LFORunning.OutputPhased);
 	}
 
@@ -128,7 +129,7 @@ extern "C"
 	{
 		return Tuesday.CurrentPattern.Ticks[tick].vel;
 	}
-	
+
 	__declspec(dllexport) int __stdcall Tuesday_GetTickNote(int tick)
 	{
 		return Tuesday.CurrentPattern.Ticks[tick].note;
@@ -136,7 +137,7 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall Tuesday_GetTickGate(int tick)
 	{
-		return Tuesday.CurrentPattern.Ticks[tick].vel>0 ? 1 : 0;
+		return Tuesday.CurrentPattern.Ticks[tick].vel > 0 ? 1 : 0;
 	}
 
 	__declspec(dllexport) int __stdcall Tuesday_GetTickSlide(int tick)
@@ -164,6 +165,7 @@ extern "C"
 		TuesdayParams.algo = 0;
 		TuesdaySettings.algooptions[0] = algo;
 		TuesdayParams.beatopt = beats;
+		TuesdayParams.tpbopt = ticks;
 		TuesdayParams.scale = scale;
 		Tuesday.seed2 = y;
 		Tuesday.seed1 = x;
@@ -184,10 +186,10 @@ extern "C"
 		Tuesday_TimerTick(&Tuesday, &TuesdayParams);
 	}
 
-	
+
 	__declspec(dllexport) bool __stdcall  Tuesday_GetAccent()
 	{
-		return Tuesday.Gates[GATE_ACCENT]>0;
+		return Tuesday.Gates[GATE_ACCENT] > 0;
 	}
 
 	__declspec(dllexport) int __stdcall Tuesday_GetVel()
@@ -218,22 +220,65 @@ BOOL WINAPI DllMain(
 	_In_ LPVOID    lpvReserved
 )
 {
-	int32_t V[4] = { 0,65536,0,65536 };
-
-	Wobbler_LoadSettings(&LFOSettings, &LFOParams);
-	Wobbler_Init(&LFORunning);
-	Wobbler_Init(&LFOStatic);
-	LFOStatic.Speed = 0x80;
-	if (0)
+	
+	if(fdwReason == DLL_PROCESS_ATTACH)
 	{
-		for (int i = 0; i < 256; i++)
+		int32_t V[4] = { 0,65536,0,65536 };
+
+		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
+		Wobbler_Init(&LFORunning);
+		Wobbler_Init(&LFOStatic);
+		LFOStatic.Speed = 0x80;
+		Init();
+		for (int i = 0; i < __ALGO_COUNT; i++)
 		{
-			LFOStatic.Phasing = 80 + ((i / 80) % 2);
+			int min = 10000;
+			int max = -1000;
+			double avg = 0;
+			int c = 0;
+			bool HasOffs = false;
+			for (int bang = 0; bang < 255; bang += 16)
+			{
+				for (int y = 0; y < 255; y += 16)
+				{
 
-			Wobbler_Get(&LFOStatic, &LFOParams);
+					for (int x = 0; x < 255; x += 16)
+					{
+						int patlen = Tuesday.CurrentPattern.Length;
+						c += patlen;
+						Tuesday_UpdatePattern(i, 0, 1, 2, 0, x, y, bang);
+						for (int j = 0; j < patlen; j++)
+						{
+							struct Tuesday_Tick &T = Tuesday.CurrentPattern.Ticks[j];
+							if (T.note != TUESDAY_NOTEOFF)
+							{
+								if (T.note < min) min = T.note; else if (T.note > max) max = T.note;
+							}
+							else
+							{
+								HasOffs = true;
+							}
+							avg = avg + T.note;
+						}
+					}
+				}
+			}
+			avg /= (double)c;
 
-			printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
+			printf("%d: min %d \tmax %d \tavg:%2f\t Has Offs: %d\n", i, min, max, avg, HasOffs?1:0);
+		}
 
+		if (0)
+		{
+			for (int i = 0; i < 256; i++)
+			{
+				LFOStatic.Phasing = 80 + ((i / 80) % 2);
+
+				Wobbler_Get(&LFOStatic, &LFOParams);
+
+				printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
+
+			}
 		}
 	}
 	return TRUE;

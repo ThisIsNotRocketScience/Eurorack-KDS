@@ -340,7 +340,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	P->scale = 1;
 	P->tpbopt = 2;
 
-	S->algooptions[0] = ALGO_SNH;
+	S->algooptions[0] = ALGO_CHIPARP2;
 	S->algooptions[1] = ALGO_SAIKO_CLASSIC;
 	S->algooptions[2] = ALGO_STOMPER;
 	S->algooptions[3] = ALGO_WOBBLE;

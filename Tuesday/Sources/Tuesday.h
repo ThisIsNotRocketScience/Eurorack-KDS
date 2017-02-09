@@ -2,7 +2,11 @@
 #include <stdint.h>
 #include "../../EurorackShared/EurorackShared.h"
 
-#define TUESDAY_MAXTICK 160
+
+#define TUESDAY_MAXBEAT_VAL 32
+#define TUESDAY_MAXTPB_VAL 9
+#define TUESDAY_MAXTICK (TUESDAY_MAXTPB_VAL * TUESDAY_MAXBEAT_VAL)
+
 #define TUESDAY_GATES 6
 
 #define GATE_TICK 4

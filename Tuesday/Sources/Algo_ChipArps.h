@@ -70,27 +70,20 @@ void Algo_ChipArp_2_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 {
 	Output->Chip2.ChordSeed = Tuesday_Rand(R);
 	Tuesday_RandomSeed(&Output->Chip2.R, Output->Chip2.ChordSeed);
-	Output->Chip2.chordscaler = (Tuesday_Rand(R) % 3) + 1;
+	Output->Chip2.chordscaler = (Tuesday_Rand(R) % 3) + 2;
 
 	Output->Chip2.offset = (Tuesday_Rand(R) % 5);
-	Output->Chip2.len = (Tuesday_Rand(R) & 0x3) + 1;
+	Output->Chip2.len = ((Tuesday_Rand(R) & 0x3) + 1)*2;
 	Output->Chip2.TimeMult =  Tuesday_BoolChance(R) ? Tuesday_BoolChance(R) : 0;
-	Output->Chip2.DeadTime = Output->Chip2.TimeMult;
+	Output->Chip2.DeadTime = 0;
 	Output->Chip2.idx = 0;
 	Output->Chip2.dir = Tuesday_BoolChance(R);
 }
 
-
 void Algo_ChipArp_2_PatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
 {
-	T->CurrentPattern.TPB *= 2;
+	//T->CurrentPattern.TPB *= 2;
 }
-
-
-
-
-
-
 
 void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
 {
@@ -105,16 +98,16 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 	}
 	else
 	{
-		if (PS->Chip2.idx % S->tpboptions[P->tpbopt] == 0)
+		if (PS->Chip2.idx == S->tpboptions[P->tpbopt] )
 		{
+			PS->Chip2.idx = 0;
 			Tuesday_RandomSeed(&PS->Chip2.R, PS->Chip2.ChordSeed);
 			PS->Chip2.len--;
 			if (PS->Chip2.len == 0)
 			{
-				PS->Chip2.chordscaler = (Tuesday_Rand(R) % 3) + 1;
+				PS->Chip2.chordscaler = (Tuesday_Rand(R) % 3) + 2;
 				PS->Chip2.offset = (Tuesday_Rand(R) % 5);
-				PS->Chip2.len = (Tuesday_Rand(R) & 0x3) + 1;
-
+				PS->Chip2.len = ((Tuesday_Rand(R) & 0x3) + 1)*2;
 
 				if (Tuesday_BoolChance(R))
 				{
@@ -122,18 +115,21 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 				}
 			}
 		}
+
 		int scaleidx = ((PS->Chip2.idx) % S->tpboptions[P->tpbopt]);
+		
 		if (PS->Chip2.dir)
 		{
 			scaleidx = S->tpboptions[P->tpbopt] - scaleidx - 1;
 		}
+
 		SN.note = (scaleidx  * PS->Chip2.chordscaler) + PS->Chip2.offset;
 		
 		PS->Chip2.idx++;
 		PS->Chip2.DeadTime = PS->Chip2.TimeMult;
 		if (PS->Chip2.DeadTime > 0)
 		{
-			Output->maxsubticklength = ((1 + (Tuesday_Rand(&PS->Chip2.R) % PS->Chip2.TimeMult)) * TUESDAY_SUBTICKRES) - 2;
+			Output->maxsubticklength = ((1 + PS->Chip2.TimeMult) * TUESDAY_SUBTICKRES) - 2;
 		}
 	}
 	Output->note = ScaleToNote(&SN, T, P, S);

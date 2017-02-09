@@ -39,6 +39,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TempoSlider = new System.Windows.Forms.TrackBar();
             this.Mode = new System.Windows.Forms.GroupBox();
+            this.wobbleButton = new System.Windows.Forms.RadioButton();
+            this.SaikoClassicButton = new System.Windows.Forms.RadioButton();
+            this.chipArp2Button = new System.Windows.Forms.RadioButton();
+            this.snhButton = new System.Windows.Forms.RadioButton();
+            this.markovButton = new System.Windows.Forms.RadioButton();
+            this.stomperButton = new System.Windows.Forms.RadioButton();
             this.chiparp1button = new System.Windows.Forms.RadioButton();
             this.TritranceButton = new System.Windows.Forms.RadioButton();
             this.saikoButton = new System.Windows.Forms.RadioButton();
@@ -49,15 +55,15 @@
             this.radioButton7 = new System.Windows.Forms.RadioButton();
             this.radioButton8 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton9 = new System.Windows.Forms.RadioButton();
-            this.radioButton10 = new System.Windows.Forms.RadioButton();
-            this.radioButton11 = new System.Windows.Forms.RadioButton();
-            this.radioButton12 = new System.Windows.Forms.RadioButton();
+            this.tpb3 = new System.Windows.Forms.RadioButton();
+            this.tpb4 = new System.Windows.Forms.RadioButton();
+            this.tpb2 = new System.Windows.Forms.RadioButton();
+            this.tpb5 = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.radioButton13 = new System.Windows.Forms.RadioButton();
-            this.radioButton14 = new System.Windows.Forms.RadioButton();
-            this.radioButton15 = new System.Windows.Forms.RadioButton();
-            this.radioButton16 = new System.Windows.Forms.RadioButton();
+            this.beats4 = new System.Windows.Forms.RadioButton();
+            this.beats8 = new System.Windows.Forms.RadioButton();
+            this.beats16 = new System.Windows.Forms.RadioButton();
+            this.beats32 = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -67,12 +73,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.stomperButton = new System.Windows.Forms.RadioButton();
-            this.markovButton = new System.Windows.Forms.RadioButton();
-            this.snhButton = new System.Windows.Forms.RadioButton();
-            this.chipArp2Button = new System.Windows.Forms.RadioButton();
-            this.SaikoClassicButton = new System.Windows.Forms.RadioButton();
-            this.wobbleButton = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.XSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YSlider)).BeginInit();
@@ -217,6 +217,73 @@
             this.Mode.TabStop = false;
             this.Mode.Text = "Algo";
             // 
+            // wobbleButton
+            // 
+            this.wobbleButton.AutoSize = true;
+            this.wobbleButton.Location = new System.Drawing.Point(6, 236);
+            this.wobbleButton.Name = "wobbleButton";
+            this.wobbleButton.Size = new System.Drawing.Size(77, 21);
+            this.wobbleButton.TabIndex = 10;
+            this.wobbleButton.Text = "Wobble";
+            this.wobbleButton.UseVisualStyleBackColor = true;
+            // 
+            // SaikoClassicButton
+            // 
+            this.SaikoClassicButton.AutoSize = true;
+            this.SaikoClassicButton.Checked = true;
+            this.SaikoClassicButton.Location = new System.Drawing.Point(11, 209);
+            this.SaikoClassicButton.Name = "SaikoClassicButton";
+            this.SaikoClassicButton.Size = new System.Drawing.Size(108, 21);
+            this.SaikoClassicButton.TabIndex = 9;
+            this.SaikoClassicButton.TabStop = true;
+            this.SaikoClassicButton.Text = "SaikoClassic";
+            this.SaikoClassicButton.UseVisualStyleBackColor = true;
+            this.SaikoClassicButton.CheckedChanged += new System.EventHandler(this.SaikoClassicButton_CheckedChanged);
+            // 
+            // chipArp2Button
+            // 
+            this.chipArp2Button.AutoSize = true;
+            this.chipArp2Button.Location = new System.Drawing.Point(11, 67);
+            this.chipArp2Button.Name = "chipArp2Button";
+            this.chipArp2Button.Size = new System.Drawing.Size(65, 21);
+            this.chipArp2Button.TabIndex = 8;
+            this.chipArp2Button.Text = "Chip2";
+            this.chipArp2Button.UseVisualStyleBackColor = true;
+            this.chipArp2Button.CheckedChanged += new System.EventHandler(this.chipArp2Button_CheckedChanged);
+            // 
+            // snhButton
+            // 
+            this.snhButton.AutoSize = true;
+            this.snhButton.Location = new System.Drawing.Point(11, 182);
+            this.snhButton.Name = "snhButton";
+            this.snhButton.Size = new System.Drawing.Size(58, 21);
+            this.snhButton.TabIndex = 7;
+            this.snhButton.Text = "SNH";
+            this.snhButton.UseVisualStyleBackColor = true;
+            this.snhButton.CheckedChanged += new System.EventHandler(this.snhButton_CheckedChanged);
+            // 
+            // markovButton
+            // 
+            this.markovButton.AutoSize = true;
+            this.markovButton.Location = new System.Drawing.Point(11, 159);
+            this.markovButton.Name = "markovButton";
+            this.markovButton.Size = new System.Drawing.Size(75, 21);
+            this.markovButton.TabIndex = 6;
+            this.markovButton.Text = "Markov";
+            this.markovButton.UseVisualStyleBackColor = true;
+            this.markovButton.CheckedChanged += new System.EventHandler(this.markovButton_CheckedChanged);
+            // 
+            // stomperButton
+            // 
+            this.stomperButton.AutoSize = true;
+            this.stomperButton.Location = new System.Drawing.Point(11, 136);
+            this.stomperButton.Name = "stomperButton";
+            this.stomperButton.Size = new System.Drawing.Size(82, 21);
+            this.stomperButton.TabIndex = 5;
+            this.stomperButton.Text = "Stomper";
+            this.stomperButton.UseVisualStyleBackColor = true;
+            this.stomperButton.CheckedChanged += new System.EventHandler(this.stomperButton_CheckedChanged);
+            // 
             // chiparp1button
             // 
             this.chiparp1button.AutoSize = true;
@@ -326,10 +393,10 @@
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
-            this.groupBox2.Controls.Add(this.radioButton9);
-            this.groupBox2.Controls.Add(this.radioButton10);
-            this.groupBox2.Controls.Add(this.radioButton11);
-            this.groupBox2.Controls.Add(this.radioButton12);
+            this.groupBox2.Controls.Add(this.tpb3);
+            this.groupBox2.Controls.Add(this.tpb4);
+            this.groupBox2.Controls.Add(this.tpb2);
+            this.groupBox2.Controls.Add(this.tpb5);
             this.groupBox2.Location = new System.Drawing.Point(97, 479);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(61, 126);
@@ -337,59 +404,59 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ticks";
             // 
-            // radioButton9
+            // tpb3
             // 
-            this.radioButton9.AutoSize = true;
-            this.radioButton9.Location = new System.Drawing.Point(18, 42);
-            this.radioButton9.Name = "radioButton9";
-            this.radioButton9.Size = new System.Drawing.Size(37, 21);
-            this.radioButton9.TabIndex = 4;
-            this.radioButton9.Text = "3";
-            this.radioButton9.UseVisualStyleBackColor = true;
-            this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
+            this.tpb3.AutoSize = true;
+            this.tpb3.Location = new System.Drawing.Point(18, 42);
+            this.tpb3.Name = "tpb3";
+            this.tpb3.Size = new System.Drawing.Size(37, 21);
+            this.tpb3.TabIndex = 4;
+            this.tpb3.Text = "3";
+            this.tpb3.UseVisualStyleBackColor = true;
+            this.tpb3.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
             // 
-            // radioButton10
+            // tpb4
             // 
-            this.radioButton10.AutoSize = true;
-            this.radioButton10.Location = new System.Drawing.Point(18, 63);
-            this.radioButton10.Name = "radioButton10";
-            this.radioButton10.Size = new System.Drawing.Size(37, 21);
-            this.radioButton10.TabIndex = 3;
-            this.radioButton10.Text = "4";
-            this.radioButton10.UseVisualStyleBackColor = true;
-            this.radioButton10.CheckedChanged += new System.EventHandler(this.radioButton10_CheckedChanged);
+            this.tpb4.AutoSize = true;
+            this.tpb4.Location = new System.Drawing.Point(18, 63);
+            this.tpb4.Name = "tpb4";
+            this.tpb4.Size = new System.Drawing.Size(37, 21);
+            this.tpb4.TabIndex = 3;
+            this.tpb4.Text = "4";
+            this.tpb4.UseVisualStyleBackColor = true;
+            this.tpb4.CheckedChanged += new System.EventHandler(this.radioButton10_CheckedChanged);
             // 
-            // radioButton11
+            // tpb2
             // 
-            this.radioButton11.AutoSize = true;
-            this.radioButton11.Checked = true;
-            this.radioButton11.Location = new System.Drawing.Point(18, 21);
-            this.radioButton11.Name = "radioButton11";
-            this.radioButton11.Size = new System.Drawing.Size(37, 21);
-            this.radioButton11.TabIndex = 1;
-            this.radioButton11.TabStop = true;
-            this.radioButton11.Text = "2";
-            this.radioButton11.UseVisualStyleBackColor = true;
-            this.radioButton11.CheckedChanged += new System.EventHandler(this.radioButton11_CheckedChanged);
+            this.tpb2.AutoSize = true;
+            this.tpb2.Checked = true;
+            this.tpb2.Location = new System.Drawing.Point(18, 21);
+            this.tpb2.Name = "tpb2";
+            this.tpb2.Size = new System.Drawing.Size(37, 21);
+            this.tpb2.TabIndex = 1;
+            this.tpb2.TabStop = true;
+            this.tpb2.Text = "2";
+            this.tpb2.UseVisualStyleBackColor = true;
+            this.tpb2.CheckedChanged += new System.EventHandler(this.radioButton11_CheckedChanged);
             // 
-            // radioButton12
+            // tpb5
             // 
-            this.radioButton12.AutoSize = true;
-            this.radioButton12.Location = new System.Drawing.Point(18, 84);
-            this.radioButton12.Name = "radioButton12";
-            this.radioButton12.Size = new System.Drawing.Size(37, 21);
-            this.radioButton12.TabIndex = 2;
-            this.radioButton12.Text = "5";
-            this.radioButton12.UseVisualStyleBackColor = true;
-            this.radioButton12.CheckedChanged += new System.EventHandler(this.radioButton12_CheckedChanged);
+            this.tpb5.AutoSize = true;
+            this.tpb5.Location = new System.Drawing.Point(18, 84);
+            this.tpb5.Name = "tpb5";
+            this.tpb5.Size = new System.Drawing.Size(37, 21);
+            this.tpb5.TabIndex = 2;
+            this.tpb5.Text = "5";
+            this.tpb5.UseVisualStyleBackColor = true;
+            this.tpb5.CheckedChanged += new System.EventHandler(this.radioButton12_CheckedChanged);
             // 
             // groupBox3
             // 
             this.groupBox3.AutoSize = true;
-            this.groupBox3.Controls.Add(this.radioButton13);
-            this.groupBox3.Controls.Add(this.radioButton14);
-            this.groupBox3.Controls.Add(this.radioButton15);
-            this.groupBox3.Controls.Add(this.radioButton16);
+            this.groupBox3.Controls.Add(this.beats4);
+            this.groupBox3.Controls.Add(this.beats8);
+            this.groupBox3.Controls.Add(this.beats16);
+            this.groupBox3.Controls.Add(this.beats32);
             this.groupBox3.Location = new System.Drawing.Point(3, 611);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 126);
@@ -397,51 +464,51 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Beats";
             // 
-            // radioButton13
+            // beats4
             // 
-            this.radioButton13.AutoSize = true;
-            this.radioButton13.Checked = true;
-            this.radioButton13.Location = new System.Drawing.Point(11, 21);
-            this.radioButton13.Name = "radioButton13";
-            this.radioButton13.Size = new System.Drawing.Size(37, 21);
-            this.radioButton13.TabIndex = 4;
-            this.radioButton13.TabStop = true;
-            this.radioButton13.Text = "4";
-            this.radioButton13.UseVisualStyleBackColor = true;
-            this.radioButton13.CheckedChanged += new System.EventHandler(this.radioButton13_CheckedChanged);
+            this.beats4.AutoSize = true;
+            this.beats4.Checked = true;
+            this.beats4.Location = new System.Drawing.Point(11, 21);
+            this.beats4.Name = "beats4";
+            this.beats4.Size = new System.Drawing.Size(37, 21);
+            this.beats4.TabIndex = 4;
+            this.beats4.TabStop = true;
+            this.beats4.Text = "4";
+            this.beats4.UseVisualStyleBackColor = true;
+            this.beats4.CheckedChanged += new System.EventHandler(this.radioButton13_CheckedChanged);
             // 
-            // radioButton14
+            // beats8
             // 
-            this.radioButton14.AutoSize = true;
-            this.radioButton14.Location = new System.Drawing.Point(11, 42);
-            this.radioButton14.Name = "radioButton14";
-            this.radioButton14.Size = new System.Drawing.Size(37, 21);
-            this.radioButton14.TabIndex = 3;
-            this.radioButton14.Text = "8";
-            this.radioButton14.UseVisualStyleBackColor = true;
-            this.radioButton14.CheckedChanged += new System.EventHandler(this.radioButton14_CheckedChanged);
+            this.beats8.AutoSize = true;
+            this.beats8.Location = new System.Drawing.Point(11, 42);
+            this.beats8.Name = "beats8";
+            this.beats8.Size = new System.Drawing.Size(37, 21);
+            this.beats8.TabIndex = 3;
+            this.beats8.Text = "8";
+            this.beats8.UseVisualStyleBackColor = true;
+            this.beats8.CheckedChanged += new System.EventHandler(this.radioButton14_CheckedChanged);
             // 
-            // radioButton15
+            // beats16
             // 
-            this.radioButton15.AutoSize = true;
-            this.radioButton15.Location = new System.Drawing.Point(11, 63);
-            this.radioButton15.Name = "radioButton15";
-            this.radioButton15.Size = new System.Drawing.Size(45, 21);
-            this.radioButton15.TabIndex = 1;
-            this.radioButton15.Text = "16";
-            this.radioButton15.UseVisualStyleBackColor = true;
-            this.radioButton15.CheckedChanged += new System.EventHandler(this.radioButton15_CheckedChanged);
+            this.beats16.AutoSize = true;
+            this.beats16.Location = new System.Drawing.Point(11, 63);
+            this.beats16.Name = "beats16";
+            this.beats16.Size = new System.Drawing.Size(45, 21);
+            this.beats16.TabIndex = 1;
+            this.beats16.Text = "16";
+            this.beats16.UseVisualStyleBackColor = true;
+            this.beats16.CheckedChanged += new System.EventHandler(this.radioButton15_CheckedChanged);
             // 
-            // radioButton16
+            // beats32
             // 
-            this.radioButton16.AutoSize = true;
-            this.radioButton16.Location = new System.Drawing.Point(11, 84);
-            this.radioButton16.Name = "radioButton16";
-            this.radioButton16.Size = new System.Drawing.Size(45, 21);
-            this.radioButton16.TabIndex = 2;
-            this.radioButton16.Text = "32";
-            this.radioButton16.UseVisualStyleBackColor = true;
-            this.radioButton16.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
+            this.beats32.AutoSize = true;
+            this.beats32.Location = new System.Drawing.Point(11, 84);
+            this.beats32.Name = "beats32";
+            this.beats32.Size = new System.Drawing.Size(45, 21);
+            this.beats32.TabIndex = 2;
+            this.beats32.Text = "32";
+            this.beats32.UseVisualStyleBackColor = true;
+            this.beats32.CheckedChanged += new System.EventHandler(this.radioButton16_CheckedChanged);
             // 
             // splitContainer1
             // 
@@ -560,73 +627,6 @@
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // stomperButton
-            // 
-            this.stomperButton.AutoSize = true;
-            this.stomperButton.Location = new System.Drawing.Point(11, 136);
-            this.stomperButton.Name = "stomperButton";
-            this.stomperButton.Size = new System.Drawing.Size(82, 21);
-            this.stomperButton.TabIndex = 5;
-            this.stomperButton.Text = "Stomper";
-            this.stomperButton.UseVisualStyleBackColor = true;
-            this.stomperButton.CheckedChanged += new System.EventHandler(this.stomperButton_CheckedChanged);
-            // 
-            // markovButton
-            // 
-            this.markovButton.AutoSize = true;
-            this.markovButton.Location = new System.Drawing.Point(11, 159);
-            this.markovButton.Name = "markovButton";
-            this.markovButton.Size = new System.Drawing.Size(75, 21);
-            this.markovButton.TabIndex = 6;
-            this.markovButton.Text = "Markov";
-            this.markovButton.UseVisualStyleBackColor = true;
-            this.markovButton.CheckedChanged += new System.EventHandler(this.markovButton_CheckedChanged);
-            // 
-            // snhButton
-            // 
-            this.snhButton.AutoSize = true;
-            this.snhButton.Location = new System.Drawing.Point(11, 182);
-            this.snhButton.Name = "snhButton";
-            this.snhButton.Size = new System.Drawing.Size(58, 21);
-            this.snhButton.TabIndex = 7;
-            this.snhButton.Text = "SNH";
-            this.snhButton.UseVisualStyleBackColor = true;
-            this.snhButton.CheckedChanged += new System.EventHandler(this.snhButton_CheckedChanged);
-            // 
-            // chipArp2Button
-            // 
-            this.chipArp2Button.AutoSize = true;
-            this.chipArp2Button.Location = new System.Drawing.Point(11, 67);
-            this.chipArp2Button.Name = "chipArp2Button";
-            this.chipArp2Button.Size = new System.Drawing.Size(65, 21);
-            this.chipArp2Button.TabIndex = 8;
-            this.chipArp2Button.Text = "Chip2";
-            this.chipArp2Button.UseVisualStyleBackColor = true;
-            this.chipArp2Button.CheckedChanged += new System.EventHandler(this.chipArp2Button_CheckedChanged);
-            // 
-            // SaikoClassicButton
-            // 
-            this.SaikoClassicButton.AutoSize = true;
-            this.SaikoClassicButton.Checked = true;
-            this.SaikoClassicButton.Location = new System.Drawing.Point(11, 209);
-            this.SaikoClassicButton.Name = "SaikoClassicButton";
-            this.SaikoClassicButton.Size = new System.Drawing.Size(108, 21);
-            this.SaikoClassicButton.TabIndex = 9;
-            this.SaikoClassicButton.TabStop = true;
-            this.SaikoClassicButton.Text = "SaikoClassic";
-            this.SaikoClassicButton.UseVisualStyleBackColor = true;
-            this.SaikoClassicButton.CheckedChanged += new System.EventHandler(this.SaikoClassicButton_CheckedChanged);
-            // 
-            // wobbleButton
-            // 
-            this.wobbleButton.AutoSize = true;
-            this.wobbleButton.Location = new System.Drawing.Point(6, 236);
-            this.wobbleButton.Name = "wobbleButton";
-            this.wobbleButton.Size = new System.Drawing.Size(77, 21);
-            this.wobbleButton.TabIndex = 10;
-            this.wobbleButton.Text = "Wobble";
-            this.wobbleButton.UseVisualStyleBackColor = true;
-            // 
             // TINRS_Tuesday_TestFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -692,15 +692,15 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton radioButton9;
-        private System.Windows.Forms.RadioButton radioButton10;
-        private System.Windows.Forms.RadioButton radioButton11;
-        private System.Windows.Forms.RadioButton radioButton12;
+        private System.Windows.Forms.RadioButton tpb3;
+        private System.Windows.Forms.RadioButton tpb4;
+        private System.Windows.Forms.RadioButton tpb2;
+        private System.Windows.Forms.RadioButton tpb5;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton radioButton13;
-        private System.Windows.Forms.RadioButton radioButton14;
-        private System.Windows.Forms.RadioButton radioButton15;
-        private System.Windows.Forms.RadioButton radioButton16;
+        private System.Windows.Forms.RadioButton beats4;
+        private System.Windows.Forms.RadioButton beats8;
+        private System.Windows.Forms.RadioButton beats16;
+        private System.Windows.Forms.RadioButton beats32;
         private System.Windows.Forms.NumericUpDown BPMupdown;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;

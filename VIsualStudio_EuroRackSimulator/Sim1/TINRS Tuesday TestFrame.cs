@@ -181,15 +181,15 @@ namespace Sim1
             if (radioButton7.Checked) Scale = 2;
             if (radioButton8.Checked) Scale = 3;
 
-            if (radioButton9.Checked) Ticks = 0;
-            if (radioButton10.Checked) Ticks = 1;
-            if (radioButton11.Checked) Ticks = 2;
-            if (radioButton12.Checked) Ticks = 3;
+            if (tpb3.Checked) Ticks = 0;
+            if (tpb4.Checked) Ticks = 1;
+            if (tpb2.Checked) Ticks = 2;
+            if (tpb5.Checked) Ticks = 3;
 
-            if (radioButton13.Checked) Beats = 0;
-            if (radioButton14.Checked) Beats = 1;
-            if (radioButton15.Checked) Beats = 2;
-            if (radioButton16.Checked) Beats = 3;
+            if (beats4.Checked) Beats = 0;
+            if (beats8.Checked) Beats = 1;
+            if (beats16.Checked) Beats = 2;
+            if (beats32.Checked) Beats = 3;
 
             Pattern.Clear();
             TestFrameLoader.Tuesday_UpdatePattern(Algo, Scale,Ticks, Beats,(int)TempoSlider.Value,  (int)XSlider.Value, (int)YSlider.Value, (int)ISlider.Value);
