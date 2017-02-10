@@ -100,12 +100,13 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 	}
 	else
 	{
+		int DeadTimeAdd = 0;
 		if (PS->Chip2.idx == PS->Chip2.ChordLen)
 		{
 			PS->Chip2.idx = 0;
 			PS->Chip2.len--;
 			Output->accent = 1;
-
+			if (Tuesday_PercChance(R, 200)) DeadTimeAdd = 1 + (Tuesday_Rand(R) % 3);
 			if (PS->Chip2.len == 0)
 			{
 				PS->Chip2.ChordSeed = Tuesday_Rand(R);
@@ -138,9 +139,10 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 		{
 			Output->maxsubticklength = ((1 + PS->Chip2.TimeMult) * TUESDAY_SUBTICKRES) - 2;
 		}
+		PS->Chip2.DeadTime += DeadTimeAdd;
 	}
 	Output->note = ScaleToNote(&SN, T, P, S);
 
-	Output->vel = (Tuesday_RandByte(&PS->Chip2.R) / 2) + (((I + PS->GENERIC.b2) == 0) ? 127 : 0);
+	Output->vel = (Tuesday_RandByte(&PS->Chip2.R));
 	
 }

@@ -70,6 +70,12 @@
     <Compile Include="TestSynth.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TINRS Tuesday Lights.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TINRS Tuesday Lights.Designer.cs">
+      <DependentUpon>TINRS Tuesday Lights.cs</DependentUpon>
+    </Compile>
     <Compile Include="TINRS Tuesday TestFrame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TINRS Tuesday Lights.resx">
+      <DependentUpon>TINRS Tuesday Lights.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TINRS Tuesday TestFrame.resx">
       <DependentUpon>TINRS Tuesday TestFrame.cs</DependentUpon>

@@ -36,6 +36,11 @@ namespace Sim1
             tf.Text = "Tuesday";
 
 
+            TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
+            lf.Show(this.dockPanel, DockState.Document);
+            lf.Text = "Tuesday Lights";
+
+
             WobblerTestFrame wf = new WobblerTestFrame();
             wf.Show(this.dockPanel, DockState.Document);
             wf.Text = "Wobbler";

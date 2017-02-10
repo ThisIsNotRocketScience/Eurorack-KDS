@@ -63,6 +63,9 @@ int adcchannels[ADC_Count];
 #include "Wobbler.h"
 #include "../../EurorackShared/EurorackShared.c"
 
+#include "../../EurorackShared/Math.c"
+
+
 struct Wobbler_LFO LFO;
 struct Wobbler_Settings Settings;
 struct Wobbler_Params Params;
