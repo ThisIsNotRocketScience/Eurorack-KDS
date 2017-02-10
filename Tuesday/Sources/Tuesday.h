@@ -4,7 +4,7 @@
 
 
 #define TUESDAY_MAXBEAT_VAL 32
-#define TUESDAY_MAXTPB_VAL 9
+#define TUESDAY_MAXTPB_VAL 10
 #define TUESDAY_MAXTICK (TUESDAY_MAXTPB_VAL * TUESDAY_MAXBEAT_VAL)
 
 #define TUESDAY_GATES 6
@@ -17,13 +17,13 @@
 #define GATE_GATE 0
 #define GATE_MINGATETIME 10
 #define TUESDAY_LEDS 16
-#define TUESDAY_NOTEOFF -255
+#define TUESDAY_NOTEOFF -100
 #define TUESDAY_SUBTICKRES 6
 
 struct Tuesday_Tick
 {
 	unsigned char vel;
-	signed short note;
+	signed char note;
 	unsigned char accent :1;
 	unsigned char slide : 2;	
 	unsigned char maxsubticklength : 4;

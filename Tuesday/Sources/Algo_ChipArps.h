@@ -77,7 +77,8 @@ void Algo_ChipArp_2_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 	Output->Chip2.TimeMult =  Tuesday_BoolChance(R) ? Tuesday_BoolChance(R) : 0;
 	Output->Chip2.DeadTime = 0;
 	Output->Chip2.idx = 0;
-	Output->Chip2.dir = Tuesday_BoolChance(R);
+	Output->Chip2.dir = Tuesday_BoolChance(R) ? Tuesday_BoolChance(R) : 0;
+	Output->Chip2.ChordLen = 3 + (T->seed1>>6);
 }
 
 void Algo_ChipArp_2_PatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
@@ -94,35 +95,41 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 	if (PS->Chip2.DeadTime > 0)
 	{
 		PS->Chip2.DeadTime--;
+		Output->accent = 0;
 		NOTEOFF();
 	}
 	else
 	{
-		if (PS->Chip2.idx == S->tpboptions[P->tpbopt] )
+		if (PS->Chip2.idx == PS->Chip2.ChordLen)
 		{
 			PS->Chip2.idx = 0;
-			Tuesday_RandomSeed(&PS->Chip2.R, PS->Chip2.ChordSeed);
 			PS->Chip2.len--;
+			Output->accent = 1;
+
 			if (PS->Chip2.len == 0)
 			{
+				PS->Chip2.ChordSeed = Tuesday_Rand(R);
+
 				PS->Chip2.chordscaler = (Tuesday_Rand(R) % 3) + 2;
 				PS->Chip2.offset = (Tuesday_Rand(R) % 5);
 				PS->Chip2.len = ((Tuesday_Rand(R) & 0x3) + 1)*2;
 
 				if (Tuesday_BoolChance(R))
 				{
-					PS->Chip2.dir = Tuesday_BoolChance(R);
+					PS->Chip2.dir = Tuesday_BoolChance(R) ? Tuesday_BoolChance(R) : 0;
 				}
 			}
+			Tuesday_RandomSeed(&PS->Chip2.R, PS->Chip2.ChordSeed);
+
 		}
 
-		int scaleidx = ((PS->Chip2.idx) % S->tpboptions[P->tpbopt]);
+		int scaleidx = ((PS->Chip2.idx) % PS->Chip2.ChordLen);
 		
 		if (PS->Chip2.dir)
 		{
-			scaleidx = S->tpboptions[P->tpbopt] - scaleidx - 1;
+			scaleidx = PS->Chip2.ChordLen - scaleidx - 1;
 		}
-
+		SN.oct = 1;
 		SN.note = (scaleidx  * PS->Chip2.chordscaler) + PS->Chip2.offset;
 		
 		PS->Chip2.idx++;
@@ -135,5 +142,5 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 	Output->note = ScaleToNote(&SN, T, P, S);
 
 	Output->vel = (Tuesday_RandByte(&PS->Chip2.R) / 2) + (((I + PS->GENERIC.b2) == 0) ? 127 : 0);
-	Output->accent = Tuesday_BoolChance(&PS->Chip2.R);
+	
 }

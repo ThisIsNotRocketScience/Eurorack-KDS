@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include "Tuesday.h"
 
+#define __max(a,b) (((a)>(b))?(a):(b))
+
+
 struct ScaledNote
 {
 	int32_t oct;
@@ -146,6 +149,7 @@ typedef struct PatternStruct_Algo_Chip2
 	unsigned char DeadTime;
 	unsigned char idx;
 	unsigned char dir;
+	unsigned char ChordLen;
 } PatternStruct_Algo_Chip2;
 
 struct Tuesday_PatternFuncSpecific

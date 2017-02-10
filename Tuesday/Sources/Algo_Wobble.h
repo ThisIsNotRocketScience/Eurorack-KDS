@@ -10,7 +10,7 @@ void Algo_Wobble_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Output->Wobble.PhaseSpeed = 0xffffffff/T->CurrentPattern.Length;
 	Output->Wobble.Phase2 = 0;
 	Output->Wobble.LastWasHigh = 0;
-	Output->Wobble.PhaseSpeed2 = 0xcfffffff / (T->CurrentPattern.Length/4);
+	Output->Wobble.PhaseSpeed2 = 0xcfffffff / (__max(4, T->CurrentPattern.Length)/4);
 }
 
 void Algo_Wobble_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)

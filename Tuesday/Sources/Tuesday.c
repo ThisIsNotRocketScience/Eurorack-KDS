@@ -5,7 +5,6 @@
 #include "AlgoImpl.h"
 
 struct PatternFunctions PatternTypes[__ALGO_COUNT];
-#define __max(a,b) (((a)>(b))?(a):(b))
 
 void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
@@ -348,7 +347,7 @@ void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;
 	S->tpboptions[2] = 4;
-	S->tpboptions[3] = 5;
+	S->tpboptions[3] = 8;
 
 	S->beatoptions[0] = 4;
 	S->beatoptions[1] = 8;

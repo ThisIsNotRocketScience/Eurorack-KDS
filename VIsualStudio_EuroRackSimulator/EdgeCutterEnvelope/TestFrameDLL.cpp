@@ -164,8 +164,13 @@ extern "C"
 	{
 		TuesdayParams.algo = 0;
 		TuesdaySettings.algooptions[0] = algo;
-		TuesdayParams.beatopt = beats;
-		TuesdayParams.tpbopt = ticks;
+
+		TuesdayParams.beatopt = 0;
+		TuesdaySettings.beatoptions[0] = beats;
+		
+		TuesdayParams.tpbopt = 0;
+		TuesdaySettings.tpboptions[0] = ticks;
+
 		TuesdayParams.scale = scale;
 		Tuesday.seed2 = y;
 		Tuesday.seed1 = x;
@@ -214,14 +219,54 @@ extern "C"
 #include <Windows.h>
 #include <stdio.h>
 
+
+void RunTest(const char * name, int i)
+{
+	int min = 10000;
+	int max = -1000;
+	double avg = 0;
+	int c = 0;
+	bool HasOffs = false;
+	for (int bang = 0; bang < 255; bang += 16)
+	{
+		for (int y = 0; y < 255; y += 16)
+		{
+
+			for (int x = 0; x < 255; x += 16)
+			{
+				int patlen = Tuesday.CurrentPattern.Length;
+				
+				Tuesday_UpdatePattern(i, 0, 1, 2, 0, x, y, bang);
+				for (int j = 0; j < patlen; j++)
+				{
+					struct Tuesday_Tick &T = Tuesday.CurrentPattern.Ticks[j];
+					if (T.note != TUESDAY_NOTEOFF)
+					{
+						c++;
+						if (T.note < min) min = T.note; else if (T.note > max) max = T.note;
+					}
+					else
+					{
+						HasOffs = true;
+					}
+					avg = avg + T.note;
+				}
+			}
+		}
+	}
+	avg /= (double)c;
+
+	printf("%s (%d): \tmin %d \tmax %d\tavg:%2f\tHas Offs: %d\n", name, i, min, max, avg, HasOffs ? 1 : 0);
+}
+
 BOOL WINAPI DllMain(
 	_In_ HINSTANCE hinstDLL,
 	_In_ DWORD     fdwReason,
 	_In_ LPVOID    lpvReserved
 )
 {
-	
-	if(fdwReason == DLL_PROCESS_ATTACH)
+
+	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		int32_t V[4] = { 0,65536,0,65536 };
 
@@ -230,43 +275,17 @@ BOOL WINAPI DllMain(
 		Wobbler_Init(&LFOStatic);
 		LFOStatic.Speed = 0x80;
 		Init();
-		for (int i = 0; i < __ALGO_COUNT; i++)
-		{
-			int min = 10000;
-			int max = -1000;
-			double avg = 0;
-			int c = 0;
-			bool HasOffs = false;
-			for (int bang = 0; bang < 255; bang += 16)
-			{
-				for (int y = 0; y < 255; y += 16)
-				{
 
-					for (int x = 0; x < 255; x += 16)
-					{
-						int patlen = Tuesday.CurrentPattern.Length;
-						c += patlen;
-						Tuesday_UpdatePattern(i, 0, 1, 2, 0, x, y, bang);
-						for (int j = 0; j < patlen; j++)
-						{
-							struct Tuesday_Tick &T = Tuesday.CurrentPattern.Ticks[j];
-							if (T.note != TUESDAY_NOTEOFF)
-							{
-								if (T.note < min) min = T.note; else if (T.note > max) max = T.note;
-							}
-							else
-							{
-								HasOffs = true;
-							}
-							avg = avg + T.note;
-						}
-					}
-				}
-			}
-			avg /= (double)c;
-
-			printf("%d: min %d \tmax %d \tavg:%2f\t Has Offs: %d\n", i, min, max, avg, HasOffs?1:0);
-		}
+		RunTest("Tests", ALGO_TESTS);
+		RunTest("TriTrance", ALGO_TRITRANCE);
+		RunTest("Stomper", ALGO_STOMPER);
+		RunTest("Markov", ALGO_MARKOV);
+		RunTest("Wobble", ALGO_WOBBLE);
+		RunTest("Chip 1", ALGO_CHIPARP1);
+		RunTest("Chip 2", ALGO_CHIPARP2);
+		RunTest("SNH", ALGO_SNH);
+		RunTest("Saiko Lead", ALGO_SAIKO_LEAD);
+		RunTest("Saiko Classic", ALGO_SAIKO_CLASSIC);
 
 		if (0)
 		{

@@ -72,7 +72,7 @@ namespace Sim1
                 }
             }
         }
-
+        int TicksPerBeat = 1;
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             var G = e.Graphics;
@@ -115,7 +115,15 @@ namespace Sim1
             {
                 if (Pattern[i].note != 255)
                 {
-                    G.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), i * TickW, 0, i * TickW, pictureBox1.Height);
+                    if (i % TicksPerBeat == 0)
+                    {
+                        G.DrawLine(new Pen(Color.FromArgb(250, 255, 255, 0),2), i * TickW, 0, i * TickW, pictureBox1.Height);
+                    }
+                    else
+                    {
+                        G.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), i * TickW, 0, i * TickW, pictureBox1.Height);
+
+                    }
                     R.X = i * TickW + 2;
                     R.Y = Pattern[i].note * BarH + 2;
                     R.Width = ((TickW / 6) * Pattern[i].length) - 2;
@@ -181,20 +189,23 @@ namespace Sim1
             if (radioButton7.Checked) Scale = 2;
             if (radioButton8.Checked) Scale = 3;
 
-            if (tpb3.Checked) Ticks = 0;
-            if (tpb4.Checked) Ticks = 1;
             if (tpb2.Checked) Ticks = 2;
-            if (tpb5.Checked) Ticks = 3;
+            if (tpb3.Checked) Ticks = 3;
+            if (tpb4.Checked) Ticks = 4;
+            if (tpb5.Checked) Ticks = 5;
 
-            if (beats4.Checked) Beats = 0;
-            if (beats8.Checked) Beats = 1;
-            if (beats16.Checked) Beats = 2;
-            if (beats32.Checked) Beats = 3;
+            if (beats4.Checked) Beats = 4;
+            if (beats8.Checked) Beats = 8;
+            if (beats16.Checked) Beats = 16;
+            if (beats32.Checked) Beats = 32;
+
+            TicksPerBeat = Ticks;
 
             Pattern.Clear();
             TestFrameLoader.Tuesday_UpdatePattern(Algo, Scale,Ticks, Beats,(int)TempoSlider.Value,  (int)XSlider.Value, (int)YSlider.Value, (int)ISlider.Value);
             int PTicks = TestFrameLoader.Tuesday_GetPatternLength();
-            for(int i =0;i<PTicks;i++)
+
+            for (int i =0;i<PTicks;i++)
             {
                 Tick T = new Tick();
                 T.note = TestFrameLoader.Tuesday_GetTickNote(i);
@@ -203,7 +214,6 @@ namespace Sim1
                 T.gate = TestFrameLoader.Tuesday_GetTickGate(i)>0;
                 T.slide = TestFrameLoader.Tuesday_GetTickSlide(i);
                 T.length = TestFrameLoader.Tuesday_GetTickLength(i);
-
                 Pattern.Add(T);
             }
 
@@ -313,7 +323,6 @@ namespace Sim1
         private void button2_Click(object sender, EventArgs e)
         {
             Playing = true;
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -334,25 +343,21 @@ namespace Sim1
         private void chipArp2Button_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
-
         }
 
         private void snhButton_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
-
         }
 
         private void markovButton_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
-
         }
 
         private void stomperButton_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
-
         }
 
         private void SaikoClassicButton_CheckedChanged(object sender, EventArgs e)
