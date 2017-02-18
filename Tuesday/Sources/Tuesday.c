@@ -31,7 +31,9 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	SetPatternFunc(ALGO_MARKOV, &Algo_Markov_Gen, &Algo_Markov_Init, &NoPatternInit,1);
 	SetPatternFunc(ALGO_STOMPER, &Algo_Stomper_Gen, &Algo_Stomper_Init, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_WOBBLE, &Algo_Wobble_Gen, &Algo_Wobble_Init, &NoPatternInit, 1);
+
 	SetPatternFunc(ALGO_SNH, &Algo_SNH_Gen, &Algo_SNH_Init, &NoPatternInit, 1);
+	SetPatternFunc(ALGO_SCALEWALKER, &Algo_ScaleWalk_Gen, &Algo_ScaleWalk_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -469,7 +471,7 @@ struct Tuesday_RandomGen Randoms[4];
 
 void DefaultTick(struct Tuesday_Tick *Out)
 {
-	Out->maxsubticklength = (TUESDAY_SUBTICKRES * 3) / 4;
+	Out->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
 	Out->slide = 0;
 	Out->note = 12;
 	Out->accent = 0;
@@ -520,6 +522,12 @@ void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struc
 	}
 }
 
+void ApplySlideLength(struct Tuesday_Tick *T, int SlideMode, int LengthMode)
+{
+	if (SlideMode == 1) T->slide = 0;
+	if (LengthMode == 1) T->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
+}
+
 void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S)
 {
 
@@ -546,7 +554,9 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Tuesday_RandomSeed(&Randoms[2], X + Y * 32 + 32);
 	Tuesday_RandomSeed(&Randoms[3], X + Y * 32 + 33);
 
-	int CurrentAlgo = S->algooptions[P->algo] % __ALGO_COUNT;
+	int CurrentAlgo = (S->algooptions[P->algo] & 0xf) % __ALGO_COUNT;
+	int SlideMode = (S->algooptions[P->algo] >> 4) & 1;
+	int LengthMode = (S->algooptions[P->algo] >> 5) & 1;
 
 	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
@@ -570,6 +580,8 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 			ApplyDither(i, ditherx, &Ticks[0], &Ticks[1], &Top);
 			ApplyDither(i, ditherx, &Ticks[2], &Ticks[3], &Bot);
 			ApplyDither(i, dithery, &Top, &Bot, &T->CurrentPattern.Ticks[i]);
+
+			ApplySlideLength(&T->CurrentPattern.Ticks[i], SlideMode, LengthMode);
 		}
 	}
 	else
@@ -577,6 +589,8 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 		for (int i = 0; i < len; i++)
 		{
 			Algo->Gen(T, P, S, &Randoms[0], &FuncSpecific[0], i, &T->CurrentPattern.Ticks[i]);
+			ApplySlideLength(&T->CurrentPattern.Ticks[i], SlideMode, LengthMode);
+
 		}
 	}
 }

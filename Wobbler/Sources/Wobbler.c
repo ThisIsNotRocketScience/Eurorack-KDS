@@ -155,10 +155,10 @@ extern "C"
 
 		if (LFO->Phase1 < LFO->OldPhase1)
 		{
-			LFO->Gate[0] = WOBBLER_GATECOUNTDOWN;
+			LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
 			if (LFO->PhasedCountdown > 0)
 			{
-				LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
+				LFO->Gate[0] = WOBBLER_GATECOUNTDOWN;
 			}
 			LFO->PhasedCountdown = LFO->Phasing << 24;
 		}
@@ -167,7 +167,7 @@ extern "C"
 		LFO->PhasedCountdown -= __min(DP, LFO->PhasedCountdown);
 		if (LFO->PhasedCountdown == 0 && last != 0)
 		{
-			LFO->Gate[1] = WOBBLER_GATECOUNTDOWN;
+			LFO->Gate[0] = WOBBLER_GATECOUNTDOWN;
 		}
 
 		LFO->OldPhase1 = LFO->Phase1;

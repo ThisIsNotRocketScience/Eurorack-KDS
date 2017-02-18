@@ -74,5 +74,8 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_SNH.H">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_ScaleWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

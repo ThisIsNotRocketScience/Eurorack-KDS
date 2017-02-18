@@ -10,15 +10,15 @@ using System.Windows.Forms;
 
 namespace Sim1
 {
-    public partial class TINRS_Tuesday_Lights: WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class TINRS_Tuesday_Lights : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-    
+
         public TINRS_Tuesday_Lights()
         {
             InitializeComponent();
         }
 
-        public void DrawSquare(Graphics G, int x, int y,bool filled)
+        public void DrawSquare(Graphics G, int x, int y, bool filled)
         {
             if (filled)
             {
@@ -31,19 +31,19 @@ namespace Sim1
         public void Draw4Square(Graphics G, int x, int y, int num)
         {
             DrawSquare(G, x, y, num == 0);
-            DrawSquare(G, x+ minisquare, y, num == 1);
-            DrawSquare(G, x+ minisquare, y+ minisquare, num == 2);
-            DrawSquare(G, x, y+ minisquare, num == 3);
+            DrawSquare(G, x + minisquare, y, num == 1);
+            DrawSquare(G, x + minisquare, y + minisquare, num == 2);
+            DrawSquare(G, x, y + minisquare, num == 3);
         }
         int margin = 5;
         const int minisquare = 10;
-        int squaresize = minisquare*2;
+        int squaresize = minisquare * 2;
 
         public void DrawSquares(Graphics G, int x, int y, int num, string label)
         {
-            Draw4Square(G, x+squaresize + margin, y, num&3);
-            Draw4Square(G, x+squaresize+margin, y+squaresize + margin, (num>>2)&3);
-            Draw4Square(G, x, y+squaresize+margin, (num>>4)&3);
+            Draw4Square(G, x + squaresize + margin, y, num & 3);
+            Draw4Square(G, x + squaresize + margin, y + squaresize + margin, (num >> 2) & 3);
+            Draw4Square(G, x, y + squaresize + margin, (num >> 4) & 3);
             G.DrawString(label, new Font("Panton ExtraBold", 15), new SolidBrush(Color.White), x + squaresize * 2 + margin * 2, y + squaresize - 7.5f);
         }
 
@@ -51,14 +51,36 @@ namespace Sim1
         {
 
         }
+        List<string> PatternNames = new List<string>()
+        {
+            "Tests",
+
+            "TriTrance",
+
+            // fishyfishy! with slides! 
+            "Stomper",
+
+            // Random walking with mr. Markov.
+            "Markov",
+
+            //	ALGO_PACHEDECO,
+            "Wobble",
+            "Chip 1",
+            "Chip 2",
+
+            "SnH",
+            // classic saiko things, reimagined
+            "Saiko Lead",
+            "Saiko Classic"
+          };
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
             Graphics G = e.Graphics;
-            for(int i =0;i<16;i++)
+            for (int i = 0; i < PatternNames.Count; i++)
             {
-                DrawSquares(G, (i%5)*300 + 10 , 10 + (i/5) * (squaresize *2 + margin*6), i, "Some thing");
+                DrawSquares(G, (i % 5) * 300 + 10, 10 + (i / 5) * (squaresize * 2 + margin * 6), i, PatternNames[i]);
             }
         }
 

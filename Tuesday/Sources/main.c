@@ -609,16 +609,13 @@ int main(void)
 	{
 		Tuesday.UIMode = UI_CALIBRATION;
 		Tuesday.CalibTarget =CALIBRATION_NOTARGET;
-
 	}
 	else
 	{
 		if (islongpress( &tpbsw_state))
 		{
-
 			FactoryReset();
 		}
-
 
 		Tuesday.UIMode = UI_NORMAL;
 	}

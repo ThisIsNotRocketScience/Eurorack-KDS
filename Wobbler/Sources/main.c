@@ -149,13 +149,13 @@ void doTimer()
 	{
 		LinearOut = Wobbler_Get(&LFO, &Params);
 		LinearOut = (int)(LFO.Output);
-		DAC_Write(0, LinearOut);
+		DAC_Write(1, LinearOut);
 	}
 	break;
 	case 1:
 	{
 		CurvedOut = (int)(LFO.OutputPhased);
-		DAC_Write(1, CurvedOut);
+		DAC_Write(0, CurvedOut);
 	}
 
 	break;
