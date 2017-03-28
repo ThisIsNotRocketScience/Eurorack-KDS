@@ -40,7 +40,7 @@ void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 		if (PS->GENERIC.b1 == 0) SN.note += 1;
 		if (PS->GENERIC.b2 == 0) SN.note -= 2;
 	}
-
+	SN.oct++;
 	Output->vel = Tuesday_RandByte(R);
 	Output->accent = Tuesday_BoolChance(R);
 	Output->note = ScaleToNote(&SN, T, P, S);

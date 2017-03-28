@@ -11,7 +11,7 @@ void Algo_ScaleWalk_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);	
-	NOTE(PS->ScaleWalk.Current);
+	NOTE(0,PS->ScaleWalk.Current);
 	PS->ScaleWalk.Current = (PS->ScaleWalk.Current + 1) % PS->ScaleWalk.WalkLen;
 
 }

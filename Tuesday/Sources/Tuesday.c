@@ -4,7 +4,7 @@
 #include "Algo.h"
 #include "AlgoImpl.h"
 
-struct PatternFunctions PatternTypes[__ALGO_COUNT];
+struct PatternFunctions PatternTypes[ALGO_COUNT];
 
 void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
@@ -17,7 +17,7 @@ void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr 
 
 void Tuesday_Init(struct Tuesday_PatternGen *P)
 {
-	for (int i = 0; i < __ALGO_COUNT; i++)
+	for (int i = 0; i < ALGO_COUNT; i++)
 	{
 		SetPatternFunc(i, NoPattern, NoInit, NoPatternInit,1);
 	}
@@ -554,7 +554,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	Tuesday_RandomSeed(&Randoms[2], X + Y * 32 + 32);
 	Tuesday_RandomSeed(&Randoms[3], X + Y * 32 + 33);
 
-	int CurrentAlgo = (S->algooptions[P->algo] & 0xf) % __ALGO_COUNT;
+	int CurrentAlgo = (S->algooptions[P->algo] & 0xf) % ALGO_COUNT;
 	int SlideMode = (S->algooptions[P->algo] >> 4) & 1;
 	int LengthMode = (S->algooptions[P->algo] >> 5) & 1;
 

@@ -130,7 +130,7 @@ void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 		{
 			scaleidx = PS->Chip2.ChordLen - scaleidx - 1;
 		}
-		SN.oct = 1;
+		SN.oct = 0;
 		SN.note = (scaleidx  * PS->Chip2.chordscaler) + PS->Chip2.offset;
 		
 		PS->Chip2.idx++;
