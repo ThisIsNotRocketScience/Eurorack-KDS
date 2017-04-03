@@ -48,7 +48,11 @@ namespace Sim1
             // classic saiko things, reimagined
             ALGO_SAIKO_LEAD,
             ALGO_SAIKO_CLASSIC,
-            __ALGO_COUNT
+            ALGO_SCALEWALKER,
+            ALGO_TOOEASY,
+
+            __ALGO_COUNT  
+
         }
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]

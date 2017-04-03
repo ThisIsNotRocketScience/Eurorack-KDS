@@ -34,6 +34,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 
 	SetPatternFunc(ALGO_SNH, &Algo_SNH_Gen, &Algo_SNH_Init, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_SCALEWALKER, &Algo_ScaleWalk_Gen, &Algo_ScaleWalk_Init, &NoPatternInit, 1);
+	SetPatternFunc(ALGO_TOOEASY, &Algo_TooEasy_Gen, &Algo_TooEasy_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -441,10 +442,12 @@ const unsigned char dither[24 * 3] =
 		0b0001, 0b0011, 0b1011,
 		0b0001, 0b0101, 0b0111,
 		0b0001, 0b0101, 0b1101,
+
 		0b0001, 0b1001, 0b1011,
 		0b0001, 0b1001, 0b1101,
 		0b0010, 0b0011, 0b0111,
 		0b0010, 0b0011, 0b1011,
+
 		0b0010, 0b0110, 0b0111,
 		0b0010, 0b0110, 0b1110,
 		0b0010, 0b1010, 0b1011,
@@ -469,6 +472,9 @@ struct Tuesday_Tick Top;
 struct Tuesday_Tick Bot;
 struct Tuesday_RandomGen Randoms[4];
 
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+
 void DefaultTick(struct Tuesday_Tick *Out)
 {
 	Out->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
@@ -477,7 +483,7 @@ void DefaultTick(struct Tuesday_Tick *Out)
 	Out->accent = 0;
 	Out->vel = 255;
 }
-
+	
 void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R)
 {
 	if (Tuesday_PercChance(R, 50))
@@ -491,8 +497,7 @@ void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R)
 
 	if (Tuesday_BoolChance(R) && Tuesday_BoolChance(R))
 	{
-		Out->slide = (Tuesday_Rand(R) % 3) + 1;;
-	
+		Out->slide = (Tuesday_Rand(R) % 3) + 1;;	
 	}
 	else
 	{
@@ -595,3 +600,4 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	}
 }
 
+#pragma GCC pop_options

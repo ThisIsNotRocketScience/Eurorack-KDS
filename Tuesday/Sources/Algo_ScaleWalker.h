@@ -2,8 +2,8 @@
 
 void Algo_ScaleWalk_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
 {
-	Output->ScaleWalk.WalkLen = 1 + (T->seed1 >> 5);
-	Output->ScaleWalk.Current = (Output->ScaleWalk.WalkLen * 255) / (T->seed2);
+	Output->ScaleWalk.WalkLen = 1 + ((T->seed1 * S->scales[S->scale[P->scale]].count * 3)/255);
+	Output->ScaleWalk.Current = (Output->ScaleWalk.WalkLen * T->seed2) / 255;
 
 }
 
@@ -12,6 +12,11 @@ void Algo_ScaleWalk_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 	struct ScaledNote SN;
 	DefaultTick(Output);	
 	NOTE(0,PS->ScaleWalk.Current);
-	PS->ScaleWalk.Current = (PS->ScaleWalk.Current + 1) % PS->ScaleWalk.WalkLen;
+	
+	Output->vel = (Tuesday_Rand(R));
+	Output->accent = Tuesday_BoolChance(R);
+	Output->note = ScaleToNote(&SN, T, P, S);
+	RandomSlideAndLength(Output, R);
 
+	PS->ScaleWalk.Current = (PS->ScaleWalk.Current + 1) % PS->ScaleWalk.WalkLen;
 }

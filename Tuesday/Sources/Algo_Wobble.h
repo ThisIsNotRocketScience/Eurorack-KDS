@@ -55,7 +55,7 @@ void Algo_Wobble_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 	}
 
 	int32_t n = ScaleToNote(&SN, T, P, S);
-	Output->slide = 0;
+//	Output->slide = 0;
 	Output->note = n;
 	Output->vel = (Tuesday_Rand(&PS->ExtraRandom) / 4) + veloffset;
 	Output->accent = Tuesday_PercChance(R, 50 + accentoffs);

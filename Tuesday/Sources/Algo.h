@@ -45,6 +45,7 @@ typedef enum
 	ALGO_SAIKO_CLASSIC,
 
 	ALGO_SCALEWALKER,
+	ALGO_TOOEASY,
 	__BUILTIN_ALGO_COUNT
 } TUESDAY_ALGO;
 
@@ -163,6 +164,14 @@ typedef struct PatternStruct_Algo_ScaleWalk
 	unsigned char Current;
 } PatternStruct_Algo_ScaleWalk;
 
+typedef struct PatternStruct_Algo_TooEasy
+{
+	struct Tuesday_RandomGen R;
+	unsigned char WalkLen;
+	unsigned char Current;
+	unsigned char Pattern[16];
+} PatternStruct_Algo_TooEasy; 
+
 struct Tuesday_PatternFuncSpecific
 {
 	union
@@ -176,6 +185,7 @@ struct Tuesday_PatternFuncSpecific
 		struct PatternStruct_Algo_Chip1 Chip1;
 		struct PatternStruct_Algo_Chip2 Chip2;
 		struct PatternStruct_Algo_ScaleWalk ScaleWalk;
+		struct PatternStruct_Algo_TooEasy TooEasy;
 	};
 	struct Tuesday_RandomGen ExtraRandom;
 };

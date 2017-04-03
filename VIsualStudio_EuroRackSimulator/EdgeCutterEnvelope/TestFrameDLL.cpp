@@ -286,6 +286,8 @@ BOOL WINAPI DllMain(
 		RunTest("SNH", ALGO_SNH);
 		RunTest("Saiko Lead", ALGO_SAIKO_LEAD);
 		RunTest("Saiko Classic", ALGO_SAIKO_CLASSIC);
+		RunTest("ScaleWalker", ALGO_SCALEWALKER);
+		RunTest("TooEasy", ALGO_TOOEASY);
 
 		if (0)
 		{

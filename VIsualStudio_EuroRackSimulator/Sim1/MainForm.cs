@@ -31,26 +31,28 @@ namespace Sim1
 
             dockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
 
-            TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
-            lf.Show(this.dockPanel, DockState.Document);
-            lf.Text = "Tuesday Lights";
-
-
             TINRS_Tuesday_TestFrame tf = new TINRS_Tuesday_TestFrame();
             tf.Show(this.dockPanel, DockState.Document);
             tf.Text = "Tuesday";
 
 
+            TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
+            lf.Show(this.dockPanel, DockState.Document);
+            lf.Text = "Tuesday Lights";
 
 
-            WobblerTestFrame wf = new WobblerTestFrame();
-            wf.Show(this.dockPanel, DockState.Document);
-            wf.Text = "Wobbler";
 
 
-            EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
-            ef.Show(this.dockPanel, DockState.Document);
-            ef.Text = "EdgeCutter";
+
+
+         //   WobblerTestFrame wf = new WobblerTestFrame();
+            //wf.Show(this.dockPanel, DockState.Document);
+            //wf.Text = "Wobbler";
+
+
+            //EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
+            //ef.Show(this.dockPanel, DockState.Document);
+            //ef.Text = "EdgeCutter";
 
             
 

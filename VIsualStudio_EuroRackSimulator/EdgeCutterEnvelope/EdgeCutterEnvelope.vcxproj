@@ -160,6 +160,7 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_SNH.H" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Stomper.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Test.h" />
+    <ClInclude Include="..\..\Tuesday\Sources\Algo_TooEasy.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
