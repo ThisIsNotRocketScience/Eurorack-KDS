@@ -50,6 +50,7 @@ namespace Sim1
             ALGO_SAIKO_CLASSIC,
             ALGO_SCALEWALKER,
             ALGO_TOOEASY,
+            ALGO_RANDOM,
 
             __ALGO_COUNT  
 

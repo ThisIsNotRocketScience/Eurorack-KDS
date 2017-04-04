@@ -39,6 +39,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TempoSlider = new System.Windows.Forms.TrackBar();
             this.Mode = new System.Windows.Forms.GroupBox();
+            this.randomRadio = new System.Windows.Forms.RadioButton();
+            this.tooEasyRadio = new System.Windows.Forms.RadioButton();
+            this.scaleWalkerRadio = new System.Windows.Forms.RadioButton();
             this.wobbleButton = new System.Windows.Forms.RadioButton();
             this.SaikoClassicButton = new System.Windows.Forms.RadioButton();
             this.chipArp2Button = new System.Windows.Forms.RadioButton();
@@ -73,8 +76,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.scaleWalkerRadio = new System.Windows.Forms.RadioButton();
-            this.tooEasyRadio = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.XSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YSlider)).BeginInit();
@@ -202,6 +203,7 @@
             // Mode
             // 
             this.Mode.AutoSize = true;
+            this.Mode.Controls.Add(this.randomRadio);
             this.Mode.Controls.Add(this.tooEasyRadio);
             this.Mode.Controls.Add(this.scaleWalkerRadio);
             this.Mode.Controls.Add(this.wobbleButton);
@@ -216,10 +218,43 @@
             this.Mode.Controls.Add(this.TestPatternButton);
             this.Mode.Location = new System.Drawing.Point(3, 195);
             this.Mode.Name = "Mode";
-            this.Mode.Size = new System.Drawing.Size(125, 332);
+            this.Mode.Size = new System.Drawing.Size(125, 359);
             this.Mode.TabIndex = 14;
             this.Mode.TabStop = false;
             this.Mode.Text = "Algo";
+            // 
+            // randomRadio
+            // 
+            this.randomRadio.AutoSize = true;
+            this.randomRadio.Location = new System.Drawing.Point(11, 317);
+            this.randomRadio.Name = "randomRadio";
+            this.randomRadio.Size = new System.Drawing.Size(82, 21);
+            this.randomRadio.TabIndex = 13;
+            this.randomRadio.Text = "Random";
+            this.randomRadio.UseVisualStyleBackColor = true;
+            this.randomRadio.CheckedChanged += new System.EventHandler(this.randomRadio_CheckedChanged);
+            // 
+            // tooEasyRadio
+            // 
+            this.tooEasyRadio.AutoSize = true;
+            this.tooEasyRadio.Location = new System.Drawing.Point(11, 290);
+            this.tooEasyRadio.Name = "tooEasyRadio";
+            this.tooEasyRadio.Size = new System.Drawing.Size(85, 21);
+            this.tooEasyRadio.TabIndex = 12;
+            this.tooEasyRadio.Text = "TooEasy";
+            this.tooEasyRadio.UseVisualStyleBackColor = true;
+            this.tooEasyRadio.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged_1);
+            // 
+            // scaleWalkerRadio
+            // 
+            this.scaleWalkerRadio.AutoSize = true;
+            this.scaleWalkerRadio.Location = new System.Drawing.Point(11, 263);
+            this.scaleWalkerRadio.Name = "scaleWalkerRadio";
+            this.scaleWalkerRadio.Size = new System.Drawing.Size(104, 21);
+            this.scaleWalkerRadio.TabIndex = 11;
+            this.scaleWalkerRadio.Text = "Scalewalker";
+            this.scaleWalkerRadio.UseVisualStyleBackColor = true;
+            this.scaleWalkerRadio.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
             // 
             // wobbleButton
             // 
@@ -341,7 +376,7 @@
             this.groupBox1.Controls.Add(this.radioButton6);
             this.groupBox1.Controls.Add(this.radioButton7);
             this.groupBox1.Controls.Add(this.radioButton8);
-            this.groupBox1.Location = new System.Drawing.Point(3, 533);
+            this.groupBox1.Location = new System.Drawing.Point(3, 560);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(88, 123);
             this.groupBox1.TabIndex = 15;
@@ -401,7 +436,7 @@
             this.groupBox2.Controls.Add(this.tpb4);
             this.groupBox2.Controls.Add(this.tpb2);
             this.groupBox2.Controls.Add(this.tpb5);
-            this.groupBox2.Location = new System.Drawing.Point(97, 533);
+            this.groupBox2.Location = new System.Drawing.Point(97, 560);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(61, 126);
             this.groupBox2.TabIndex = 16;
@@ -461,7 +496,7 @@
             this.groupBox3.Controls.Add(this.beats8);
             this.groupBox3.Controls.Add(this.beats16);
             this.groupBox3.Controls.Add(this.beats32);
-            this.groupBox3.Location = new System.Drawing.Point(3, 665);
+            this.groupBox3.Location = new System.Drawing.Point(3, 692);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(62, 126);
             this.groupBox3.TabIndex = 17;
@@ -631,28 +666,6 @@
             this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // scaleWalkerRadio
-            // 
-            this.scaleWalkerRadio.AutoSize = true;
-            this.scaleWalkerRadio.Location = new System.Drawing.Point(11, 263);
-            this.scaleWalkerRadio.Name = "scaleWalkerRadio";
-            this.scaleWalkerRadio.Size = new System.Drawing.Size(104, 21);
-            this.scaleWalkerRadio.TabIndex = 11;
-            this.scaleWalkerRadio.Text = "Scalewalker";
-            this.scaleWalkerRadio.UseVisualStyleBackColor = true;
-            this.scaleWalkerRadio.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged_1);
-            // 
-            // tooEasyRadio
-            // 
-            this.tooEasyRadio.AutoSize = true;
-            this.tooEasyRadio.Location = new System.Drawing.Point(11, 290);
-            this.tooEasyRadio.Name = "tooEasyRadio";
-            this.tooEasyRadio.Size = new System.Drawing.Size(85, 21);
-            this.tooEasyRadio.TabIndex = 12;
-            this.tooEasyRadio.Text = "TooEasy";
-            this.tooEasyRadio.UseVisualStyleBackColor = true;
-            this.tooEasyRadio.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged_1);
-            // 
             // TINRS_Tuesday_TestFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -740,5 +753,6 @@
         private System.Windows.Forms.RadioButton wobbleButton;
         private System.Windows.Forms.RadioButton tooEasyRadio;
         private System.Windows.Forms.RadioButton scaleWalkerRadio;
+        private System.Windows.Forms.RadioButton randomRadio;
     }
 }

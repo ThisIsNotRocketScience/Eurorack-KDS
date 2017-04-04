@@ -1,14 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26014.0
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sim1", "Sim1\Sim1.csproj", "{BD9094B0-D835-45D5-B452-BD01B0DFEC24}"
 	ProjectSection(ProjectDependencies) = postProject
 		{393C438D-7C82-41E6-A522-A5520D9C5F9C} = {393C438D-7C82-41E6-A522-A5520D9C5F9C}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EdgeCutterEnvelope", "EdgeCutterEnvelope\EdgeCutterEnvelope.vcxproj", "{393C438D-7C82-41E6-A522-A5520D9C5F9C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFrameDLL", "EdgeCutterEnvelope\EdgeCutterEnvelope.vcxproj", "{393C438D-7C82-41E6-A522-A5520D9C5F9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeerTuesday", "BuzzPeer\PeerTuesday.csproj", "{2F2701B8-4D90-45BA-9CB9-B0C74285243F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,17 @@ Global
 		{393C438D-7C82-41E6-A522-A5520D9C5F9C}.Release|x64.Build.0 = Release|x64
 		{393C438D-7C82-41E6-A522-A5520D9C5F9C}.Release|x86.ActiveCfg = Release|Win32
 		{393C438D-7C82-41E6-A522-A5520D9C5F9C}.Release|x86.Build.0 = Release|Win32
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Debug|x64.Build.0 = Debug|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|x64.ActiveCfg = Release|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|x64.Build.0 = Release|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|x86.ActiveCfg = Release|Any CPU
+		{2F2701B8-4D90-45BA-9CB9-B0C74285243F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

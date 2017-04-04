@@ -122,7 +122,7 @@ void UpdateGates()
 	}
 }
 
-void ShiftOut()
+void __attribute__ ((noinline)) ShiftOut()
 {
 	pwm += 16;
 
@@ -419,15 +419,14 @@ void LoadEeprom()
 	}
 }
 
-void ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
+void __attribute ((noinline)) ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
 {
 	if (ticksgroup > -1) SetLedNumber(0, ticksgroup);
 	if (beatsgroup > -1) SetLedNumber(4, beatsgroup);
 	if (scalegroup > -1) SetLedNumber(8, scalegroup);
 	if (algogroup > -1) SetLedNumber(12, algogroup);
 }
-
-void _SetupLeds()
+void __attribute ((noinline)) _SetupLeds()
 {
 	switch(Tuesday.UIMode)
 	{
@@ -572,7 +571,8 @@ int main(void)
 	EuroRack_InitCalibration();
 
 	LoadEeprom();
-
+	LoadEepromSettings();
+	LoadEepromCalibration();
 	TI1_Enable();
 	AD1_Measure(FALSE);
 

@@ -288,6 +288,7 @@ BOOL WINAPI DllMain(
 		RunTest("Saiko Classic", ALGO_SAIKO_CLASSIC);
 		RunTest("ScaleWalker", ALGO_SCALEWALKER);
 		RunTest("TooEasy", ALGO_TOOEASY);
+		RunTest("Random", ALGO_RANDOM);
 
 		if (0)
 		{

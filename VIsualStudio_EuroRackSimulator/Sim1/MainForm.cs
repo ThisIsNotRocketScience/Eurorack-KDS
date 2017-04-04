@@ -41,8 +41,7 @@ namespace Sim1
             lf.Text = "Tuesday Lights";
 
 
-
-
+            tf.Focus();
 
 
          //   WobblerTestFrame wf = new WobblerTestFrame();

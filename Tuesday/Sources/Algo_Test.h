@@ -27,3 +27,19 @@ void Algo_Test_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 	Output->accent = PS->Test.Accent;
 	Output->vel = PS->Test.Velocity;
 }
+
+void Algo_Random_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+{
+}
+
+void Algo_Random_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+	struct ScaledNote SN;
+	DefaultTick(Output);
+	RandomSlideAndLength(Output, R);
+	NOTE(0, Tuesday_Rand(R) % (S->scales[S->scale[P->scale]].count * 2));
+	
+	Output->note = ScaleToNote(&SN, T, P, S);
+	Output->vel = Tuesday_Rand(R);
+	Output->accent = Tuesday_BoolChance(R);
+}

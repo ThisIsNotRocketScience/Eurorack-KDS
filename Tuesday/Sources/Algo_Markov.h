@@ -28,7 +28,7 @@ void Algo_Markov_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 	PS->Markov.NoteHistory3 = SN.note;
 
 	SN.oct = Tuesday_BoolChance(R);
-
+	RandomSlideAndLength(Output, R);
 	Output->note = ScaleToNote(&SN, T, P, S);
 	Output->accent = Tuesday_PercChance(R, 100);
 	Output->vel = (Tuesday_Rand(R) / 2) + 40;

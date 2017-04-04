@@ -6,7 +6,7 @@
 
 struct PatternFunctions PatternTypes[ALGO_COUNT];
 
-void SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
+void  NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
 	struct PatternFunctions *PF = &PatternTypes[i];
 	PF->Gen = Gen;
@@ -35,6 +35,8 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	SetPatternFunc(ALGO_SNH, &Algo_SNH_Gen, &Algo_SNH_Init, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_SCALEWALKER, &Algo_ScaleWalk_Gen, &Algo_ScaleWalk_Init, &NoPatternInit, 1);
 	SetPatternFunc(ALGO_TOOEASY, &Algo_TooEasy_Gen, &Algo_TooEasy_Init, &NoPatternInit, 1);
+	
+	SetPatternFunc(ALGO_RANDOM, &Algo_Random_Gen, &Algo_Random_Init, &NoPatternInit, 1);
 
 	P->ClockConnected = 0;
 	P->lastnote = 0;
@@ -335,7 +337,7 @@ void Tuesday_ValidateParams(struct Tuesday_Params *P)
 	P->scale = P->scale % TUESDAY_MAXSCALE;
 }
 
-void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
+void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
 {
 	P->algo = 2;
 	P->beatopt = 0;

@@ -71,7 +71,10 @@ namespace Sim1
             "SnH",
             // classic saiko things, reimagined
             "Saiko Lead",
-            "Saiko Classic"
+            "Saiko Classic",
+            "Scalewalker",
+            "TooEasy",
+            "Random" 
           };
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)

@@ -2,6 +2,11 @@
 #include <stdint.h>
 #include "../../EurorackShared/EurorackShared.h"
 
+#ifdef WIN32
+#define NOINLINE
+#else
+#define __attribute__((noinline))
+#endif
 
 #define TUESDAY_MAXBEAT_VAL 32
 #define TUESDAY_MAXTPB_VAL 10
@@ -50,8 +55,8 @@ struct Tuesday_RandomGen
 		 = inp*/
 
 
-#define DAC_VOLT(x) ((int)((4096.0 * (x)) / (2.5 * 2.048)))
-#define DAC_NOTE(x) DAC_VOLT((x) / 12.0)
+#define DAC_VOLT(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
+#define DAC_NOTE(x) DAC_VOLT((x) / 12)
 
 
 struct Tuesday_PatternGen

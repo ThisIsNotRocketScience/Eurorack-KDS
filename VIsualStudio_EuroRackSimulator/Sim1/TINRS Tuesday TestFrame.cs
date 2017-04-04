@@ -188,6 +188,7 @@ namespace Sim1
             if (SaikoClassicButton.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_SAIKO_CLASSIC;
             if (scaleWalkerRadio.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_SCALEWALKER;
             if (tooEasyRadio.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_TOOEASY;
+            if (randomRadio.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_RANDOM;
 
             if (radioButton5.Checked) Scale = 0;
             if (radioButton6.Checked) Scale = 1;
@@ -376,6 +377,11 @@ namespace Sim1
         }
 
         private void radioButton2_CheckedChanged_1(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void randomRadio_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
         }
