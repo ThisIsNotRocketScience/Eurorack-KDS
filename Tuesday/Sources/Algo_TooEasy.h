@@ -69,6 +69,7 @@ void Algo_TooEasy_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, s
 
 	Output->TooEasy.Current = 0;
 }
+
 #pragma GCC pop_options
 
 void Algo_TooEasy_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)

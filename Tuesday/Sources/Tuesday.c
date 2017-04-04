@@ -94,7 +94,8 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 		P->StateLedTargets[i] = 0;
 		P->RStateLeds[i] = 0;
 	}
-
+	P->switchmode = 1;
+	P->commitchange = 0;
 	P->UIMode = UI_STARTUP;
 }
 
@@ -137,7 +138,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 
 	//	if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
 
-		T->TickOut = (T->CurrentPattern.Ticks[T->Tick].accent * 2048 + 2047);
+		T->TickOut = ((Tick->vel / 2) +  (T->CurrentPattern.Ticks[T->Tick].accent * 127)) * (4096/256);
 
 		if (T->CurrentPattern.Ticks[T->Tick].note != TUESDAY_NOTEOFF)
 		{

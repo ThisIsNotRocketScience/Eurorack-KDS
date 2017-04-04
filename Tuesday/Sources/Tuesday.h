@@ -5,7 +5,7 @@
 #ifdef WIN32
 #define NOINLINE
 #else
-#define __attribute__((noinline))
+#define NOINLINE __attribute__((noinline))
 #endif
 
 #define TUESDAY_MAXBEAT_VAL 32
@@ -56,7 +56,7 @@ struct Tuesday_RandomGen
 
 
 #define DAC_VOLT(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
-#define DAC_NOTE(x) DAC_VOLT((x) / 12)
+#define DAC_NOTE(x) (DAC_VOLT((x))/12)
 
 
 struct Tuesday_PatternGen
@@ -120,6 +120,10 @@ struct Tuesday_PatternGen
 	uint8_t OptionSelect;
 	uint8_t OptionIndex;
 	struct Tuesday_PatternContainer CurrentPattern;
+
+	uint8_t switchmode;
+	uint8_t commitchange;
+
 };
 
 
