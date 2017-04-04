@@ -419,15 +419,16 @@ void LoadEeprom()
 	}
 }
 
-void __attribute ((noinline)) ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
+void NOINLINE ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
 				{
 	if (ticksgroup > -1) SetLedNumber(0, ticksgroup);
 	if (beatsgroup > -1) SetLedNumber(4, beatsgroup);
 	if (scalegroup > -1) SetLedNumber(8, scalegroup);
 	if (algogroup > -1) SetLedNumber(12, algogroup);
 				}
-void __attribute ((noinline)) _SetupLeds()
-				{
+
+void NOINLINE _SetupLeds()
+{
 	switch(Tuesday.UIMode)
 	{
 	case UI_STARTUP:
@@ -532,7 +533,7 @@ void __attribute ((noinline)) _SetupLeds()
 			}
 		}
 	}
-				}
+}
 
 void SwitchToOptionMode(int mode, int startoption)
 {

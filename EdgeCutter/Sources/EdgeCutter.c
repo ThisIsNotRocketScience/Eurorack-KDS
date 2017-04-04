@@ -126,7 +126,7 @@ extern "C"
 
 	unsigned long EnvelopeRange(uint32_t V, int speed)
 	{
-		return 1 + ((speed?1:10) * V) >> 8;
+		return 1 + (((speed?1:10) * V) >> 8);
 	}
 
 	int32_t EnvelopeLength(int inp, int speed)
@@ -200,7 +200,7 @@ extern "C"
 				int32_t SusLev = SustainLevel(Env->S);
 				Env->CurrentTarget = SusLev;
 
-				int32_t Delta = (SustainLevel(Env->S) - Env->Current)*0.2f;
+				int32_t Delta = (SustainLevel(Env->S) - Env->Current)/5;
 				Env->Current += Delta;
 
 			}
@@ -286,7 +286,7 @@ extern "C"
 
 			if (Env->State == ENVSTATE_RELEASE)
 			{
-				L1 = (Env->ReleaseProgress) * (4.0f) + (0);
+				L1 = (Env->ReleaseProgress) * (4) + (0);
 				idx = (L1 >> FIXEDBITS) + 9;
 				frac = (uint8_t)((L1 & FRACMASK) >> (FIXEDBITS - 8));
 

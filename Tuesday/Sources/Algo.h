@@ -4,8 +4,9 @@
 #include <stdint.h>
 #include "Tuesday.h"
 
+#ifndef __max
 #define __max(a,b) (((a)>(b))?(a):(b))
-
+#endif
 
 struct ScaledNote
 {
@@ -36,8 +37,7 @@ typedef enum
 
 	// Random walking with mr. Markov.
 	ALGO_MARKOV,
-
-	//	ALGO_PACHEDECO,
+	
 	ALGO_WOBBLE,
 	ALGO_CHIPARP1,
 	ALGO_CHIPARP2,

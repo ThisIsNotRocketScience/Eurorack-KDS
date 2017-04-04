@@ -54,7 +54,7 @@ extern "C"
 
 	unsigned long LFORange(int32_t V, int32_t SR)
 	{
-		return 1 + V*SR* 64.0f;
+		return  1 + V*SR* 64;
 		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
@@ -108,11 +108,11 @@ extern "C"
 			uint32_t R = LFORange(128, 2000) >> 12;
 			if (LFO->Mod < 128)
 			{
-				R = 1 + LFORange(LFO->Mod, 2000) >> 12;
+				R = 1 + (LFORange(LFO->Mod, 2000) >> 12);
 			}
 			else
 			{
-				A = 1 + LFORange(LFO->Mod - 128, 2000) >> 12;
+				A = 1 + (LFORange(LFO->Mod - 128, 2000) >> 12);
 			}
 			if (LFO->EnvelopeState == WOBBLER_ATTACK)
 			{

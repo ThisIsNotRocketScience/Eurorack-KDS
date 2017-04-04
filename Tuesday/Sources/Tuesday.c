@@ -533,7 +533,7 @@ void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
 
 void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struct Tuesday_Tick *B, struct Tuesday_Tick *Out)
 {
-	if ((ditherpattern >> (tick & 0b11)) & 1 == 1)
+	if (((ditherpattern >> (tick & 0b11)) & 1) == 1)
 	{
 		CopyTick(A, Out);
 	}

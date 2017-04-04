@@ -45,7 +45,7 @@ extern "C"
 	/// @return     Sine value (Q12)
 	int32_t isin_S4(int32_t x)
 	{
-		int c, x2, y;
+		int c, y;
 		static const int qN = 13, qA = 12, B = 19900, C = 3516;
 
 		c = x << (30 - qN);              // Semi-circle info into carry.
@@ -102,7 +102,7 @@ extern "C"
 	{
 		int T = fade * total;
 		unsigned char frac = T & 0xff;
-		if (frac & frac < 255) frac += 1;
+		if (frac && (frac < 255)) frac += 1;
 		int I = T >> 8;
 		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
 	}

@@ -63,6 +63,8 @@
             this.dorianScaleRadio = new System.Windows.Forms.RadioButton();
             this.twelveToneRadio = new System.Windows.Forms.RadioButton();
             this.BluesRadio = new System.Windows.Forms.RadioButton();
+            this.MajorTriadRadio = new System.Windows.Forms.RadioButton();
+            this.minorTriadRadio = new System.Windows.Forms.RadioButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.trans0 = new System.Windows.Forms.RadioButton();
@@ -92,8 +94,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.MajorTriadRadio = new System.Windows.Forms.RadioButton();
-            this.minorTriadRadio = new System.Windows.Forms.RadioButton();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.XSlider)).BeginInit();
@@ -416,6 +416,8 @@
             // slidesCheck
             // 
             this.slidesCheck.AutoSize = true;
+            this.slidesCheck.Checked = true;
+            this.slidesCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.slidesCheck.Location = new System.Drawing.Point(3, 354);
             this.slidesCheck.Name = "slidesCheck";
             this.slidesCheck.Size = new System.Drawing.Size(68, 21);
@@ -427,6 +429,8 @@
             // LongNotesCheck
             // 
             this.LongNotesCheck.AutoSize = true;
+            this.LongNotesCheck.Checked = true;
+            this.LongNotesCheck.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LongNotesCheck.Location = new System.Drawing.Point(3, 381);
             this.LongNotesCheck.Name = "LongNotesCheck";
             this.LongNotesCheck.Size = new System.Drawing.Size(99, 21);
@@ -533,6 +537,28 @@
             this.BluesRadio.UseVisualStyleBackColor = true;
             this.BluesRadio.CheckedChanged += new System.EventHandler(this.BluesRadio_CheckedChanged);
             // 
+            // MajorTriadRadio
+            // 
+            this.MajorTriadRadio.AutoSize = true;
+            this.MajorTriadRadio.Location = new System.Drawing.Point(3, 165);
+            this.MajorTriadRadio.Name = "MajorTriadRadio";
+            this.MajorTriadRadio.Size = new System.Drawing.Size(97, 21);
+            this.MajorTriadRadio.TabIndex = 8;
+            this.MajorTriadRadio.Text = "MajorTriad";
+            this.MajorTriadRadio.UseVisualStyleBackColor = true;
+            this.MajorTriadRadio.CheckedChanged += new System.EventHandler(this.MajorTriadRadio_CheckedChanged);
+            // 
+            // minorTriadRadio
+            // 
+            this.minorTriadRadio.AutoSize = true;
+            this.minorTriadRadio.Location = new System.Drawing.Point(3, 192);
+            this.minorTriadRadio.Name = "minorTriadRadio";
+            this.minorTriadRadio.Size = new System.Drawing.Size(97, 21);
+            this.minorTriadRadio.TabIndex = 9;
+            this.minorTriadRadio.Text = "MinorTriad";
+            this.minorTriadRadio.UseVisualStyleBackColor = true;
+            this.minorTriadRadio.CheckedChanged += new System.EventHandler(this.minorTriadRadio_CheckedChanged);
+            // 
             // groupBox5
             // 
             this.groupBox5.AutoSize = true;
@@ -566,7 +592,6 @@
             this.trans0.Name = "trans0";
             this.trans0.Size = new System.Drawing.Size(37, 21);
             this.trans0.TabIndex = 2;
-            this.trans0.TabStop = true;
             this.trans0.Text = "0";
             this.trans0.UseVisualStyleBackColor = true;
             this.trans0.CheckedChanged += new System.EventHandler(this.trans0_CheckedChanged);
@@ -574,12 +599,10 @@
             // trans5
             // 
             this.trans5.AutoSize = true;
-            this.trans5.Checked = true;
             this.trans5.Location = new System.Drawing.Point(3, 30);
             this.trans5.Name = "trans5";
             this.trans5.Size = new System.Drawing.Size(37, 21);
             this.trans5.TabIndex = 3;
-            this.trans5.TabStop = true;
             this.trans5.Text = "5";
             this.trans5.UseVisualStyleBackColor = true;
             this.trans5.CheckedChanged += new System.EventHandler(this.trans5_CheckedChanged);
@@ -587,12 +610,10 @@
             // trans7
             // 
             this.trans7.AutoSize = true;
-            this.trans7.Checked = true;
             this.trans7.Location = new System.Drawing.Point(3, 57);
             this.trans7.Name = "trans7";
             this.trans7.Size = new System.Drawing.Size(37, 21);
             this.trans7.TabIndex = 4;
-            this.trans7.TabStop = true;
             this.trans7.Text = "7";
             this.trans7.UseVisualStyleBackColor = true;
             this.trans7.CheckedChanged += new System.EventHandler(this.trans7_CheckedChanged);
@@ -600,12 +621,10 @@
             // trans12
             // 
             this.trans12.AutoSize = true;
-            this.trans12.Checked = true;
             this.trans12.Location = new System.Drawing.Point(3, 84);
             this.trans12.Name = "trans12";
             this.trans12.Size = new System.Drawing.Size(45, 21);
             this.trans12.TabIndex = 5;
-            this.trans12.TabStop = true;
             this.trans12.Text = "12";
             this.trans12.UseVisualStyleBackColor = true;
             this.trans12.CheckedChanged += new System.EventHandler(this.trans12_CheckedChanged);
@@ -896,28 +915,6 @@
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "ResetHold";
             this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // MajorTriadRadio
-            // 
-            this.MajorTriadRadio.AutoSize = true;
-            this.MajorTriadRadio.Location = new System.Drawing.Point(3, 165);
-            this.MajorTriadRadio.Name = "MajorTriadRadio";
-            this.MajorTriadRadio.Size = new System.Drawing.Size(97, 21);
-            this.MajorTriadRadio.TabIndex = 8;
-            this.MajorTriadRadio.Text = "MajorTriad";
-            this.MajorTriadRadio.UseVisualStyleBackColor = true;
-            this.MajorTriadRadio.CheckedChanged += new System.EventHandler(this.MajorTriadRadio_CheckedChanged);
-            // 
-            // minorTriadRadio
-            // 
-            this.minorTriadRadio.AutoSize = true;
-            this.minorTriadRadio.Location = new System.Drawing.Point(3, 192);
-            this.minorTriadRadio.Name = "minorTriadRadio";
-            this.minorTriadRadio.Size = new System.Drawing.Size(97, 21);
-            this.minorTriadRadio.TabIndex = 9;
-            this.minorTriadRadio.Text = "MinorTriad";
-            this.minorTriadRadio.UseVisualStyleBackColor = true;
-            this.minorTriadRadio.CheckedChanged += new System.EventHandler(this.minorTriadRadio_CheckedChanged);
             // 
             // TINRS_Tuesday_TestFrame
             // 
