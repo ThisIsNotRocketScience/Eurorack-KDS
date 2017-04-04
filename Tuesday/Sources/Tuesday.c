@@ -197,15 +197,16 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 
 	if (T->T % 2 == 0)
 	{
-		//if (T->countdownNote >= 0)
-	//	{
-		//	T->countdownNote--;
-		//	if (T->countdownNote <= 0)
-	//		{
-	//			T->TickOut = 0;
+
+//		if (T->countdownNote >= 0)
+//		{
+//			T->countdownNote--;
+//			if (T->countdownNote <= 0)
+//			{
+//				T->TickOut = 0;
 //				T->Gates[GATE_GATE] = 0;
-	//		}
-	//	}
+//			}
+//		}
 
 		int bpm = 1 + (200 * T->tempo) / 256;
 		int msecperbeat = (1000 * 60) / (96 * (bpm/4));
@@ -345,10 +346,10 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	P->scale = 1;
 	P->tpbopt = 2;
 
-	S->algooptions[0] = ALGO_CHIPARP2;
-	S->algooptions[1] = ALGO_SAIKO_CLASSIC;
-	S->algooptions[2] = ALGO_STOMPER;
-	S->algooptions[3] = ALGO_WOBBLE;
+	S->algooptions[0] = ALGO_TRITRANCE + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
+	S->algooptions[1] = ALGO_SAIKO_CLASSIC + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
+	S->algooptions[2] = ALGO_STOMPER + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
+	S->algooptions[3] = ALGO_WOBBLE + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
 
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;
@@ -383,6 +384,12 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->scales[SCALE_MAJOR].notes[6] = 11;
 	S->scales[SCALE_MAJOR].count = 7; // Major scale
 
+	S->scales[SCALE_MAJORTRIAD].notes[0] = 0;
+	S->scales[SCALE_MAJORTRIAD].notes[1] = 4;
+	S->scales[SCALE_MAJORTRIAD].notes[2] = 7;
+	S->scales[SCALE_MAJORTRIAD].notes[3] = 11;
+	S->scales[SCALE_MAJORTRIAD].count = 4; // Major scale triad
+
 	S->scales[SCALE_MINOR].notes[0] = 0;
 	S->scales[SCALE_MINOR].notes[1] = 2;
 	S->scales[SCALE_MINOR].notes[2] = 3;
@@ -391,7 +398,13 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->scales[SCALE_MINOR].notes[5] = 8;
 	S->scales[SCALE_MINOR].notes[6] = 10;
 	S->scales[SCALE_MINOR].count = 7; // Minor scale
-
+	
+	S->scales[SCALE_MINORTRIAD].notes[0] = 0;
+	S->scales[SCALE_MINORTRIAD].notes[1] = 4;
+	S->scales[SCALE_MINORTRIAD].notes[2] = 7;
+	S->scales[SCALE_MINORTRIAD].notes[3] = 10;
+	S->scales[SCALE_MINORTRIAD].count = 4; // Minor scale triad
+	 
 	S->scales[SCALE_DORIAN].notes[0] = 0;
 	S->scales[SCALE_DORIAN].notes[1] = 2;
 	S->scales[SCALE_DORIAN].notes[2] = 3;
@@ -532,8 +545,8 @@ void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struc
 
 void ApplySlideLength(struct Tuesday_Tick *T, int SlideMode, int LengthMode)
 {
-	if (SlideMode == 1) T->slide = 0;
-	if (LengthMode == 1) T->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
+	if (SlideMode == 0) T->slide = 0;
+	if (LengthMode == 0) T->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
 }
 
 void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S)

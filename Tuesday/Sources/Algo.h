@@ -16,6 +16,9 @@ struct ScaledNote
 #define NOTE(aoct, anote) { SN.note = anote;SN.oct = aoct;};
 #define NOTEOFF() { SN.note = TUESDAY_NOTEOFF;SN.oct = 0;};
 
+#define ALGO_ENABLE_SLIDES 16
+#define ALGO_ENABLE_LENGTHS 32
+
 typedef enum
 {
 	// tests to build:

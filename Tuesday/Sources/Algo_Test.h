@@ -37,7 +37,7 @@ void Algo_Random_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 	struct ScaledNote SN;
 	DefaultTick(Output);
 	RandomSlideAndLength(Output, R);
-	NOTE(0, Tuesday_Rand(R) % (S->scales[S->scale[P->scale]].count * 2));
+	NOTE(0, Tuesday_Rand(R) % (S->scales[S->scale[P->scale] & 0xf].count * 2));
 	
 	Output->note = ScaleToNote(&SN, T, P, S);
 	Output->vel = Tuesday_Rand(R);

@@ -168,10 +168,13 @@ extern "C"
 		TuesdayParams.beatopt = 0;
 		TuesdaySettings.beatoptions[0] = beats;
 		
+		TuesdayParams.scale = 0;
+		TuesdaySettings.scale[0] = scale;
+
+
 		TuesdayParams.tpbopt = 0;
 		TuesdaySettings.tpboptions[0] = ticks;
 
-		TuesdayParams.scale = scale;
 		Tuesday.seed2 = y;
 		Tuesday.seed1 = x;
 		Tuesday.intensity = i;

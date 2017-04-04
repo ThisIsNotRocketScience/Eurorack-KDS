@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ExcludedFromCompilation">
+      <UniqueIdentifier>{f8f3b83c-a2d2-4c35-9d33-322de6b1c06b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestFrameDLL.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="..\..\EurorackShared\Math.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tuesday\Sources\main.c">
+      <Filter>ExcludedFromCompilation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TooEasy.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tuesday\Sources\main.h">
+      <Filter>ExcludedFromCompilation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

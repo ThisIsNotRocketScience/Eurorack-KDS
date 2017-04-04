@@ -190,10 +190,23 @@ namespace Sim1
             if (tooEasyRadio.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_TOOEASY;
             if (randomRadio.Checked) Algo = (int)TestFrameLoader.ALGONAMES.ALGO_RANDOM;
 
-            if (radioButton5.Checked) Scale = 0;
-            if (radioButton6.Checked) Scale = 1;
-            if (radioButton7.Checked) Scale = 2;
-            if (radioButton8.Checked) Scale = 3;
+            if (LongNotesCheck.Checked) Algo += 32;
+            if (slidesCheck.Checked) Algo += 16;
+
+
+            if (minorScaleRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_MINOR;
+            if (dorianScaleRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_DORIAN;
+            if (majorScaleRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_MAJOR ;
+            if (pentaTonicScaleRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_PENTA ;
+            if (BluesRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_BLUES;
+            if (twelveToneRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_12TONE;
+            if (minorTriadRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_MINORTRIAD;
+            if (MajorTriadRadio.Checked) Scale = (int)TestFrameLoader.SCALENAMES.SCALE_MAJORTRIAD;
+
+            if (trans0.Checked) Scale += 0;
+            if (trans5.Checked) Scale += 1<<4;
+            if (trans7.Checked) Scale += 2<<4;
+            if (trans12.Checked) Scale += 3<<4;
 
             if (tpb2.Checked) Ticks = 2;
             if (tpb3.Checked) Ticks = 3;
@@ -208,7 +221,7 @@ namespace Sim1
             TicksPerBeat = Ticks;
 
             Pattern.Clear();
-            TestFrameLoader.Tuesday_UpdatePattern(Algo, Scale,Ticks, Beats,(int)TempoSlider.Value,  (int)XSlider.Value, (int)YSlider.Value, (int)ISlider.Value);
+            TestFrameLoader.Tuesday_UpdatePattern(Algo, Scale,Ticks, Beats,128,  255-(int)XSlider.Value, 255-(int)YSlider.Value, (int)ISlider.Value);
             int PTicks = TestFrameLoader.Tuesday_GetPatternLength();
 
             for (int i =0;i<PTicks;i++)
@@ -336,14 +349,10 @@ namespace Sim1
             Playing = false;
         }
 
-        private void splitContainer2_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+        
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
-
+            pictureBox1.Invalidate();
         }
 
         private void chipArp2Button_CheckedChanged(object sender, EventArgs e)
@@ -382,6 +391,58 @@ namespace Sim1
         }
 
         private void randomRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void slidesCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void LongNotesCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void trans0_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void trans5_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void trans7_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void trans12_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void MajorTriadRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+
+        }
+
+        private void minorTriadRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void BluesRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePattern();
+        }
+
+        private void twelveToneRadio_CheckedChanged(object sender, EventArgs e)
         {
             UpdatePattern();
         }

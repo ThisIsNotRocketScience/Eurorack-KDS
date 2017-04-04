@@ -145,6 +145,9 @@
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
     <ClCompile Include="..\..\EurorackShared\Math.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
+    <ClCompile Include="..\..\Tuesday\Sources\main.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
     <ClCompile Include="TestFrameDLL.cpp" />
@@ -163,6 +166,7 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TooEasy.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
+    <ClInclude Include="..\..\Tuesday\Sources\main.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

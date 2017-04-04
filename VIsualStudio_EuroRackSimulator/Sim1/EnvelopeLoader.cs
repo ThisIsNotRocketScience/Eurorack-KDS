@@ -26,6 +26,26 @@ namespace Sim1
         public static extern int GetLed(int led);
 
         #region TUESDAY
+        public enum SCALENAMES
+        {
+            SCALE_MAJOR,
+            SCALE_MINOR,
+            SCALE_DORIAN,
+            SCALE_BLUES,
+            SCALE_PENTA,
+            SCALE_12TONE,
+            SCALE_MAJORTRIAD,
+            SCALE_MINORTRIAD,
+            SCALE_9,
+            SCALE_10,
+            SCALE_11,
+            SCALE_12,
+            SCALE_13,
+            SCALE_14,
+            SCALE_15,
+            SCALE_16,
+            __SCALE_COUNT
+        }
 
         public enum ALGONAMES {
             ALGO_TESTS,

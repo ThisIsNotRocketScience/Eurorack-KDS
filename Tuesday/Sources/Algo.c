@@ -79,7 +79,9 @@ int NOINLINE ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, st
 	int32_t octoffset = SN->oct;
 	int32_t scaleidx = SN->note;
 	//scaleidx &= 0xf;
-	int32_t selectedscale = P->scale;
+	int32_t selectedscale = S->scale[  P->scale ]  & 0xf;
+	int32_t selectedtranspose = S->scale[P->scale] >> 4;
+
 	int32_t scalecount = S->scales[selectedscale].count;
 
 	while (scaleidx < 0)
@@ -92,7 +94,7 @@ int NOINLINE ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, st
 	{
 		scaleidx -= scalecount; octoffset++;
 	}
-
+	unsigned int transpose[4] = { 0,5,7,12 };
 	octoffset++;
-	return S->scales[selectedscale].notes[scaleidx] + (12 * (octoffset));
+	return S->scales[selectedscale].notes[scaleidx] + (12 * (octoffset)) + transpose[selectedtranspose];
 }

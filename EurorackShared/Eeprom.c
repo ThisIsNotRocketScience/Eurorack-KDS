@@ -42,7 +42,7 @@ void EE24_WriteByte(unsigned short address, unsigned char value)
 	while (i2csending == 1)
 	{
 		CI2C1_MasterSendBlock(CI2C1_DeviceData, combuffer, 1, LDD_I2C_SEND_STOP);
-		WAIT1_Waitms(10);
+		WAIT1_Waitms(1);
 		ShiftOut();
 	};
 
