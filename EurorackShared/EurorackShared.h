@@ -24,9 +24,6 @@ struct EuroRack_Calibration
 	struct EuroRack_DAC_Calibration DAC[2];
 };
 
-void EuroRack_InitCalibration();
-uint8_t CalibratedADC(int adcchannel, uint32_t Input);
-uint16_t CalibratedDAC(int dacchannel, uint32_t Input);
 
 struct denoise_state_t
 {
@@ -52,6 +49,12 @@ struct EURORACK_SVF
 extern "C"
 {
 #endif
+
+
+	void EuroRack_InitCalibration();
+	uint8_t CalibratedADC(int adcchannel, uint32_t Input);
+	uint16_t CalibratedDAC(int dacchannel, uint32_t Input);
+
 
 	void denoise(int sw_down, struct denoise_state_t *state);
 	int islongpress(struct denoise_state_t *state);

@@ -40,6 +40,7 @@ extern "C"
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
 
+		EuroRack_InitCalibration();
 		Tuesday_LoadSettings(&TuesdaySettings, &TuesdayParams);
 
 		Tuesday_Init(&Tuesday);

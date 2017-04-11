@@ -54,6 +54,8 @@ struct Tuesday_RandomGen
 		/ 2.5 * 2.048
 		 = inp*/
 
+#define DAC_VOLT_UNCALIBRATED(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
+
 
 #define DAC_VOLT(x, chan) CalibratedDAC(chan, ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512))))
 #define DAC_NOTE(x, chan) (DAC_VOLT((x), chan)/12)

@@ -8,17 +8,25 @@
 
 struct EuroRack_Calibration MasterCalibration;
 
+#define DAC_VOLT_UNCALIBRATED(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
+
 uint16_t CalibratedDAC(int dacchannel, uint32_t Input)
 {
+	uint32_t raw_1 = DAC_VOLT_UNCALIBRATED(1);
+	uint32_t raw_3 = DAC_VOLT_UNCALIBRATED(3);
+	uint32_t cal_1 = MasterCalibration.DAC[dacchannel].volt_1;
+	uint32_t cal_3 = MasterCalibration.DAC[dacchannel].volt_3;
 
-	return Input;
+	uint32_t precomp = ((Input - raw_1) <<16) / (raw_3 - raw_1) ; 
+	uint32_t postcomp = ((precomp * (cal_3 - cal_1))>>16) + cal_1;
+	return postcomp;
 	//return ((Input + MasterCalibration.DAC[dacchannel].offset) *MasterCalibration.DAC[dacchannel].scale) >> 16;
 }
 
 void InitDAC(struct EuroRack_DAC_Calibration *DAC)
 {
-	DAC->volt_1 = 0;
-	DAC->volt_3 = 1000;
+	DAC->volt_1 = DAC_VOLT_UNCALIBRATED(1);
+	DAC->volt_3 = DAC_VOLT_UNCALIBRATED(3);
 }
 
 void InitADC(struct EuroRack_ADC_Calibration *ADC)
@@ -27,19 +35,19 @@ void InitADC(struct EuroRack_ADC_Calibration *ADC)
 	ADC->scale = 0x100;
 }
 
-void EuroRack_InitCalibration()
-{
-	
-	for (int i = 0; i < EURORACK_MAX_ADC; i++)
+	void EuroRack_InitCalibration()
 	{
-		InitADC(&MasterCalibration.ADC[i]);
-	}
 
-	for (int i = 0; i < EURORACK_MAX_DAC; i++)
-	{
-		InitDAC(&MasterCalibration.DAC[i]);
+		for (int i = 0; i < EURORACK_MAX_ADC; i++)
+		{
+			InitADC(&MasterCalibration.ADC[i]);
+		}
+
+		for (int i = 0; i < EURORACK_MAX_DAC; i++)
+		{
+			InitDAC(&MasterCalibration.DAC[i]);
+		}
 	}
-}
 
 #define LONGPRESSCYCLES 2000
 
@@ -85,8 +93,8 @@ void denoise(int sw_down, struct denoise_state_t *state)
 		state->counter--;
 	}
 
-//	state->pressed = 0;
-	//state->released = 0;
+//state->pressed = 0;
+//state->released = 0;
 
 	if (state->counter < 2)
 	{
