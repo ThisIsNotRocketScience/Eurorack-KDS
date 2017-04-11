@@ -44,8 +44,8 @@ typedef enum
 
 	ALGO_SNH,
 	// classic saiko things, reimagined
-	ALGO_SAIKO_LEAD,
 	ALGO_SAIKO_CLASSIC,
+	ALGO_SAIKO_LEAD,
 
 	ALGO_SCALEWALKER,
 	ALGO_TOOEASY,

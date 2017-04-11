@@ -14,8 +14,8 @@ struct EuroRack_ADC_Calibration
 
 struct EuroRack_DAC_Calibration
 {
-	int16_t offset;
-	int16_t scale;
+	int16_t volt_3;
+	int16_t volt_1;
 };
 
 struct EuroRack_Calibration

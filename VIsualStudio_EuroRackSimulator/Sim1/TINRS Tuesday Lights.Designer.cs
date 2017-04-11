@@ -52,6 +52,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "TINRS_Tuesday_Lights";
             this.Text = "TINRS_Tuesday_TestFrame";
+            this.Resize += new System.EventHandler(this.TINRS_Tuesday_Lights_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

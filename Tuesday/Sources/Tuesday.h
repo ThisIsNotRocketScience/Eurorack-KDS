@@ -55,19 +55,16 @@ struct Tuesday_RandomGen
 		 = inp*/
 
 
-#define DAC_VOLT(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
-#define DAC_NOTE(x) (DAC_VOLT((x))/12)
+#define DAC_VOLT(x, chan) CalibratedDAC(chan, ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512))))
+#define DAC_NOTE(x, chan) (DAC_VOLT((x), chan)/12)
 
 
 struct Tuesday_PatternGen
 {
 
 	uint8_t T;
-
-
 	uint8_t ClockConnected;
-
-
+	
 	int32_t Gates[TUESDAY_GATES+1];
 	int32_t GatesGap[TUESDAY_GATES+1];
 	uint8_t RStateLeds[TUESDAY_LEDS];
@@ -75,7 +72,6 @@ struct Tuesday_PatternGen
 
 	uint16_t NoteOut;
 	uint16_t VelocityOut;
-
 
 	int lastnote;
 	int CoolDown;
@@ -126,12 +122,10 @@ struct Tuesday_PatternGen
 
 };
 
-
 #define TUESDAY_MAXALGO 4
 #define TUESDAY_MAXSCALE 4
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
-
 
 typedef enum
 {
@@ -212,7 +206,7 @@ typedef enum{
 extern "C"
 {
 #endif
-
+	extern int CalibrateAdjust(int input);
 	extern void Tuesday_Init(struct Tuesday_PatternGen *T);
 	extern void Tuesday_Clock(struct Tuesday_PatternGen *T, int ClockVal);
 	extern void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params, int state);

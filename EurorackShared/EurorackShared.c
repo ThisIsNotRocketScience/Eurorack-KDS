@@ -6,13 +6,19 @@
 #include "LEDS.c"
 #endif
 
-
 struct EuroRack_Calibration MasterCalibration;
+
+uint16_t CalibratedDAC(int dacchannel, uint32_t Input)
+{
+
+	return Input;
+	//return ((Input + MasterCalibration.DAC[dacchannel].offset) *MasterCalibration.DAC[dacchannel].scale) >> 16;
+}
 
 void InitDAC(struct EuroRack_DAC_Calibration *DAC)
 {
-	DAC->offset = 0;
-	DAC->scale = 0x100;
+	DAC->volt_1 = 0;
+	DAC->volt_3 = 1000;
 }
 
 void InitADC(struct EuroRack_ADC_Calibration *ADC)

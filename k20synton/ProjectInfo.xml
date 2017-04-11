@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright : 2012 Freescale, Inc. All Rights Reserved.
+
+  This configuration file is a standard interchange file that's format is maintained
+  by Freescale, Inc. The configuration file is a derivative work
+  of the Processor Expert Software technology licensed for use by customers
+  as defined as SOFTWARE in the product's End User License Agreement. This file
+  and format are free to use and distribute for read-only purposes. You do not have
+  the right to create these files or modify this format or use for any purposes other
+  than interchange with the Processor Expert Software technology.
+
+  THIS SOFTWARE IS PROVIDED "AS IS".
+
+  NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT
+  LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE APPLY TO THIS SOFTWARE. IN NO EVENT WILL FREESCALE BE LIABLE, WHETHER
+  IN CONTRACT, TORT, OR OTHERWISE, FOR ANY INCIDENTAL, SPECIAL, INDIRECT,
+  CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR
+  ANY LOSS OF USE, LOSS OF TIME, INCONVENIENCE, COMMERCIAL LOSS, OR LOST PROFITS,
+  SAVINGS, OR REVENUES TO THE FULL EXTENT SUCH MAY BE DISCLAIMED BY LAW.
+
+-->
+<export xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ProjectInfoDescription.xsd">
+  <PROCESSOR>
+    <DeviceID>MK20DX256xxx10</DeviceID>
+    <CoreNum>1</CoreNum>
+    <Cores>
+      <Core>
+        <CoreSet>Cortex-M4</CoreSet>
+      </Core>
+    </Cores>
+    <SRAMsize>64k</SRAMsize>
+    <FLASHsize>256k</FLASHsize>
+  </PROCESSOR>
+  <PATHS>
+    <LinkerCommandFile>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
+    <IncludePaths>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\IO_Map\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\</Path>
+    </IncludePaths>
+    <SourceCodePaths>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Project_Settings\Startup_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Sources\</Path>
+    </SourceCodePaths>
+  </PATHS>
+  <FILES>
+    <GeneratedCs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\Bits1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FLASH1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FRTOS1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\PE_LDD.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\UTIL1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\Vectors.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\WAIT1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\croutine.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\event_groups.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\heap_1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\heap_2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\heap_3.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\heap_4.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\list.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\port.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\queue.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\tasks.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\timers.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Project_Settings\Startup_Code\startup.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Sources\main.c</PathName>
+    </GeneratedCs>
+    <GeneratedHs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\Bits1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FLASH1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FRTOS1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FreeRTOS.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\FreeRTOSConfig.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\PE_Const.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\PE_Error.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\PE_LDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\PE_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\StackMacros.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\UTIL1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\WAIT1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\croutine.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\event_groups.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\list.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\mpu_wrappers.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\portTicks.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\portable.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\portmacro.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\projdefs.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\queue.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\semphr.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\task.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\timers.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\IO_Map\MK20D10.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\ADC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\CAN_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\CMP_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\CMT_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\CRC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\DAC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\DMAMUX_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\DMA_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\EWM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\FMC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\FTFL_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\FTM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\GPIO_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\I2C_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\LPTMR_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\MCG_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\MCM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\OSC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\PDB_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\PDD_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\PIT_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\PORT_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\RTC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\SAI_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\SDHC_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\SIM_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\SPI_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\SysTick_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\UART_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\USBDCD_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\USB_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\VREF_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Static_Code\PDD\WDOG_PDD.h</PathName>
+    </GeneratedHs>
+    <GeneratedASMs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\k20synton\Generated_Code\portasm.s</PathName>
+    </GeneratedASMs>
+  </FILES>
+  <OPTIONS>
+  </OPTIONS>
+</export>

@@ -218,19 +218,26 @@ void doTimer()
 	case UI_CALIBRATION:
 	{
 		uint32_t CalibPattern = 0;
+		int chan = 0;
+		switch (Tuesday.CalibTarget)
+		{
+		case CALIBRATION_NOTE:chan = 0; break;
+		case CALIBRATION_VEL: chan = 1; break;
+		};
+
 		if (Tuesday.intensity < 100)
 		{
-			CalibPattern = 10;
+			CalibPattern = DAC_NOTE(12 * 1, chan);
 		}
 		else
 		{
 			if (Tuesday.intensity > 128+28)
 			{
-				CalibPattern = 1000;
+				CalibPattern = DAC_NOTE(12*3, chan);
 			}
 			else
 			{
-				CalibPattern = ((Tuesday.T >> 4)& 0x01) ? 10: 1000;
+				CalibPattern = ((Tuesday.T >> 4)& 0x01) ? DAC_NOTE(12*1, chan): DAC_NOTE(12*3, chan);
 			}
 		}
 
@@ -707,7 +714,8 @@ void UI_Normal()
 	{
 		if (islongpress(&algosw_state)) // longpress!
 		{
-			//Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO;
+			Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO;
+			Tuesday.commitchange = 1;
 			SwitchToOptionMode(OPTION_ALGO, Params.algo);
 		}
 	}
@@ -722,6 +730,8 @@ void UI_Normal()
 	{
 		if (islongpress(&scalesw_state)) // longpress!
 		{
+			Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE;
+			Tuesday.commitchange = 1;
 			SwitchToOptionMode(OPTION_SCALE, Params.scale);
 		}
 	}
@@ -739,7 +749,7 @@ void UI_Normal()
 		{
 			//Params.beatopt = (Params.beatopt + TUESDAY_MAXBEAT -1) % TUESDAY_MAXBEAT;
 
-			SwitchToOptionMode(OPTION_BEATS, Params.beatopt);
+			//SwitchToOptionMode(OPTION_BEATS, Params.beatopt);
 		}
 	}
 
@@ -758,7 +768,7 @@ void UI_Normal()
 		{
 			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
 
-			SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
+			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
 		}
 	}
 }
@@ -881,14 +891,14 @@ int main(void)
 
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-	/*** End of RTOS startup code.  ***/
-	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for(;;){}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

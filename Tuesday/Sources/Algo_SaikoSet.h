@@ -340,20 +340,70 @@ void Saiko_GoaTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 
 }
 
+void Saiko_ZephTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+{
+	Output->vel = Tuesday_RandByte(R);
+	Output->accent = (Tuesday_BoolChance(R)) ? 1 : 0;
+
+	int RandNote = Tuesday_Rand(R) % 8;
+	switch (RandNote)
+	{
+	case 0:
+		Output->note = 0; break;
+	case 1: Output->note = (char)0xf4; break;
+	case 3: Output->note = 1; break;
+	case 4: Output->note = 3; break;
+	case 5: Output->note = 7; break;
+	case 6: Output->note = 0xc; break;
+	case 7: Output->note = 0xd; break;
+	case 2: Output->note = 12+3; break;
+	}
+
+	if (Output->accent)
+	{
+		switch (RandNote)
+		{
+		case 0:
+		case 7: Output->note = 0; break;
+		case 1:Output->note = (char)0xf4; break;
+		case 2:Output->note = (char)0xfe; break;
+		case 4:Output->note = 3; break;
+		case 5:Output->note = (char)0xf2; break;
+		case 6:Output->note = 1; break;
+		case 3:Output->note = 12; break;
+		}
+	}
+
+
+	if (PS->GENERIC.b1 && I <= 8)
+	{
+		Output->note += 7;
+	}
+
+	if (PS->GENERIC.b2 && I <= 5)
+	{
+		Output->note -= 3;
+	}
+
+
+}
+
 
 
 void Algo_Saiko_Classic(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
 {
 	DefaultTick(Output);
 
-	switch (((T->seed1 * 3) / 255)%3)
+	switch (P->scale%4)
 	{
 	case 0:
 		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
 	case 1:
-		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
+		Saiko_FlatTick(T, P, S, R, PS, I, Output); break;
 	case 2:
-		Saiko_GoaTick(T, P, S, R, PS, I, Output); break;
+		Saiko_PsychTick(T, P, S, R, PS, I, Output); break;
+	case 4:
+		Saiko_ZephTick(T, P, S, R, PS, I, Output); break;
 	}
 
 	Output->note += 24;

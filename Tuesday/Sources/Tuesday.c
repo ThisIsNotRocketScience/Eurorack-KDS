@@ -142,7 +142,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 
 		if (T->CurrentPattern.Ticks[T->Tick].note != TUESDAY_NOTEOFF)
 		{
-			T->CVOutTarget = (DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note))<<16;
+			T->CVOutTarget = (DAC_NOTE(T->CurrentPattern.Ticks[T->Tick].note,0))<<16;
 			if (Tick->slide > 0)
 			{
 				T->CVOutDelta = (T->CVOutTarget - T->CVOut)/ (Tick->slide * 50);
@@ -346,15 +346,15 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	P->scale = 1;
 	P->tpbopt = 2;
 
-	S->algooptions[0] = ALGO_TRITRANCE + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
-	S->algooptions[1] = ALGO_SAIKO_CLASSIC + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
 	S->algooptions[2] = ALGO_STOMPER + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
+	S->algooptions[0] = ALGO_TRITRANCE + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
+	S->algooptions[1] = ALGO_SAIKO_LEAD + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
 	S->algooptions[3] = ALGO_WOBBLE + ALGO_ENABLE_SLIDES + ALGO_ENABLE_LENGTHS;
 
 	S->tpboptions[0] = 2;
 	S->tpboptions[1] = 3;
 	S->tpboptions[2] = 4;
-	S->tpboptions[3] = 8;
+	S->tpboptions[3] = 5;
 
 	S->beatoptions[0] = 4;
 	S->beatoptions[1] = 8;
@@ -400,9 +400,9 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->scales[SCALE_MINOR].count = 7; // Minor scale
 	
 	S->scales[SCALE_MINORTRIAD].notes[0] = 0;
-	S->scales[SCALE_MINORTRIAD].notes[1] = 4;
+	S->scales[SCALE_MINORTRIAD].notes[1] = 3;
 	S->scales[SCALE_MINORTRIAD].notes[2] = 7;
-	S->scales[SCALE_MINORTRIAD].notes[3] = 10;
+	S->scales[SCALE_MINORTRIAD].notes[3] = 9;
 	S->scales[SCALE_MINORTRIAD].count = 4; // Minor scale triad
 	 
 	S->scales[SCALE_DORIAN].notes[0] = 0;

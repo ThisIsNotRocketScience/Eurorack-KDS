@@ -41,6 +41,7 @@ extern "C"
 		Wobbler_Init(&LFOStatic);
 
 		Tuesday_LoadSettings(&TuesdaySettings, &TuesdayParams);
+
 		Tuesday_Init(&Tuesday);
 		Tuesday_Generate(&Tuesday, &TuesdayParams, &TuesdaySettings);
 	}
@@ -221,7 +222,53 @@ extern "C"
 
 #include <Windows.h>
 #include <stdio.h>
+void RunTimingTest()
+{
+	Init();
+	Tuesday.CurrentPattern.TPB = 4;
+	Tuesday_UpdatePattern(0, 0, 4, 4, 200, 0, 0, 255);
+	int LastI = 0;
+	int gates[TUESDAY_GATES];
+	for (int i = 0; i < TUESDAY_GATES; i++) gates[i] = -1;
+	int LastTick = -2;
+	for (int i = 0; i < 1000; i++)
+	{
 
+		Tuesday_Clock(&Tuesday, 1);
+		Tuesday_Clock(&Tuesday, 0);
+
+		int GateDiff = 0;
+		for (int j = 0; j < TUESDAY_GATES; j++)
+		{
+			if (gates[j] != Tuesday.Gates[j])
+			{
+				GateDiff++;
+				gates[j] = Tuesday.Gates[j];
+			}
+		}
+		if (i == 590)
+		{
+			printf("reset!\n");
+			Tuesday_Reset(&Tuesday);
+		}
+		if (GateDiff > 0 || Tuesday.Tick != LastTick)
+		{
+			printf("%d) ", i);
+			for (int j = 0; j < TUESDAY_GATES; j++)
+			{
+				printf("%d ", Tuesday.Gates[j] > 0 ? 1 : 0);
+				Tuesday.Gates[j] = 0;
+			}
+			if (Tuesday.Tick != LastTick)
+			{
+				printf("Tick: %d - delta %d ", Tuesday.Tick, i - LastI);
+				LastI = i;
+				LastTick = Tuesday.Tick;
+			}
+			printf("\n");
+		}
+	}
+}
 
 void RunTest(const char * name, int i)
 {
@@ -292,6 +339,9 @@ BOOL WINAPI DllMain(
 		RunTest("ScaleWalker", ALGO_SCALEWALKER);
 		RunTest("TooEasy", ALGO_TOOEASY);
 		RunTest("Random", ALGO_RANDOM);
+
+
+		RunTimingTest();
 
 		if (0)
 		{

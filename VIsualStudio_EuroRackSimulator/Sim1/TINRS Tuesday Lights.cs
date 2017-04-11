@@ -30,20 +30,34 @@ namespace Sim1
 
         public void Draw4Square(Graphics G, int x, int y, int num)
         {
-            DrawSquare(G, x, y, num == 0);
-            DrawSquare(G, x + minisquare, y, num == 1);
-            DrawSquare(G, x + minisquare, y + minisquare, num == 2);
-            DrawSquare(G, x, y + minisquare, num == 3);
+            DrawSquare(G, x, y, num == 3);
+            DrawSquare(G, x + minisquare, y, num == 0);
+            DrawSquare(G, x + minisquare, y + minisquare, num == 1);
+            DrawSquare(G, x, y + minisquare, num == 2);
         }
         int margin = 5;
         const int minisquare = 10;
         int squaresize = minisquare * 2;
 
-        public void DrawSquares(Graphics G, int x, int y, int num, string label)
+        public void DrawSquares(int skip, Graphics G, int x, int y, int num, string label)
         {
-            Draw4Square(G, x + squaresize + margin, y, num & 3);
-            Draw4Square(G, x + squaresize + margin, y + squaresize + margin, (num >> 2) & 3);
-            Draw4Square(G, x, y + squaresize + margin, (num >> 4) & 3);
+
+            int N1 = num & 3;
+            int N2 = (num >> 2) & 3;
+            int N3 = (num >> 4) & 3;
+            List<int> Ns = new List<int>() { N1, N2, N3 };
+            int j = 0;
+            int i = 0;
+            if (i != skip) { Draw4Square(G, x + squaresize + margin, y, Ns[j]); j++; };
+            i++;
+            if (i != skip) { Draw4Square(G, x + squaresize + margin, y + squaresize + margin, Ns[j]); j++; };
+            i++;
+            if (i != skip) { Draw4Square(G, x, y + squaresize + margin, Ns[j]); j++; };
+            i++;
+            if (i != skip) { Draw4Square(G, x, y, Ns[j]); j++; };
+            i++;
+
+
             G.DrawString(label, new Font("Panton ExtraBold", 15), new SolidBrush(Color.White), x + squaresize * 2 + margin * 2, y + squaresize - 7.5f);
         }
 
@@ -70,24 +84,51 @@ namespace Sim1
 
             "SnH",
             // classic saiko things, reimagined
-            "Saiko Lead",
             "Saiko Classic",
+            "Saiko Lead",
             "Scalewalker",
             "TooEasy",
-            "Random" 
+            "Random"
           };
-
+        List<string> ScaleNames = new List<string>()
+        {
+            "Major",
+            "Minor",
+            "Dorian",
+            "Blues",
+            "Pentatonic",
+            "12 tone" ,
+            "Major Triad",
+            "Minor Triad"
+        };
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
             Graphics G = e.Graphics;
+            int s = Math.Max(1, (int)Math.Floor(pictureBox1.Width / 300.0));
+            int y = 0;
             for (int i = 0; i < PatternNames.Count; i++)
             {
-                DrawSquares(G, (i % 5) * 300 + 10, 10 + (i / 5) * (squaresize * 2 + margin * 6), i, PatternNames[i]);
+                y = 10 + (i / s) * (squaresize * 2 + margin * 6);
+                DrawSquares(3, G, (i % s) * 300 + 10, y, i, PatternNames[i]);
+
+
             }
+            y += (squaresize * 2 + margin * 6);
+            for (int i = 0; i < ScaleNames.Count; i++)
+            {
+                int ny = 10 + (i / s) * (squaresize * 2 + margin * 6);
+                DrawSquares(2, G, (i % s) * 300 + 10, y + ny, i, ScaleNames[i]);
+            }
+
         }
 
         private void pictureBox1_Resize(object sender, EventArgs e)
+        {
+            pictureBox1.Invalidate();
+        }
+
+        private void TINRS_Tuesday_Lights_Resize(object sender, EventArgs e)
         {
             pictureBox1.Invalidate();
         }

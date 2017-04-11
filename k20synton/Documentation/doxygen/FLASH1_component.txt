@@ -1,0 +1,250 @@
+/*!
+  \page FLASH1 FLASH1 (FLASH_LDD)
+**          This embedded component implements an access to an on-chip flash memory.
+**          Using this component the flash memory could be written to, erased,
+**          read from. Some other services would be provided, if they are supported
+**          by hardware, e.g. changes of the flash memory protection state.
+**
+
+- \subpage FLASH1_settings
+- \subpage FLASH1_regs_overview  
+- \subpage FLASH1_regs_details
+- \ref FLASH1_module "Component documentation" 
+\page FLASH1_regs_overview Registers Initialization Overview
+This page contains the initialization values for the registers of the peripheral(s) configured
+by the component. 
+<table>
+<tr><td colspan="4" class="ttitle1">FLASH1 Initialization</td></tr>
+<tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
+<tr><td>0x4004803C</td><td>SIM_SCGC6</td>
+<td class="regResetVal">0x40000001</td>
+ <td>SIM_SCGC6 register, peripheral FLASH1.</td></tr>
+</table>
+Color Denotes Reset Value
+<br/>
+\page FLASH1_regs_details Register Initialization Details
+This page contains detailed description of initialization values for the 
+registers of the peripheral(s) configured by the component. 
+
+<div class="reghdr1">SIM_SCGC6</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">RTC</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ADC0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FTM1</td><td colspan="1" rowspan="2">FTM0</td><td colspan="1" rowspan="2">PIT</td>
+<td colspan="1" rowspan="2">PDB</td><td colspan="1" rowspan="2">USBDCD</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">CRC</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">I2S</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">SPI1</td><td colspan="1" rowspan="2">SPI0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FLEXCAN0</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">DMAMUX</td><td colspan="1" rowspan="2">FTFL</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x40000001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x40000001</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>29</td><td>RTC</td><td>0x00</td><td>RTC Access Control</td>
+<tr><td>27</td><td>ADC0</td><td>0x00</td><td>ADC0 Clock Gate Control</td>
+<tr><td>25</td><td>FTM1</td><td>0x00</td><td>FTM1 Clock Gate Control</td>
+<tr><td>24</td><td>FTM0</td><td>0x00</td><td>FTM0 Clock Gate Control</td>
+<tr><td>23</td><td>PIT</td><td>0x00</td><td>PIT Clock Gate Control</td>
+<tr><td>22</td><td>PDB</td><td>0x00</td><td>PDB Clock Gate Control</td>
+<tr><td>21</td><td>USBDCD</td><td>0x00</td><td>USB DCD Clock Gate Control</td>
+<tr><td>18</td><td>CRC</td><td>0x00</td><td>CRC Clock Gate Control</td>
+<tr><td>15</td><td>I2S</td><td>0x00</td><td>I2S Clock Gate Control</td>
+<tr><td>13</td><td>SPI1</td><td>0x00</td><td>SPI1 Clock Gate Control</td>
+<tr><td>12</td><td>SPI0</td><td>0x00</td><td>SPI0 Clock Gate Control</td>
+<tr><td>4</td><td>FLEXCAN0</td><td>0x00</td><td>FlexCAN0 Clock Gate Control</td>
+<tr><td>1</td><td>DMAMUX</td><td>0x00</td><td>DMA Mux Clock Gate Control</td>
+<tr><td>0</td><td>FTFL</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
+</tr></table>
+*/
+/*!
+\page FLASH1_settings Component Settings
+\code
+**          Component name                                 : FLASH1
+**          Device                                         : FTFL
+**          Use user memory areas                          : no
+**          Interrupt service                              : Disabled
+**            Write batch size                             : Minimal
+**            Erase batch size                             : Minimal
+**            Read batch size                              : Unlimited
+**          Safe launch and wait                           : yes
+**            Safe routine location                        : Defined statically by the component
+**            Interruptable wait loop                      : no
+**          Initialization                                 : 
+**            Enabled in init. code                        : yes
+**            Auto initialization                          : no
+**            Event mask                                   : 
+**              OnOperationComplete                        : Enabled
+**              OnError                                    : Disabled
+**            CPU clock/configuration selection            : 
+**              Clock configuration 0                      : This component enabled
+**              Clock configuration 1                      : This component disabled
+**              Clock configuration 2                      : This component disabled
+**              Clock configuration 3                      : This component disabled
+**              Clock configuration 4                      : This component disabled
+**              Clock configuration 5                      : This component disabled
+**              Clock configuration 6                      : This component disabled
+**              Clock configuration 7                      : This component disabled
+<h1>
+\endcode
+*/
+/*!
+  \page FLASH1 FLASH1 (FLASH_LDD)
+**          This embedded component implements an access to an on-chip flash memory.
+**          Using this component the flash memory could be written to, erased,
+**          read from. Some other services would be provided, if they are supported
+**          by hardware, e.g. changes of the flash memory protection state.
+**
+
+- \subpage FLASH1_settings
+- \subpage FLASH1_regs_overview  
+- \subpage FLASH1_regs_details
+- \ref FLASH1_module "Component documentation" 
+\page FLASH1_regs_overview Registers Initialization Overview
+This page contains the initialization values for the registers of the peripheral(s) configured
+by the component. 
+<table>
+<tr><td colspan="4" class="ttitle1">FLASH1 Initialization</td></tr>
+<tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
+<tr><td>0x4004803C</td><td>SIM_SCGC6</td>
+<td class="regResetVal">0x40000001</td>
+ <td>SIM_SCGC6 register, peripheral FLASH1.</td></tr>
+</table>
+Color Denotes Reset Value
+<br/>
+\page FLASH1_regs_details Register Initialization Details
+This page contains detailed description of initialization values for the 
+registers of the peripheral(s) configured by the component. 
+
+<div class="reghdr1">SIM_SCGC6</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">RTC</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ADC0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FTM1</td><td colspan="1" rowspan="2">FTM0</td><td colspan="1" rowspan="2">PIT</td>
+<td colspan="1" rowspan="2">PDB</td><td colspan="1" rowspan="2">USBDCD</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">CRC</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">I2S</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">SPI1</td><td colspan="1" rowspan="2">SPI0</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">FLEXCAN0</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">DMAMUX</td><td colspan="1" rowspan="2">FTFL</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x40000001</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x40000001</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>29</td><td>RTC</td><td>0x00</td><td>RTC Access Control</td>
+<tr><td>27</td><td>ADC0</td><td>0x00</td><td>ADC0 Clock Gate Control</td>
+<tr><td>25</td><td>FTM1</td><td>0x00</td><td>FTM1 Clock Gate Control</td>
+<tr><td>24</td><td>FTM0</td><td>0x00</td><td>FTM0 Clock Gate Control</td>
+<tr><td>23</td><td>PIT</td><td>0x00</td><td>PIT Clock Gate Control</td>
+<tr><td>22</td><td>PDB</td><td>0x00</td><td>PDB Clock Gate Control</td>
+<tr><td>21</td><td>USBDCD</td><td>0x00</td><td>USB DCD Clock Gate Control</td>
+<tr><td>18</td><td>CRC</td><td>0x00</td><td>CRC Clock Gate Control</td>
+<tr><td>15</td><td>I2S</td><td>0x00</td><td>I2S Clock Gate Control</td>
+<tr><td>13</td><td>SPI1</td><td>0x00</td><td>SPI1 Clock Gate Control</td>
+<tr><td>12</td><td>SPI0</td><td>0x00</td><td>SPI0 Clock Gate Control</td>
+<tr><td>4</td><td>FLEXCAN0</td><td>0x00</td><td>FlexCAN0 Clock Gate Control</td>
+<tr><td>1</td><td>DMAMUX</td><td>0x00</td><td>DMA Mux Clock Gate Control</td>
+<tr><td>0</td><td>FTFL</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
+</tr></table>
+*/
+/*!
+\page FLASH1_settings Component Settings
+\code
+**          Component name                                 : FLASH1
+**          Device                                         : FTFL
+**          Use user memory areas                          : no
+**          Interrupt service                              : Disabled
+**            Write batch size                             : Minimal
+**            Erase batch size                             : Minimal
+**            Read batch size                              : Unlimited
+**          Safe launch and wait                           : yes
+**            Safe routine location                        : Defined statically by the component
+**            Interruptable wait loop                      : no
+**          Initialization                                 : 
+**            Enabled in init. code                        : yes
+**            Auto initialization                          : no
+**            Event mask                                   : 
+**              OnOperationComplete                        : Enabled
+**              OnError                                    : Disabled
+**            CPU clock/configuration selection            : 
+**              Clock configuration 0                      : This component enabled
+**              Clock configuration 1                      : This component disabled
+**              Clock configuration 2                      : This component disabled
+**              Clock configuration 3                      : This component disabled
+**              Clock configuration 4                      : This component disabled
+**              Clock configuration 5                      : This component disabled
+**              Clock configuration 6                      : This component disabled
+**              Clock configuration 7                      : This component disabled
+<h1>
+\endcode
+*/
