@@ -74,7 +74,8 @@ byte EE24_ReadByte(unsigned short address)
 	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_SEND_STOP);
 	while (i2csending == 1)
 	{
-	}
+		ShiftOut();
+}
 	i2csomething = 0;
 	ShiftOut();
 
@@ -83,6 +84,7 @@ byte EE24_ReadByte(unsigned short address)
 	CI2C1_MasterReceiveBlock(CI2C1_DeviceData, &out, 1, LDD_I2C_SEND_STOP);
 	while (i2creceiving == 1)
 	{
+		ShiftOut();
 	};
 	i2csomething = 1;
 	ShiftOut();

@@ -23,6 +23,12 @@ uint16_t CalibratedDAC(int dacchannel, uint32_t Input)
 	//return ((Input + MasterCalibration.DAC[dacchannel].offset) *MasterCalibration.DAC[dacchannel].scale) >> 16;
 }
 
+void ChangeDACCalibration(int dacchannel, int low, int high)
+{
+	MasterCalibration.DAC[dacchannel].volt_1 = DAC_VOLT_UNCALIBRATED(1) + (low - 128);
+	MasterCalibration.DAC[dacchannel].volt_3 = DAC_VOLT_UNCALIBRATED(3) + (high - 128);
+}
+
 void InitDAC(struct EuroRack_DAC_Calibration *DAC)
 {
 	DAC->volt_1 = DAC_VOLT_UNCALIBRATED(1);
@@ -35,19 +41,47 @@ void InitADC(struct EuroRack_ADC_Calibration *ADC)
 	ADC->scale = 0x100;
 }
 
-	void EuroRack_InitCalibration()
+void EuroRack_InitCalibration()
+{
+
+	for (int i = 0; i < EURORACK_MAX_ADC; i++)
 	{
-
-		for (int i = 0; i < EURORACK_MAX_ADC; i++)
-		{
-			InitADC(&MasterCalibration.ADC[i]);
-		}
-
-		for (int i = 0; i < EURORACK_MAX_DAC; i++)
-		{
-			InitDAC(&MasterCalibration.DAC[i]);
-		}
+		InitADC(&MasterCalibration.ADC[i]);
 	}
+
+	for (int i = 0; i < EURORACK_MAX_DAC; i++)
+	{
+		InitDAC(&MasterCalibration.DAC[i]);
+	}
+}
+
+int ValidateADC(struct EuroRack_ADC_Calibration *adc)
+{
+	return 0;
+}
+int  ValidateDAC(struct EuroRack_DAC_Calibration *dac)
+{
+	if (dac->volt_1 >= dac->volt_3)
+	{
+		InitDAC(dac);
+		return 1;
+	}
+	return 0;
+}
+int EuroRack_ValidateCalibration()
+{
+	int invalid = 0;
+	for (int i = 0; i < EURORACK_MAX_ADC; i++)
+	{
+		invalid += ValidateADC(&MasterCalibration.ADC[i]);
+	}
+
+	for (int i = 0; i < EURORACK_MAX_DAC; i++)
+	{
+		invalid += ValidateDAC(&MasterCalibration.DAC[i]);
+	}
+	return invalid;
+}
 
 #define LONGPRESSCYCLES 2000
 
@@ -60,7 +94,6 @@ int islongpress( struct denoise_state_t *state)
 	}
 	return 0;
 }
-
 
 int pressed(struct denoise_state_t *state)
 {
@@ -133,7 +166,5 @@ void denoise(int sw_down, struct denoise_state_t *state)
 	{
 		state->longpressed = LONGPRESSCYCLES;	
 	}
-
-
 }
 

@@ -78,9 +78,8 @@ struct Tuesday_Params LastParams;
 struct Tuesday_RandomGen MainRandom;
 
 int tickssincecommit = 0;
-
-
 long oldseed = -1;
+
 byte pwm = 0;
 
 void _SetupLeds();
@@ -89,7 +88,6 @@ struct denoise_state_t algosw_state = {0};
 struct denoise_state_t scalesw_state = {0};
 struct denoise_state_t beatsw_state = {0};
 struct denoise_state_t tpbsw_state = {0};
-
 
 void UpdateButtons()
 {
@@ -123,7 +121,7 @@ void UpdateGates()
 }
 
 void __attribute__ ((noinline)) ShiftOut()
-				{
+{
 	pwm += 16;
 
 	LATCH_ClrVal(LATCH_DeviceData);
@@ -356,7 +354,7 @@ void SetLedNumber(int offset, int number)
 	}
 }
 
-#define VERSIONBYTE 0x10
+#define VERSIONBYTE 0x12
 
 void SaveEeprom()
 {
@@ -403,6 +401,10 @@ void LoadEepromCalibration()
 	{
 		int calibrationsize = sizeof(MasterCalibration);
 		EE24_ReadBlock(EEPROM_CALIBRATIONBASE+ 1, (byte *)&MasterCalibration, calibrationsize);
+		if (EuroRack_ValidateCalibration() > 0)
+		{
+			SaveCalibrationEeprom();
+		}
 	}
 	else
 	{
@@ -663,8 +665,14 @@ void UI_Calibration()
 	if (pressed(&algosw_state))
 	{
 		Tuesday.UIMode = UI_NORMAL;
+		return;
 	}
 
+	switch (Tuesday.CalibTarget)
+	{
+	case CALIBRATION_NOTE: ChangeDACCalibration(0, Tuesday.seed1, Tuesday.seed2); break;
+	case CALIBRATION_VEL: ChangeDACCalibration(1, Tuesday.seed1, Tuesday.seed2); break;
+	}
 
 
 	if (pressed(&beatsw_state))
@@ -679,6 +687,7 @@ void UI_Calibration()
 			{
 				// Write Velocity output calibration value!
 				Tuesday.CalibTarget = CALIBRATION_NOTARGET;
+				SaveCalibrationEeprom();
 			}
 		}
 	}
@@ -695,6 +704,7 @@ void UI_Calibration()
 			{
 				// Write Note output calibration value!
 				Tuesday.CalibTarget = CALIBRATION_NOTARGET;
+				SaveCalibrationEeprom();
 			}
 		}
 	}
