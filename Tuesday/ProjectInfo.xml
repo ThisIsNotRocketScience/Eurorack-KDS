@@ -58,6 +58,9 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DATA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\EE241.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\GI2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\IntI2cLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\KSDK1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.c</PathName>
@@ -90,7 +93,10 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Cpu.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DATA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\EE241.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\GI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\IntI2cLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\KSDK1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\LATCH.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_Const.h</PathName>

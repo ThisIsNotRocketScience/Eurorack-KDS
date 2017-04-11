@@ -34,3 +34,8 @@ SonicScrewdriver/Debug/Generated_Code/subdir.mk
 SonicScrewdriver/Debug/Generated_Code/subdir.mk
 SonicScrewdriver/Debug/Sources/subdir.mk
 SonicScrewdriver/Debug/makefile
+EepromTestbench/Debug/
+EepromTestbench/Release/
+EepromTestbench/Static_Code/
+EepromTestbench/Generated_Code/
+EepromTestbench/Documentation/

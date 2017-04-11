@@ -10,18 +10,27 @@ struct EuroRack_Calibration MasterCalibration;
 
 #define DAC_VOLT_UNCALIBRATED(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
 
-uint16_t CalibratedDAC(int dacchannel, uint32_t Input)
+uint16_t  CalibratedDAC(int dacchannel, int32_t Input)
 {
-	uint32_t raw_1 = DAC_VOLT_UNCALIBRATED(1);
-	uint32_t raw_3 = DAC_VOLT_UNCALIBRATED(3);
-	uint32_t cal_1 = MasterCalibration.DAC[dacchannel].volt_1;
-	uint32_t cal_3 = MasterCalibration.DAC[dacchannel].volt_3;
+	//return Input;
+	ValidateDAC(&MasterCalibration.DAC[dacchannel]);
 
-	uint32_t precomp = ((Input - raw_1) <<16) / (raw_3 - raw_1) ; 
-	uint32_t postcomp = ((precomp * (cal_3 - cal_1))>>16) + cal_1;
+	int32_t raw_1 = DAC_VOLT_UNCALIBRATED(1);
+	int32_t raw_3 = DAC_VOLT_UNCALIBRATED(3);
+	int32_t cal_1 = MasterCalibration.DAC[dacchannel].volt_1;
+	int32_t cal_3 = MasterCalibration.DAC[dacchannel].volt_3;
+
+	int32_t raw_D = raw_3 - raw_1;
+	int32_t cal_D = cal_3 - cal_1;
+
+	int32_t r1 = Input - raw_1;
+	int32_t precomp = (r1  * cal_D ) / (raw_D) ;
+	int32_t postcomp = precomp  + cal_1;
+	if (postcomp < 0 ) postcomp  = 0;
 	return postcomp;
 	//return ((Input + MasterCalibration.DAC[dacchannel].offset) *MasterCalibration.DAC[dacchannel].scale) >> 16;
 }
+
 
 void ChangeDACCalibration(int dacchannel, int low, int high)
 {

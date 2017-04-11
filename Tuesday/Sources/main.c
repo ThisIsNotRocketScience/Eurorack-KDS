@@ -43,8 +43,11 @@
 #include "SW_BEATS.h"
 #include "RESETINT.h"
 #include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "EE241.h"
+#include "GI2C1.h"
 #include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
@@ -354,13 +357,13 @@ void SetLedNumber(int offset, int number)
 	}
 }
 
-#define VERSIONBYTE 0x12
+#define VERSIONBYTE 0x13
 
 void SaveEeprom()
 {
 	int paramsize = sizeof(Params);
-	EE24_WriteByte(0, VERSIONBYTE);
-	EE24_WriteBlock(1, (byte *)&Params, paramsize);
+	EE24_WriteByte(EEPROM_OPTIONBASE, VERSIONBYTE);
+	EE24_WriteBlock(EEPROM_OPTIONBASE+1, (byte *)&Params, paramsize);
 }
 
 void SaveSettingsEeprom()
@@ -415,11 +418,11 @@ void LoadEepromCalibration()
 void LoadEeprom()
 {
 	byte Ver;
-	Ver = EE24_ReadByte(0);
+	Ver = EE24_ReadByte(EEPROM_OPTIONBASE);
 	if (Ver == VERSIONBYTE)
 	{
 		int paramsize = sizeof(Params);
-		EE24_ReadBlock(1, (byte *)&Params, paramsize);
+		EE24_ReadBlock(EEPROM_OPTIONBASE+1, (byte *)&Params, paramsize);
 		Tuesday_ValidateParams(&Params);
 	}
 	else
@@ -551,12 +554,21 @@ void SwitchToOptionMode(int mode, int startoption)
 	Tuesday.UIMode = UI_SELECTOPTION;
 }
 
+
 // reset basic options, but not calibration
-void FactoryReset()
+void FactoryReset(int all)
 {
 	Tuesday_LoadDefaults(&Settings, &Params);
 	SaveSettingsEeprom();
+	if (all == 1)
+	{
+		EuroRack_InitCalibration();
+		SaveCalibrationEeprom();
+	}
 }
+
+
+
 
 void UI_SelectOption()
 {
@@ -767,8 +779,6 @@ void UI_Normal()
 	{
 		Tuesday.switchmode = 1;
 
-		Settings.beatoptions[Params.beatopt];
-
 		Params.tpbopt = (Params.tpbopt + 1) % TUESDAY_MAXTPB;
 		Tuesday.commitchange = 1;
 	}
@@ -777,7 +787,6 @@ void UI_Normal()
 		if (islongpress(&tpbsw_state)) // longpress!
 		{
 			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
-
 			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
 		}
 	}
@@ -847,9 +856,14 @@ int main(void)
 	}
 	else
 	{
+
 		if (islongpress( &tpbsw_state))
 		{
-			FactoryReset();
+			FactoryReset(0);
+		}
+		if (islongpress( &beatsw_state))
+		{
+			FactoryReset(1);
 		}
 
 		Tuesday.UIMode = UI_NORMAL;

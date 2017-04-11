@@ -1,3 +1,20 @@
+#include "EE241.h"
+
+unsigned char EE24_ReadByte(int address)
+{
+	unsigned char out = 0;
+	EE241_ReadByte(address, &out);
+	return out;
+}
+
+
+void EE24_WriteByte(unsigned short address, unsigned char value)
+{
+	EE241_WriteByte(address, value);
+}
+
+#ifdef OLDVERSION
+
 #include "CI2C1.h"
 #include "WAIT1.h"
 
@@ -49,17 +66,6 @@ void EE24_WriteByte(unsigned short address, unsigned char value)
 	i2csending = 0;
 }
 
-void EE24_WriteBlock(unsigned short address, unsigned char *data, int len)
-{
-	//EE241_WriteBlock(address, data, len);
-
-	for (int i = 0; i < len; i++)
-	{
-
-		EE24_WriteByte(address++, data[i]);
-		//	WAIT1_Waitms(5);
-	}
-}
 
 byte EE24_ReadByte(unsigned short address)
 {
@@ -74,8 +80,7 @@ byte EE24_ReadByte(unsigned short address)
 	CI2C1_MasterSendBlock(CI2C1_DeviceData, com, 1, LDD_I2C_SEND_STOP);
 	while (i2csending == 1)
 	{
-		ShiftOut();
-}
+	}
 	i2csomething = 0;
 	ShiftOut();
 
@@ -84,7 +89,6 @@ byte EE24_ReadByte(unsigned short address)
 	CI2C1_MasterReceiveBlock(CI2C1_DeviceData, &out, 1, LDD_I2C_SEND_STOP);
 	while (i2creceiving == 1)
 	{
-		ShiftOut();
 	};
 	i2csomething = 1;
 	ShiftOut();
@@ -115,4 +119,28 @@ void EE24_ReadBlock(unsigned short address, unsigned char *out, int len)
 	while (i2creceiving == 1) {};
 
 	 */
+}
+
+
+#endif
+
+void EE24_ReadBlock(unsigned short address, unsigned char *out, int len)
+{
+	//EE241_ReadBlock(address, out, len);
+	for (int i = 0; i < len; i++)
+	{
+		out[i] = EE24_ReadByte(address++);
+	}
+}
+
+void EE24_WriteBlock(unsigned short address, unsigned char *data, int len)
+{
+	//EE241_WriteBlock(address, data, len);
+
+	for (int i = 0; i < len; i++)
+	{
+
+		EE24_WriteByte(address++, data[i]);
+		//	WAIT1_Waitms(5);
+	}
 }

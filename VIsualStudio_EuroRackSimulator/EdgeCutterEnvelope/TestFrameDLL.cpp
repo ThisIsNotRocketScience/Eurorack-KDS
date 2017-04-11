@@ -309,7 +309,14 @@ void RunTest(const char * name, int i)
 
 	printf("%s (%d): \tmin %d \tmax %d\tavg:%2f\tHas Offs: %d\n", name, i, min, max, avg, HasOffs ? 1 : 0);
 }
-
+void CalTest()
+{
+	for (int i = 0; i < 4096; i += 256)
+	{
+		int R = CalibratedDAC(0, i);
+		printf("%d %d\n", i, R);
+	}
+}
 BOOL WINAPI DllMain(
 	_In_ HINSTANCE hinstDLL,
 	_In_ DWORD     fdwReason,
@@ -320,7 +327,7 @@ BOOL WINAPI DllMain(
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		int32_t V[4] = { 0,65536,0,65536 };
-
+		CalTest();
 		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);

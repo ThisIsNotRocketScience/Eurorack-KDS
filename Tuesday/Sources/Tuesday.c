@@ -6,7 +6,7 @@
 
 struct PatternFunctions PatternTypes[ALGO_COUNT];
 
-void  NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
+void NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
 	struct PatternFunctions *PF = &PatternTypes[i];
 	PF->Gen = Gen;

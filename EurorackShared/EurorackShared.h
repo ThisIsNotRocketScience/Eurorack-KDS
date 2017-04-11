@@ -53,7 +53,7 @@ extern "C"
 
 	void EuroRack_InitCalibration();
 	uint8_t CalibratedADC(int adcchannel, uint32_t Input);
-	uint16_t CalibratedDAC(int dacchannel, uint32_t Input);
+	uint16_t CalibratedDAC(int dacchannel, int32_t Input);
 	void ChangeDACCalibration(int dacchannel, int low, int high);
 	int EuroRack_ValidateCalibration();
 
