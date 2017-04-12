@@ -7,7 +7,7 @@
 **     Version     : Component 02.409, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-06, 16:33, # CodeGen: 26
+**     Date/Time   : 2017-04-12, 02:55, # CodeGen: 35
 **     Abstract    :
 **         This component "IntFLASH" implements an access to internal FLASH.
 **         The component support reading/writing data into FLASH, erasing of
@@ -25,10 +25,7 @@
 **          FLASH                                          : FTFA
 **          FLASH_LDD                                      : FLASH_LDD
 **          Write method                                   : Write
-**          Interrupt service/event                        : Enabled
-**            Command complete interrupt                   : 
-**              Interrupt                                  : INT_FTFA
-**              Interrupt priority                         : maximal priority
+**          Interrupt service/event                        : Disabled
 **          Wait in RAM                                    : yes
 **          Virtual page                                   : Disabled
 **          Initialization                                 : 

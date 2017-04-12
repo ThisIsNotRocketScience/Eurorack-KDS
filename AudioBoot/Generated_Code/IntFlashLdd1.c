@@ -7,7 +7,7 @@
 **     Version     : Component 01.106, Driver 01.15, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-06, 16:33, # CodeGen: 26
+**     Date/Time   : 2017-04-12, 02:55, # CodeGen: 35
 **     Abstract    :
 **          This embedded component implements an access to an on-chip flash memory.
 **          Using this component the flash memory could be written to, erased,
@@ -17,11 +17,10 @@
 **          Component name                                 : IntFlashLdd1
 **          Device                                         : FTFA
 **          Use user memory areas                          : no
-**          Interrupt service                              : Enabled
+**          Interrupt service                              : Disabled
+**            Write batch size                             : Minimal
+**            Erase batch size                             : Minimal
 **            Read batch size                              : Unlimited
-**            Command complete interrupt                   : 
-**              Interrupt                                  : INT_FTFA
-**              Interrupt priority                         : maximal priority
 **          Safe launch and wait                           : yes
 **            Safe routine location                        : On stack
 **            Interruptable wait loop                      : no
@@ -46,6 +45,7 @@
 **         Erase              - LDD_TError IntFlashLdd1_Erase(LDD_TDeviceData *DeviceDataPtr,...
 **         GetOperationStatus - LDD_FLASH_TOperationStatus IntFlashLdd1_GetOperationStatus(LDD_TDeviceData...
 **         GetError           - void IntFlashLdd1_GetError(LDD_TDeviceData *DeviceDataPtr,...
+**         Main               - void IntFlashLdd1_Main(LDD_TDeviceData *DeviceDataPtr);
 **         GetDriverState     - LDD_TDriverState IntFlashLdd1_GetDriverState(LDD_TDeviceData *DeviceDataPtr);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
@@ -188,8 +188,6 @@ typedef struct {
 typedef IntFlashLdd1_TDeviceData *IntFlashLdd1_TDeviceDataPtr; /* Pointer to the device data structure. */
 /* {Default RTOS Adapter} Static object used for simulation of dynamic driver memory allocation */
 static IntFlashLdd1_TDeviceData DeviceDataPrv__DEFAULT_RTOS_ALLOC;
-/* {Default RTOS Adapter} Global variable used for passing a parameter into ISR */
-static IntFlashLdd1_TDeviceDataPtr INT_FTFA__DEFAULT_RTOS_ISRPARAM;
 
 #define AVAILABLE_EVENTS_MASK (LDD_FLASH_ON_OPERATION_COMPLETE | LDD_FLASH_ON_ERROR)
 
@@ -232,13 +230,6 @@ LDD_TDeviceData* IntFlashLdd1_Init(LDD_TUserData *UserDataPtr)
   DeviceDataPrv->CurrentErrorFlags = 0U; /* Initialization of the Current error flags item */
   DeviceDataPrv->CurrentDataPtr = NULL; /* Initialization of the Current data pointer item */
   DeviceDataPrv->UserDataPtr = UserDataPtr; /* Store a pointer to the User data structure */
-  /* Allocate interrupt vector */
-  /* {Default RTOS Adapter} Set interrupt vector: IVT is static, ISR parameter is passed by the global variable */
-  INT_FTFA__DEFAULT_RTOS_ISRPARAM = DeviceDataPrv;
-  /* NVIC_IPR1: PRI_5=0 */
-  NVIC_IPR1 &= (uint32_t)~(uint32_t)(NVIC_IP_PRI_5(0xFF));
-  /* NVIC_ISER: SETENA|=0x20 */
-  NVIC_ISER |= NVIC_ISER_SETENA(0x20);
   /* SIM_SCGC6: FTF=1 */
   SIM_SCGC6 |= SIM_SCGC6_FTF_MASK;
   /* Registration of the device structure */
@@ -310,7 +301,6 @@ LDD_TError IntFlashLdd1_Write(LDD_TDeviceData *DeviceDataPtr, LDD_TData *FromPtr
   DeviceDataPrv->CurrentDataPtr = (uint8_t *)FromPtr; /* Reset the "From pointer" for the operation */
   DeviceDataPrv->CurrentFlashAddress = ToAddress; /* Reset the "To address" for the operation */
   DeviceDataPrv->CurrentDataSize = 0U; /* Reset Current data size */
-  FTFA_PDD_EnableInterrupts(FTFA_BASE_PTR, FTFA_PDD_COMMAND_COMPLETE_INT); /* Enable the Command complete interrupt */
   return ERR_OK;                       /* Return with no error */
 }
 
@@ -390,7 +380,6 @@ LDD_TError IntFlashLdd1_Erase(LDD_TDeviceData *DeviceDataPtr, LDD_FLASH_TAddress
   DeviceDataPrv->CurrentFlashAddress = FromAddress; /* Reset the "From address" for the operation */
   DeviceDataPrv->CurrentDataSize = IntFlashLdd1_ERASABLE_UNIT_SIZE; /* Set the current data size */
   DeviceDataPrv->CurrentCommand = LDD_FLASH_ERASE_SECTOR; /* Set the current operation flash command */
-  FTFA_PDD_EnableInterrupts(FTFA_BASE_PTR, FTFA_PDD_COMMAND_COMPLETE_INT); /* Enable the Command complete interrupt */
   return ERR_OK;                       /* Return with no error */
 }
 
@@ -417,19 +406,32 @@ LDD_FLASH_TOperationStatus IntFlashLdd1_GetOperationStatus(LDD_TDeviceData *Devi
 
 /*
 ** ===================================================================
-**     Method      :  CommandCompleteInterrupt (component FLASH_LDD)
-**
-**     Description :
-**         Command complete interrupt service routine.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
+**     Method      :  IntFlashLdd1_Main (component FLASH_LDD)
 */
+/*!
+**     @brief
+**         This method is used to perform one batch of a flash memory
+**         operation. This method is used to perform batches of all
+**         flash memory operations (Write, Read, Erase, EraseBlock,
+**         VerifyErasedBlock) when the component works in the polled
+**         mode (interrupt service is disabled - property [Interrupt
+**         service]). This method performs batches of the read flash
+**         memory operation, when the component works in the interrupt
+**         triggered mode (interrupt service is enabled). This method
+**         is enabled only if the component works in the polled mode or
+**         if the Read method is enabled.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by [Init] method.
+*/
+/* ===================================================================*/
+#define WRITE_BATCH_SIZE 1U
+#define ERASE_BATCH_SIZE 1U
 #define WRITABLE_UNIT_MASK 3U
 
-PE_ISR(IntFlashLdd1_CommandCompleteInterrupt)
+void IntFlashLdd1_Main(LDD_TDeviceData *DeviceDataPtr)
 {
-  /* {Default RTOS Adapter} ISR parameter is passed through the global variable */
-  IntFlashLdd1_TDeviceDataPtr DeviceDataPrv = INT_FTFA__DEFAULT_RTOS_ISRPARAM;
+  IntFlashLdd1_TDeviceDataPtr DeviceDataPrv = (IntFlashLdd1_TDeviceDataPtr)DeviceDataPtr; /* Auxiliary variable - pointer to an internal state structure */
   uint32_t DataToPrg = 0xFFFFFFFFLU;   /* Auxiliary variable - current data to be proceeded */
   uint32_t DataToPrgMask = 0U;
   uint32_t CurrentFlashPrgUnitData;    /* Current flash location content */
@@ -438,6 +440,7 @@ PE_ISR(IntFlashLdd1_CommandCompleteInterrupt)
   uint8_t DstAddrOffset = 0U;          /* Offset of the desired flash location to be written from the begging of the smallest writable unit the desired location belongs to */
   uint8_t i;
   LDD_FLASH_TAddress FlashPrgUnitAddr;
+  uint16_t StepsOfBatch = 0U;          /* Number of batch cycles to be proceeded */
   uint8_t CurrentFlags;                /* Auxiliary variable - current hw flags */
 
   if ((DeviceDataPrv->CurrentOperationStatus != LDD_FLASH_RUNNING) && /* If there is not an operation in progress or pending then end */\
@@ -445,14 +448,14 @@ PE_ISR(IntFlashLdd1_CommandCompleteInterrupt)
      (DeviceDataPrv->CurrentOperationStatus != LDD_FLASH_STOP_REQ)) {
     return;
   }
-  if (DeviceDataPrv->CurrentOperation == LDD_FLASH_READ) { /* If there is a Read operation in progress then end (read operations are proceeded by the Main method) */\
+  if ((FTFA_PDD_GetFlags(FTFA_BASE_PTR) & FTFA_PDD_COMMAND_COMPLETE) == 0U){ /* If there is some flash operation in progress then end */
     return;
   }
   if (DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_START) { /* Is this run the first run of the Main method in this operation? */
     FTFA_PDD_ClearFlags(FTFA_BASE_PTR, /* If yes, clear hw flags */
-    FTFA_PDD_READ_COLLISION_ERROR | \
-    FTFA_PDD_ACCESS_ERROR | \
-    FTFA_PDD_PROTECTION_VIOLATION);
+                        FTFA_PDD_READ_COLLISION_ERROR | \
+                        FTFA_PDD_ACCESS_ERROR | \
+                        FTFA_PDD_PROTECTION_VIOLATION);
     DeviceDataPrv->CurrentErrorFlags = 0U; /* Clear Current SW error flags */
   } else {                             /* If this is not the first run of the operation, checks the error flags */
     CurrentFlags = FTFA_PDD_GetFlags(FTFA_BASE_PTR);
@@ -462,58 +465,84 @@ PE_ISR(IntFlashLdd1_CommandCompleteInterrupt)
      FTFA_PDD_PROTECTION_VIOLATION);
     if (DeviceDataPrv->CurrentErrorFlags != 0U) { /* Has some error occurred? */
       DeviceDataPrv->CurrentOperationStatus = LDD_FLASH_FAILED; /* If yes, set the operation state to FAILED */
+      if (DeviceDataPrv->CurrentOperation != LDD_FLASH_READ) {
+      }
       IntFlashLdd1_OnError(DeviceDataPrv->UserDataPtr); /* Invoke the OnError event */
-      FTFA_PDD_DisableInterrupts(FTFA_BASE_PTR, FTFA_PDD_COMMAND_COMPLETE_INT); /* Disable the Command complete interrupt */
       return;                          /* End */
     }
     if (DeviceDataPrv->DataCounter == 0U) { /* If all the data has been successfully proceeded, finish the operation */
       DeviceDataPrv->CurrentOperationStatus = LDD_FLASH_IDLE; /* If yes, change the operation state to IDLE */
-      FTFA_PDD_DisableInterrupts(FTFA_BASE_PTR, FTFA_PDD_COMMAND_COMPLETE_INT); /* Disable the Command complete interrupt */
+      if (DeviceDataPrv->CurrentOperation != LDD_FLASH_READ) {
+      }
       IntFlashLdd1_OnOperationComplete(DeviceDataPrv->UserDataPtr); /* Invoke the OnOperationComplete event */
       return;                          /* End */
     }
   }
-  if (DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_START) { /* Is this step the first step of the operation? */
-    DeviceDataPrv->CurrentOperationStatus = LDD_FLASH_RUNNING; /* If yes, change Current operation status to RUNNING */
-  } else {
-    DeviceDataPrv->CurrentFlashAddress += DeviceDataPrv->CurrentDataSize; /* If no, define of an address of a step of the current operation (address of the first step of the operation is defined by a operational method, which defines the operation */
-    if (DeviceDataPrv->CurrentOperation == LDD_FLASH_WRITE) {
-      DeviceDataPrv->CurrentDataPtr += DeviceDataPrv->CurrentDataSize; /* Update of the Current data pointer */
-    }
-  }
-  switch(DeviceDataPrv->CurrentOperation) { /* Perform needed actions for the next step of the operation (for the next flash operation command) according to the current operation type */
-    case LDD_FLASH_ERASE:              /* Erase operation */
-      DeviceDataPrv->DataCounter -= (uint32_t)(IntFlashLdd1_ERASABLE_UNIT_SIZE); /* Update of the Data counter */
-      break;
-    case LDD_FLASH_WRITE:
-      DstAddrOffset = (uint8_t)DeviceDataPrv->CurrentFlashAddress & WRITABLE_UNIT_MASK; /* Compute the address of the writable unit */
-      MaxPossiblePrgBytes = (WRITABLE_UNIT_MASK - DstAddrOffset) + 1U; /* Compute number of bytes from the destination address to the end of the writable unit */
-      if (DeviceDataPrv->DataCounter < MaxPossiblePrgBytes) {
-        PrgBytesCount = (uint8_t)DeviceDataPrv->DataCounter;
-      } else {
-        PrgBytesCount = MaxPossiblePrgBytes;
-      }
-      for (i = 0U; i < PrgBytesCount; i++)  {
-        ((uint8_t *)(void *)&DataToPrg)[DstAddrOffset + i] = ((uint8_t *)(void *)(DeviceDataPrv->CurrentDataPtr))[i];
-        ((uint8_t *)(void *)&DataToPrgMask)[DstAddrOffset + i] = 0xFFu;
-      }
-      FlashPrgUnitAddr = DeviceDataPrv->CurrentFlashAddress - DstAddrOffset;
-      CurrentFlashPrgUnitData = *(uint32_t *)FlashPrgUnitAddr;
-      if(((DataToPrg & DataToPrgMask) & (~CurrentFlashPrgUnitData)) > 0U) {
-        DeviceDataPrv->CurrentErrorFlags |= LDD_FLASH_MULTIPLE_WRITE_ERROR;
-        return;
-      }
-      DataToPrg = DataToPrg ^ (~CurrentFlashPrgUnitData);
-      DeviceDataPrv->CurrentDataSize = PrgBytesCount;
-      DeviceDataPrv->DataCounter -= PrgBytesCount;
-      FTFA_PDD_WriteFCCOBLongWordData(FTFA_BASE_PTR, DataToPrg);
-      break;
+  switch (DeviceDataPrv->CurrentOperation) { /* Define the batch counter's initial value according to the current operation */
+    case LDD_FLASH_WRITE:              /* The current operation is Write */
+      StepsOfBatch = WRITE_BATCH_SIZE; /* Initialize the batch counter */
+      break;                           /* Break of the case */
+    case LDD_FLASH_ERASE:              /* The current operation is Erase */
+      StepsOfBatch = ERASE_BATCH_SIZE; /* Initialize the batch counter */
+      break;                           /* Break of the case */
     default:
       break;
-  } /* switch(DeviceDataPrv->CurrentOperation) */
-  FTFA_PDD_SetFCCOBCommand(FTFA_BASE_PTR, DeviceDataPrv->CurrentCommand); /* Set the desired flash operation command */
-  FTFA_PDD_SetFCCOBAddress(FTFA_BASE_PTR, ((uint32_t)(DeviceDataPrv->CurrentFlashAddress - DstAddrOffset))); /* Set an address of the flash memory location for the current flash operation command */
-  SafeRoutineCaller();                 /* Call of the safe routine caller - the safe routine's code will be placed to stack and run */
+  }
+  while (StepsOfBatch > 0U) {          /* Should another batch of the current operation be proceeded in this Main method processing? */
+    CurrentFlags = FTFA_PDD_GetFlags(FTFA_BASE_PTR); /* Read current hardware flags */
+    if ((CurrentFlags & (FTFA_PDD_READ_COLLISION_ERROR /* Check the error flags */\
+                     | FTFA_PDD_ACCESS_ERROR \
+                     | FTFA_PDD_PROTECTION_VIOLATION)) != 0U) {
+      return;                          /* If there has some error occurred then end. The error will be analyzed in the next call of the Main method */
+    }
+    if (DeviceDataPrv->CurrentOperationStatus == LDD_FLASH_START) { /* Is this step the first step of the operation? */
+      DeviceDataPrv->CurrentOperationStatus = LDD_FLASH_RUNNING; /* If yes, change Current operation status to RUNNING */
+    } else {
+      DeviceDataPrv->CurrentFlashAddress += DeviceDataPrv->CurrentDataSize; /* If no, define of an address of a step of the current operation (address of the first step of the operation is defined by a operational method, which defines the operation */
+      if ((DeviceDataPrv->CurrentOperation == LDD_FLASH_READ) || (DeviceDataPrv->CurrentOperation == LDD_FLASH_WRITE)) {
+        DeviceDataPrv->CurrentDataPtr += DeviceDataPrv->CurrentDataSize; /* Update of the Current data pointer */
+      }
+    }
+    switch(DeviceDataPrv->CurrentOperation) { /* Perform needed actions for the next step of the operation (for the next flash operation command) according to the current operation type */
+      case LDD_FLASH_ERASE:            /* Erase operation */
+        DeviceDataPrv->DataCounter -= (uint32_t)(IntFlashLdd1_ERASABLE_UNIT_SIZE); /* Update of the Data counter */
+        break;
+      case LDD_FLASH_WRITE:
+        DstAddrOffset = (uint8_t)DeviceDataPrv->CurrentFlashAddress & WRITABLE_UNIT_MASK; /* Compute the address of the writable unit */
+        MaxPossiblePrgBytes = (WRITABLE_UNIT_MASK - DstAddrOffset) + 1U; /* Compute number of bytes from the destination address to the end of the writable unit */
+        if (DeviceDataPrv->DataCounter < MaxPossiblePrgBytes) {
+          PrgBytesCount = (uint8_t)DeviceDataPrv->DataCounter;
+        } else {
+          PrgBytesCount = MaxPossiblePrgBytes;
+        }
+        for (i = 0U; i < PrgBytesCount; i++)  {
+          ((uint8_t *)(void *)&DataToPrg)[DstAddrOffset + i] = ((uint8_t *)(void *)(DeviceDataPrv->CurrentDataPtr))[i];
+          ((uint8_t *)(void *)&DataToPrgMask)[DstAddrOffset + i] = 0xFFu;
+        }
+        FlashPrgUnitAddr = DeviceDataPrv->CurrentFlashAddress - DstAddrOffset;
+        CurrentFlashPrgUnitData = *(uint32_t *)FlashPrgUnitAddr;
+        if(((DataToPrg & DataToPrgMask) & (~CurrentFlashPrgUnitData)) > 0U) {
+          DeviceDataPrv->CurrentErrorFlags |= LDD_FLASH_MULTIPLE_WRITE_ERROR;
+          return;
+        }
+        DataToPrg = DataToPrg ^ (~CurrentFlashPrgUnitData);
+        DeviceDataPrv->CurrentDataSize = PrgBytesCount;
+        DeviceDataPrv->DataCounter -= PrgBytesCount;
+        FTFA_PDD_WriteFCCOBLongWordData(FTFA_BASE_PTR, DataToPrg);
+        break;
+      default:
+        break;
+    } /* switch(DeviceDataPrv->CurrentOperation) */
+    StepsOfBatch -= 1U;
+    if (DeviceDataPrv->DataCounter == 0U) {
+      StepsOfBatch = 0U;
+    }
+    if (DeviceDataPrv->CurrentOperation != LDD_FLASH_READ) {
+      FTFA_PDD_SetFCCOBCommand(FTFA_BASE_PTR, DeviceDataPrv->CurrentCommand); /* Set the desired flash operation command */
+      FTFA_PDD_SetFCCOBAddress(FTFA_BASE_PTR, ((uint32_t)(DeviceDataPrv->CurrentFlashAddress - DstAddrOffset))); /* Set an address of the flash memory location for the current flash operation command */
+      SafeRoutineCaller();             /* Call of the safe routine caller - the safe routine's code will be placed to stack and run */
+    }
+  }
 }
 
 /*

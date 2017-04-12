@@ -8,6 +8,7 @@
 
 void ShiftOut(){}
 
+
 int32_t avg = 9000;
 int32_t min = 9000;
 int32_t max = 9000;
@@ -27,6 +28,9 @@ char rcvbuf[AUDIOREADER_MAXBYTESPERMESSAGE];
 char wribuf[FLASH_PAGE_SIZE];
 char busy = 0;
 int flasherror = 0;
+
+int ErrorState = 0;
+
 #define POLY 0x82f63b78
 
 int ErrorCountDown =0 ;
@@ -63,7 +67,7 @@ void __attribute__ ((weak)) GUIComplete(){ Reboot(); }
 
 void __attribute__ ((weak)) GUIReset(){ }
 
-uint32_t CalcCrc(uint32_t crc, uint8_t *buf, uint32_t length)
+uint32_t __attribute((noinline))  CalcCrc(uint32_t crc, uint8_t *buf, uint32_t length)
 {
 	int k;
 	crc = ~crc;
@@ -148,11 +152,12 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 	{
 		if (command(rcvbuf, "BLO", 3))// rcvbuf[0] == 'B' && rcvbuf[1] == 'L' && rcvbuf[2] == 'O')
 		{
+
 			uint32_t idx = rcvbuf[3];
 
 
 
-			if (idx < CHUNKS)
+			if (idx < CHUNKS && ErrorState == 0)
 			{
 
 				uint32_t crccheck = ReadInt(rcvbuf,4);
@@ -172,6 +177,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 				else
 				{
 					blockshad[idx] = 2;
+					ErrorState++;
 					ErrorCountDown = 20000;
 				}
 			}
@@ -184,13 +190,20 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 
 		if (command(rcvbuf, "KILL",4))//[0] == 'K' && rcvbuf[1] == 'I' && rcvbuf[2] == 'L' && rcvbuf[3] == 'L')
 		{
+			if (ReadInt(rcvbuf, 4) == 1337)
+			{
 			Boot_EraseAll();
+			ErrorState = 2;
+			}
 			AudioReader_NewPacket(&Reader);
 		}
 
 		if (command( rcvbuf, "BOOT",4))//[0] == 'B' && rcvbuf[1] == 'O' && rcvbuf[2] == 'O' && rcvbuf[3] == 'T')
 		{
-			Reboot();
+
+
+
+			if (ErrorState == 0) Reboot();
 		}
 		if (command(rcvbuf, "DOIT",4))//[0] == 'D' && rcvbuf[1] == 'O' && rcvbuf[2] == 'I' && rcvbuf[3] == 'T')
 		{
@@ -200,6 +213,7 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 
 			totalblocks = ReadInt(rcvbuf, 4);
 			totalblocksflashed = 0;
+			ErrorState = 0;
 			totalchunksreceived = 0;
 			GUIReset();
 		}
@@ -239,6 +253,8 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 			} else
 				if (command(rcvbuf,"FLAS",4))//[0] == 'F' && rcvbuf[1] == 'L' && rcvbuf[2] == 'A' && rcvbuf[3] == 'S')
 				{
+
+
 					uint32_t off = ReadInt(rcvbuf, 4);
 					uint32_t crccheck = ReadInt(rcvbuf, 8);
 
@@ -249,12 +265,14 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 						if (blockshad[i] ==	 1) complete++;
 					}
 
-					if (complete == CHUNKS && crcblock == crccheck)
+					if (complete == CHUNKS && crcblock == crccheck && ErrorState == 0)
 					{
 						if (Boot_FlashProg(MIN_APP_FLASH_ADDRESS + off, wribuf, 1024) == ERR_FAILED)
 						{
 							GUIErrorState();
 							flasherror++;
+							ErrorState ++;
+
 
 							fullblockshad[off/FLASH_PAGE_SIZE] = 2;
 						}
@@ -271,6 +289,8 @@ void ByteReceived(AudioReaderStruct *S, int bytes, unsigned char Dat)
 					else
 					{
 						flasherror++;
+						ErrorState ++;
+
 						fullblockshad[off/FLASH_PAGE_SIZE] = 2;
 
 						GUIErrorState();

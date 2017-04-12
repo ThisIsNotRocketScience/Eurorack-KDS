@@ -55,8 +55,11 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\AdcLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\CI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\EE241.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\GI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IFsh1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IntFlashLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IntI2cLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PTA.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PTB.c</PathName>
@@ -78,9 +81,12 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\AdcLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\CI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\EE241.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\GI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IFsh1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IO_Map.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IntFlashLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\IntI2cLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PE_Const.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PE_Error.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\AudioBoot\Generated_Code\PE_LDD.h</PathName>

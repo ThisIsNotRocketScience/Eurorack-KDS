@@ -29,7 +29,7 @@
 - \subpage IntFlashLdd1
 - \subpage PTA
 - \subpage PTB
-- \subpage CI2C1
+- \subpage IntI2cLdd1
 
 */
 

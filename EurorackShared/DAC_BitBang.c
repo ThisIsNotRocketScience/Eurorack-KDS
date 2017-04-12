@@ -8,12 +8,17 @@
 #define NOP __asm volatile ("nop");
 
 
-#define CS_SET() {GPIOA_PDOR |= (1<<DAC_CS);NOP;NOP;NOP;NOP;};
-#define CS_CLR() {GPIOA_PDOR &= ~(1<<DAC_CS);NOP;NOP;NOP;NOP;NOP;};
-#define CLOCK_SET() {GPIOB_PDOR |= (1<<DAC_CLOCK);NOP;NOP;NOP;NOP;};
-#define CLOCK_CLR() {GPIOB_PDOR &= ~(1<<DAC_CLOCK);NOP;NOP;NOP;NOP;};
-#define DATA_SET() {GPIOA_PDOR |= (1<<DAC_DATA);NOP;NOP;NOP;NOP;};
-#define DATA_CLR() {GPIOA_PDOR &= ~(1<<DAC_DATA);NOP;NOP;NOP;NOP;};
+void CS_SET() {GPIOA_PDOR |= (1<<DAC_CS);NOP;NOP;NOP;NOP;};
+void CS_CLR() {GPIOA_PDOR &= ~(1<<DAC_CS);NOP;NOP;NOP;NOP;NOP;};
+void CLOCK_SET() {GPIOB_PDOR |= (1<<DAC_CLOCK);NOP;NOP;NOP;NOP;};
+void CLOCK_CLR() {GPIOB_PDOR &= ~(1<<DAC_CLOCK);NOP;NOP;NOP;NOP;};
+
+void DATA_SET()
+{
+	GPIOA_PDOR |= (1<<DAC_DATA);
+	NOP;NOP;NOP;NOP;
+};
+void DATA_CLR() {GPIOA_PDOR &= ~(1<<DAC_DATA);NOP;NOP;NOP;NOP;};
 
 void DACBITBANG_InitHardware()
 {
@@ -28,14 +33,10 @@ void DACBITBANG_InitHardware()
 
 void SendByte(uint8_t val)
 {
-	CLOCK_CLR(); if ((val & 0x80) == 0x80){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x40) == 0x40){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x20) == 0x20){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x10) == 0x10){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x08) == 0x08){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x04) == 0x04){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x02) == 0x02){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
-	CLOCK_CLR(); if ((val & 0x01) == 0x01){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
+	for(int i =7;i>=0;i--)
+	{
+	CLOCK_CLR(); if ((val & (1<<i)) == (1<<i)){DATA_SET();} else {DATA_CLR();}CLOCK_SET();
+	}
 }
 
 void DACBITBANG_Update(uint16_t val1, uint16_t val2)

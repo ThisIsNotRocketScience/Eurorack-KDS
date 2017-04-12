@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-09, 03:38, # CodeGen: 31
+**     Date/Time   : 2017-04-12, 00:41, # CodeGen: 35
 **     Abstract    :
 **
 **     Settings    :
@@ -233,8 +233,11 @@
 #include "IntFlashLdd1.h"
 #include "PTA.h"
 #include "PTB.h"
-#include "CI2C1.h"
 #include "WAIT1.h"
+#include "EE241.h"
+#include "GI2C1.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -436,8 +439,12 @@ void PE_low_level_init(void)
   PTB_Init();
 
 
-  /* ### I2C_LDD "CI2C1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)CI2C1_Init(NULL);
+  /* ### InternalI2C "CI2C1" init code ... */
+  CI2C1_Init();
+  /* ### GenericI2C "GI2C1" init code ... */
+  GI2C1_Init();
+  /* ### 24AA_EEPROM "EE241" init code ... */
+  /* Write code here ... */
   __EI();
 }
   /* Flash configuration field */

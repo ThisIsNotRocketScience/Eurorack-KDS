@@ -7,7 +7,7 @@
 **     Version     : Component 01.106, Driver 01.15, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-06, 16:33, # CodeGen: 26
+**     Date/Time   : 2017-04-12, 02:55, # CodeGen: 35
 **     Abstract    :
 **          This embedded component implements an access to an on-chip flash memory.
 **          Using this component the flash memory could be written to, erased,
@@ -17,11 +17,10 @@
 **          Component name                                 : IntFlashLdd1
 **          Device                                         : FTFA
 **          Use user memory areas                          : no
-**          Interrupt service                              : Enabled
+**          Interrupt service                              : Disabled
+**            Write batch size                             : Minimal
+**            Erase batch size                             : Minimal
 **            Read batch size                              : Unlimited
-**            Command complete interrupt                   : 
-**              Interrupt                                  : INT_FTFA
-**              Interrupt priority                         : maximal priority
 **          Safe launch and wait                           : yes
 **            Safe routine location                        : On stack
 **            Interruptable wait loop                      : no
@@ -46,6 +45,7 @@
 **         Erase              - LDD_TError IntFlashLdd1_Erase(LDD_TDeviceData *DeviceDataPtr,...
 **         GetOperationStatus - LDD_FLASH_TOperationStatus IntFlashLdd1_GetOperationStatus(LDD_TDeviceData...
 **         GetError           - void IntFlashLdd1_GetError(LDD_TDeviceData *DeviceDataPtr,...
+**         Main               - void IntFlashLdd1_Main(LDD_TDeviceData *DeviceDataPtr);
 **         GetDriverState     - LDD_TDriverState IntFlashLdd1_GetDriverState(LDD_TDeviceData *DeviceDataPtr);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
@@ -139,6 +139,7 @@ extern "C" {
 #define IntFlashLdd1_Erase_METHOD_ENABLED /*!< Erase method of the component IntFlashLdd1 is enabled (generated) */
 #define IntFlashLdd1_GetOperationStatus_METHOD_ENABLED /*!< GetOperationStatus method of the component IntFlashLdd1 is enabled (generated) */
 #define IntFlashLdd1_GetError_METHOD_ENABLED /*!< GetError method of the component IntFlashLdd1 is enabled (generated) */
+#define IntFlashLdd1_Main_METHOD_ENABLED /*!< Main method of the component IntFlashLdd1 is enabled (generated) */
 #define IntFlashLdd1_GetDriverState_METHOD_ENABLED /*!< GetDriverState method of the component IntFlashLdd1 is enabled (generated) */
 
 /* Events configuration constants - generated for all enabled component's events */
@@ -290,6 +291,29 @@ LDD_FLASH_TOperationStatus IntFlashLdd1_GetOperationStatus(LDD_TDeviceData *Devi
 
 /*
 ** ===================================================================
+**     Method      :  IntFlashLdd1_Main (component FLASH_LDD)
+*/
+/*!
+**     @brief
+**         This method is used to perform one batch of a flash memory
+**         operation. This method is used to perform batches of all
+**         flash memory operations (Write, Read, Erase, EraseBlock,
+**         VerifyErasedBlock) when the component works in the polled
+**         mode (interrupt service is disabled - property [Interrupt
+**         service]). This method performs batches of the read flash
+**         memory operation, when the component works in the interrupt
+**         triggered mode (interrupt service is enabled). This method
+**         is enabled only if the component works in the polled mode or
+**         if the Read method is enabled.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by [Init] method.
+*/
+/* ===================================================================*/
+void IntFlashLdd1_Main(LDD_TDeviceData *DeviceDataPtr);
+
+/*
+** ===================================================================
 **     Method      :  IntFlashLdd1_GetError (component FLASH_LDD)
 */
 /*!
@@ -307,9 +331,6 @@ LDD_FLASH_TOperationStatus IntFlashLdd1_GetOperationStatus(LDD_TDeviceData *Devi
 */
 /* ===================================================================*/
 void IntFlashLdd1_GetError(LDD_TDeviceData *DeviceDataPtr, LDD_FLASH_TErrorStatus *OperationStatus);
-
-/* {Default RTOS Adapter} ISR function prototype */
-PE_ISR(IntFlashLdd1_CommandCompleteInterrupt);
 
 /*
 ** ===================================================================

@@ -43,7 +43,10 @@
 #include "PTA.h"
 #include "PTB.h"
 #include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "WAIT1.h"
+#include "EE241.h"
+#include "GI2C1.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -112,21 +115,6 @@ void AD1_OnCalibrationEnd(void);
 **     Returns     : Nothing
 ** ===================================================================
 */
-
-/*
-** ===================================================================
-**     Event       :  IFsh1_OnWriteEnd (module Events)
-**
-**     Component   :  IFsh1 [IntFLASH]
-*/
-/*!
-**     @brief
-**         Event is called after a write operation to FLASH memory is
-**         finished (except [SetPage]). This event is available only if
-**         an [Interrupt service/event] is selected.
-*/
-/* ===================================================================*/
-void IFsh1_OnWriteEnd(void);
 
 /*
 ** ===================================================================

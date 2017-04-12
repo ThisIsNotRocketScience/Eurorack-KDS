@@ -40,7 +40,10 @@
 #include "PTA.h"
 #include "PTB.h"
 #include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "WAIT1.h"
+#include "EE241.h"
+#include "GI2C1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -102,7 +105,7 @@ int main(void)
 	/* Write your code here */
 	/* For example: for(;;) { } */
 
-	AD1_Calibrate(TRUE);
+//	AD1_Calibrate(TRUE);
 	LEDS_InitHardware();
 	DACBITBANG_InitHardware();
 
@@ -128,17 +131,25 @@ int main(void)
 				for (int i =0;i<16;i++) LEDS[i] = 0;
 				for (int i =0;i<theprogress;i++)
 				{
-					LEDS[i/8] += 63;
+					LEDS[i/ (256/16)] += 63;
 				}
 
 			}
 
+
 			if (error>0)
 			{
+				if ((T/400) % 2 == 0)
+				{
+					for (int i =0;i<16;i++)
+							{
+								LEDS[i] = ((T/200) + i) % 2 == 0 ? 0: LEDS[i];
+							}
+				}
 				//show error
 			}
 		}
-		//else
+		else
 		{
 			// show activity
 		}

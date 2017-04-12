@@ -7,7 +7,7 @@
 **     Version     : Component 02.409, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-06, 16:33, # CodeGen: 26
+**     Date/Time   : 2017-04-12, 02:55, # CodeGen: 35
 **     Abstract    :
 **         This component "IntFLASH" implements an access to internal FLASH.
 **         The component support reading/writing data into FLASH, erasing of
@@ -25,10 +25,7 @@
 **          FLASH                                          : FTFA
 **          FLASH_LDD                                      : FLASH_LDD
 **          Write method                                   : Write
-**          Interrupt service/event                        : Enabled
-**            Command complete interrupt                   : 
-**              Interrupt                                  : INT_FTFA
-**              Interrupt priority                         : maximal priority
+**          Interrupt service/event                        : Disabled
 **          Wait in RAM                                    : yes
 **          Virtual page                                   : Disabled
 **          Initialization                                 : 
@@ -101,7 +98,6 @@
 
 /* MODULE IFsh1. */
 
-#include "Events.h"
 #include "IFsh1.h"
 
 #ifdef __cplusplus
@@ -156,6 +152,7 @@ byte IFsh1_SetFlash(IFsh1_TDataAddress Src, IFsh1_TAddress Dst, word Count)
   Result = IntFlashLdd1_Write(IntFlashLdd1_DevDataPtr, (LDD_TData *)Src, Dst, (LDD_FLASH_TDataSize)Count); /* Start reading from the flash memory */
   if (Result == ERR_OK) {
     do {
+      IntFlashLdd1_Main(IntFlashLdd1_DevDataPtr);
     } while (IFsh1_CmdPending);
     Result = IFsh1_CmdResult;
   } else {
@@ -261,6 +258,7 @@ byte IFsh1_EraseSector(IFsh1_TAddress Addr)
   Result = IntFlashLdd1_Erase(IntFlashLdd1_DevDataPtr, (LDD_FLASH_TAddress)(Addr & ~(LDD_FLASH_TAddress)IntFlashLdd1_ERASABLE_UNIT_MASK), IntFlashLdd1_ERASABLE_UNIT_SIZE);
   if (Result == ERR_OK) {
     do {
+      IntFlashLdd1_Main(IntFlashLdd1_DevDataPtr);
     } while (IFsh1_CmdPending);
     Result = IFsh1_CmdResult;
   } else {
@@ -392,9 +390,6 @@ void IntFlashLdd1_OnOperationComplete(LDD_TUserData *UserDataPtr)
     default:
       IFsh1_CmdPending = FALSE;        /* Command is finished */
       return;
-  }
-  if (IFsh1_EnEvent == TRUE) {
-    IFsh1_OnWriteEnd();
   }
 }
 

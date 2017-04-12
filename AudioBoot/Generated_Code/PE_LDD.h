@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-09, 03:38, # CodeGen: 31
+**     Date/Time   : 2017-04-12, 00:41, # CodeGen: 35
 **     Abstract    :
 **
 **     Settings    :
@@ -70,8 +70,11 @@
 #include "IntFlashLdd1.h"
 #include "PTA.h"
 #include "PTB.h"
-#include "CI2C1.h"
 #include "WAIT1.h"
+#include "EE241.h"
+#include "GI2C1.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 
 
 /*

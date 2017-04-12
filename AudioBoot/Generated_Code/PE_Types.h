@@ -6,7 +6,7 @@
 **     Component   : PE_Types
 **     Version     : Driver 01.01
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-12, 00:35, # CodeGen: 34
+**     Date/Time   : 2017-04-12, 02:55, # CodeGen: 35
 **     Abstract    :
 **         PE_Types.h - contains definitions of basic types,
 **         register access macros and hardware specific macros
@@ -124,8 +124,11 @@ typedef unsigned long int       uint32;
  } while(0)
 
 
-extern void EnterCritical();
-extern void ExitCritical();
+
+/* Save status register and disable interrupts */
+#define EnterCritical() {}
+/* Restore status register  */
+#define ExitCritical() {}
 
 #define PE_DEBUGHALT() \
   /*lint -save  -e586 -e950 Disable MISRA rule (2.1,1.1) checking. */\
@@ -177,7 +180,7 @@ extern void ExitCritical();
 #define PE_LDD_COMPONENT_TU1_ID                  0x01U
 #define PE_LDD_COMPONENT_TimerIntLdd1_ID         0x02U
 #define PE_LDD_COMPONENT_IntFlashLdd1_ID         0x03U
-#define PE_LDD_COMPONENT_CI2C1_ID                0x04U
+#define PE_LDD_COMPONENT_IntI2cLdd1_ID           0x04U
 
 /*
 ** ===================================================================

@@ -1,5 +1,5 @@
 /*!
-  \page CI2C1 CI2C1 (I2C_LDD)
+  \page IntI2cLdd1 IntI2cLdd1 (I2C_LDD)
 **          This component encapsulates the internal I2C communication
 **          interface. The implementation of the interface is based
 **          on the Philips I2C-bus specification version 2.0.
@@ -18,50 +18,44 @@
 **            - General call address detection provided
 **
 
-- \subpage CI2C1_settings
-- \subpage CI2C1_regs_overview  
-- \subpage CI2C1_regs_details
-- \ref CI2C1_module "Component documentation" 
-\page CI2C1_regs_overview Registers Initialization Overview
+- \subpage IntI2cLdd1_settings
+- \subpage IntI2cLdd1_regs_overview  
+- \subpage IntI2cLdd1_regs_details
+- \ref IntI2cLdd1_module "Component documentation" 
+\page IntI2cLdd1_regs_overview Registers Initialization Overview
 This page contains the initialization values for the registers of the peripheral(s) configured
 by the component. 
 <table>
-<tr><td colspan="4" class="ttitle1">CI2C1 Initialization</td></tr>
+<tr><td colspan="4" class="ttitle1">IntI2cLdd1 Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
 <tr><td>0x40048034</td><td>SIM_SCGC4</td>
 <td class="regNotResetVal">0xE0000070</td>
- <td>SIM_SCGC4 register, peripheral CI2C1.</td></tr>
+ <td>SIM_SCGC4 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066002</td><td>I2C0_C1</td>
 <td class="regResetVal">0x00000000</td>
- <td>I2C0_C1 register, peripheral CI2C1.</td></tr>
+ <td>I2C0_C1 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066006</td><td>I2C0_FLT</td>
 <td class="regNotResetVal">0x00000050</td>
- <td>I2C0_FLT register, peripheral CI2C1.</td></tr>
+ <td>I2C0_FLT register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066003</td><td>I2C0_S</td>
 <td class="regNotResetVal">0x00000002</td>
- <td>I2C0_S register, peripheral CI2C1.</td></tr>
+ <td>I2C0_S register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x4004A010</td><td>PORTB_PCR4</td>
 <td class="regNotResetVal">0x00000200</td>
- <td>PORTB_PCR4 register, peripheral CI2C1.</td></tr>
+ <td>PORTB_PCR4 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x4004A00C</td><td>PORTB_PCR3</td>
 <td class="regNotResetVal">0x00000200</td>
- <td>PORTB_PCR3 register, peripheral CI2C1.</td></tr>
-<tr><td>0xE000E408</td><td>NVIC_IPR2</td>
-<td class="regResetVal">0x00000000</td>
- <td>NVIC_IPR2 register, peripheral CI2C1.</td></tr>
-<tr><td>0xE000E100</td><td>NVIC_ISER</td>
-<td class="regNotResetVal">0x00028120</td>
- <td>NVIC_ISER register, peripheral CI2C1.</td></tr>
+ <td>PORTB_PCR3 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066005</td><td>I2C0_C2</td>
 <td class="regResetVal">0x00000000</td>
- <td>I2C0_C2 register, peripheral CI2C1.</td></tr>
+ <td>I2C0_C2 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066001</td><td>I2C0_F</td>
-<td class="regNotResetVal">0x00000027</td>
- <td>I2C0_F register, peripheral CI2C1.</td></tr>
+<td class="regNotResetVal">0x0000003A</td>
+ <td>I2C0_F register, peripheral IntI2cLdd1.</td></tr>
 </table>
 Color Denotes Reset Value
 <br/>
-\page CI2C1_regs_details Register Initialization Details
+\page IntI2cLdd1_regs_details Register Initialization Details
 This page contains detailed description of initialization values for the 
 registers of the peripheral(s) configured by the component. 
 
@@ -331,93 +325,6 @@ registers of the peripheral(s) configured by the component.
 <tr><td>1</td><td>PE</td><td>0x00</td><td>Pull Enable</td>
 <tr><td>0</td><td>PS</td><td>0x00</td><td>Pull Select</td>
 </tr></table>
-<div class="reghdr1">NVIC_IPR2</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_11</td><td colspan="8" rowspan="2">PRI_10</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_9</td><td colspan="8" rowspan="2">PRI_8</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E408</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000000</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>24 - 31</td><td>PRI_11</td><td>0x00</td><td>Priority of interrupt 11</td>
-<tr><td>16 - 23</td><td>PRI_10</td><td>0x00</td><td>Priority of interrupt 10</td>
-<tr><td>8 - 15</td><td>PRI_9</td><td>0x00</td><td>Priority of interrupt 9</td>
-<tr><td>0 - 7</td><td>PRI_8</td><td>0x00</td><td>Priority of interrupt 8</td>
-</tr></table>
-<div class="reghdr1">NVIC_ISER</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E100</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00028120</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>0 - 31</td><td>SETENA</td><td>0x00</td><td>Interrupt set enable bits</td>
-</tr></table>
 <div class="reghdr1">I2C0_C2</div>
 <div class="regdiag">
 <table class="regtbl">
@@ -468,7 +375,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40066001</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000027</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x0000003A</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>6 - 7</td><td>MULT</td><td>0x00</td><td>The MULT bits define the multiplier factor mul. This factor is used along with the SCL divider to generate the I2C baud rate</td>
@@ -476,19 +383,17 @@ registers of the peripheral(s) configured by the component.
 </tr></table>
 */
 /*!
-\page CI2C1_settings Component Settings
+\page IntI2cLdd1_settings Component Settings
 \code
-**          Component name                                 : CI2C1
+**          Component name                                 : IntI2cLdd1
 **          I2C channel                                    : I2C0
-**          Interrupt service                              : Enabled
-**            Interrupt                                    : INT_I2C0
-**            Interrupt priority                           : maximal priority
+**          Interrupt service                              : Disabled
 **          Settings                                       : 
 **            Mode selection                               : MASTER
 **            MASTER mode                                  : Enabled
 **              Initialization                             : 
 **                Address mode                             : 7-bit addressing
-**                Target slave address init                : 0x50
+**                Target slave address init                : 8
 **            SLAVE mode                                   : Disabled
 **            Pins                                         : 
 **              SDA pin                                    : 
@@ -500,18 +405,18 @@ registers of the peripheral(s) configured by the component.
 **              High drive select                          : Disabled
 **              Input Glitch filter                        : 0
 **            Internal frequency (multiplier factor)       : 23.986176 MHz
-**            Bits 0-2 of Frequency divider register       : 111
-**            Bits 3-5 of Frequency divider register       : 100
-**            SCL frequency                                : 49.971 kHz
-**            SDA Hold                                     : 2.71 us
-**            SCL start Hold                               : 9.922 us
-**            SCL stop Hold                                : 10.048 us
+**            Bits 0-2 of Frequency divider register       : 010
+**            Bits 3-5 of Frequency divider register       : 111
+**            SCL frequency                                : 13.385 kHz
+**            SDA Hold                                     : 10.715 us
+**            SCL start Hold                               : 37.272 us
+**            SCL stop Hold                                : 37.397 us
 **          Initialization                                 : 
 **            Enabled in init code                         : yes
-**            Auto initialization                          : yes
+**            Auto initialization                          : no
 **            Event mask                                   : 
-**              OnMasterBlockSent                          : Enabled
-**              OnMasterBlockReceived                      : Enabled
+**              OnMasterBlockSent                          : Disabled
+**              OnMasterBlockReceived                      : Disabled
 **              OnMasterByteReceived                       : Disabled
 **              OnSlaveBlockSent                           : Disabled
 **              OnSlaveBlockReceived                       : Disabled

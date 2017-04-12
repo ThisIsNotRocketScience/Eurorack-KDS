@@ -68,6 +68,7 @@ void Boot_Check(void)
 {
 	uint32_t startup;
 
+
 	SIM_SCGC5   |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTB_MASK ;
 	GPIOB_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x0400));
 	PORTB_PCR10 = PORT_PCR_MUX(0x01) | 3;

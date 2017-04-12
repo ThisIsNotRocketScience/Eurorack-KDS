@@ -3,20 +3,20 @@
 **     Filename    : CI2C1.h
 **     Project     : AudioBoot
 **     Processor   : MKL02Z32VFM4
-**     Component   : I2C_LDD
-**     Version     : Component 01.016, Driver 01.07, CPU db: 3.00.000
+**     Component   : InternalI2C
+**     Version     : Component 01.287, Driver 01.01, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-09, 23:28, # CodeGen: 33
+**     Date/Time   : 2017-04-12, 00:41, # CodeGen: 35
 **     Abstract    :
-**          This component encapsulates the internal I2C communication
-**          interface. The implementation of the interface is based
-**          on the Philips I2C-bus specification version 2.0.
+**          This component encapsulates the internal I2C communication 
+**          interface. The implementation of the interface is based 
+**          on the Philips I2C-bus specification version 2.0. 
 **          Interface features:
 **          MASTER mode
 **            - Multi master communication
-**            - The combined format of communication possible
-**              (see SendStop parameter in MasterSend/ReceiveBlock method)
+**            - The combined format of communication possible 
+**              (see "Automatic stop condition" property)
 **            - 7-bit slave addressing (10-bit addressing can be made as well)
 **            - Acknowledge polling provided
 **            - No wait state initiated when a slave device holds the SCL line low
@@ -27,63 +27,44 @@
 **            - General call address detection provided
 **     Settings    :
 **          Component name                                 : CI2C1
+**          I2C_LDD                                        : I2C_LDD
 **          I2C channel                                    : I2C0
-**          Interrupt service                              : Enabled
-**            Interrupt                                    : INT_I2C0
-**            Interrupt priority                           : maximal priority
-**          Settings                                       : 
-**            Mode selection                               : MASTER
-**            MASTER mode                                  : Enabled
-**              Initialization                             : 
-**                Address mode                             : 7-bit addressing
-**                Target slave address init                : 0x50
-**            SLAVE mode                                   : Disabled
-**            Pins                                         : 
-**              SDA pin                                    : 
-**                SDA pin                                  : PTB4/IRQ_11/I2C0_SDA/UART0_RX
-**                SDA pin signal                           : 
-**              SCL pin                                    : 
-**                SCL pin                                  : PTB3/IRQ_10/I2C0_SCL/UART0_TX
-**                SCL pin signal                           : 
-**              High drive select                          : Disabled
-**              Input Glitch filter                        : 0
-**            Internal frequency (multiplier factor)       : 23.986176 MHz
-**            Bits 0-2 of Frequency divider register       : 111
-**            Bits 3-5 of Frequency divider register       : 100
-**            SCL frequency                                : 49.971 kHz
-**            SDA Hold                                     : 2.71 us
-**            SCL start Hold                               : 9.922 us
-**            SCL stop Hold                                : 10.048 us
+**          Mode selection                                 : MASTER
+**          Interrupt service/event                        : Disabled
+**          MASTER mode                                    : Enabled
+**            Polling trials                               : 2000
+**            Automatic stop condition                     : no
+**            Initialization                               : 
+**              Address mode                               : 7-bit addressing
+**              Target slave address init                  : 8
+**          SLAVE mode                                     : Disabled
+**          Data and Clock                                 : 
+**            SDA pin                                      : PTB4/IRQ_11/I2C0_SDA/UART0_RX
+**            SDA pin signal                               : 
+**            SCL pin                                      : PTB3/IRQ_10/I2C0_SCL/UART0_TX
+**            SCL pin signal                               : 
+**            High drive select                            : Disabled
+**          Internal frequency (multiplier factor)         : 23.986176 MHz
+**          Bits 0-2 of Frequency divider register         : 010
+**          Bits 3-5 of Frequency divider register         : 111
+**          SCL frequency                                  : 13.385 kHz
+**          SDA Hold                                       : 10.715 us
+**          Noise (glitch) filter                          : 0
+**          Wake-up                                        : Disabled
 **          Initialization                                 : 
 **            Enabled in init code                         : yes
-**            Auto initialization                          : yes
-**            Event mask                                   : 
-**              OnMasterBlockSent                          : Enabled
-**              OnMasterBlockReceived                      : Enabled
-**              OnMasterByteReceived                       : Disabled
-**              OnSlaveBlockSent                           : Disabled
-**              OnSlaveBlockReceived                       : Disabled
-**              OnSlaveByteReceived                        : Disabled
-**              OnSlaveRxRequest                           : Disabled
-**              OnSlaveTxRequest                           : Disabled
-**              OnSlaveGeneralCallAddr                     : Disabled
-**              OnError                                    : Disabled
-**              OnBusStartDetected                         : Disabled
-**              OnBusStopDetected                          : Disabled
-**          CPU clock/configuration selection              : 
-**            Clock configuration 0                        : This component enabled
-**            Clock configuration 1                        : This component disabled
-**            Clock configuration 2                        : This component disabled
-**            Clock configuration 3                        : This component disabled
-**            Clock configuration 4                        : This component disabled
-**            Clock configuration 5                        : This component disabled
-**            Clock configuration 6                        : This component disabled
-**            Clock configuration 7                        : This component disabled
+**            Events enabled in init.                      : yes
+**          CPU clock/speed selection                      : 
+**            High speed mode                              : Enabled
+**            Low speed mode                               : Disabled
+**            Slow speed mode                              : Disabled
 **     Contents    :
-**         Init               - LDD_TDeviceData* CI2C1_Init(LDD_TUserData *UserDataPtr);
-**         MasterSendBlock    - LDD_TError CI2C1_MasterSendBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData...
-**         MasterReceiveBlock - LDD_TError CI2C1_MasterReceiveBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData...
-**         SelectSlaveDevice  - LDD_TError CI2C1_SelectSlaveDevice(LDD_TDeviceData *DeviceDataPtr,...
+**         SendChar    - byte CI2C1_SendChar(byte Chr);
+**         RecvChar    - byte CI2C1_RecvChar(byte *Chr);
+**         SendBlock   - byte CI2C1_SendBlock(void* Ptr, word Siz, word *Snt);
+**         RecvBlock   - byte CI2C1_RecvBlock(void* Ptr, word Siz, word *Rcv);
+**         SendStop    - byte CI2C1_SendStop(void);
+**         SelectSlave - byte CI2C1_SelectSlave(byte Slv);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -118,16 +99,16 @@
 ** ###################################################################*/
 /*!
 ** @file CI2C1.h
-** @version 01.07
+** @version 01.01
 ** @brief
-**          This component encapsulates the internal I2C communication
-**          interface. The implementation of the interface is based
-**          on the Philips I2C-bus specification version 2.0.
+**          This component encapsulates the internal I2C communication 
+**          interface. The implementation of the interface is based 
+**          on the Philips I2C-bus specification version 2.0. 
 **          Interface features:
 **          MASTER mode
 **            - Multi master communication
-**            - The combined format of communication possible
-**              (see SendStop parameter in MasterSend/ReceiveBlock method)
+**            - The combined format of communication possible 
+**              (see "Automatic stop condition" property)
 **            - 7-bit slave addressing (10-bit addressing can be made as well)
 **            - Acknowledge polling provided
 **            - No wait state initiated when a slave device holds the SCL line low
@@ -142,18 +123,18 @@
 **  @{
 */         
 
-#ifndef __CI2C1_H
-#define __CI2C1_H
+#ifndef __CI2C1
+#define __CI2C1
 
 /* MODULE CI2C1. */
 
-/* Include shared modules, which are used for whole project */
+/* Include shared modules, which are used for whole project*/
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
 #include "IO_Map.h"
 /* Include inherited components */
-
+#include "IntI2cLdd1.h"
 #include "Cpu.h"
 
 #ifdef __cplusplus
@@ -161,194 +142,277 @@ extern "C" {
 #endif 
 
 
-/*! Peripheral base address of a device allocated by the component. This constant can be used directly in PDD macros. */
-#define CI2C1_PRPH_BASE_ADDRESS  0x40066000U
-  
-/*! Device data structure pointer used when auto initialization property is enabled. This constant can be passed as a first parameter to all component's methods. */
-#define CI2C1_DeviceData  ((LDD_TDeviceData *)PE_LDD_GetDeviceStructure(PE_LDD_COMPONENT_CI2C1_ID))
+/* MODULE CI2C1. */
 
-/* Methods configuration constants - generated for all enabled component's methods */
-#define CI2C1_Init_METHOD_ENABLED      /*!< Init method of the component CI2C1 is enabled (generated) */
-#define CI2C1_MasterSendBlock_METHOD_ENABLED /*!< MasterSendBlock method of the component CI2C1 is enabled (generated) */
-#define CI2C1_MasterReceiveBlock_METHOD_ENABLED /*!< MasterReceiveBlock method of the component CI2C1 is enabled (generated) */
-#define CI2C1_SelectSlaveDevice_METHOD_ENABLED /*!< SelectSlaveDevice method of the component CI2C1 is enabled (generated) */
-
-/* Events configuration constants - generated for all enabled component's events */
-#define CI2C1_OnMasterBlockSent_EVENT_ENABLED /*!< OnMasterBlockSent event of the component CI2C1 is enabled (generated) */
-#define CI2C1_OnMasterBlockReceived_EVENT_ENABLED /*!< OnMasterBlockReceived event of the component CI2C1 is enabled (generated) */
-
-
+extern word CI2C1_SndRcvTemp;
 
 /*
 ** ===================================================================
-**     Method      :  CI2C1_Init (component I2C_LDD)
-*/
-/*!
-**     @brief
-**         Initializes the device. Allocates memory for the device data
-**         structure, allocates interrupt vectors and sets interrupt
-**         priority, sets pin routing, sets timing, etc.
-**         If the "Enable in init. code" is set to "yes" value then the
-**         device is also enabled(see the description of the Enable()
-**         method). In this case the Enable() method is not necessary
-**         and needn't to be generated. 
-**         This method can be called only once. Before the second call
-**         of Init() the Deinit() must be called first.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. This pointer will be
-**                           passed as an event or callback parameter.
-**     @return
-**                         - Pointer to the device data structure. 
-*/
-/* ===================================================================*/
-LDD_TDeviceData* CI2C1_Init(LDD_TUserData *UserDataPtr);
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_MasterSendBlock (component I2C_LDD)
-*/
-/*!
-**     @brief
-**         This method writes one (7-bit addressing) or two (10-bit
-**         addressing) slave address bytes inclusive of R/W bit = 0 to
-**         the I2C bus and then writes the block of characters to the
-**         bus. The slave address must be specified before, by the
-**         "SelectSlaveDevice" method or in component initialization
-**         section, "Target slave address init" property. If the method
-**         returns ERR_OK, it doesn't mean that transmission was
-**         successful. The state of transmission is detectable by means
-**         of events (OnMasterSendComplete or OnError). Data to be sent
-**         are not copied to an internal buffer and remains in the
-**         original location. Therefore the content of the buffer
-**         should not be changed until the transmission is complete.
-**         Event "OnMasterBlockSent"can be used to detect the end of
-**         the transmission. This method is available only for the
-**         MASTER or MASTER - SLAVE mode.
-**     @param
-**         DeviceDataPtr   - Device data structure
-**                           pointer returned by <Init> method.
-**     @param
-**         BufferPtr       - Pointer to the block of data
-**                           to send.
-**     @param
-**         Size            - Size of the data block.
-**     @param
-**         SendStop        - Parameter for generating I2C
-**                           Stop condition
-**                           LDD_I2C_SEND_STOP - Stop condition is
-**                           generated on end transmission.
-**                           LDD_I2C_NO_SEND_STOP - Stop condition isn't
-**                           generated on end transmission.
-**     @return
-**                         - Error code, possible codes:
+**     Method      :  CI2C1_SendChar (component InternalI2C)
+**     Description :
+**         When working as a MASTER, this method writes one (7-bit
+**         addressing) or two (10-bit addressing) slave address bytes
+**         inclusive of R/W bit = 0 to the I2C bus and then writes one
+**         character (byte) to the bus. The slave address must be
+**         specified before, by the "SelectSlave" or "SelectSlave10"
+**         method or in the component initialization section, "Target
+**         slave address init" property. If interrupt service is
+**         enabled and the method returns ERR_OK, it doesn't mean that
+**         transmission was successful. The state of transmission is
+**         obtainable from (OnTransmitData, OnError or OnArbitLost)
+**         events. 
+**         When working as a SLAVE, this method writes a character to
+**         the internal output slave buffer and, after the master
+**         starts the communication, to the I2C bus. If no character is
+**         ready for a transmission (internal output slave buffer is
+**         empty), the Empty character will be sent (see "Empty
+**         character" property).
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         Chr             - Character to send.
+**     Returns     :
+**         ---             - Error code, possible codes:
 **                           ERR_OK - OK
-**                           ERR_DISABLED -  Device is disabled
 **                           ERR_SPEED - This device does not work in
-**                           the active clock configuration
-**                           ERR_BUSY - The I2C device is now running
+**                           the active speed mode
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_BUSY - The slave device is busy, it
+**                           does not respond by an acknowledge (only in
+**                           master mode and when interrupt service is
+**                           disabled)
+**                           ERR_BUSOFF - Clock timeout elapsed or
+**                           device cannot transmit data
+**                           ERR_TXFULL - Transmitter is full (slave
+**                           mode only)
+**                           ERR_ARBITR - Arbitration lost (only when
+**                           interrupt service is disabled and in master
+**                           mode)
+** ===================================================================
 */
-/* ===================================================================*/
-LDD_TError CI2C1_MasterSendBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData *BufferPtr, LDD_I2C_TSize Size, LDD_I2C_TSendStop SendStop);
+byte CI2C1_SendChar(byte Chr);
 
 /*
 ** ===================================================================
-**     Method      :  CI2C1_MasterReceiveBlock (component I2C_LDD)
-*/
-/*!
-**     @brief
-**         This method writes one (7-bit addressing) or two (10-bit
-**         addressing) slave address bytes inclusive of R/W bit = 1 to
-**         the I2C bus and then receives the block of characters from
-**         the bus. The slave address must be specified before, by the
-**         "SelectSlaveDevice" method or in component initialization
-**         section, "Target slave address init" property. If the method
-**         returns ERR_OK, it doesn't mean that reception was
-**         successful. The state of reception is detectable by means of
-**         events (OnMasterSendComplete  or OnError). Data to be
-**         received are not copied to an internal buffer and remains in
-**         the original location. Therefore the content of the buffer
-**         should not be changed until the transmission is complete.
-**         Event "OnMasterBlockReceived"can be used to detect the end
-**         of the reception. This method is available only for the
-**         MASTER or MASTER - SLAVE mode.
-**     @param
-**         DeviceDataPtr   - Device data structure
-**                           pointer returned by <Init> method.
-**     @param
-**         BufferPtr       - Pointer to a buffer where
-**                           received characters will be stored.
-**     @param
-**         Size            - The size of the block.
-**     @param
-**         SendStop        - Parameter for generating I2C
-**                           Stop condition
-**                           LDD_I2C_SEND_STOP - Stop condition is
-**                           generated on end transmission.
-**                           LDD_I2C_NO_SEND_STOP - Stop condition isn't
-**                           generated on end transmission.
-**     @return
-**                         - Error code, possible codes:
+**     Method      :  CI2C1_RecvChar (component InternalI2C)
+**     Description :
+**         When working as a MASTER, this method writes one (7-bit
+**         addressing) or two (10-bit addressing) slave address bytes
+**         inclusive of R/W bit = 1 to the I2C bus, then reads one
+**         character (byte) from the bus and then sends the stop
+**         condition. The slave address must be specified before, by
+**         the "SelectSlave" or "SelectSlave10" method or in component
+**         initialization section, property "Target slave address init".
+**         If interrupt service is enabled and the method returns
+**         ERR_OK, it doesn't mean that transmission was finished
+**         successfully. The state of transmission must be tested by
+**         means of events (OnReceiveData, OnError or OnArbitLost). In
+**         case of successful transmission, received data is ready
+**         after OnReceiveData event is called. 
+**         When working as a SLAVE, this method reads a character from
+**         the input slave buffer.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * Chr             - Received character.
+**     Returns     :
+**         ---             - Error code, possible codes:
 **                           ERR_OK - OK
-**                           ERR_DISABLED -  Device is disabled
 **                           ERR_SPEED - This device does not work in
-**                           the active clock configuration
-**                           ERR_BUSY - The master device is busy
-**                           ERR_NOTAVAIL - It is not possible to
-**                           receive data if general call address is set.
-**                           ERR_PARAM_MODE -  Stop condition isn't
-**                           possible generated on end transmission.
+**                           the active speed mode
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_BUSY - The slave device is busy, it
+**                           does not respond by the acknowledge (only
+**                           in master mode and when interrupt service
+**                           is disabled)
+**                           ERR_BUSOFF - Clock timeout elapsed or
+**                           device cannot receive data
+**                           ERR_RXEMPTY - No data in receiver (slave
+**                           mode only)
+**                           ERR_OVERRUN - Overrun error was detected
+**                           from the last character or block received
+**                           (slave mode only)
+**                           ERR_ARBITR - Arbitration lost (only when
+**                           interrupt service is disabled and in master
+**                           mode)
+**                           ERR_NOTAVAIL - Method is not available in
+**                           current mode - see the comment in the
+**                           generated code
+** ===================================================================
 */
-/* ===================================================================*/
-LDD_TError CI2C1_MasterReceiveBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData *BufferPtr, LDD_I2C_TSize Size, LDD_I2C_TSendStop SendStop);
+#define CI2C1_RecvChar(Chr) CI2C1_RecvBlock((Chr), 1U, &CI2C1_SndRcvTemp)
 
 /*
 ** ===================================================================
-**     Method      :  CI2C1_SelectSlaveDevice (component I2C_LDD)
+**     Method      :  CI2C1_SendBlock (component InternalI2C)
+**     Description :
+**         When working as a MASTER, this method writes one (7-bit
+**         addressing) or two (10-bit addressing) slave address bytes
+**         inclusive of R/W bit = 0 to the I2C bus and then writes the
+**         block of characters to the bus. The slave address must be
+**         specified before, by the "SelectSlave" or "SlaveSelect10"
+**         method or in component initialization section, "Target slave
+**         address init" property. If interrupt service is enabled and
+**         the method returns ERR_OK, it doesn't mean that transmission
+**         was successful. The state of transmission is detectable by
+**         means of events (OnTransmitData, OnError or OnArbitLost).
+**         Data to be send is not copied to an internal buffer and
+**         remains in the original location. Therefore the content of
+**         the buffer should not be changed until the transmission is
+**         complete. Event OnTransmitData can be used to detect the end
+**         of the transmission.
+**         When working as a SLAVE, this method writes a block of
+**         characters to the internal output slave buffer and then,
+**         after the master starts the communication, to the I2C bus.
+**         If no character is ready for a transmission (internal output
+**         slave buffer is empty), the "Empty character" will be sent
+**         (see "Empty character" property). In SLAVE mode the data are
+**         copied to an internal buffer, if specified by "Output buffer
+**         size" property.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * Ptr             - Pointer to the block of data to send.
+**         Siz             - Size of the block.
+**       * Snt             - Amount of data sent (moved to a buffer).
+**                           In master mode, if interrupt support is
+**                           enabled, the parameter always returns the
+**                           same value as the parameter 'Siz' of this
+**                           method.
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_BUSY - The slave device is busy, it
+**                           does not respond by the acknowledge (only
+**                           in master mode and when interrupt service
+**                           is disabled)
+**                           ERR_BUSOFF - Clock timeout elapsed or
+**                           device cannot transmit data
+**                           ERR_TXFULL - Transmitter is full. Some data
+**                           has not been sent. (slave mode only)
+**                           ERR_ARBITR - Arbitration lost (only when
+**                           interrupt service is disabled and in master
+**                           mode)
+** ===================================================================
 */
-/*!
-**     @brief
+byte CI2C1_SendBlock(void *Ptr,word Siz,word *Snt);
+
+/*
+** ===================================================================
+**     Method      :  CI2C1_RecvBlock (component InternalI2C)
+**     Description :
+**         When working as a MASTER, this method writes one (7-bit
+**         addressing) or two (10-bit addressing) slave address bytes
+**         inclusive of R/W bit = 1 to the I2C bus, then reads the
+**         block of characters from the bus and then sends the stop
+**         condition. The slave address must be specified before, by
+**         the "SelectSlave" or "SelectSlave10" method or in component
+**         initialization section, "Target slave address init" property.
+**         If interrupt service is enabled and the method returns
+**         ERR_OK, it doesn't mean that transmission was finished
+**         successfully. The state of transmission must be tested by
+**         means of events (OnReceiveData, OnError or OnArbitLost). In
+**         case of successful transmission, received data is ready
+**         after OnReceiveData event is called. 
+**         When working as a SLAVE, this method reads a block of
+**         characters from the input slave buffer.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * Ptr             - A pointer to the block space for received
+**                           data.
+**         Siz             - The size of the block.
+**       * Rcv             - Amount of received data. In master mode,
+**                           if interrupt support is enabled, the
+**                           parameter always returns the same value as
+**                           the parameter 'Siz' of this method.
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_BUSY - The slave device is busy, it
+**                           does not respond by an acknowledge (only in
+**                           master mode and when interrupt service is
+**                           disabled)
+**                           ERR_BUSOFF - Clock timeout elapsed or
+**                           device cannot receive data
+**                           ERR_RXEMPTY - The receive buffer didn't
+**                           contain the requested number of data. Only
+**                           available data (or no data) has been
+**                           returned  (slave mode only).
+**                           ERR_OVERRUN - Overrun error was detected
+**                           from last character or block receiving
+**                           (slave mode only)
+**                           ERR_ARBITR - Arbitration lost (only when
+**                           interrupt service is disabled and in master
+**                           mode)
+**                           ERR_NOTAVAIL - Method is not available in
+**                           current mode - see the comment in the
+**                           generated code.
+** ===================================================================
+*/
+byte CI2C1_RecvBlock(void* Ptr,word Siz,word *Rcv);
+
+/*
+** ===================================================================
+**     Method      :  CI2C1_SendStop (component InternalI2C)
+**     Description :
+**         If the "Automatic stop condition" property value is 'no',
+**         this method sends a valid stop condition to the serial data
+**         line of the I2C bus to terminate the communication on the
+**         bus after using send methods. This method is enabled only if
+**         "Automatic stop condition" property is set to 'no'.
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+**                           ERR_DISABLED - Device is disabled
+**                           ERR_BUSOFF - Clock timeout elapsed - bus is
+**                           busy
+** ===================================================================
+*/
+byte CI2C1_SendStop(void);
+
+/*
+** ===================================================================
+**     Method      :  CI2C1_SelectSlave (component InternalI2C)
+**     Description :
 **         This method selects a new slave for communication by its
-**         7-bit slave, 10-bit address or general call value. Any send
-**         or receive method directs to or from selected device, until
-**         a new slave device is selected by this method. This method
-**         is available for the MASTER mode.
-**     @param
-**         DeviceDataPtr   - Device data structure
-**                           pointer returned by <Init> method.
-**     @param
-**         AddrType        - Specify type of slave address
-**                           (7bit, 10bit or general call address), e.g.
-**                           LDD_I2C_ADDRTYPE_7BITS.
-**     @param
-**         Addr            - 7bit or 10bit slave address value.
-**     @return
-**                         - Error code, possible codes:
+**         7-bit slave address value. Any send or receive method
+**         directs to or from selected device, until a new slave device
+**         is selected by this method. This method is not available for
+**         the SLAVE mode.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         Slv             - 7-bit slave address value.
+**     Returns     :
+**         ---             - Error code, possible codes:
 **                           ERR_OK - OK
 **                           ERR_BUSY - The device is busy, wait until
 **                           the current operation is finished.
-**                           ERR_DISABLED -  The device is disabled.
 **                           ERR_SPEED - This device does not work in
-**                           the active clock configuration
-**                           ERR_PARAM_ADDRESS_TYPE -  Invalid address
-**                           type.
-**                           ERR_PARAM_ADDRESS -  Invalid address value.
+**                           the active speed mode
+**                           ERR_DISABLED -  The device is disabled
+** ===================================================================
 */
-/* ===================================================================*/
-LDD_TError CI2C1_SelectSlaveDevice(LDD_TDeviceData *DeviceDataPtr, LDD_I2C_TAddrType AddrType, LDD_I2C_TAddr Addr);
+byte CI2C1_SelectSlave(byte Slv);
 
 /*
 ** ===================================================================
-**     Method      :  CI2C1_Interrupt (component I2C_LDD)
+**     Method      :  CI2C1_Init (component InternalI2C)
 **
 **     Description :
-**         The method services the interrupt of the selected peripheral(s)
-**         and eventually invokes event(s) of the component.
+**         Initializes the associated peripheral(s) and the component 
+**         internal variables. The method is called automatically as a 
+**         part of the application initialization code.
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-/* {Default RTOS Adapter} ISR function prototype */
-PE_ISR(CI2C1_Interrupt);
+void CI2C1_Init(void);
+
 
 /* END CI2C1. */
 
@@ -356,8 +420,7 @@ PE_ISR(CI2C1_Interrupt);
 }  /* extern "C" */
 #endif 
 
-#endif
-/* ifndef __CI2C1_H */
+#endif /* ifndef __CI2C1 */
 /*!
 ** @}
 */
