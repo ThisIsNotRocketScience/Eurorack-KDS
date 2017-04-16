@@ -465,13 +465,13 @@ void NOINLINE _SetupLeds()
 		case OPTION_ALGO:
 		{
 			int S = Settings.algooptions[Tuesday.OptionIndex];
-			ShowSets(D, S&0x3, (S>>2)&0x03, (S>>4)&0x03);
+			ShowSets(D, (S >> 4) & 0x03, S&0x3, (S>>2)&0x03);
 		}
 		break;
 		case OPTION_SCALE:
 		{
 			int S = Settings.scale[Tuesday.OptionIndex];
-			ShowSets(S & 0x3, D, (S >> 2) & 0x03, (S>>4)&0x03);
+			ShowSets((S >> 4) & 0x03, D, S & 0x3, (S >> 2) & 0x03);
 		}
 		break;
 		case OPTION_BEATS:
@@ -585,9 +585,9 @@ void UI_SelectOption()
 		S = Settings.algooptions[Tuesday.OptionIndex];
 		//MaxS = __ALGO_COUNT;
 
-		but1 = pressed(&scalesw_state);
-		but3 = pressed(&beatsw_state);
-		but2 = pressed(&tpbsw_state);
+		but1 = pressed(&tpbsw_state);
+		but2 = pressed(&beatsw_state);
+		but3 = pressed(&scalesw_state);
 	};
 	break;
 
@@ -598,9 +598,9 @@ void UI_SelectOption()
 		S = Settings.scale[Tuesday.OptionIndex];
 		//		MaxS = __SCALE_COUNT;
 
-		but1 = pressed(&algosw_state);
-		but3 = pressed(&beatsw_state);
-		but2 = pressed(&tpbsw_state);
+		but1 = pressed(&tpbsw_state);
+		but2 = pressed(&beatsw_state);
+		but3 = pressed(&algosw_state);
 
 	};
 	break;
@@ -667,6 +667,17 @@ void UI_SelectOption()
 	if (butconflong == 1)
 	{
 		Tuesday.UIMode = UI_NORMAL;
+
+		switch (Tuesday.OptionSelect)
+		{
+			
+			
+		case OPTION_ALGO:  Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO; break;
+		case OPTION_SCALE: Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE; break;
+
+		}
+
+
 	}
 
 

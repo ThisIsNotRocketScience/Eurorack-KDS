@@ -402,7 +402,7 @@ void Algo_Saiko_Classic(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, 
 		Saiko_FlatTick(T, P, S, R, PS, I, Output); break;
 	case 2:
 		Saiko_PsychTick(T, P, S, R, PS, I, Output); break;
-	case 4:
+	case 3:
 		Saiko_ZephTick(T, P, S, R, PS, I, Output); break;
 	}
 

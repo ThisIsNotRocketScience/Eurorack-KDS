@@ -227,47 +227,58 @@ void RunTimingTest()
 {
 	Init();
 	Tuesday.CurrentPattern.TPB = 4;
+	Tuesday.tempo = 128;
+	Tuesday.intensity = 100;
 	Tuesday_UpdatePattern(0, 0, 4, 4, 200, 0, 0, 255);
 	int LastI = 0;
 	int gates[TUESDAY_GATES];
 	for (int i = 0; i < TUESDAY_GATES; i++) gates[i] = -1;
 	int LastTick = -2;
-	for (int i = 0; i < 1000; i++)
+	int LastNewTick = -3;
+	Tuesday_Reset(&Tuesday);
+	int lastnonzeroes = -1;
+	for (int i = 0; i < 250*96; i++)
 	{
 
-		Tuesday_Clock(&Tuesday, 1);
-		Tuesday_Clock(&Tuesday, 0);
-
-		int GateDiff = 0;
-		for (int j = 0; j < TUESDAY_GATES; j++)
+		Tuesday_TimerTick(&Tuesday, &TuesdayParams);
+		int nonzeroes = 0;
+		for (int j = 0; j < TUESDAY_GATES - 1; j++)
 		{
-			if (gates[j] != Tuesday.Gates[j])
-			{
-				GateDiff++;
-				gates[j] = Tuesday.Gates[j];
-			}
+			nonzeroes += Tuesday.Gates[j];
 		}
-		if (i == 590)
-		{
-			printf("reset!\n");
-			Tuesday_Reset(&Tuesday);
-		}
-		if (GateDiff > 0 || Tuesday.Tick != LastTick)
+		bool print = true;
+		if (nonzeroes == 0) print = false;
+		lastnonzeroes = nonzeroes;
+		if (print)
 		{
 			printf("%d) ", i);
-			for (int j = 0; j < TUESDAY_GATES; j++)
+
+			for (int j = 0; j < TUESDAY_GATES - 1; j++)
 			{
-				printf("%d ", Tuesday.Gates[j] > 0 ? 1 : 0);
+				nonzeroes += Tuesday.Gates[j];
+				char L[TUESDAY_GATES] = { 'G', 'a', 'L', 'b', 'c', 't' };
+				printf("%c ", Tuesday.Gates[j] > 0 ? L[j] :' ');
 				Tuesday.Gates[j] = 0;
 			}
-			if (Tuesday.Tick != LastTick)
+		}
+
+		
+		if (Tuesday.Tick != LastTick || Tuesday.NewTick != LastNewTick)
+		{
+			if (!print)
 			{
-				printf("Tick: %d - delta %d ", Tuesday.Tick, i - LastI);
+				printf("%d) ", i);
+			}
+			print = true;
+			if (Tuesday.Tick != LastTick || Tuesday.NewTick != LastNewTick)
+			{
+				printf("NewTick: %d - Tick: %d - delta %d ",Tuesday.NewTick, Tuesday.Tick, i - LastI);
 				LastI = i;
 				LastTick = Tuesday.Tick;
+				LastNewTick = Tuesday.NewTick;
 			}
-			printf("\n");
 		}
+		if (print) printf("\n");
 	}
 }
 
@@ -327,14 +338,14 @@ BOOL WINAPI DllMain(
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		int32_t V[4] = { 0,65536,0,65536 };
-		CalTest();
+		//CalTest();
 		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
 		LFOStatic.Speed = 0x80;
 		Init();
 
-		RunTest("Tests", ALGO_TESTS);
+	/*	RunTest("Tests", ALGO_TESTS);
 		RunTest("TriTrance", ALGO_TRITRANCE);
 		RunTest("Stomper", ALGO_STOMPER);
 		RunTest("Markov", ALGO_MARKOV);
@@ -347,7 +358,7 @@ BOOL WINAPI DllMain(
 		RunTest("ScaleWalker", ALGO_SCALEWALKER);
 		RunTest("TooEasy", ALGO_TOOEASY);
 		RunTest("Random", ALGO_RANDOM);
-
+		*/
 
 		RunTimingTest();
 

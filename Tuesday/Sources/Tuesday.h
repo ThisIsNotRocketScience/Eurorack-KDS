@@ -86,7 +86,8 @@ struct Tuesday_PatternGen
 
 	int Tick;
 	int Measure;
-
+	int NewTick;
+	int DoReset;
 	int countdownTick;
 	//int countdownNote;
 	int msecpertick;

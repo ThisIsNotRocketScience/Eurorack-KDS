@@ -34,8 +34,8 @@ uint16_t  CalibratedDAC(int dacchannel, int32_t Input)
 
 void ChangeDACCalibration(int dacchannel, int low, int high)
 {
-	MasterCalibration.DAC[dacchannel].volt_1 = DAC_VOLT_UNCALIBRATED(1) + (low - 128);
-	MasterCalibration.DAC[dacchannel].volt_3 = DAC_VOLT_UNCALIBRATED(3) + (high - 128);
+	MasterCalibration.DAC[dacchannel].volt_1 = DAC_VOLT_UNCALIBRATED(1) + ((low - 128)/4);
+	MasterCalibration.DAC[dacchannel].volt_3 = DAC_VOLT_UNCALIBRATED(3) + ((high - 128)/4);
 }
 
 void InitDAC(struct EuroRack_DAC_Calibration *DAC)

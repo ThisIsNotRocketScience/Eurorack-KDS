@@ -31,17 +31,20 @@ namespace Sim1
 
             dockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
 
-            TINRS_Tuesday_TestFrame tf = new TINRS_Tuesday_TestFrame();
-            tf.Show(this.dockPanel, DockState.Document);
-            tf.Text = "Tuesday";
+            if (false)
+            {
+                TINRS_Tuesday_TestFrame tf = new TINRS_Tuesday_TestFrame();
+                tf.Show(this.dockPanel, DockState.Document);
+                tf.Text = "Tuesday";
+            }
+            if (false)
+            {
+                TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
+                lf.Show(this.dockPanel, DockState.Document);
+                lf.Text = "Tuesday Lights";
+            }
 
-
-            TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
-            lf.Show(this.dockPanel, DockState.Document);
-            lf.Text = "Tuesday Lights";
-
-
-            tf.Focus();
+//            tf.Focus();
 
 
          //   WobblerTestFrame wf = new WobblerTestFrame();
@@ -49,9 +52,9 @@ namespace Sim1
             //wf.Text = "Wobbler";
 
 
-            //EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
-            //ef.Show(this.dockPanel, DockState.Document);
-            //ef.Text = "EdgeCutter";
+            EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
+            ef.Show(this.dockPanel, DockState.Document);
+            ef.Text = "EdgeCutter";
 
             
 
