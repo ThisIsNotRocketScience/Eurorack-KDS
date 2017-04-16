@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-28, 04:07, # CodeGen: 4
+**     Date/Time   : 2017-04-16, 03:17, # CodeGen: 9
 **     Abstract    :
 **
 **     Settings    :
@@ -237,9 +237,12 @@
 #include "CLOCK.h"
 #include "RETRIGGERINT.h"
 #include "WAIT1.h"
-#include "CI2C1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "EE241.h"
+#include "GI2C1.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -482,13 +485,17 @@ void PE_low_level_init(void)
   (void)CLOCK_Init(NULL);
   /* ### ExtInt_LDD "RETRIGGERINT" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)RETRIGGERINT_Init(NULL);
-  /* ### I2C_LDD "CI2C1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)CI2C1_Init(NULL);
   /* ### Init_GPIO "PTB" init code ... */
   PTB_Init();
 
 
   /* ### KinetisSDK "KSDK1" init code ... */
+  /* Write code here ... */
+  /* ### InternalI2C "CI2C1" init code ... */
+  CI2C1_Init();
+  /* ### GenericI2C "GI2C1" init code ... */
+  GI2C1_Init();
+  /* ### 24AA_EEPROM "EE241" init code ... */
   /* Write code here ... */
   __EI();
 }

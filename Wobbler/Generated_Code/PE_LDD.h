@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-28, 04:07, # CodeGen: 4
+**     Date/Time   : 2017-04-16, 03:17, # CodeGen: 9
 **     Abstract    :
 **
 **     Settings    :
@@ -74,9 +74,12 @@
 #include "CLOCK.h"
 #include "RETRIGGERINT.h"
 #include "WAIT1.h"
-#include "CI2C1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "EE241.h"
+#include "GI2C1.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 
 
 /*

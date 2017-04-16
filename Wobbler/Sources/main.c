@@ -38,8 +38,11 @@
 #include "CLOCK.h"
 #include "RETRIGGERINT.h"
 #include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "EE241.h"
+#include "GI2C1.h"
 #include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
@@ -243,7 +246,7 @@ int main(void)
 			LFO.Mod = 255-(adcchannels[ADC_MODULATION] >> 8);
 			LFO.Shape = 255-(adcchannels[ADC_SHAPE] >> 8);
 			LFO.Phasing = 255-(adcchannels[ADC_PHASING] >> 8);
-			LFO.Speed = ((~adcchannels[ADC_SPEED]) >> 8);
+			LFO.Speed = ((0xffff-adcchannels[ADC_SPEED]) >> 7);
 			measured = 0;
 
 		}

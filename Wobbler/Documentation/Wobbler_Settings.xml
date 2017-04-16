@@ -820,113 +820,6 @@ Autoselect
       <EmptySection_DummyValue />
     </Events>
   </Bean>
-  <Bean name="CI2C1" type="I2C_LDD">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="CI2C1" />
-      <I2C_channel v="I2C0" />
-      <boolgroup name="Interrupt service" v="Enabled">
-        <Interrupt v="INT_I2C0" />
-        <Interrupt_priority v="maximal priority" />
-      </boolgroup>
-      <group name="Settings">
-        <Mode_selection v="MASTER" />
-        <boolgroup name="MASTER mode" v="Enabled">
-          <group name="Initialization">
-            <Address_mode v="7-bit addressing" />
-            <Target_slave_address_init v="80" />
-          </group>
-        </boolgroup>
-        <boolgroup name="SLAVE mode" v="Disabled" />
-        <group name="Pins">
-          <group name="SDA pin">
-            <SDA_pin v="PTB4/IRQ_11/I2C0_SDA/UART0_RX" />
-          </group>
-          <group name="SCL pin">
-            <SCL_pin v="PTB3/IRQ_10/I2C0_SCL/UART0_TX" />
-          </group>
-          <High_drive_select v="Disabled" />
-          <Input_Glitch_filter v="0" />
-        </group>
-        <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
-        <Bits_0_2_of_Frequency_divider_register v="111" />
-        <Bits_3_5_of_Frequency_divider_register v="100" />
-        <SCL_frequency v="49.971 kHz" />
-        <SDA_Hold v="2.71 us" />
-        <SCL_start_Hold v="9.922 us" />
-        <SCL_stop_Hold v="10.048 us" />
-      </group>
-      <group name="Initialization">
-        <Enabled_in_init_code v="yes" />
-        <group name="Event mask">
-          <OnMasterBlockSent v="Enabled" />
-          <OnMasterBlockReceived v="Enabled" />
-          <OnMasterByteReceived v="Disabled" />
-          <OnSlaveBlockSent v="Disabled" />
-          <OnSlaveBlockReceived v="Disabled" />
-          <OnSlaveByteReceived v="Disabled" />
-          <OnSlaveRxRequest v="Disabled" />
-          <OnSlaveTxRequest v="Disabled" />
-          <OnSlaveGeneralCallAddr v="Disabled" />
-          <OnError v="Disabled" />
-          <OnBusStartDetected v="Disabled" />
-          <OnBusStopDetected v="Disabled" />
-        </group>
-      </group>
-    </Properties>
-    <Methods>
-      <Init v="generate code" />
-      <Deinit v="don&amp;apos;t generate code" />
-      <Enable v="don&amp;apos;t generate code" />
-      <Disable v="don&amp;apos;t generate code" />
-      <SetEventMask v="don&amp;apos;t generate code" />
-      <GetEventMask v="don&amp;apos;t generate code" />
-      <MasterSendBlock v="generate code" />
-      <MasterGetBlockSentStatus v="generate code" />
-      <MasterGetSentDataNum v="don&amp;apos;t generate code" />
-      <MasterReceiveBlock v="generate code" />
-      <MasterGetBlockReceivedStatus v="generate code" />
-      <MasterGetReceivedDataNum v="don&amp;apos;t generate code" />
-      <MasterUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
-      <SlaveSendBlock v="don&amp;apos;t generate code" />
-      <SlaveGetBlockSentStatus v="don&amp;apos;t generate code" />
-      <SlaveGetSentDataNum v="don&amp;apos;t generate code" />
-      <SlaveCancelTransmissionBlock v="don&amp;apos;t generate code" />
-      <SlaveReceiveBlock v="don&amp;apos;t generate code" />
-      <SlaveGetBlockReceivedStatus v="don&amp;apos;t generate code" />
-      <SlaveGetReceivedDataNum v="don&amp;apos;t generate code" />
-      <SlaveUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
-      <SlaveCancelReceptionBlock v="don&amp;apos;t generate code" />
-      <SelectSlaveDevice v="generate code" />
-      <GetError v="generate code" />
-      <CheckBus v="don&amp;apos;t generate code" />
-      <GetStats v="don&amp;apos;t generate code" />
-      <ClearStats v="don&amp;apos;t generate code" />
-      <Main v="don&amp;apos;t generate code" />
-      <ConnectPin v="don&amp;apos;t generate code" />
-      <SetOperationMode v="don&amp;apos;t generate code" />
-      <GetDriverState v="don&amp;apos;t generate code" />
-    </Methods>
-    <Events>
-      <Event_module_name v="Events" />
-      <event name="OnMasterBlockSent" v="generate code">
-        <Event_procedure_name v="CI2C1_OnMasterBlockSent" />
-      </event>
-      <event name="OnMasterBlockReceived" v="generate code">
-        <Event_procedure_name v="CI2C1_OnMasterBlockReceived" />
-      </event>
-      <event name="OnMasterByteReceived" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveBlockSent" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveBlockReceived" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveByteReceived" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveRxRequest" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveTxRequest" v="don&amp;apos;t generate code" />
-      <event name="OnSlaveGeneralCallAddr" v="don&amp;apos;t generate code" />
-      <event name="OnError" v="don&amp;apos;t generate code" />
-      <event name="OnBusStartDetected" v="don&amp;apos;t generate code" />
-      <event name="OnBusStopDetected" v="don&amp;apos;t generate code" />
-    </Events>
-  </Bean>
   <Bean name="PTB" type="Init_GPIO">
     <Enabled v="Y" />
     <Properties>
@@ -1002,6 +895,280 @@ Autoselect
     </Methods>
     <Events>
       <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="EE241" type="24AA_EEPROM">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="EE241" />
+      <Device v="8" />
+      <Initial_Device_Address v="0" />
+      <Block_buffer_size v="32" />
+      <boolgroup name="Acknowledge Polling" v="Enabled">
+        <Page_Write_Time__ms_ v="0" />
+        <Wait v="WAIT1" />
+        <ACK_Polling_Time__us_ v="100" />
+      </boolgroup>
+      <group name="Connection">
+        <I2C v="GI2C1" />
+        <boolgroup name="Write Protection Pin" v="Disabled" />
+      </group>
+      <boolgroup name="Timeout" v="Disabled" />
+      <boolgroup name="Shell" v="Disabled" />
+    </Properties>
+    <Methods>
+      <ReadByte v="generate code" />
+      <WriteByte v="generate code" />
+      <ReadBlock v="generate code" />
+      <WriteBlock v="generate code" />
+      <WriteProtect v="don&amp;apos;t generate code" />
+      <WriteUnprotect v="don&amp;apos;t generate code" />
+      <SelectDevice v="don&amp;apos;t generate code" />
+      <GetSelectedDevice v="don&amp;apos;t generate code" />
+      <Test v="don&amp;apos;t generate code" />
+      <ParseCommand v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="GI2C1" type="GenericI2C">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="GI2C1" />
+      <Wait v="WAIT1" />
+      <Support_STOP_NOSTART v="no" />
+      <Write_Buffer_Size v="16" />
+      <boolgroup name="non-LDD I2C" v="Enabled">
+        <I2C v="CI2C1" />
+      </boolgroup>
+      <boolgroup name="LDD I2C" v="Disabled" />
+      <boolgroup name="RTOS" v="Disabled" />
+      <Init___on_startup v="yes" />
+    </Properties>
+    <Methods>
+      <SelectSlave v="generate code" />
+      <UnselectSlave v="generate code" />
+      <RequestBus v="generate code" />
+      <ReleaseBus v="generate code" />
+      <ReadBlock v="generate code" />
+      <WriteBlock v="generate code" />
+      <ReadAddress v="generate code" />
+      <WriteAddress v="generate code" />
+      <ReadByteAddress8 v="generate code" />
+      <WriteByteAddress8 v="generate code" />
+      <ProbeACK v="generate code" />
+      <GetSemaphore v="generate code" />
+      <Deinit v="generate code" />
+      <ScanDevice v="generate code" />
+      <Init v="generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnMasterBlockSent" v="don&amp;apos;t generate code" />
+      <event name="OnMasterBlockReceived" v="don&amp;apos;t generate code" />
+      <event name="OnRequestBus" v="don&amp;apos;t generate code" />
+      <event name="OnReleaseBus" v="don&amp;apos;t generate code" />
+      <event name="OnError" v="don&amp;apos;t generate code" />
+    </Events>
+  </Bean>
+  <Bean name="CI2C1" type="InternalI2C">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="CI2C1" />
+      <inhrbean type="I2C_LDD">
+        <Enabled v="Y" />
+        <Properties>
+          <Component_name v="IntI2cLdd1" />
+          <I2C_channel v="I2C0" />
+          <boolgroup name="Interrupt service" v="Enabled">
+            <Interrupt v="INT_I2C0" />
+            <Interrupt_priority v="medium priority" />
+          </boolgroup>
+          <group name="Settings">
+            <Mode_selection v="MASTER" />
+            <boolgroup name="MASTER mode" v="Enabled">
+              <group name="Initialization">
+                <Address_mode v="7-bit addressing" />
+                <Target_slave_address_init v="8" />
+              </group>
+            </boolgroup>
+            <boolgroup name="SLAVE mode" v="Disabled" />
+            <group name="Pins">
+              <group name="SDA pin">
+                <SDA_pin v="PTB4/IRQ_11/I2C0_SDA/UART0_RX" />
+              </group>
+              <group name="SCL pin">
+                <SCL_pin v="PTB3/IRQ_10/I2C0_SCL/UART0_TX" />
+              </group>
+              <High_drive_select v="Disabled" />
+              <Input_Glitch_filter v="0" />
+            </group>
+            <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
+            <Bits_0_2_of_Frequency_divider_register v="100" />
+            <Bits_3_5_of_Frequency_divider_register v="101" />
+            <SCL_frequency v="41.643 kHz" />
+            <SDA_Hold v="4.044 us" />
+            <SCL_start_Hold v="11.924 us" />
+            <SCL_stop_Hold v="12.049 us" />
+          </group>
+          <group name="Initialization">
+            <Enabled_in_init_code v="yes" />
+            <group name="Event mask">
+              <OnMasterBlockSent v="Enabled" />
+              <OnMasterBlockReceived v="Enabled" />
+              <OnMasterByteReceived v="Disabled" />
+              <OnSlaveBlockSent v="Disabled" />
+              <OnSlaveBlockReceived v="Disabled" />
+              <OnSlaveByteReceived v="Disabled" />
+              <OnSlaveRxRequest v="Disabled" />
+              <OnSlaveTxRequest v="Disabled" />
+              <OnSlaveGeneralCallAddr v="Disabled" />
+              <OnError v="Disabled" />
+              <OnBusStartDetected v="Disabled" />
+              <OnBusStopDetected v="Disabled" />
+            </group>
+          </group>
+        </Properties>
+        <Methods>
+          <Init v="generate code" />
+          <Deinit v="don&amp;apos;t generate code" />
+          <Enable v="don&amp;apos;t generate code" />
+          <Disable v="don&amp;apos;t generate code" />
+          <SetEventMask v="don&amp;apos;t generate code" />
+          <GetEventMask v="don&amp;apos;t generate code" />
+          <MasterSendBlock v="generate code" />
+          <MasterGetBlockSentStatus v="don&amp;apos;t generate code" />
+          <MasterGetSentDataNum v="generate code" />
+          <MasterReceiveBlock v="generate code" />
+          <MasterGetBlockReceivedStatus v="don&amp;apos;t generate code" />
+          <MasterGetReceivedDataNum v="generate code" />
+          <MasterUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
+          <SlaveSendBlock v="don&amp;apos;t generate code" />
+          <SlaveGetBlockSentStatus v="don&amp;apos;t generate code" />
+          <SlaveGetSentDataNum v="don&amp;apos;t generate code" />
+          <SlaveCancelTransmissionBlock v="don&amp;apos;t generate code" />
+          <SlaveReceiveBlock v="don&amp;apos;t generate code" />
+          <SlaveGetBlockReceivedStatus v="don&amp;apos;t generate code" />
+          <SlaveGetReceivedDataNum v="don&amp;apos;t generate code" />
+          <SlaveUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
+          <SlaveCancelReceptionBlock v="don&amp;apos;t generate code" />
+          <SelectSlaveDevice v="generate code" />
+          <GetError v="don&amp;apos;t generate code" />
+          <CheckBus v="don&amp;apos;t generate code" />
+          <GetStats v="don&amp;apos;t generate code" />
+          <ClearStats v="don&amp;apos;t generate code" />
+          <Main v="don&amp;apos;t generate code" />
+          <ConnectPin v="don&amp;apos;t generate code" />
+          <SetOperationMode v="don&amp;apos;t generate code" />
+          <GetDriverState v="don&amp;apos;t generate code" />
+        </Methods>
+        <Events>
+          <Event_module_name v="Events" />
+          <event name="OnMasterBlockSent" v="generate code">
+            <Event_procedure_name v="IntI2cLdd1_OnMasterBlockSent" />
+          </event>
+          <event name="OnMasterBlockReceived" v="generate code">
+            <Event_procedure_name v="IntI2cLdd1_OnMasterBlockReceived" />
+          </event>
+          <event name="OnMasterByteReceived" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveBlockSent" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveBlockReceived" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveByteReceived" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveRxRequest" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveTxRequest" v="don&amp;apos;t generate code" />
+          <event name="OnSlaveGeneralCallAddr" v="don&amp;apos;t generate code" />
+          <event name="OnError" v="don&amp;apos;t generate code" />
+          <event name="OnBusStartDetected" v="don&amp;apos;t generate code" />
+          <event name="OnBusStopDetected" v="don&amp;apos;t generate code" />
+        </Events>
+      </inhrbean>
+      <I2C_channel v="I2C0" />
+      <Mode_selection v="MASTER" />
+      <boolgroup name="Interrupt service/event" v="Enabled">
+        <Interrupt v="INT_I2C0" />
+        <Interrupt_priority v="medium priority" />
+        <boolgroup name="Buffers for SLAVE mode" v="Disabled" />
+      </boolgroup>
+      <boolgroup name="MASTER mode" v="Enabled">
+        <Polling_trials v="2000" />
+        <Automatic_stop_condition v="no" />
+        <group name="Initialization">
+          <Address_mode v="7-bit addressing" />
+          <Target_slave_address_init v="8" />
+        </group>
+      </boolgroup>
+      <boolgroup name="SLAVE mode" v="Disabled" />
+      <group name="Data and Clock">
+        <SDA_pin v="PTB4/IRQ_11/I2C0_SDA/UART0_RX" />
+        <SCL_pin v="PTB3/IRQ_10/I2C0_SCL/UART0_TX" />
+        <High_drive_select v="Disabled" />
+      </group>
+      <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
+      <Bits_0_2_of_Frequency_divider_register v="100" />
+      <Bits_3_5_of_Frequency_divider_register v="101" />
+      <SCL_frequency v="41.643 kHz" />
+      <SDA_Hold v="4.044 us" />
+      <Noise__glitch__filter v="0" />
+      <Wake_up v="Disabled" />
+      <group name="Initialization">
+        <Enabled_in_init_code v="yes" />
+        <Events_enabled_in_init_ v="yes" />
+      </group>
+      <group name="CPU clock/speed selection">
+        <High_speed_mode v="Enabled" />
+        <Low_speed_mode v="Disabled" />
+        <Slow_speed_mode v="Disabled" />
+      </group>
+    </Properties>
+    <Methods>
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <EnableEvent v="don&amp;apos;t generate code" />
+      <DisableEvent v="don&amp;apos;t generate code" />
+      <SendChar v="generate code" />
+      <RecvChar v="generate code" />
+      <SendBlock v="generate code" />
+      <RecvBlock v="generate code" />
+      <SendStop v="generate code" />
+      <ClearTxBuf v="don&amp;apos;t generate code" />
+      <ClearRxBuf v="don&amp;apos;t generate code" />
+      <GetCharsInTxBuf v="generate code" />
+      <GetCharsInRxBuf v="generate code" />
+      <SelectSlave v="generate code" />
+      <GetSelected v="don&amp;apos;t generate code" />
+      <GetSelected10 v="don&amp;apos;t generate code" />
+      <SetMode v="don&amp;apos;t generate code" />
+      <GetMode v="don&amp;apos;t generate code" />
+      <SelectSlave10 v="don&amp;apos;t generate code" />
+      <SelectSpecialCommand v="don&amp;apos;t generate code" />
+      <CheckBus v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="BeforeNewSpeed" v="don&amp;apos;t generate code" />
+      <event name="AfterNewSpeed" v="don&amp;apos;t generate code" />
+      <event name="OnReceiveData" v="generate code">
+        <Event_procedure_name v="CI2C1_OnReceiveData" />
+        <Priority v="same as interrupt" />
+      </event>
+      <event name="OnTransmitData" v="generate code">
+        <Event_procedure_name v="CI2C1_OnTransmitData" />
+        <Priority v="same as interrupt" />
+      </event>
+      <event name="OnByteTransfer" v="don&amp;apos;t generate code" />
+      <event name="OnReadReq" v="don&amp;apos;t generate code" />
+      <event name="OnWriteReq" v="don&amp;apos;t generate code" />
+      <event name="OnRxChar" v="don&amp;apos;t generate code" />
+      <event name="OnTxChar" v="don&amp;apos;t generate code" />
+      <event name="OnFreeTxBuf" v="don&amp;apos;t generate code" />
+      <event name="OnFullRxBuf" v="don&amp;apos;t generate code" />
+      <event name="OnArbitLost" v="don&amp;apos;t generate code" />
+      <event name="OnNACK" v="don&amp;apos;t generate code" />
+      <event name="OnError" v="don&amp;apos;t generate code" />
+      <event name="OnTxEmptyChar" v="don&amp;apos;t generate code" />
+      <event name="OnGeneralCall" v="don&amp;apos;t generate code" />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>

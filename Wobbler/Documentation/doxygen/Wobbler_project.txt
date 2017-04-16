@@ -32,8 +32,8 @@
 - \subpage DATA
 - \subpage CLOCK
 - \subpage RETRIGGERINT
-- \subpage CI2C1
 - \subpage PTB
+- \subpage IntI2cLdd1
 
 */
 

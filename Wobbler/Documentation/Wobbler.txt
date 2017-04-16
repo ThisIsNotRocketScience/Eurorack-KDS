@@ -153,43 +153,88 @@ Module "WAIT1"     (component Wait)
    - WAIT1_WaitOSms -If an RTOS is enabled, this routine will use a non-blocking wait method. Otherwise it will do a 
                 busy/blocking wait.
 
-Module "CI2C1"     (component I2C_LDD)
-   - CI2C1_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors and sets 
-                interrupt priority, sets pin routing, sets timing, etc.   If the "Enable in init. code" is set to "yes" value 
-                then the device is also enabled(see the description of the Enable() method). In this case the Enable() method 
-                is not necessary and needn't to be generated.    This method can be called only once. Before the second call of 
-                Init() the Deinit() must be called first.
-   - CI2C1_MasterSendBlock -This method writes one (7-bit addressing) or two (10-bit addressing) slave address bytes inclusive 
-                of R/W bit = 0 to the I2C bus and then writes the block of characters to the bus. The slave address must be 
-                specified before, by the "SelectSlaveDevice" method or in component initialization section, "Target slave 
-                address init" property. If the method returns ERR_OK, it doesn't mean that transmission was successful. The 
-                state of transmission is detectable by means of events (OnMasterSendComplete or OnError). Data to be sent are 
-                not copied to an internal buffer and remains in the original location. Therefore the content of the buffer 
-                should not be changed until the transmission is complete. Event "OnMasterBlockSent"can be used to detect the 
-                end of the transmission. This method is available only for the MASTER or MASTER - SLAVE mode.
-   - CI2C1_MasterGetBlockSentStatus -This method returns current state of MasterSendBlock method. This method is available only 
-                for the MASTER mode and if method MasterSendBlock is enabled.
-   - CI2C1_MasterReceiveBlock -This method writes one (7-bit addressing) or two (10-bit addressing) slave address bytes 
-                inclusive of R/W bit = 1 to the I2C bus and then receives the block of characters from the bus. The slave 
-                address must be specified before, by the "SelectSlaveDevice" method or in component initialization section, 
-                "Target slave address init" property. If the method returns ERR_OK, it doesn't mean that reception was 
-                successful. The state of reception is detectable by means of events (OnMasterSendComplete  or OnError). Data to 
-                be received are not copied to an internal buffer and remains in the original location. Therefore the content of 
-                the buffer should not be changed until the transmission is complete. Event "OnMasterBlockReceived"can be used 
-                to detect the end of the reception. This method is available only for the MASTER or MASTER - SLAVE mode.
-   - CI2C1_MasterGetBlockReceivedStatus -This method returns current state of MasterReceiveBlock method. This method is 
-                available only for the MASTER mode and if method MasterReceiveBlock is enabled.
-   - CI2C1_SelectSlaveDevice -This method selects a new slave for communication by its 7-bit slave, 10-bit address or general 
-                call value. Any send or receive method directs to or from selected device, until a new slave device is selected 
-                by this method. This method is available for the MASTER mode.
-   - CI2C1_GetError -Returns value of error mask, e.g. LDD_I2C_ARBIT_LOST.
-
 Module "PTB"       (component Init_GPIO_VAR0)
    - PTB_Init -This method initializes registers of the GPIO module according to the Peripheral Initialization settings. Call 
                 this method in user code to initialize the module. By default, the method is called by PE automatically; see 
                 "Call Init method" property of the component for more details.
 
 Module "KSDK1"     (component KinetisSDK)
+
+Module "EE241"     (component 24AA_EEPROM)
+   - EE241_ReadByte -Reads a single byte from the given memory address
+   - EE241_WriteByte -Writes a single byte to specified address
+   - EE241_ReadBlock -Read a block of memory.
+   - EE241_WriteBlock -Writes a block of data to the EEPROM
+
+Module "GI2C1"     (component GenericI2C)
+   - GI2C1_SelectSlave -Selects the slave device on the bus. Method might use a semaphore to protect bus access.
+   - GI2C1_UnselectSlave -Unselects the device. Method will release a used a semaphore.
+   - GI2C1_RequestBus -Starts a critical section for accessing the bus.
+   - GI2C1_ReleaseBus -Finishes a critical section for accessing the bus.
+   - GI2C1_ReadBlock -Read from the device a block.
+   - GI2C1_WriteBlock -Write a block to the device.
+   - GI2C1_ReadAddress -Read from the device. This writes (S+i2cAddr+0), (memAddr), (Sr+i2cAddr+1), (data)...(data+P)
+   - GI2C1_WriteAddress -Write to the device: (S+i2cAddr+0), (memAddr), (data)...(data+P)
+   - GI2C1_ReadByteAddress8 -Read a byte from the device using an 8bit memory address. This writes (S+i2cAddr+0), (memAddr), 
+                (Sr+i2cAddr+1), (data)...(data+P)
+   - GI2C1_WriteByteAddress8 -Write a byte to the device using an 8bit memory address: (S+i2cAddr+0), (memAddr), (data)...
+                (data+P)
+   - GI2C1_ProbeACK -Accesses the bus to check if the device responds with an ACK (ACK polling).
+   - GI2C1_GetSemaphore -Returns the currently allocated semaphore.
+   - GI2C1_Deinit -Deinitializes the driver.
+   - GI2C1_ScanDevice -Checks if a device responds on the bus with an ACK.
+   - GI2C1_Init -Initializes the driver.
+
+Module "CI2C1"     (component InternalI2C)
+   - CI2C1_SendChar -When working as a MASTER, this method writes one (7-bit addressing) or two (10-bit addressing) slave 
+                address bytes inclusive of R/W bit = 0 to the I2C bus and then writes one character (byte) to the bus. The 
+                slave address must be specified before, by the "SelectSlave" or "SelectSlave10" method or in the component 
+                initialization section, "Target slave address init" property. If interrupt service is enabled and the method 
+                returns ERR_OK, it doesn't mean that transmission was successful. The state of transmission is obtainable from 
+                (OnTransmitData, OnError or OnArbitLost) events.   When working as a SLAVE, this method writes a character to 
+                the internal output slave buffer and, after the master starts the communication, to the I2C bus. If no 
+                character is ready for a transmission (internal output slave buffer is empty), the Empty character will be sent 
+                (see "Empty character" property).
+   - CI2C1_RecvChar -When working as a MASTER, this method writes one (7-bit addressing) or two (10-bit addressing) slave 
+                address bytes inclusive of R/W bit = 1 to the I2C bus, then reads one character (byte) from the bus and then 
+                sends the stop condition. The slave address must be specified before, by the "SelectSlave" or "SelectSlave10" 
+                method or in component initialization section, property "Target slave address init". If interrupt service is 
+                enabled and the method returns ERR_OK, it doesn't mean that transmission was finished successfully. The state 
+                of transmission must be tested by means of events (OnReceiveData, OnError or OnArbitLost). In case of 
+                successful transmission, received data is ready after OnReceiveData event is called.   When working as a SLAVE, 
+                this method reads a character from the input slave buffer.
+   - CI2C1_SendBlock -When working as a MASTER, this method writes one (7-bit addressing) or two (10-bit addressing) slave 
+                address bytes inclusive of R/W bit = 0 to the I2C bus and then writes the block of characters to the bus. The 
+                slave address must be specified before, by the "SelectSlave" or "SlaveSelect10" method or in component 
+                initialization section, "Target slave address init" property. If interrupt service is enabled and the method 
+                returns ERR_OK, it doesn't mean that transmission was successful. The state of transmission is detectable by 
+                means of events (OnTransmitData, OnError or OnArbitLost). Data to be send is not copied to an internal buffer 
+                and remains in the original location. Therefore the content of the buffer should not be changed until the 
+                transmission is complete. Event OnTransmitData can be used to detect the end of the transmission.  When working 
+                as a SLAVE, this method writes a block of characters to the internal output slave buffer and then, after the 
+                master starts the communication, to the I2C bus. If no character is ready for a transmission (internal output 
+                slave buffer is empty), the "Empty character" will be sent (see "Empty character" property). In SLAVE mode the 
+                data are copied to an internal buffer, if specified by "Output buffer size" property.
+   - CI2C1_RecvBlock -When working as a MASTER, this method writes one (7-bit addressing) or two (10-bit addressing) slave 
+                address bytes inclusive of R/W bit = 1 to the I2C bus, then reads the block of characters from the bus and then 
+                sends the stop condition. The slave address must be specified before, by the "SelectSlave" or "SelectSlave10" 
+                method or in component initialization section, "Target slave address init" property. If interrupt service is 
+                enabled and the method returns ERR_OK, it doesn't mean that transmission was finished successfully. The state 
+                of transmission must be tested by means of events (OnReceiveData, OnError or OnArbitLost). In case of 
+                successful transmission, received data is ready after OnReceiveData event is called.   When working as a SLAVE, 
+                this method reads a block of characters from the input slave buffer.
+   - CI2C1_SendStop -If the "Automatic stop condition" property value is 'no', this method sends a valid stop condition to the 
+                serial data line of the I2C bus to terminate the communication on the bus after using send methods. This method 
+                is enabled only if "Automatic stop condition" property is set to 'no'.
+   - CI2C1_GetCharsInTxBuf -Returns number of characters in the output buffer. In SLAVE mode returns the number of characters 
+                in the internal slave output buffer. In MASTER mode returns number of characters to be sent from the user 
+                buffer (passed by SendBlock method).  This method is not supported in polling mode.
+   - CI2C1_GetCharsInRxBuf -Returns number of characters in the input buffer. In SLAVE mode returns the number of characters in 
+                the internal slave input buffer. In MASTER mode returns number of characters to be received into a user buffer 
+                (passed by RecvChar or RecvBlock method).   This method is not supported in polling mode.
+   - CI2C1_SelectSlave -This method selects a new slave for communication by its 7-bit slave address value. Any send or receive 
+                method directs to or from selected device, until a new slave device is selected by this method. This method is 
+                not available for the SLAVE mode.
 
 Module "Cpu"       (component MKL02Z32FM4)
 

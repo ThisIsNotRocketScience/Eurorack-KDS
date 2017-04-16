@@ -234,7 +234,9 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/SonicScrewdriver"/>
 		</configuration>
-		<configuration configurationName="Debug"/>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Wobbler"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

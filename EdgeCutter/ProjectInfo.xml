@@ -54,6 +54,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\AdcLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\BitIoLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\BitIoLdd2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CLOCK.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CLOCKINT.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\Cpu.c</PathName>
@@ -62,6 +63,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\EE241.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\GI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\I2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\IntI2cLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\KSDK1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\PE_LDD.c</PathName>
@@ -90,6 +92,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\AdcLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\BitIoLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\BitIoLdd2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CLOCK.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\CLOCKINT.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\Cpu.h</PathName>
@@ -99,6 +102,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\GI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\I2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\IntI2cLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\KSDK1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\LATCH.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Generated_Code\PE_Const.h</PathName>

@@ -50,6 +50,8 @@
 #include "BitIoLdd1.h"
 #include "SCL1.h"
 #include "BitIoLdd2.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
@@ -224,8 +226,8 @@ void SetSpeedLeds(int speed)
 {
 	switch(speed)
 	{
-	case 0: targetleds[3]=255; targetleds[4] = 0;break;
-	case 1: targetleds[3]=0; targetleds[4] = 255;break;
+	case 1: targetleds[3]=255; targetleds[4] = 0;break;
+	case 0: targetleds[3]=0; targetleds[4] = 255;break;
 
 	}
 }
@@ -292,7 +294,17 @@ int main(void)
 	TI1_Enable();
 	AD1_Calibrate(TRUE);
 	AD1_Measure(FALSE);
+for(int i = 0;i<13;i++)
+{
+	for(int j =0 ;j<13;j++)
+	{
+		if (i == j) outleds[ledorder[j]] = 255;
+		else outleds[ledorder[j]] = 0;
+	}
 
+	ShiftOut();
+	WAIT1_Waitms(40);
+}
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();

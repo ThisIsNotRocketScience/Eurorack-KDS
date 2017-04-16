@@ -58,7 +58,12 @@ extern "C"
 		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
-	
+	unsigned long LFORange2(int32_t V)
+		{
+			return  1 + V*V * 256 ;
+			//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+		}
+
 
 
 
@@ -141,7 +146,9 @@ extern "C"
 				}
 			}
 		}
-		uint32_t DP = LFORange(LFO->Speed, 2000);;
+
+
+		uint32_t DP = LFORange2(LFO->Speed);;
 		LFO->Phase1 += DP;
 
 		uint32_t DP2 = LFO->Phasing * 0x1000000;

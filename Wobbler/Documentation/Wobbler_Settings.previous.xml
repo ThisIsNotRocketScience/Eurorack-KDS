@@ -534,7 +534,7 @@ Autoselect
       <Disable v="don&amp;apos;t generate code" />
       <EnableEvent v="don&amp;apos;t generate code" />
       <DisableEvent v="don&amp;apos;t generate code" />
-      <Start v="don&amp;apos;t generate code" />
+      <Start v="generate code" />
       <Stop v="don&amp;apos;t generate code" />
       <Measure v="generate code" />
       <MeasureChan v="generate code" />

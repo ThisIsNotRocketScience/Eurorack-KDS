@@ -55,6 +55,8 @@
 #include "BitIoLdd1.h"
 #include "SCL1.h"
 #include "BitIoLdd2.h"
+#include "CI2C1.h"
+#include "IntI2cLdd1.h"
 #include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"

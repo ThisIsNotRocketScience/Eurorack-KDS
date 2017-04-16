@@ -172,8 +172,10 @@ extern "C"
 				Env->Current += Delta;
 				if (Env->DecayStart > SusLev)
 				{
-			
-					Env->DecayProgress = (((FIXED(1) - (Env->Current - SusLev)) * FIXED(1)) / (Env->DecayStart - SusLev));
+					int32_t waytogo = Env->Current - SusLev;
+
+					Env->DecayProgress = ((Env->Current - SusLev) * FIXED(1)) / (FIXED(1) - SusLev);
+					Env->DecayProgress = FIXED(1) - Env->DecayProgress;
 				}
 				else
 				{

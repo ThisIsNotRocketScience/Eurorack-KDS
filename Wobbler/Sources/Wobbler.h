@@ -37,7 +37,7 @@ struct Wobbler_LFO_SNH
 
 struct Wobbler_LFO
 {
-	unsigned char Speed;
+	uint16_t Speed;
 	unsigned char Shape;
 	unsigned char Mod;
 	unsigned char Phasing;
