@@ -26,14 +26,14 @@
       <File Name="Generated_Code/AdcLdd1.h" FileDate="2016-12-24, 20:24:36" FileAge="1482607476423" FileType="45637" CompNumb="19" />
       <File Name="Static_Code/PDD/FTFA_PDD.h" FileDate="2015-04-10, 18:37:18" FileAge="1428683838000" FileType="262144" />
       <File Name="Generated_Code/AdcLdd1.c" FileDate="2016-12-24, 20:24:36" FileAge="1482607476426" FileType="45637" CompNumb="19" />
-      <File Name="Documentation/EdgeCutter_SIGNALS.txt" FileDate="2017-04-16, 02:15:52" FileAge="1492301752364" FileType="3072" />
+      <File Name="Documentation/EdgeCutter_SIGNALS.txt" FileDate="2017-04-16, 18:52:25" FileAge="1492361545765" FileType="3072" />
       <File Name="ProjectInfo.xml" FileDate="2017-04-16, 02:15:52" FileAge="1492301752889" FileType="45637" />
       <File Name="Generated_Code/TimerIntLdd1.h" FileDate="2016-12-24, 22:31:57" FileAge="1482615117173" FileType="45637" CompNumb="9" />
       <File Name="Generated_Code/PE_LDD.h" FileDate="2017-04-16, 02:15:52" FileAge="1492301752318" FileType="45637" CompNumb="2" />
       <File Name="Sources/Events.h" FileDate="2017-04-16, 02:15:52" FileAge="1492301752326" FileType="131328" />
       <File Name="Generated_Code/TimerIntLdd1.c" FileDate="2016-12-24, 22:31:57" FileAge="1482615117168" FileType="45637" CompNumb="9" />
       <File Name="Generated_Code/PE_LDD.c" FileDate="2017-04-16, 02:15:52" FileAge="1492301752316" FileType="45637" CompNumb="2" />
-      <File Name="Sources/Events.c" FileDate="2017-01-10, 03:43:52" FileAge="1484016232135" FileType="131328" />
+      <File Name="Sources/Events.c" FileDate="2017-04-16, 18:52:08" FileAge="1492361528495" FileType="131328" />
       <File Name="Documentation/doxygen/LATCH_component.txt" FileDate="2016-12-24, 20:24:36" FileAge="1482607476449" FileType="45637" CompNumb="29" />
       <File Name="Generated_Code/TI1.h" FileDate="2016-12-24, 22:31:57" FileAge="1482615117162" FileType="45637" CompNumb="8" />
       <File Name="Generated_Code/TI1.c" FileDate="2016-12-24, 22:31:57" FileAge="1482615117157" FileType="45637" CompNumb="8" />
@@ -42,7 +42,7 @@
       <File Name="Documentation/EdgeCutter.txt" FileDate="2017-04-16, 02:15:52" FileAge="1492301752895" FileType="3072" />
       <File Name="Generated_Code/SCL1.c" FileDate="2017-04-16, 02:04:24" FileAge="1492301064317" FileType="45637" CompNumb="53" />
       <File Name="Static_Code/PDD/PDD_Types.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
-      <File Name="Documentation/doxygen/RETRIGGERINT_component.txt" FileDate="2016-12-24, 20:24:36" FileAge="1482607476395" FileType="45637" CompNumb="34" />
+      <File Name="Documentation/doxygen/RETRIGGERINT_component.txt" FileDate="2017-04-16, 18:52:25" FileAge="1492361545690" FileType="45637" CompNumb="34" />
       <File Name="Generated_Code/EE241.h" FileDate="2017-04-16, 02:04:24" FileAge="1492301064309" FileType="45637" CompNumb="49" />
       <File Name="Documentation/doxygen/BitIoLdd2_component.txt" FileDate="2017-04-16, 02:04:24" FileAge="1492301064321" FileType="45637" CompNumb="55" />
       <File Name="Generated_Code/EE241.c" FileDate="2017-04-16, 02:04:24" FileAge="1492301064307" FileType="45637" CompNumb="49" />
@@ -56,7 +56,7 @@
       <File Name="Generated_Code/BitIoLdd2.h" FileDate="2017-04-16, 02:04:24" FileAge="1492301064324" FileType="45637" CompNumb="55" />
       <File Name="Generated_Code/KSDK1.h" FileDate="2016-12-24, 01:17:06" FileAge="1482538626658" FileType="45637" CompNumb="48" />
       <File Name="Generated_Code/DACSEL.h" FileDate="2016-12-24, 01:17:06" FileAge="1482538626703" FileType="45637" CompNumb="24" />
-      <File Name="Generated_Code/RETRIGGERINT.h" FileDate="2016-12-24, 20:24:36" FileAge="1482607476459" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/RETRIGGERINT.h" FileDate="2017-04-16, 18:52:25" FileAge="1492361545645" FileType="45637" CompNumb="34" />
       <File Name="Documentation/doxygen/pex.doxyfile" FileDate="2016-12-24, 01:17:06" FileAge="1482538626645" FileType="45637" CompNumb="2" />
       <File Name="Generated_Code/BitIoLdd2.c" FileDate="2017-04-16, 02:04:24" FileAge="1492301064323" FileType="45637" CompNumb="55" />
       <File Name="Documentation/doxygen/PTB_component.txt" FileDate="2017-04-16, 02:04:24" FileAge="1492301064376" FileType="45637" CompNumb="47" />
@@ -64,7 +64,7 @@
       <File Name="Generated_Code/KSDK1.c" FileDate="2016-12-24, 01:17:06" FileAge="1482538626656" FileType="45637" CompNumb="48" />
       <File Name="Generated_Code/DACSEL.c" FileDate="2016-12-24, 01:17:06" FileAge="1482538626702" FileType="45637" CompNumb="24" />
       <File Name="Generated_Code/Cpu.h" FileDate="2016-12-24, 20:24:36" FileAge="1482607476480" FileType="45637" CompNumb="2" />
-      <File Name="Generated_Code/RETRIGGERINT.c" FileDate="2016-12-24, 20:24:36" FileAge="1482607476462" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/RETRIGGERINT.c" FileDate="2017-04-16, 18:52:25" FileAge="1492361545685" FileType="45637" CompNumb="34" />
       <File Name="Generated_Code/BitIoLdd1.c" FileDate="2017-04-16, 02:04:24" FileAge="1492301064331" FileType="45637" CompNumb="54" />
       <File Name="Generated_Code/Cpu.c" FileDate="2017-04-16, 02:15:52" FileAge="1492301752306" FileType="45637" CompNumb="2" />
       <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
@@ -107,12 +107,12 @@
       <File Name="Project_Settings/Startup_Code/startup.c" FileDate="2016-12-29, 17:35:05" FileAge="1483029305703" FileType="16384" CompNumb="2" />
       <File Name="Generated_Code/CLOCK.c" FileDate="2016-12-24, 01:17:06" FileAge="1482538626681" FileType="45637" CompNumb="31" />
       <File Name="Generated_Code/PTA.c" FileDate="2016-12-24, 01:17:06" FileAge="1482538626705" FileType="45637" CompNumb="23" />
-      <File Name="Documentation/EdgeCutter_Settings.xml" FileDate="2017-04-16, 02:15:52" FileAge="1492301752514" FileType="3072" />
+      <File Name="Documentation/EdgeCutter_Settings.xml" FileDate="2017-04-16, 18:52:25" FileAge="1492361545933" FileType="3072" />
       <File Name="Generated_Code/SW_SPEED.c" FileDate="2016-12-24, 20:10:30" FileAge="1482606630557" FileType="45637" CompNumb="33" />
       <File Name="Sources/main.h" FileDate="2016-12-24, 01:33:03" FileAge="1482539583505" FileType="128" />
       <File Name="Documentation/doxygen/SW_MODE_component.txt" FileDate="2016-12-24, 20:24:36" FileAge="1482607476446" FileType="45637" CompNumb="28" />
       <File Name="Generated_Code/SDA1.h" FileDate="2017-04-16, 02:04:24" FileAge="1492301064328" FileType="45637" CompNumb="52" />
-      <File Name="Sources/main.c" FileDate="2017-04-16, 02:15:52" FileAge="1492301752303" FileType="128" />
+      <File Name="Sources/main.c" FileDate="2017-04-16, 18:48:17" FileAge="1492361297490" FileType="128" />
       <File Name="Documentation/doxygen/DACSEL_component.txt" FileDate="2016-09-29, 21:51:29" FileAge="1475178689031" FileType="45637" CompNumb="24" />
       <File Name="Static_Code/PDD/CMP_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
       <File Name="Generated_Code/GI2C1.h" FileDate="2017-04-16, 02:15:52" FileAge="1492301752291" FileType="45637" CompNumb="50" />
@@ -122,11 +122,11 @@
       <File Name="Generated_Code/PE_Error.h" FileDate="2016-12-24, 01:17:06" FileAge="1482538626653" FileType="45637" />
       <File Name="Generated_Code/WAIT1.h" FileDate="2016-12-24, 01:17:06" FileAge="1482538626669" FileType="45637" CompNumb="42" />
       <File Name="Static_Code/PDD/LPTMR_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
-      <File Name="Documentation/doxygen/BitIoLdd1_component.txt" FileDate="2017-04-16, 02:04:24" FileAge="1492301064329" FileType="45637" CompNumb="54" />
+      <File Name="Documentation/doxygen/BitIoLdd1_component.txt" FileDate="2017-04-16, 18:52:25" FileAge="1492361545693" FileType="45637" CompNumb="54" />
       <File Name="Documentation/doxygen/IntI2cLdd1_component.txt" FileDate="2017-04-16, 02:15:52" FileAge="1492301752250" FileType="45637" CompNumb="57" />
       <File Name="Generated_Code/WAIT1.c" FileDate="2016-12-24, 01:17:06" FileAge="1482538626667" FileType="45637" CompNumb="42" />
       <File Name="Documentation/doxygen/TimerIntLdd1_component.txt" FileDate="2016-12-24, 22:31:57" FileAge="1482615117215" FileType="45637" CompNumb="9" />
-      <File Name="Generated_Code/Vectors.c" FileDate="2017-04-16, 02:15:52" FileAge="1492301752322" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/Vectors.c" FileDate="2017-04-16, 18:52:25" FileAge="1492361545697" FileType="45637" CompNumb="2" />
       <File Name="Static_Code/PDD/SPI_PDD.h" FileDate="2015-04-10, 18:37:18" FileAge="1428683838000" FileType="262144" />
       <File Name="Static_Code/PDD/SIM_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
       <File Name="Documentation/doxygen/EdgeCutter_project.txt" FileDate="2017-04-16, 02:15:52" FileAge="1492301752312" FileType="45637" CompNumb="2" />
@@ -138,5 +138,5 @@
       <File Name="Static_Code/PDD/SysTick_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>17</CodeGenReference>
+  <CodeGenReference>18</CodeGenReference>
 </CodeGenerationInfo>

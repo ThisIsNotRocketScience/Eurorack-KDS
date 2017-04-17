@@ -65,7 +65,7 @@
       <XtraAge22>1250955770</XtraAge22>
       <XtraAge23>1250955770</XtraAge23>
       <XtraAge25>1235061858</XtraAge25>
-      <XtraAge26>1250955770</XtraAge26>
+      <XtraAge26>1250989708</XtraAge26>
       <GenExtraFileType26>4</GenExtraFileType26>
       <GenExtraFileType25>5</GenExtraFileType25>
       <GenExtraFileType24>4</GenExtraFileType24>
@@ -196,7 +196,7 @@
     </GenFiles>
     <SignalListFile>Documentation\EdgeCutter_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>91</ProjectModificationStamp>
+    <ProjectModificationStamp>92</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -1727,8 +1727,8 @@
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1234739986</HeaderAge>
-    <CodeAge>1234739986</CodeAge>
+    <HeaderAge>1250989708</HeaderAge>
+    <CodeAge>1250989708</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>

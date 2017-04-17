@@ -207,7 +207,7 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void RETRIGGERINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  //EnvelopeTrigger(RETRIGGERINT_GetVal(RETRIGGERINT_DeviceData));
+	EnvelopeTrigger(0);
 }
 
 

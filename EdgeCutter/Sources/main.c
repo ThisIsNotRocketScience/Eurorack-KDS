@@ -266,7 +266,7 @@ void SetupLeds()
 
 void EnvelopeTrigger(int sw)
 {
-	EdgeCutter_Trigger(&Envelope, sw, &Params);
+	EdgeCutter_Trigger(&Envelope, sw>0?0:1, &Params);
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */

@@ -3,7 +3,7 @@
   <Header>
     <Name>EdgeCutter</Name>
     <SavedBy>Stijn</SavedBy>
-    <ModificationStamp>91</ModificationStamp>
+    <ModificationStamp>92</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.0.RT7_b1515-0427</PEversion>
@@ -20571,7 +20571,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>3</Index>
+        <Index>2</Index>
       </ItemState>
       <ItemState>
         <ItemSymbol>Int</ItemSymbol>
