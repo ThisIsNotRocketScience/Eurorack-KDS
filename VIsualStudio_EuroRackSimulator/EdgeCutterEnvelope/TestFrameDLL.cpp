@@ -3,7 +3,9 @@
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Algo.h"
 
+#include "../../BigFishLib/BigFish.h"
 
+struct BigFish_t Fish;
 struct Tuesday_PatternGen Tuesday;
 struct Tuesday_Settings TuesdaySettings;
 struct Tuesday_Params TuesdayParams;
@@ -282,6 +284,15 @@ void RunTimingTest()
 	}
 }
 
+void RunFishTest()
+{
+	BigFish_Update(&Fish);
+	int buffer[1000];
+	BigFish_GenerateBlock(&Fish, buffer, 1000);
+
+
+}
+
 void RunTest(const char * name, int i)
 {
 	int min = 10000;
@@ -342,6 +353,8 @@ BOOL WINAPI DllMain(
 		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
+		BigFish_Init(&Fish);
+		RunFishTest();
 		LFOStatic.Speed = 0x80;
 		Init();
 

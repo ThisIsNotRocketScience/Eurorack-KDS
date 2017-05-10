@@ -9,6 +9,7 @@
 struct EuroRack_Calibration MasterCalibration;
 
 #define DAC_VOLT_UNCALIBRATED(x) ((int32_t)((409600 * ((int32_t)x)) / (int32_t)(512)))
+int  ValidateDAC(struct EuroRack_DAC_Calibration *dac);
 
 uint16_t  CalibratedDAC(int dacchannel, int32_t Input)
 {

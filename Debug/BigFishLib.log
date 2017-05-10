@@ -1,0 +1,7 @@
+﻿  BigFish.c
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_44100.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_48000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_88200.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_96000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_192000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+  BigFishLib.vcxproj -> C:\Projects\Code\Kinetis2\Eurorack-KDS\VIsualStudio_EuroRackSimulator\Debug\BigFishLib.lib

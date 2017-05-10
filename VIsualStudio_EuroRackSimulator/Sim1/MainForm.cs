@@ -37,7 +37,7 @@ namespace Sim1
                 tf.Show(this.dockPanel, DockState.Document);
                 tf.Text = "Tuesday";
             }
-            if (false)
+            if (true)
             {
                 TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
                 lf.Show(this.dockPanel, DockState.Document);
@@ -56,7 +56,10 @@ namespace Sim1
             ef.Show(this.dockPanel, DockState.Document);
             ef.Text = "EdgeCutter";
 
-            
+            BigFishTestFrame bf = new BigFishTestFrame();
+            bf.Show(this.dockPanel, DockState.Document);
+            bf.Text = "BigFish";
+
 
         }
     }

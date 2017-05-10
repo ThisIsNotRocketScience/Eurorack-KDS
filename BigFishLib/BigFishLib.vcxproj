@@ -19,21 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{393C438D-7C82-41E6-A522-A5520D9C5F9C}</ProjectGuid>
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>EdgeCutterEnvelope</RootNamespace>
+    <RootNamespace>BigFishLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
-    <ProjectName>TestFrameDLL</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -72,16 +72,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\Build/Debug</OutDir>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>../../Build/Release</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -92,8 +88,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;EDGECUTTERENVELOPE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <EnablePREfast>true</EnablePREfast>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;BIGFISHLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,7 +100,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;EDGECUTTERENVELOPE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;BIGFISHLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,7 +114,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;EDGECUTTERENVELOPE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;BIGFISHLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,7 +130,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;EDGECUTTERENVELOPE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;BIGFISHLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,38 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\EdgeCutter\Sources\EdgeCutter.c" />
-    <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
-    <ClCompile Include="..\..\EurorackShared\Math.c" />
-    <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
-    <ClCompile Include="..\..\Tuesday\Sources\main.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
-    <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
-    <ClCompile Include="TestFrameDLL.cpp" />
+    <ClInclude Include="BigFish.h" />
+    <ClInclude Include="bleptables.h" />
+    <ClInclude Include="mblep_176400.h" />
+    <ClInclude Include="mblep_192000.h" />
+    <ClInclude Include="mblep_44100.h" />
+    <ClInclude Include="mblep_48000.h" />
+    <ClInclude Include="mblep_88200.h" />
+    <ClInclude Include="mblep_96000.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\EurorackShared\EURORACKSHARED.H" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_ChipArps.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_Markov.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_SaikoSet.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_ScaleWalker.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_SNH.H" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_Stomper.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_Test.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_TooEasy.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
-    <ClInclude Include="..\..\Tuesday\Sources\main.h" />
-    <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BigFishLib\BigFishLib.vcxproj">
-      <Project>{8679d3d1-4cb0-45a8-a4f1-f37a58fccae3}</Project>
-    </ProjectReference>
+    <ClCompile Include="BigFish.c" />
+    <ClCompile Include="Test.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
