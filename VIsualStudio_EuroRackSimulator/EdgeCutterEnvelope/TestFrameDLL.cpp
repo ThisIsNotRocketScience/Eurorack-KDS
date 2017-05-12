@@ -284,13 +284,63 @@ void RunTimingTest()
 	}
 }
 
+void checkbuffer(int32_t *buf, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		if (buf[i] > 35000 || buf[i] < -35000)
+		{
+			printf("^");
+		}
+	}
+}
+void FishCycle()
+{
+	int bufferosc[1000];
+	int buffermain[1000];
+
+	for (int i = 0; i < 127; i++)
+	{
+		printf(".");
+		BigFish_GenerateBlock(&Fish, bufferosc, buffermain, 1000);
+		checkbuffer(bufferosc, 1000);
+		checkbuffer(buffermain, 1000);
+
+		int32_t pitchtarget = (i * (1 << 14)) / 12;
+		Fish.PitchInput = pitchtarget;
+
+		Fish.Gates[GATE_GATE] = 1;
+		BigFish_GenerateBlock(&Fish, bufferosc, buffermain, 1000);
+		checkbuffer(bufferosc, 1000);
+		checkbuffer(buffermain, 1000);
+		Fish.Gates[GATE_GATE] = 0;
+	}
+	printf("!\n");
+}
 void RunFishTest()
 {
 	BigFish_Update(&Fish);
-	int buffer[1000];
-	BigFish_GenerateBlock(&Fish, buffer, 1000);
+	for (int i = 0; i < __PARAMCOUNT; i++)
+	{
+		Fish.Parameters[i] = 0;
+	}
+	Fish.Parameters[AMP_ATTACK] = (10 * 65536) / 127;;
+	Fish.Parameters[AMP_DECAY] = (10 * 65536) / 127;;
+	Fish.Parameters[AMP_SUSTAIN] = (64 * 65536) / 127;
+	Fish.Parameters[AMP_RELEASE] = (64 * 65536) / 127;;
+	Fish.Parameters[PITCH_COARSE] = (64 * 65536) / 127;;
+	Fish.Parameters[PITCH_FINE] = (64 * 65536) / 127;;
 
+	FishCycle();
 
+	for (int i = 0; i < 2; i++)
+	{
+		for (int i = 0; i < __PARAMCOUNT; i++)
+		{
+			Fish.Parameters[i] = rand()%65536;
+		}
+		FishCycle();
+	}
 }
 
 void RunTest(const char * name, int i)
@@ -353,7 +403,7 @@ BOOL WINAPI DllMain(
 		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
-		BigFish_Init(&Fish);
+		BigFish_Init(&Fish, 44100);
 		RunFishTest();
 		LFOStatic.Speed = 0x80;
 		Init();

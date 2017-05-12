@@ -39,12 +39,30 @@
     <ClInclude Include="mblep_48000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DistortionTable_1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistortionTable_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatinumClip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RBJfilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ADSREnvelope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BigFish.c">
+    <ClCompile Include="BigFish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Test.c">
+    <ClCompile Include="ADSREnvelope.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

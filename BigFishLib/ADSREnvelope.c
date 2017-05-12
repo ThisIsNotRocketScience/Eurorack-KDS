@@ -1,0 +1,314 @@
+#include "ADSREnvelope.h"
+#include <math.h>
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+	void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed)
+	{
+		Env->Mode = Mode;
+		Env->Speed = Speed;
+		Env->TriggerState = 0;
+		Env->LinearOutput = 0;
+		Env->State = ENVSTATE_IDLE;
+		Env->CurvedOutput = 0;
+		Env->Current = 0;
+		Env->AttackProgress = 0;
+		Env->DecayProgress = 0;
+		Env->ReleaseProgress = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			Env->Gates[i] = 0;
+		}
+	}
+
+	static void SwitchToState(struct ADSR_Envelope_t *Env, int newstate)
+	{
+		switch (Env->State)
+		{
+		case ENVSTATE_SUSTAIN:
+			Env->StateLeds[7] = 0;
+			Env->StateLeds[8] = 0;
+			break;
+
+		case ENVSTATE_ATTACK:
+			Env->Gates[GATE_ATTACKEND] = GATE_COUNTDOWN;
+			break;
+
+		case ENVSTATE_DECAY:
+			Env->Gates[GATE_DECAYEND] = GATE_COUNTDOWN;
+			break;
+
+		case ENVSTATE_RELEASE:
+			Env->Gates[GATE_RELEASEEND] = GATE_COUNTDOWN;
+			break;
+		}
+
+		Env->State = newstate;
+
+		switch (Env->State)
+		{
+		case ENVSTATE_IDLE:
+			Env->AttackProgress = 0;
+			Env->DecayProgress = 0;
+			Env->ReleaseProgress = 0;
+			break;
+
+		case ENVSTATE_RELEASE:
+			Env->AttackProgress = ENVFIXED(1);
+			Env->DecayProgress = ENVFIXED(1);
+			Env->ReleaseProgress = 0;
+			Env->ReleaseStart = Env->Current;
+			if (Env->ReleaseStart == 0) Env->State = ENVSTATE_IDLE;
+			Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN;
+			break;
+
+		case ENVSTATE_DECAY:
+			Env->AttackProgress = ENVFIXED(1);
+			Env->DecayProgress = 0;
+			Env->ReleaseProgress = 0;
+			Env->DecayStart = Env->Current;
+			break;
+
+		case ENVSTATE_ATTACK:
+			Env->AttackProgress = 0;
+			Env->DecayProgress = 0;
+			Env->ReleaseProgress = 0;
+			Env->AttackStart = Env->Current;
+			break;
+
+		case ENVSTATE_SUSTAIN:
+			Env->AttackProgress = ENVFIXED(1);
+			Env->DecayProgress = ENVFIXED(1);
+			Env->ReleaseProgress = 0;
+			Env->StateLeds[7] = 255;
+			Env->StateLeds[8] = 255;
+			break;
+		}
+	}
+
+	void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N)
+	{
+		if (N > 0)
+		{
+			if (Env->TriggerState == 0)
+			{
+				SwitchToState(Env, ENVSTATE_ATTACK);
+				Env->TriggerState = 1;
+			}
+			else
+			{
+				if (Env->Mode == ENVMODE_TRIGGER && Env->State != ENVSTATE_ATTACK)
+				{
+					SwitchToState(Env, ENVSTATE_ATTACK);
+
+				}
+				else
+				{
+					SwitchToState(Env, ENVSTATE_ATTACK);
+				}
+				//retrigger?
+			}
+		}
+		else
+		{
+			if (Env->Mode != ENVMODE_TRIGGER &&  Env->State != ENVSTATE_IDLE && Env->State != ENVSTATE_RELEASE)
+			{
+				if (Env->State == ENVSTATE_ATTACK)
+				{
+
+				}
+				SwitchToState(Env, ENVSTATE_RELEASE);
+			}
+			Env->TriggerState = 0;
+		}
+	}
+
+
+	static unsigned long EnvelopeRange(uint32_t V, int speed)
+	{
+		return 1 + (((speed?1:10) * V) >> 8);
+	}
+
+	static int32_t EnvelopeLength(int inp, int speed, int samplerate)
+	{
+		float V = inp / 1024.0f;
+		V = (V * 0.95 + 0.05) ;
+		int R = 1 + (int)((V * V * V) * samplerate * (speed ? 1 : 2));
+		if (R < 2) R = 2;
+		return R;		
+	}
+
+	static int32_t SustainLevel(int sus)
+	{
+		return (sus * ENVFIXED(1)) >> 10;
+	}
+
+	int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (Env->Gates[i]) Env->Gates[i]--;
+		}
+
+		switch (Env->State)
+		{
+			case ENVSTATE_ATTACK:
+			{
+				Env->CurrentTarget = ENVFIXED(1);
+				int L = EnvelopeLength(Env->A, Env->Speed, SampleRate);;
+				int32_t Delta = ENVFIXED(1) / L;
+				Env->Current += Delta;
+				Env->AttackProgress = (Env->Current * ENVFIXED(1)) / (ENVFIXED(1) - Env->AttackStart);
+				if (Env->Current >= ENVFIXED(1))
+				{
+					Env->Current = ENVFIXED(1);
+					SwitchToState(Env, ENVSTATE_DECAY);
+				}
+			}
+			break;
+
+			case ENVSTATE_DECAY:
+			{
+				int32_t SusLev = SustainLevel(Env->S);
+				Env->CurrentTarget = SusLev;
+
+				int32_t Delta = -(ENVFIXED(1) - SusLev) / EnvelopeLength(Env->D, Env->Speed, SampleRate);
+				Env->Current += Delta;
+				if (Env->DecayStart > SusLev)
+				{
+					int32_t waytogo = Env->Current - SusLev;
+
+					Env->DecayProgress = ((Env->Current - SusLev) * ENVFIXED(1)) / (ENVFIXED(1) - SusLev);
+					Env->DecayProgress = ENVFIXED(1) - Env->DecayProgress;
+				}
+				else
+				{
+					Env->DecayProgress = ENVFIXED(1);
+					Env->Current = SusLev;
+				}
+				if (Env->Current <= SusLev)
+				{
+					Env->Current = SusLev;
+					if (Env->Mode == ENVMODE_TRIGGER || Env->Mode == ENVMODE_LOOP)
+					{
+						SwitchToState(Env, ENVSTATE_RELEASE);
+					}
+					else
+					{
+						SwitchToState(Env, ENVSTATE_SUSTAIN);
+					}
+				}
+			}
+			break;
+
+			case ENVSTATE_SUSTAIN:
+			{
+				int32_t SusLev = SustainLevel(Env->S);
+				Env->CurrentTarget = SusLev;
+
+				int32_t Delta = (SustainLevel(Env->S) - Env->Current)/5;
+				Env->Current += Delta;
+
+			}
+			break;
+
+			case ENVSTATE_RELEASE:
+			{
+				Env->CurrentTarget = 0;
+
+				int32_t Delta = -Env->ReleaseStart / EnvelopeLength(Env->R, Env->Speed, SampleRate);
+				Env->Current += Delta;
+				Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * ENVFIXED(1)) / (Env->ReleaseStart);
+
+				if (Env->Current <= 0)
+				{
+					Env->Current = 0;
+
+					if (Env->Mode == ENVMODE_LOOP && Env->TriggerState)
+					{
+						SwitchToState(Env, ENVSTATE_ATTACK);
+					}
+					else
+					{
+						SwitchToState(Env, ENVSTATE_IDLE);
+					}
+				}
+			}
+			break;
+
+			case ENVSTATE_IDLE:
+				Env->CurrentTarget = 0;
+			break;
+		}
+
+		switch (Env->State)
+		{
+			case ENVSTATE_ATTACK:
+			{
+				int32_t DCurved =(int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->A) / 255.0)));
+				Env->CurvedOutput += DCurved;
+			}
+			break;
+			
+			case ENVSTATE_SUSTAIN:
+			case ENVSTATE_DECAY:
+			{
+				int32_t DCurved = (int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->D) / 255.0)));
+				Env->CurvedOutput += DCurved;
+			}
+			break;
+			
+			case ENVSTATE_IDLE:
+			case ENVSTATE_RELEASE:
+			{
+				int32_t DCurved = (int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->R) / 255.0)));
+				Env->CurvedOutput += DCurved;
+			}
+			break;
+		}
+
+		for (int i = 0; i < 13; i++)
+		{
+			Env->StateLeds[i] = 0;
+		}
+
+		if (Env->State != ENVSTATE_IDLE)
+		{
+			int32_t L1 = (Env->AttackProgress * 7 + Env->DecayProgress * 7) / 2 ;
+			int idx = L1 >> ENVFIXEDBITS;
+			uint8_t frac = (uint8_t)((L1 & ENVFRACMASK) >> (ENVFIXEDBITS-8));
+			
+			if (idx >= 0)
+			{
+				if (idx <= 7) Env->StateLeds[(idx + 1)] = frac;
+				if (idx < 7)  Env->StateLeds[(idx)] = ~frac;
+			}
+
+			if (Env->State == ENVSTATE_SUSTAIN)
+			{
+				Env->StateLeds[7] = 255;
+				Env->StateLeds[8] = 255;
+			}
+
+			if (Env->State == ENVSTATE_RELEASE)
+			{
+				L1 = (Env->ReleaseProgress) * (4) + (0);
+				idx = (L1 >> ENVFIXEDBITS) + 9;
+				frac = (uint8_t)((L1 & ENVFRACMASK) >> (ENVFIXEDBITS - 8));
+
+				if (idx < 12) Env->StateLeds[(idx + 1)] = frac;
+				if (idx < 13) Env->StateLeds[(idx)] = ~frac;
+			}
+		}
+
+		Env->LinearOutput = (Env->Current * 4095) / (ENVFIXED(1));
+		Env->CurvedOutput = (Env->Current * 4095) / (ENVFIXED(1));
+		return Env->LinearOutput;
+	}
+
+#ifdef __cplusplus
+}
+#endif
