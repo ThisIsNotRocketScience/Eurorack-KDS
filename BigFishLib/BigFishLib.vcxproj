@@ -141,9 +141,12 @@
   <ItemGroup>
     <ClInclude Include="ADSREnvelope.h" />
     <ClInclude Include="BigFish.h" />
+    <ClInclude Include="BigFishDefs.h" />
+    <ClInclude Include="BleppyOscs.h" />
     <ClInclude Include="bleptables.h" />
     <ClInclude Include="DistortionTable_1.h" />
     <ClInclude Include="DistortionTable_2.h" />
+    <ClInclude Include="FormantTable.h" />
     <ClInclude Include="mblep_176400.h" />
     <ClInclude Include="mblep_192000.h" />
     <ClInclude Include="mblep_44100.h" />
@@ -154,8 +157,10 @@
     <ClInclude Include="RBJfilter.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ADSREnvelope.c" />
+    <ClCompile Include="ADSREnvelope.cpp" />
     <ClCompile Include="BigFish.cpp" />
+    <ClCompile Include="BleppyOscs.cpp" />
+    <ClCompile Include="MinBlepGen.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -44,18 +44,18 @@ public:
 			int32_t x = input[i] << SHIFT;
 
 			int32_t frac = x & 0xFFFFFF;
-			int32_t pos = int32_t((signed char)((x & 0xFF000000) >> 24)) + (LEN/2);
+			int32_t pos = int32_t((signed char)((x & 0xFF000000) >> 24)) + (LEN / 2);
 
 			int value =
 				COEFF[pos * 4] +
 				int32_t
 				((int64_t(frac) * (
-				int64_t(COEFF[pos * 4 + 1] +
-				int32_t((int64_t(frac) * (
-				int64_t(COEFF[pos * 4 + 2] +
-				int32_t((int64_t(frac) * int64_t(COEFF[pos * 4 + 3])) >> 24))
-				)) >> 26))
-				)) >> 30);
+					int64_t(COEFF[pos * 4 + 1] +
+						int32_t((int64_t(frac) * (
+							int64_t(COEFF[pos * 4 + 2] +
+								int32_t((int64_t(frac) * int64_t(COEFF[pos * 4 + 3])) >> 24))
+							)) >> 26))
+					)) >> 30);
 
 			_buffer[i] = value;
 		}
@@ -68,15 +68,26 @@ private:
 };
 
 
-template<typename F, int L> class PeakingFilter {
+template<typename F, int L> class IntFilter {
 public:
-	PeakingFilter() {
+	IntFilter() {
 		_sr = 44100.0;
 		_freq = 1000.0;
 		_q = 0.707;
 		_gain = 1.0;
+		_mode = dsp::RBJ_PEAK;
 		reset();
 		recalc();
+	}
+
+	void set_mode(int newmode)
+	{
+		if (newmode != _mode)
+		{
+			_mode = newmode;
+			reset();
+		//	recalc();
+		}
 	}
 
 	void set_samplerate(double rate) {
@@ -145,7 +156,13 @@ public:
 		for (int i = 0; i < length; i++) {
 			int in = input[i];// * double(1 << 8);
 
-			int64_t out = int64_t(b0) * int64_t(in) + int64_t(b1) * int64_t(x1) + int64_t(b2) * int64_t(x2) + int64_t(a1) * int64_t(y1) + int64_t(a2) * int64_t(y2);
+			int64_t out = int64_t(b0) * int64_t(in) + 
+						  int64_t(b1) * int64_t(x1) + 
+				          int64_t(b2) * int64_t(x2) + 
+				
+							int64_t(a1) * int64_t(y1) + 
+							int64_t(a2) * int64_t(y2);
+
 			int out32 = int(out >> 24);
 			x2 = x1;
 			x1 = in;
@@ -163,11 +180,12 @@ public:
 		return &_buffer[0];
 	}
 
-protected:
+
 	double _sr;
 	double _freq;
 	double _q;
 	double _gain;
+	int _mode;
 	int _a1;
 	int _a2;
 	int _b0;
@@ -179,9 +197,10 @@ protected:
 	int _x2;
 	F _buffer[L];
 
-	void recalc(void) {
+	void recalc(void) 
+	{
 		double b0, b1, b2, a1, a2;
-		dsp::RbjFilter::rbjcompute(_freq / _sr, _q, _gain, 5,
+		dsp::RbjFilter::rbjcompute(_freq / _sr, _q, _gain, _mode,
 			&b0, &b1, &b2, &a1, &a2);
 		_b0 = int(b0 * double(1 << 24));
 		_b1 = int(b1 * double(1 << 24));
@@ -194,8 +213,6 @@ protected:
 class PlatinumClip
 {
 public:
-
-
 	void Init(int samplerate)
 	{
 		int i;
@@ -209,7 +226,7 @@ public:
 			eqA[i].set_gain(pow(10.0, eqdefaultsA[i].gain / 20.0));
 		}
 
-		for (i = 0; i < 3; i++) 
+		for (i = 0; i < 3; i++)
 		{
 			eqB[i].set_samplerate(samplerate);
 			eqB[i].set_freq(eqdefaultsB[i].freq);
@@ -228,11 +245,12 @@ public:
 
 	void SetType(unsigned char type)
 	{
-		if (type == 0) {
-				fuzz = false;
+		if (type == 0)
+		{
+			fuzz = false;
 		}
 		else
-		{ 
+		{
 			fuzz = true;
 		};
 		Recalc();
@@ -252,7 +270,6 @@ public:
 		}
 	}
 
-
 	void reset()
 	{
 		int i;
@@ -271,7 +288,7 @@ public:
 		bool active = false;
 		int i, k;
 		static const int hardclipgain = 55; // /32
-	
+
 		// pre-eq
 		for (k = 0; k < 5; k++)
 		{
@@ -286,8 +303,8 @@ public:
 			if (samplebuf[i] < -(1 << 23)) {
 				samplebuf[i] = -(1 << 23);
 			}
-			if (samplebuf[i] > (1 << 23)-1) {
-				samplebuf[i] = (1 << 23)-1;
+			if (samplebuf[i] > (1 << 23) - 1) {
+				samplebuf[i] = (1 << 23) - 1;
 			}
 		}
 
@@ -298,20 +315,23 @@ public:
 			samplebuf[i] = int(res >> 8);
 		}
 
-		if (fuzz) 
+		if (fuzz)
 		{
 			for (i = 0; i < n; i++)
 			{
-				if (samplebuf[i] < -(1 << 23)) {
+				if (samplebuf[i] < -(1 << 23))
+				{
 					samplebuf[i] = -(1 << 23);
 				}
-				if (samplebuf[i] > (1 << 23)-1) {
-					samplebuf[i] = (1 << 23)-1;
+				if (samplebuf[i] > (1 << 23) - 1)
+				{
+					samplebuf[i] = (1 << 23) - 1;
 				}
 			}
 			int32_t* r = fuzzdistort.process(samplebuf, n);
 			int postgain = _postgain;
-			for (i = 0; i < n; i++) {
+			for (i = 0; i < n; i++)
+			{
 				samplebuf[i] = (int64_t(r[i]) * int64_t(postgain)) >> 6;
 			}
 		}
@@ -332,12 +352,12 @@ public:
 			memcpy(samplebuf, r, n * sizeof(int));
 
 			for (i = 0; i < n; i++) {
-				if (samplebuf[i] > (1<<23)-1) samplebuf[i] = (1<<23)-1;
-				else if (samplebuf[i] < -(1<<23)) samplebuf[i] = -(1<<23);
+				if (samplebuf[i] > (1 << 23) - 1) samplebuf[i] = (1 << 23) - 1;
+				else if (samplebuf[i] < -(1 << 23)) samplebuf[i] = -(1 << 23);
 			}
 		}
 
-		if (!active) 
+		if (!active)
 		{
 			for (i = 0; i < n; i++)
 			{
@@ -351,8 +371,6 @@ public:
 
 		return active;
 	}
-	
-
 
 	bool bypass;
 	int push;
@@ -363,15 +381,11 @@ public:
 
 	bool _active;
 
-	
-	PeakingFilter<int32_t, 32> eqA[5];
-	PeakingFilter<int32_t, 32>  eqB[3];
+	IntFilter<int32_t, 32> eqA[5];
+	IntFilter<int32_t, 32> eqB[3];
 
 	Interpolator<32, clean_lookup, 256, 0> cleandistort;
 	Interpolator<32, fuzz_lookup, 256, 3> fuzzdistort;
-
-	
-
 };
 
 

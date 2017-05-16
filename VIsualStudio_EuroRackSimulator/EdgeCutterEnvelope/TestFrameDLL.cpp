@@ -317,6 +317,7 @@ void FishCycle()
 	}
 	printf("!\n");
 }
+
 void RunFishTest()
 {
 	BigFish_Update(&Fish);
@@ -326,6 +327,10 @@ void RunFishTest()
 	}
 	Fish.Parameters[AMP_ATTACK] = (10 * 65536) / 127;;
 	Fish.Parameters[AMP_DECAY] = (10 * 65536) / 127;;
+
+	Fish.Parameters[FILTER_ATTACK] = (10 * 65536) / 127;;
+	Fish.Parameters[FILTER_DECAY] = (80 * 65536) / 127;;
+
 	Fish.Parameters[AMP_SUSTAIN] = (64 * 65536) / 127;
 	Fish.Parameters[AMP_RELEASE] = (64 * 65536) / 127;;
 	Fish.Parameters[PITCH_COARSE] = (64 * 65536) / 127;;

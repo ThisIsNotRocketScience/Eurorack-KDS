@@ -61,15 +61,9 @@ typedef struct ADSR_Envelope_t
 	int32_t CurrentTarget;
 } ADSR_Envelope_t;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-	extern int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
-	extern void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed);
-	extern void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
-#ifdef __cplusplus
-}
-#endif
+int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
+void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed);
+void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
+
 
 #endif

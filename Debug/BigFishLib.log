@@ -1,9 +1,41 @@
-﻿  Test.c
-  BigFish.c
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_44100.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_48000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_88200.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_96000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\mblep_192000.h(27): warning C4305: 'initializing': truncation from 'double' to 'zoh_sample_t'
+﻿  BigFish.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(212): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(215): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(216): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(161): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(172): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(179): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(187): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(199): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(276): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(300): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(315): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(338): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(348): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(354): warning C4244: '=': conversion from 'float' to 'uint16_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(356): warning C4244: '=': conversion from 'float' to 'uint8_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(359): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(360): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(375): warning C4244: '=': conversion from 'int32_t' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(386): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(398): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(398): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(405): warning C4244: '=': conversion from 'int32_t' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(410): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(401): warning C4101: 'out': unreferenced local variable
+  Generating Code...
+  Compiling...
+  Test.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(212): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(215): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.h(216): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  BleppyOscs.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(91): warning C4305: '=': truncation from 'double' to 'float'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(92): warning C4305: '=': truncation from 'double' to 'float'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(122): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(153): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(172): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(190): warning C4305: '-=': truncation from 'double' to 'float'
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(339): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
   Generating Code...
   BigFishLib.vcxproj -> C:\Projects\Code\Kinetis2\Eurorack-KDS\VIsualStudio_EuroRackSimulator\Debug\BigFishLib.lib

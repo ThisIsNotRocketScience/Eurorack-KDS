@@ -14,6 +14,16 @@ enum RbjFilterMode {
 	BS2,
 };
 
+enum RBJCalcMode {
+	RBJ_LP,
+	RBJ_HP,
+	RBJ_BP,
+	RBJ_BR,
+	RBJ_HS,
+	RBJ_PEAK,
+	RBJ_BP2
+};
+
 class RbjFilterCoeffs {
 public:
 	RbjFilterCoeffs() { a1 = a2 = b0 = b1 = b2 = 0; }
@@ -127,16 +137,28 @@ public:
 
 		double A = sqrt(g);
 		double S = sqrt(2.0);
+		switch (t)
+		{
+		case RBJ_LP:
+		case RBJ_HP:
+			alpha = sn / (2 * q);
+			break;
+		case RBJ_BP:
+		case RBJ_BR:
+		case RBJ_PEAK:
+			alpha = sn * sinh(q * omega / sn);
+			break;
+		case RBJ_HS:
+			alpha = sn / 2.0 * sqrt((A + 1 / A)*(1 / S - 1) + 2);
+			break;
+		case RBJ_BP2:
+			alpha = sn * sinh((log(2) / 2) * q * omega / sn);
+			break;
+		}
 		
-		if(t < 2)
-			alpha = sn / q;
-		else if(t == 2 || t == 3 || t == 5)
-			alpha = sn * sinh(q * omega/sn);
-		else
-			alpha = sn/2.0 * sqrt( (A + 1/A)*(1/S - 1) + 2 );
 
 		switch(t) {
-		case 0: // LP
+		case RBJ_LP: // LP
 			_b0 =  (1 - cs)/2;
 			_b1 =   1 - cs;
 			_b2 =  (1 - cs)/2;
@@ -144,7 +166,9 @@ public:
 			_a1 =  -2*cs;
 			_a2 =   1 - alpha;
 			break;
-		case 1: // HP
+
+
+		case RBJ_HP: // HP
 			_b0 =  (1 + cs)/2;
 			_b1 = -(1 + cs);
 			_b2 =  (1 + cs)/2;
@@ -152,15 +176,15 @@ public:
 			_a1 =  -2*cs;
 			_a2 =   1 - alpha;
 			break;
-		case 2: // BP
-			_b0 =   alpha;
+		case RBJ_BP: // BP
+			_b0 = alpha;
 			_b1 =   0;
-			_b2 =  -alpha;
+			_b2 =	-alpha;
 			_a0 =   1 + alpha;
 			_a1 =  -2*cs;
 			_a2 =   1 - alpha;
 			break;
-		case 3: // BR
+		case RBJ_BR: // BR
 			_b0 =   1;
 			_b1 =  -2*cs;
 			_b2 =   1;
@@ -168,21 +192,35 @@ public:
 			_a1 =  -2*cs;
 			_a2 =   1 - alpha;
 			break;
-		case 4: // HIGH SHELF
+		case RBJ_HS: // HIGH SHELF
 			_b0 =    A*( (A+1) + (A-1)*cs + 2*sqrt(A)*alpha );
             _b1 = -2*A*( (A-1) + (A+1)*cs                   );
             _b2 =    A*( (A+1) + (A-1)*cs - 2*sqrt(A)*alpha );
             _a0 =        (A+1) - (A-1)*cs + 2*sqrt(A)*alpha;
             _a1 =    2*( (A-1) - (A+1)*cs                   );
             _a2 =        (A+1) - (A-1)*cs - 2*sqrt(A)*alpha;
+			break;
 		default:
-		case 5: // PEAKING
+		case RBJ_PEAK: // PEAKING
             _b0 =   1 + alpha*A;
             _b1 =  -2*cs;
             _b2 =   1 - alpha*A;
             _a0 =   1 + alpha/A;
             _a1 =  -2*cs;
             _a2 =   1 - alpha/A;
+			break;
+		case RBJ_BP2:
+			{
+			_b0 = alpha;
+			_b1 = 0;
+			_b2 = -alpha;
+			_a0 = 1 + alpha;
+			_a1 = -2 * cs;
+			_a2 = 1 - alpha;
+			break;
+				
+			}
+			break;
 		}
 
 		*b0 = _b0 / _a0;
