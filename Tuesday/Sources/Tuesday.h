@@ -26,6 +26,12 @@
 #define TUESDAY_SUBTICKRES 6
 #define TUESDAY_DEFAULTGATELENGTH ((TUESDAY_SUBTICKRES * 3) / 4)
 
+
+#define VERSIONBYTE 0x14
+#define CALIBRATIONVERSIONBYTE 0x13
+
+
+
 struct Tuesday_Tick
 {
 	unsigned char vel;
@@ -167,6 +173,8 @@ struct Tuesday_Settings
 	uint8_t algooptions[TUESDAY_MAXALGO];
 
 	struct Tuesday_Scale scales[__SCALE_COUNT];
+
+	uint8_t ClockSubDivMode;
 };
 
 struct Tuesday_Params
@@ -183,6 +191,7 @@ typedef enum{
 	UI_NORMAL,
 	UI_CALIBRATION,
 	UI_SELECTOPTION,
+	UI_GLOBALSETTINGS,
 	__TUESDAY_UIMODE_COUNT
 } TUESDAY_UIMODE;
 
@@ -200,6 +209,13 @@ typedef enum{
 	OPTION_TPB,
 	__TUESDAY_OPTION_SETTING_COUNT
 } TUESDAY_OPTION_SETTING;
+
+typedef enum
+{
+	CLOCKSUBDIV_4, 
+	CLOCKSUBDIV_8, 
+	CLOCKSUBDIV_24PPQN
+} TUESDAY_CLOCKSUBDIVISION_SETTING;
 
 #define EEPROM_OPTIONBASE 4
 #define EEPROM_SETTINGSBASE 256

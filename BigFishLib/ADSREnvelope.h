@@ -64,6 +64,7 @@ typedef struct ADSR_Envelope_t
 int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed);
 void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
-
+void ADSR_BuildTable();
+uint32_t GetExpTable(uint32_t inp);
 
 #endif

@@ -2,6 +2,39 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define EXPTABLEBITS 8
+#define EXPTABLELENGTH (1<<EXPTABLEBITS)
+uint32_t exptable[EXPTABLELENGTH];
+#include <stdio.h>
+
+void ADSR_BuildTable()
+{
+
+	float Max = exp(-1);
+	float Min = exp(0);
+	float iMax = 65536.0f / (Max-Min);
+	float lower = 100000;
+	float upper = 0;
+	for (int i = 0; i < EXPTABLELENGTH; i++)
+	{
+		exptable[i] = (exp(-i / (float)(EXPTABLELENGTH - 1))-Min) * iMax ;
+		if (exptable[i] < lower) lower = exptable[i];
+		if (exptable[i] > upper) upper = exptable[i];
+	};
+	printf("%f %f\n", upper, lower);
+};
+
+uint32_t GetExpTable(uint32_t inp)
+{
+	int i1 = inp >> 24;
+	int i2 = i1 + 1;
+	uint32_t fracmask = 0x00ffffff;
+	uint32_t frac = (inp & fracmask);
+	frac >>= EXPTABLEBITS;
+	uint32_t ifrac = 0x10000 - frac;
+	return ((exptable[i1] * ifrac)>>16)  + ((exptable[i2] * frac)>>16);
+}
+
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed)
 {
 	Env->Mode = Mode;

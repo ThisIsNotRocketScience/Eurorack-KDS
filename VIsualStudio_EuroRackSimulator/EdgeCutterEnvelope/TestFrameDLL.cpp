@@ -394,6 +394,18 @@ void CalTest()
 		printf("%d %d\n", i, R);
 	}
 }
+
+extern void ADSR_BuildTable();
+void ExpTest()
+{
+	ADSR_BuildTable();
+	for (uint32_t i = 0; i < (uint32_t)(65536 * 60000); i += uint32_t( 60000 * 600))
+	{
+		printf("%08x\n",GetExpTable(i));
+	}
+	printf("done!\n");
+}
+
 BOOL WINAPI DllMain(
 	_In_ HINSTANCE hinstDLL,
 	_In_ DWORD     fdwReason,
@@ -409,7 +421,8 @@ BOOL WINAPI DllMain(
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
 		BigFish_Init(&Fish, 44100);
-		RunFishTest();
+		ExpTest();
+//		RunFishTest();
 		LFOStatic.Speed = 0x80;
 		Init();
 

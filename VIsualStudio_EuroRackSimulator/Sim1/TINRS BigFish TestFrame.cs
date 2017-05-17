@@ -23,11 +23,35 @@ namespace Sim1
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
+
         {
+
+            List<float> ExpTable = new List<float>();
+            for(int i =0;i<64;i++)
+            {
+                float C = i / 24.0f;
+                ExpTable.Add(1.0f - (float)Math.Exp(-C));
+            }
+            for(int i =0;i<64;i++)
+            {
+                ExpTable[i] *= 65536.0f/ExpTable[63];
+            }
+
             var G = e.Graphics;
 
             G.Clear(Color.Black);
 
+            List<Point> Points = new List<Point>();
+            List<Point> Points2 = new List<Point>();
+            int j = 0;
+            for (uint i = 0;i<Width;i++)
+            { 
+                int y2 = Height -(int) (ExpTable[(int)(((i*64)/Width)%64)] *(float)(Height-40)/65536.0f + 20);
+                Points2.Add(new Point(j, y2));
+                j++;
+            }
+            //G.DrawLines(Pens.Orange, Points.ToArray());
+            G.DrawLines(Pens.Blue, Points2.ToArray());
             int x = 2400;
             int y = 3600;
             int r = 400;

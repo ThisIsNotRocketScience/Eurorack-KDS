@@ -380,6 +380,7 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->beatoptions[2] = 16;
 	S->beatoptions[3] = 32;
 
+	S->ClockSubDivMode = 3;
 	for (int j = 0; j < __SCALE_COUNT; j++)
 	{
 		for (int i = 0; i < 12; i++)

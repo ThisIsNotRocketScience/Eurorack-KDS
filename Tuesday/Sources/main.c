@@ -215,7 +215,9 @@ void doTimer()
 		UpdateGates();
 	}
 	break;
-
+	case UI_GLOBALSETTINGS:
+		//
+		break;
 	case UI_CALIBRATION:
 	{
 		uint32_t CalibPattern = 0;
@@ -357,7 +359,6 @@ void SetLedNumber(int offset, int number)
 	}
 }
 
-#define VERSIONBYTE 0x13
 
 void SaveEeprom()
 {
@@ -376,7 +377,7 @@ void SaveSettingsEeprom()
 void SaveCalibrationEeprom()
 {
 	int calibrationsize = sizeof(MasterCalibration);
-	EE24_WriteByte(EEPROM_CALIBRATIONBASE, VERSIONBYTE);
+	EE24_WriteByte(EEPROM_CALIBRATIONBASE, CALIBRATIONVERSIONBYTE);
 	EE24_WriteBlock(EEPROM_CALIBRATIONBASE+1, (byte *)&MasterCalibration, calibrationsize);
 }
 
@@ -400,7 +401,7 @@ void LoadEepromCalibration()
 {
 	byte Ver;
 	Ver = EE24_ReadByte(EEPROM_CALIBRATIONBASE);
-	if (Ver == VERSIONBYTE)
+	if (Ver == CALIBRATIONVERSIONBYTE)
 	{
 		int calibrationsize = sizeof(MasterCalibration);
 		EE24_ReadBlock(EEPROM_CALIBRATIONBASE+ 1, (byte *)&MasterCalibration, calibrationsize);
@@ -489,6 +490,12 @@ void NOINLINE _SetupLeds()
 		}
 	}break;
 
+	case UI_GLOBALSETTINGS:
+		{
+			int S = Settings.ClockSubDivMode;
+			ShowSets(0,0,0,S);
+		}
+		break;
 	case UI_CALIBRATION:
 		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLedTargets[i] = 0;
 		switch(Tuesday.CalibTarget)

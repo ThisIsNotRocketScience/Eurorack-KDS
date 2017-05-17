@@ -60,11 +60,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigFishTestFrame.cs">
+    <Compile Include="TINRS BigFish TestFrame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BigFishTestFrame.Designer.cs">
-      <DependentUpon>BigFishTestFrame.cs</DependentUpon>
+    <Compile Include="TINRS BigFish TestFrame.Designer.cs">
+      <DependentUpon>TINRS BigFish TestFrame.cs</DependentUpon>
     </Compile>
     <Compile Include="EnvelopeLoader.cs" />
     <Compile Include="MainForm.cs">
@@ -102,8 +102,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="BigFishTestFrame.resx">
-      <DependentUpon>BigFishTestFrame.cs</DependentUpon>
+    <EmbeddedResource Include="TINRS BigFish TestFrame.resx">
+      <DependentUpon>TINRS BigFish TestFrame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

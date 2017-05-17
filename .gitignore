@@ -40,3 +40,4 @@ EepromTestbench/Static_Code/
 EepromTestbench/Generated_Code/
 EepromTestbench/Documentation/
 BigFishBuzz/BigFishBuzz/Blok_WaveTableCache.dat
+*.obj
