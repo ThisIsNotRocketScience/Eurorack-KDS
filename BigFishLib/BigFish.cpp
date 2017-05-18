@@ -114,8 +114,8 @@ void BigFish_Init(struct BigFish_t *fish, int samplerate)
 	HyperPulse_Init(&fish->HyperPulseOsc);
 	HyperOsc_Init(&fish->HyperSawOsc);
 	ADSR_BuildTable();
-	ADSR_Init(&fish->AmpEnvelope, ENVMODE_GATE, 0);
-	ADSR_Init(&fish->FilterEnvelope, ENVMODE_TRIGGER, 0);
+	ADSR_Init(&fish->AmpEnvelope, ENVMODE_GATE, 0, ENVTABLE_EXP);
+	ADSR_Init(&fish->FilterEnvelope, ENVMODE_TRIGGER, 0, ENVTABLE_LOG);
 }
 
 void ADSR_ApplyParameters(struct ADSR_Envelope_t *adsr, int a, int d, int s, int r)
@@ -161,7 +161,7 @@ void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int len)
 	HyperOsc_Update(&fish->HyperSawOsc, fish->SampleRate, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ = HyperOsc_Get(&fish->HyperSawOsc) * (32768.0f / MAXHYPER);
+		*buffer++ = HyperOsc_Get(&fish->HyperSawOsc) * (32768.0f);
 	}
 }
 
@@ -172,7 +172,7 @@ void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int len)
 	HyperPulse_Update(&fish->HyperPulseOsc, fish->SampleRate, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ = HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f / MAXHYPER);
+		*buffer++ = HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f );
 	}
 }
 
@@ -299,9 +299,12 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 		float note = cutoffin * 127;
 		int64_t ENV = int64_t(FilterEnvResult);
 		
-		float adsr = (ENV * FilterEnvScale * 127) / (127 * 65535.0f);
+		//float adsr = (ENV * FilterEnvScale * 127) / (127 * 65535.0f);
 		freq = 440.0 * pow(2.0, (note - 69) / 12);
 		freq += fish->CenterFreq * mul[KeyTrack];
+		
+		float adsr = (ENV * FilterEnvScale * 15000) / 65536.0;
+		freq += adsr;
 		
 	}
 	else
@@ -443,7 +446,7 @@ void BigFish_Drive(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout
 		temp[i] = (bufferin[i] * 2560) ;
 	}
 
-	int mix = abs((fish->Parameters[FILTER_DRIVE] - 32768))/1000;
+	int mix = abs((fish->Parameters[FILTER_DRIVE] - 32768))/200;
 	if (mix > 256) mix = 256;
 	int imix = 256 - mix;
 	fish->Clipper.IntProcess(temp, len);

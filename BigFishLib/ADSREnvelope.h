@@ -26,6 +26,12 @@
 
 #define GATE_COUNTDOWN 30;
 
+typedef enum ENVTABLETYPES
+{
+	ENVTABLE_EXP,
+	ENVTABLE_LOG,
+	__ENVTABLE_COUNT
+};
 
 typedef struct ADSR_Envelope_t
 {
@@ -37,6 +43,7 @@ typedef struct ADSR_Envelope_t
 	uint16_t S;
 	uint16_t R;
 	uint16_t Curvature;
+	unsigned char AttackCurve;
 
 	unsigned char TriggerState;
 	
@@ -64,9 +71,9 @@ typedef struct ADSR_Envelope_t
 
 int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
 int ADSR_GetCurved(struct ADSR_Envelope_t *Env, int SampleRate);
-void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed);
+void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackTable);
 void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
 void ADSR_BuildTable();
-uint32_t GetExpTable(uint32_t inp);
+uint32_t GetExpTable(uint32_t inp, int table);
 
 #endif

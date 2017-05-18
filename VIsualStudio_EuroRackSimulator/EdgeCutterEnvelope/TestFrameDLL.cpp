@@ -439,7 +439,7 @@ void ExpTest()
 
 	ADSR_BuildTable();
 	ADSR_Envelope_t Env;
-	ADSR_Init(&Env, ENVMODE_GATE, 0);
+	ADSR_Init(&Env, ENVMODE_GATE, 0, ENVTABLE_LOG);
 	Env.A = 140;
 	Env.D = 140;
 	Env.S = 150;

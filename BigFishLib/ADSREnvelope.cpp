@@ -4,7 +4,8 @@
 
 #define EXPTABLEBITS 8
 #define EXPTABLELENGTH (1<<EXPTABLEBITS)
-uint32_t exptable[EXPTABLELENGTH];
+
+uint32_t exptable[__ENVTABLE_COUNT][EXPTABLELENGTH];
 
 void ADSR_BuildTable()
 {
@@ -12,32 +13,38 @@ void ADSR_BuildTable()
 	float Max = exp(End);
 	float Min = exp(0);
 	float iMax = 65535.0f / (Max-Min);
+	float EndL = 40;
+	float MaxL = log(EndL);
+	float MinL = log(1);
+	float iMaxL = 65535.0f / (MaxL - MinL);
 	float lower = 100000;
 	float upper = 0;
 	for (int i = 0; i < EXPTABLELENGTH; i++)
 	{
-		exptable[i] = (exp((i * End) / (float)(EXPTABLELENGTH - 1))-Min) * iMax ;		
+		exptable[ENVTABLE_EXP][i] = (exp((i * End) / (float)(EXPTABLELENGTH - 1)) - Min) * iMax ;		
+		exptable[ENVTABLE_LOG][i] = (log(1 + (i * (EndL-1)) / (float)(EXPTABLELENGTH - 1)) - MinL) * iMaxL;
 	};
 };
 
-uint32_t GetExpTable(uint32_t inp)
+uint32_t GetExpTable(uint32_t inp,int table)
 {
 	int i1 = inp >> 24;
 	int i2 = i1 + 1;
 	if (i2 == EXPTABLELENGTH)
 	{
-		return exptable[EXPTABLELENGTH - 1];
+		return exptable[table][EXPTABLELENGTH - 1];
 	}
 	uint32_t fracmask = 0x00ffffff;
 	uint32_t frac = (inp & fracmask);
 	frac >>= EXPTABLEBITS;
 	uint32_t ifrac = 0x10000 - frac;
-	return ((exptable[i1] * ifrac)>>16)  + ((exptable[i2] * frac)>>16);
+	return ((exptable[table][i1] * ifrac)>>16)  + ((exptable[table][i2] * frac)>>16);
 }
 
-void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed)
+void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackCurve)
 {
 	Env->Mode = Mode;
+	Env->AttackCurve = AttackCurve;
 	Env->Speed = Speed;
 	Env->TriggerState = 0;
 	Env->LinearOutput = 0;
@@ -205,7 +212,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 			uint32_t AP = Env->AttackProgress;
 			if (AP > 0xffff) AP = 0xffffffff; else AP <<= 16;
 
-			uint32_t ExpT = GetExpTable(AP);
+			uint32_t ExpT = GetExpTable(AP, Env->AttackCurve);
 			uint32_t ExpTM = ExpT * (ENVFIXED(1) - Env->AttackStart);
 			uint32_t ExpTD = ExpTM / ENVFIXED(1);
 			ExpTD += Env->AttackStart;
@@ -253,7 +260,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		{
 			uint32_t DP = Env->DecayProgress;
 			if (DP > 0xffff) DP = 0xffffffff; else DP <<= 16;
-			uint32_t EXPT = 0xffff - GetExpTable(DP);
+			uint32_t EXPT = 0xffff - GetExpTable(DP, ENVTABLE_EXP);
 			uint32_t scaler = ENVFIXED(1) - SusLev;
 			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
 			Env->CurvedOutput = SusLev + curved;
@@ -268,7 +275,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 
 		int32_t Delta = (SustainLevel(Env->S) - Env->Current) / 5;
 		Env->Current += Delta;
-
+		Env->CurvedOutput = Env->Current;
 	}
 	break;
 
@@ -297,7 +304,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		{
 			uint32_t RP = Env->ReleaseProgress;
 			if (RP > 0xffff) RP = 0xffffffff; else RP <<= 16;
-			uint32_t EXPT = 0xffff - GetExpTable(((uint32_t)RP) );
+			uint32_t EXPT = 0xffff - GetExpTable(((uint32_t)RP), ENVTABLE_EXP);
 			uint32_t scaler = Env->ReleaseStartCurved;
 			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
 			Env->CurvedOutput = curved;
