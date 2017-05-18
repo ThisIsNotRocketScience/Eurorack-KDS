@@ -46,6 +46,8 @@ public:
 	void Reset()
 	{
 		X2 = X1 = Y1 = Y2 = 0;
+		A1 = 0; A2 = 0; B0 = 0; B1 = 0; B2 = 0;
+		A1p = 0; A2p = 0; B0p = 0; B1p = 0; B2p = 0;
 
 		fx1 = fx2 = fy1 = fy2 = 0;
 	}
@@ -233,14 +235,25 @@ public:
 		fx1 = o;
 		return n;
 	}
-
+	
+	int32_t B0p, B1p, B2p, A1p, A2p;
+	
 	void Process(int32_t *input, int32_t *to, int length)
 	{
-		int b0 = B0;
-		int b1 = B1;
-		int b2 = B2;
-		int a1 = A1;
-		int a2 = A2;
+		int B0inc = (B0 - B0p) / length;
+		int B1inc = (B1 - B1p) / length;
+		int B2inc = (B2 - B2p) / length;
+		int A1inc = (A1 - A1p) / length;
+		int A2inc = (A2 - A2p) / length;
+		
+		
+
+
+		int b0 = B0p;
+		int b1 = B1p;
+		int b2 = B2p;
+		int a1 = A1p;
+		int a2 = A2p;
 		int y1 = Y1;
 		int y2 = Y2;
 		int x1 = X1;
@@ -255,6 +268,12 @@ public:
 				y2 = y1;
 				y1 = out32;
 				*to++ = out32;
+
+				b0 += B0inc;
+				b1 += B1inc;
+				b2 += B2inc;
+				a1 += A1inc;
+				a2 += A2inc;
 			}
 
 			Y1 = y1;
@@ -262,6 +281,11 @@ public:
 			X1 = x1;
 			X2 = x2;
 
+			 B0= b0 ;
+			 B1 = b1  ;
+			 B2 = b2  ;
+			 A1 = a1  ;
+			 A2 = a2  ;
 			return;
 		}
 
@@ -281,13 +305,24 @@ public:
 			y1 = out32;
 
 			*to++ = out32 >> 8;// * (1.0 / double(1 << 8));
+
+
+			b0 += B0inc;
+			b1 += B1inc;
+			b2 += B2inc;
+			a1 += A1inc;
+			a2 += A2inc;
 		}
 
 		Y1 = y1;
 		Y2 = y2;
 		X1 = x1;
 		X2 = x2;
-
+		B0p = b0;
+		B1p = b1;
+		B2p = b2;
+		A1p = a1;
+		A2p = a2;
 	}
 };
 

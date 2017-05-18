@@ -289,9 +289,6 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	int KeyTrack = ((int32_t)fish->Parameters[FILTER_KEYTRACK] * (__FILTERKEYTRACK_COUNT - 1)) / 65536;
 
 	float FilterEnvScale = (fish->Parameters[FILTER_ENVELOPE] - 32768) / 32768.0f;
-	if (FilterEnvScale > 0) FilterEnvScale *= FilterEnvScale; else FilterEnvScale *= -FilterEnvScale;
-
-
 	int32_t FilterEnvResult = ADSR_GetCurved(&fish->FilterEnvelope, fish->SampleRate / len);
 
 	if (KeyTrack != FILTERKEYTRACK_OFF)
@@ -308,7 +305,7 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	{		
 		int64_t ENV =  int64_t(FilterEnvResult);
 		
-		float adsr = (ENV * FilterEnvScale * 15000) / 65536.0;
+		float adsr = (ENV * FilterEnvScale * 20000) / 65536.0;
 		freq += adsr;
 	}
 	

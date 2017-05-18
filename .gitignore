@@ -41,3 +41,5 @@ EepromTestbench/Generated_Code/
 EepromTestbench/Documentation/
 BigFishBuzz/BigFishBuzz/Blok_WaveTableCache.dat
 *.obj
+BigFishLib/Debug/BigFishLib.idb
+*.pdb

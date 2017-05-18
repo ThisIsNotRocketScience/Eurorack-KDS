@@ -394,16 +394,71 @@ void CalTest()
 		printf("%d %d\n", i, R);
 	}
 }
-
+void PrintPlot(int V, int min, int max)
+{
+	float F = (V - min) / (float)(max - min);
+	if (F < 0) F = 0;
+	if (F > 1) F = 1;
+	printf("|");
+	for (int i = 0; i < 42; i++)
+	{
+		float F2 = i / 41.0f;
+		if (F < F2) printf(" "); else printf("*");
+	}
+	printf("|\n");
+}
+void PrintPlot2(int V,int V2, int min, int max)
+{
+	float F = (V - min) / (float)(max - min);
+	if (F < 0) F = 0;
+	if (F > 1) F = 1;
+	float F2 = (V2 - min) / (float)(max - min);
+	if (F2 < 0) F2 = 0;
+	if (F2 > 1) F2 = 1;
+	printf("|");
+	for (int i = 0; i < 75; i++)
+	{
+		float Fl = i / 74.0f;
+		bool a = F > Fl;
+		bool b = F2 > Fl;
+		int R = (a ? 1 : 0) + (b ? 2 : 0);
+		switch (R)
+		{
+		case 0: printf(" "); break;
+		case 1: printf("*"); break;
+		case 2: printf("o"); break;
+		case 3: printf("#"); break;
+		}
+	}
+	printf("|\n");
+}
 extern void ADSR_BuildTable();
 void ExpTest()
 {
+
+
 	ADSR_BuildTable();
+	ADSR_Envelope_t Env;
+	ADSR_Init(&Env, ENVMODE_GATE, 0);
+	Env.A = 140;
+	Env.D = 140;
+	Env.S = 150;
+	Env.R = 160;
+	ADSR_Trigger(&Env, 1);
+	for (int i = 0; i < 1000; i++)
+	{
+		int R = ADSR_Get(&Env, 10000);
+		int R2 = Env.CurvedOutput;
+		if (i == 500) ADSR_Trigger(&Env, 0);
+		//if (i%10 == 0) PrintPlot(R, 0, 0xffff);
+		if (i % 10 == 0) PrintPlot2(R,R2, 0, 0xffff);
+	}
+
 	for (uint32_t i = 0; i < (uint32_t)(65536 * 60000); i += uint32_t( 60000 * 600))
 	{
-		printf("%08x\n",GetExpTable(i));
+//		printf("%08x\n",GetExpTable(i));
 	}
-	printf("done!\n");
+//	printf("done!\n");
 }
 
 BOOL WINAPI DllMain(
@@ -441,7 +496,7 @@ BOOL WINAPI DllMain(
 		RunTest("Random", ALGO_RANDOM);
 		*/
 
-		RunTimingTest();
+	//	RunTimingTest();
 
 		if (0)
 		{
@@ -451,7 +506,7 @@ BOOL WINAPI DllMain(
 
 				Wobbler_Get(&LFOStatic, &LFOParams);
 
-				printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
+			//	printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
 
 			}
 		}

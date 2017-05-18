@@ -7,7 +7,7 @@
 
 #define ENVFRACMASK ((1<<ENVFIXEDBITS) - 1)
 
-#define ENVFIXED(x) ((int32_t)( x * (float)(1<<ENVFIXEDBITS)))
+#define ENVFIXED(x) ((int32_t)( x * (float)(1<<ENVFIXEDBITS) )-1)
 
 #define ENVSTATE_IDLE 0
 #define ENVSTATE_ATTACK 1
@@ -51,6 +51,7 @@ typedef struct ADSR_Envelope_t
 	int32_t AttackStart;
 	int32_t DecayStart;
 	int32_t ReleaseStart;
+	int32_t ReleaseStartCurved;
 	
 	int32_t AttackProgress;
 	int32_t DecayProgress;
@@ -62,6 +63,7 @@ typedef struct ADSR_Envelope_t
 } ADSR_Envelope_t;
 
 int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
+int ADSR_GetCurved(struct ADSR_Envelope_t *Env, int SampleRate);
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed);
 void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
 void ADSR_BuildTable();

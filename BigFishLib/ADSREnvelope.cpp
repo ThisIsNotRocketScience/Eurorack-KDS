@@ -5,29 +5,29 @@
 #define EXPTABLEBITS 8
 #define EXPTABLELENGTH (1<<EXPTABLEBITS)
 uint32_t exptable[EXPTABLELENGTH];
-#include <stdio.h>
 
 void ADSR_BuildTable()
 {
-
-	float Max = exp(-1);
+	float End = -64.0 / 24.0;
+	float Max = exp(End);
 	float Min = exp(0);
-	float iMax = 65536.0f / (Max-Min);
+	float iMax = 65535.0f / (Max-Min);
 	float lower = 100000;
 	float upper = 0;
 	for (int i = 0; i < EXPTABLELENGTH; i++)
 	{
-		exptable[i] = (exp(-i / (float)(EXPTABLELENGTH - 1))-Min) * iMax ;
-		if (exptable[i] < lower) lower = exptable[i];
-		if (exptable[i] > upper) upper = exptable[i];
+		exptable[i] = (exp((i * End) / (float)(EXPTABLELENGTH - 1))-Min) * iMax ;		
 	};
-	printf("%f %f\n", upper, lower);
 };
 
 uint32_t GetExpTable(uint32_t inp)
 {
 	int i1 = inp >> 24;
 	int i2 = i1 + 1;
+	if (i2 == EXPTABLELENGTH)
+	{
+		return exptable[EXPTABLELENGTH - 1];
+	}
 	uint32_t fracmask = 0x00ffffff;
 	uint32_t frac = (inp & fracmask);
 	frac >>= EXPTABLEBITS;
@@ -90,6 +90,7 @@ static void SwitchToState(struct ADSR_Envelope_t *Env, int newstate)
 		Env->DecayProgress = ENVFIXED(1);
 		Env->ReleaseProgress = 0;
 		Env->ReleaseStart = Env->Current;
+		Env->ReleaseStartCurved = Env->CurvedOutput;
 		if (Env->ReleaseStart == 0) Env->State = ENVSTATE_IDLE;
 		Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN;
 		break;
@@ -190,11 +191,25 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		int L = EnvelopeLength(Env->A, Env->Speed, SampleRate);;
 		int32_t Delta = ENVFIXED(1) / L;
 		Env->Current += Delta;
-		Env->AttackProgress = (Env->Current * ENVFIXED(1)) / __max(1, (ENVFIXED(1) - Env->AttackStart));
+		Env->AttackProgress = ((Env->Current - Env->AttackStart) * ENVFIXED(1)) / __max(1, (ENVFIXED(1) - Env->AttackStart));
+
+
+
 		if (Env->Current >= ENVFIXED(1))
 		{
-			Env->Current = ENVFIXED(1);
+			Env->CurvedOutput = Env->Current = ENVFIXED(1);
 			SwitchToState(Env, ENVSTATE_DECAY);
+		}
+		else
+		{
+			uint32_t AP = Env->AttackProgress;
+			if (AP > 0xffff) AP = 0xffffffff; else AP <<= 16;
+
+			uint32_t ExpT = GetExpTable(AP);
+			uint32_t ExpTM = ExpT * (ENVFIXED(1) - Env->AttackStart);
+			uint32_t ExpTD = ExpTM / ENVFIXED(1);
+			ExpTD += Env->AttackStart;
+			Env->CurvedOutput = ExpTD;
 		}
 	}
 	break;
@@ -209,8 +224,11 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		if (Env->DecayStart > SusLev)
 		{
 			int32_t waytogo = Env->Current - SusLev;
-
-			Env->DecayProgress = ((Env->Current - SusLev) * ENVFIXED(1)) / __max(1, (ENVFIXED(1) - SusLev));
+			uint32_t L = ENVFIXED(1) - SusLev;
+			uint32_t Travel = Env->Current - SusLev;
+			Travel *= ENVFIXED(1);
+			
+			Env->DecayProgress = Travel / L;
 			Env->DecayProgress = ENVFIXED(1) - Env->DecayProgress;
 		}
 		else
@@ -221,6 +239,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		if (Env->Current <= SusLev)
 		{
 			Env->Current = SusLev;
+			Env->CurvedOutput = SusLev;
 			if (Env->Mode == ENVMODE_TRIGGER || Env->Mode == ENVMODE_LOOP)
 			{
 				SwitchToState(Env, ENVSTATE_RELEASE);
@@ -229,6 +248,15 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 			{
 				SwitchToState(Env, ENVSTATE_SUSTAIN);
 			}
+		}
+		else
+		{
+			uint32_t DP = Env->DecayProgress;
+			if (DP > 0xffff) DP = 0xffffffff; else DP <<= 16;
+			uint32_t EXPT = 0xffff - GetExpTable(DP);
+			uint32_t scaler = ENVFIXED(1) - SusLev;
+			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
+			Env->CurvedOutput = SusLev + curved;
 		}
 	}
 	break;
@@ -254,7 +282,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 
 		if (Env->Current <= 0)
 		{
-			Env->Current = 0;
+			Env->CurvedOutput  = Env->Current = 0;
 
 			if (Env->Mode == ENVMODE_LOOP && Env->TriggerState)
 			{
@@ -265,6 +293,17 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 				SwitchToState(Env, ENVSTATE_IDLE);
 			}
 		}
+		else
+		{
+			uint32_t RP = Env->ReleaseProgress;
+			if (RP > 0xffff) RP = 0xffffffff; else RP <<= 16;
+			uint32_t EXPT = 0xffff - GetExpTable(((uint32_t)RP) );
+			uint32_t scaler = Env->ReleaseStartCurved;
+			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
+			Env->CurvedOutput = curved;
+
+		}
+		
 	}
 	break;
 
@@ -273,31 +312,9 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		break;
 	}
 
-	switch (Env->State)
-	{
-	case ENVSTATE_ATTACK:
-	{
-		int32_t DCurved = (int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->A) / 255.0)));
-		Env->CurvedOutput += DCurved;
-	}
-	break;
+	
+	
 
-	case ENVSTATE_SUSTAIN:
-	case ENVSTATE_DECAY:
-	{
-		int32_t DCurved = (int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->D) / 255.0)));
-		Env->CurvedOutput += DCurved;
-	}
-	break;
-
-	case ENVSTATE_IDLE:
-	case ENVSTATE_RELEASE:
-	{
-		int32_t DCurved = (int32_t)((Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->R) / 255.0)));
-		Env->CurvedOutput += DCurved;
-	}
-	break;
-	}
 
 	for (int i = 0; i < 13; i++)
 	{
@@ -333,8 +350,15 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		}
 	}
 
-	Env->LinearOutput = (Env->Current * 4095) / (ENVFIXED(1));
-	Env->CurvedOutput = (Env->Current * 4095) / (ENVFIXED(1));
+	Env->LinearOutput = Env->Current;
+
 	return Env->LinearOutput;
 }
 
+
+
+int ADSR_GetCurved(struct ADSR_Envelope_t *Env, int SampleRate)
+{
+	ADSR_Get(Env, SampleRate);
+	return Env->CurvedOutput;
+}

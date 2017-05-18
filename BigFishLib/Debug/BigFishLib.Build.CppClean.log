@@ -1,12 +1,12 @@
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\vc141.pdb
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\vc141.idb
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfish.obj
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.pdb
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.idb
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfish.obj
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\test.obj
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\adsrenvelope.obj
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\minblepgen.obj
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bleppyoscs.obj
 c:\projects\code\kinetis2\eurorack-kds\visualstudio_euroracksimulator\debug\bigfishlib.lib
-c:\projects\code\kinetis2\eurorack-kds\visualstudio_euroracksimulator\debug\bigfishlib.ilk
-c:\projects\code\kinetis2\eurorack-kds\visualstudio_euroracksimulator\debug\bigfishlib.dll
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\adsrenvelope.obj.enc
 c:\projects\code\kinetis2\eurorack-kds\visualstudio_euroracksimulator\debug\bigfishlib.pdb
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\cl.command.1.tlog
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\cl.read.1.tlog
@@ -14,6 +14,3 @@ c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\cl.write
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\lib-link.read.1.tlog
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\lib-link.write.1.tlog
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\lib.command.1.tlog
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\link.command.1.tlog
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\link.read.1.tlog
-c:\projects\code\kinetis2\eurorack-kds\bigfishlib\debug\bigfishlib.tlog\link.write.1.tlog
