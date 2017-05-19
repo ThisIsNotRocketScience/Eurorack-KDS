@@ -450,6 +450,7 @@ void BigFish_Drive(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout
 	if (mix > 256) mix = 256;
 	int imix = 256 - mix;
 	fish->Clipper.IntProcess(temp, len);
+
 	for (int i = 0; i < len; i++)
 	{
 		bufferout[i] = (bufferin[i] * imix + (temp[i] / 256)*mix) / 256;

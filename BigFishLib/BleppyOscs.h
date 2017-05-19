@@ -20,8 +20,8 @@ typedef struct WaveBlep_t
 	int index;
 	int waveindex;
 
-	float wavea[8];
-	float waveb[8];
+	float wavea[9];
+	float waveb[9];
 
 	float circularBuffer[48];
 	int32_t circularBufferInt[48];

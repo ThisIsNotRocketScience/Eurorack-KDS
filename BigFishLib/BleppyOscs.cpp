@@ -71,6 +71,7 @@ void HyperCalculate_Spread(struct HyperSet_t *set, float spread, float size)
 
 void AddBlep(float *circbuffer, int index, float scale, float crosstime)
 {
+
 	float tempIndex = (crosstime*32.0f);
 	float tempFraction = tempIndex - (float)floor(tempIndex);
 	for (int i = 0; i < 47; i++)
@@ -78,6 +79,8 @@ void AddBlep(float *circbuffer, int index, float scale, float crosstime)
 		circbuffer[(index + i) % 48] += scale * (float)(1.0f - LERP(tempFraction, blep[(int)floor(tempIndex)], blep[(int)ceil(tempIndex)]));
 		tempIndex += 32;
 	}
+
+
 }
 
 void AddBlep_Int(int32_t *circbuffer, int index, int32_t scale, int32_t crosstime)
@@ -118,7 +121,7 @@ void WaveBlepOsc_Update(struct WaveBlep_t *osc, int samplerate, float centerfreq
 {
 	float C = centerfreq / (float)samplerate;
 	osc->mPhaseIncrement = C;
-	osc->speedmul = (2 + size * (6.0f / 65536.0f));
+	osc->speedmul = (2 + (size * (6.0f / 65536.0f)));
 	osc->mPhaseIncrement2 = osc->mPhaseIncrement * osc->speedmul;
 	size /= 32768;
 	spread /= 32768;
@@ -138,8 +141,13 @@ void WaveBlepOsc_Update(struct WaveBlep_t *osc, int samplerate, float centerfreq
 	osc->waveb[5] = cosf(size*2.4230);
 	osc->waveb[6] = cosf(spread*2.20);
 	osc->waveb[7] = sinf(size * 1.510 + spread*2.6120);
+//	int max = osc->speedmul -2;
+//	osc->wavea[max] = osc->wavea[0];
+//	osc->waveb[max] = osc->wavea[0];
+//	osc->wavea[max+1] = osc->wavea[0];
+	//osc->waveb[max+1] = osc->wavea[0];
 
-	for (int i = 0; i < 8; i++) osc->waveb[i] -= osc->wavea[i];
+	for (int i = 0; i < 8; i++) osc->waveb[i]  -= osc->wavea[i];
 }
 
 float WaveBlepOsc_Get(struct  WaveBlep_t *osc)
@@ -147,33 +155,34 @@ float WaveBlepOsc_Get(struct  WaveBlep_t *osc)
 	osc->mMasterPhase += osc->mPhaseIncrement;
 	osc->mSlavePhase += osc->mPhaseIncrement2;
 	osc->index = (osc->index + 1) % 48;
-	if (osc->mMasterPhase >= 1.0)
+	while (osc->mMasterPhase >= 1.0)
 	{
 		osc->mMasterPhase -= 1.0;
+		float olddelta = osc->waveb[osc->waveindex];
 		osc->mSlavePhase = osc->mMasterPhase * osc->speedmul;
 		osc->waveindex = 0;
 		float newOutVal = osc->wavea[0];
 		float exactCrossTime = 1.0f - ((osc->mPhaseIncrement - osc->mMasterPhase) / osc->mPhaseIncrement);
-
-		float deltaoutval = newOutVal - (osc->OutVal + (1-exactCrossTime )* (osc->OutVal  - osc->PrevOut));
+		float deltaoutval = newOutVal - (osc->OutVal + (exactCrossTime)* osc->mPhaseIncrement2 * olddelta);
 	//	osc->OutVal = newOutVal;
-		osc->OutVal = osc->wavea[osc->waveindex] - osc->waveb[osc->waveindex] * (osc->mSlavePhase - osc->mPhaseIncrement2);;
+//		osc->OutVal = osc->wavea[osc->waveindex] - osc->waveb[osc->waveindex] * (osc->mSlavePhase - osc->mPhaseIncrement2);;
 		AddBlep(osc->circularBuffer, osc->index, -deltaoutval, exactCrossTime);
 	}
 
 
 
-	if (osc->mSlavePhase >= 1.0)
+	while (osc->mSlavePhase >= 1.0)
 	{
-		float M = (1 - osc->mMasterPhase) / osc->mPhaseIncrement;
-		if (M > 5)
+//		float M = (1 - osc->mMasterPhase) / osc->mPhaseIncrement;
+	//	if (M > 1)
 		{
 			osc->mSlavePhase -= 1.0;
+			float olddelta = osc->waveb[osc->waveindex];
 			osc->waveindex = (osc->waveindex + 1) & 7;
 			float newOutVal = osc->wavea[osc->waveindex];
 			float exactCrossTime = 1.0f - ((osc->mPhaseIncrement2 - osc->mSlavePhase) / osc->mPhaseIncrement2);
-			float deltaoutval = newOutVal - (osc->OutVal + (1 - exactCrossTime) * (osc->OutVal - osc->PrevOut));
-			osc->OutVal = osc->wavea[osc->waveindex] - osc->waveb[osc->waveindex] * (osc->mSlavePhase - osc->mPhaseIncrement2);;
+			float deltaoutval = newOutVal - (osc->OutVal + (exactCrossTime) * osc->mPhaseIncrement2 * olddelta);
+			//osc->OutVal = osc->wavea[osc->waveindex] - osc->waveb[osc->waveindex] * (osc->mSlavePhase - osc->mPhaseIncrement2);;
 
 			AddBlep(osc->circularBuffer, osc->index, -deltaoutval, exactCrossTime);
 		}
