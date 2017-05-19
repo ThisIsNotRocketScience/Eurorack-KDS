@@ -141,11 +141,11 @@ void WaveBlepOsc_Update(struct WaveBlep_t *osc, int samplerate, float centerfreq
 	osc->waveb[5] = cosf(size*2.4230);
 	osc->waveb[6] = cosf(spread*2.20);
 	osc->waveb[7] = sinf(size * 1.510 + spread*2.6120);
-//	int max = osc->speedmul -2;
+	int max = osc->speedmul -2;
 //	osc->wavea[max] = osc->wavea[0];
-//	osc->waveb[max] = osc->wavea[0];
+	//osc->waveb[max] = osc->wavea[0];
 //	osc->wavea[max+1] = osc->wavea[0];
-	//osc->waveb[max+1] = osc->wavea[0];
+//	osc->waveb[max+1] = osc->wavea[0];
 
 	for (int i = 0; i < 8; i++) osc->waveb[i]  -= osc->wavea[i];
 }

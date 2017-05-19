@@ -5,6 +5,7 @@
 #include "../../BigFishLib/ADSREnvelope.cpp"
 #include "../../BigFishLib/MinBlepGen.cpp" 
 #include "../../BigFishLib/BleppyOscs.cpp" 
+#include "../../BigFishLib/OrganOsc.cpp" 
 
 
 #define _USE_MATH_DEFINES
@@ -15,7 +16,7 @@
 #include <assert.h>
 #include <math.h>
 
-#define MAXPARAMVALUE 127
+#define MAXPARAMVALUE 0xfffe
 
 class InertiaBlock
 {
@@ -86,7 +87,6 @@ public :
 	{
 		switch (i)
 		{
-		case FILTER_KEYTRACK:
 		case FILTER_TYPE: 
 			return true;
 		}
@@ -94,7 +94,7 @@ public :
 	}
 	void SetParam(int p, int v)
 	{
-		Inertia[p].SetTarget((v * 65535) / MAXPARAMVALUE);
+		Inertia[p].SetTarget(v );
 		
 	}
 	
@@ -131,30 +131,30 @@ inline double ExpIntp(double const x, double const y, double const a)
 	return exp(lx + a * (ly - lx));
 }
 
-CMachineParameter const paraPITCH_FINE = { pt_byte, "Tune", "Tune", 0,	127, 255, MPF_STATE, 64 };
-CMachineParameter const paraPITCH_COARSE = { pt_byte, "Transpose", "Transpose", 0,	127, 255, MPF_STATE, 64 };
-CMachineParameter const paraPITCH_CHORD = { pt_byte, "Chord", "Chord", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraOSC_SHAPE = { pt_byte, "Shape", "Shape", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraOSC_SIZE = { pt_byte, "Size", "Size", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraOSC_SPREAD = { pt_byte, "Spread", "Spread", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraAMP_ATTACK = { pt_byte, "Attack", "Attack", 0,	127, 255, MPF_STATE, 10 };
-CMachineParameter const paraAMP_DECAY = { pt_byte, "Decay", "Decay", 0,	127, 255, MPF_STATE, 10 };
-CMachineParameter const paraAMP_SUSTAIN = { pt_byte, "Sustain", "Sustain", 0,	127, 255, MPF_STATE, 64 };
-CMachineParameter const paraAMP_RELEASE = { pt_byte, "Release", "Releae", 0,	127, 255, MPF_STATE, 64 };
-CMachineParameter const paraFILTER_TYPE= { pt_byte, "Filter Type", "Filter Type", 0,	4, 255, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_CUTOFF = { pt_byte, "Cutoff", "Cutoff", 0,	127, 255, MPF_STATE, 80 };
-CMachineParameter const paraFILTER_RESONANCE = { pt_byte, "Resonance", "Resonance", 0,	127, 255, MPF_STATE, 20 };
-CMachineParameter const paraFILTER_PEAKS = { pt_byte, "Peaks", "Peaks", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_DRIFT = { pt_byte, "Drift", "Drift", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_KEYTRACK = { pt_byte, "Keytrack", "Keytrack", 0,	__FILTERKEYTRACK_COUNT-1, 255, MPF_STATE, FILTERKEYTRACK_OFF };
-CMachineParameter const paraFILTER_ENVELOPE = { pt_byte, "Filter Envelope", "Filter Envelope", 0,	127, 255, MPF_STATE, 90 };
-CMachineParameter const paraFILTER_DRIVE = { pt_byte, "Drive", "Drive", 0,	127, 255, MPF_STATE, 90 };
-CMachineParameter const paraFILTER_ATTACK = { pt_byte, "Filter Attack", "Filter Attack", 0,	127, 255, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_DECAY = { pt_byte, "Filter Decay", "Filter Decay", 0,	127, 255, MPF_STATE, 40 };
+CMachineParameter const paraPITCH_FINE = { pt_word, "Tune", "Tune", 0,	0xfffe, 0xffff, MPF_STATE, 0xfffe/2 };
+CMachineParameter const paraPITCH_COARSE = { pt_word, "Transpose", "Transpose", 0,	0xfffe, 0xffff, MPF_STATE, 0xfffe / 2 };
+CMachineParameter const paraPITCH_CHORD = { pt_word, "Chord", "Chord", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraOSC_SHAPE = { pt_word, "Shape", "Shape", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraOSC_SIZE = { pt_word, "Size", "Size", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraOSC_SPREAD = { pt_word, "Spread", "Spread", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraAMP_ATTACK = { pt_word, "Attack", "Attack", 0,	0xfffe, 0xffff, MPF_STATE, 10<<8 };
+CMachineParameter const paraAMP_DECAY = { pt_word, "Decay", "Decay", 0,	0xfffe, 0xffff, MPF_STATE, 10<<8 };
+CMachineParameter const paraAMP_SUSTAIN = { pt_word, "Sustain", "Sustain", 0,	0xfffe, 0xffff, MPF_STATE, 64<<8 };
+CMachineParameter const paraAMP_RELEASE = { pt_word, "Release", "Releae", 0,	0xfffe, 0xffff, MPF_STATE, 64<<8 };
+CMachineParameter const paraFILTER_TYPE= { pt_word, "Filter Type", "Filter Type", 0,	4, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraFILTER_CUTOFF = { pt_word, "Cutoff", "Cutoff", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<8};
+CMachineParameter const paraFILTER_RESONANCE = { pt_word, "Resonance", "Resonance", 0,	0xfffe, 0xffff, MPF_STATE, 20<<8 };
+CMachineParameter const paraFILTER_PEAKS = { pt_word, "Peaks", "Peaks", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraFILTER_DRIFT = { pt_word, "Drift", "Drift", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraFILTER_KEYTRACK = { pt_word, "Keytrack", "Keytrack", 0,	0xfffe, 0xffff, MPF_STATE, 63<<8};
+CMachineParameter const paraFILTER_ENVELOPE = { pt_word, "Filter Envelope", "Filter Envelope", 0,	0xfffe, 0xffff, MPF_STATE, 90<<8 };
+CMachineParameter const paraFILTER_DRIVE = { pt_word, "Drive", "Drive", 0,	0xfffe, 0xffff, MPF_STATE, 90<<8 };
+CMachineParameter const paraFILTER_ATTACK = { pt_word, "Filter Attack", "Filter Attack", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
+CMachineParameter const paraFILTER_DECAY = { pt_word, "Filter Decay", "Filter Decay", 0,	0xfffe, 0xffff, MPF_STATE, 40<<8 };
 
-CMachineParameter const paraFILTER_ACCENT = { pt_byte, "Accent Amount", "Accent Amount", 0,	127, 255, MPF_STATE, 80 };
+CMachineParameter const paraFILTER_ACCENT = { pt_word, "Accent Amount", "Accent Amount", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<8};
 
-CMachineParameter const paraAMP_VELOCITY = { pt_byte, "Velocity", "Velocity", 0,	127, 255, MPF_STATE, 0 };
+CMachineParameter const paraAMP_VELOCITY = { pt_word, "Velocity", "Velocity", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
 
 CMachineParameter const paraACCENT= { pt_switch, "Accent", "Accent", SWITCH_OFF,	SWITCH_ON, SWITCH_NO, 0, SWITCH_OFF };
 CMachineParameter const paraNOTE = { pt_note, "Note", "Note", NOTE_MIN,	NOTE_MAX, NOTE_NO, MPF_TICK_ON_EDIT,  0 };
@@ -196,7 +196,7 @@ class gvals
 public:
 	byte note;
 	byte accent;
-	byte params[__PARAMCOUNT];
+	word params[__PARAMCOUNT];
 };
 
 #pragma pack()
@@ -277,23 +277,24 @@ void mi::Init(CMachineDataInput * const pi)
 
 void DescribeMidKnob(int const value, char *txt)
 {
-	if (value<63)
+	
+	if (value<32768)
 	{
-		float V = (63 - value) / 0.63f;
+		float V = (32768 - value) / 327.68f;
 		sprintf_s(txt, 16, "%.1f%%", -V);
 	}
 	else
 	{
-		float V = (value - 63) / ((127 - 63)*0.01f);
+		float V = (value - 32768) / ((32767)*0.01f);
 		sprintf_s(txt, 16, "%.1f%%", V);
 	}
 }
 
 void DescribeKnob(int const value, char *txt) 
 {
-
-	sprintf_s(txt, 16, "%.1f%%", value*100.0f/127.0f);
+	sprintf_s(txt, 16, "%.1f%%", value*100.0f/(float)0xfffe);
 }
+
 char const *mi::DescribeValue(int const param, int const value)
 {
 	static char txt[16];
@@ -302,37 +303,37 @@ char const *mi::DescribeValue(int const param, int const value)
 
 
 	case PITCH_COARSE:
-		sprintf_s(txt, 16, "%d semitones", (int)((value - 63.0f)*48/ 127.0f));
+		sprintf_s(txt, 16, "%d semitones", (int)((value - 32768)*48/ 32768.0f));
 		break;
 
 	case PITCH_FINE:
-		sprintf_s(txt, 16, "%.1f semitone", (value - 63.0f)*2.0f / 127.0f);
+		sprintf_s(txt, 16, "%.1f semitone", (value - 32768)*2.0f / 32768.0f);
 		break;
 	
 	case FILTER_DRIVE:
 	{
-		if (value == 63)
+		if (value == 32768)
 		{
 			sprintf_s(txt, 16, "OFF");
 		}
 		else
 		{
 
-			if (value<63 )
+			if (value<32768)
 			{
-				float V = (63 - value) / 0.63f;
+				float V = (32768 - value) / 327.68;
 				sprintf_s(txt, 16, "%.1f%% Fuzz", V);
 			}
 			else
 			{
-				float V = (value-63) / ((127-63)*0.01f);
+				float V = (value- 32768) / (327.67);
 				sprintf_s(txt, 16, "%.1f%% Clean", V);
 			}
 		}
 	}
 		break;
 	case FILTER_ENVELOPE:
-		if (value == 63)
+		if (value == 32768)
 		{
 			sprintf_s(txt, 16, "OFF");
 		}
@@ -342,29 +343,71 @@ char const *mi::DescribeValue(int const param, int const value)
 		}
 			break;
 
-	case PITCH_CHORD:
 	case OSC_SHAPE:
+	{
+
+		SteppedResult_t sr;
+		GetSteppedResult(Fish->Fish.Parameters[OSC_SHAPE], 6, &sr);
+
+		int FuncIdx = sr.index;
+		int32_t crossfade = sr.fractional;
+		
+		//GenFunc* Funcs[8] = { HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy };
+
+		char STRING[] = 
+			"--- HyperSaw --"
+			"-- HyperPulse -"
+			"--- Standard --"
+			"---- Vosim ----"
+			"---- Organ ----"
+			"---- Choir ----"
+			"---- Grain ----"
+			"---------------"
+			
+			;
+		for (int i = 0; i < 15; i++)
+		{
+			txt[i] = STRING[i + FuncIdx * 15 + (crossfade * 15) / 256];
+		}
+		txt[15] = 0;
+	}
+	break;
+
+
+	case PITCH_CHORD:
 	default:
 		sprintf_s(txt, 16, "%d", value);
 		break;
 
 	case FILTER_KEYTRACK:
+	{
+		SteppedResult_t sr;
+		GetSteppedResult(Fish->Fish.Parameters[FILTER_KEYTRACK], __FILTERKEYTRACK_COUNT - 1, &sr);
+	
+		int KeyTrackIdx = sr.index;
+		int32_t crossfade = sr.fractional;
+		
+		char STRING[] =
+			"---- -2.0 -----"
+			"---- -1.5 -----"
+			"---- -1.0 -----"
+			"---- -0.5 -----"
+			"----- OFF ----"
+			"----- 0.5 -----"
+			"----- 1.0 -----"
+			"----- 1.5 -----"
+			"----- 2.0 -----"
+			"---------------";
 
-		switch (value)
+		for (int i = 0; i < 15; i++)
 		{
-		case FILTERKEYTRACK_NEG2: sprintf_s(txt, 16, "-2.0"); break;
-		case FILTERKEYTRACK_NEG1HALF: sprintf_s(txt, 16, "-1.5"); break;
-		case FILTERKEYTRACK_NEG1: sprintf_s(txt, 16, "-1.0"); break;
-		case FILTERKEYTRACK_NEGHALF: sprintf_s(txt, 16, "-0.5"); break;
-		case FILTERKEYTRACK_OFF: sprintf_s(txt, 16, "OFF"); break;
-		case FILTERKEYTRACK_POSHALF: sprintf_s(txt, 16, "+0.5"); break;
-		case FILTERKEYTRACK_POS1: sprintf_s(txt, 16, "+1.0"); break;
-		case FILTERKEYTRACK_POS1HALF: sprintf_s(txt, 16, "+1.5"); break;
-		case FILTERKEYTRACK_POS2: sprintf_s(txt, 16, "+2.0"); break;
-		};
-		break;
+			txt[i] = STRING[i + KeyTrackIdx * 15 + (crossfade * 15) / 256];
+		}
+		txt[15] = 0;
 
-		break;
+	}
+	break;
+		
 
 	case OSC_SIZE:
 	case OSC_SPREAD:
@@ -403,7 +446,7 @@ void mi::Tick()
 {
 	for (int i = 0; i < __PARAMCOUNT; i++)
 	{
-		if (gval.params[i] != 255)
+		if (gval.params[i] != 0xffff)
 		{
 			switch (i)
 			{
@@ -412,14 +455,11 @@ void mi::Tick()
 				int F = gval.params[i];
 				int filtermode = (((int32_t)F) * 65536) / (__FILTERTYPE_COUNT-1 );
 				Fish->Fish.Parameters[FILTER_TYPE] = filtermode;
-				int rev = (((int32_t)Fish->Fish.Parameters[FILTER_TYPE]) * (__FILTERTYPE_COUNT-1 )) / 65536;
-				printf("%d", rev);
+				
 
 			}
 				break;
-			case FILTER_KEYTRACK:
-				Fish->Fish.Parameters[FILTER_KEYTRACK] =  (gval.params[i] * 65536) / (__FILTERKEYTRACK_COUNT-1);
-				break;
+			
 			default:
 				Fish->SetParam(i, gval.params[i]);
 				break;

@@ -1,5 +1,4 @@
 #include "BigFish.h"
-#include "BleppyOscs.h"
 
 //#include "bleptables.h"
 #include "DistortionTable_1.h"
@@ -34,7 +33,29 @@ const float chordtable[16][4] = {
 
 };
 
+float GetInterpolatedResultFloat(float *table, SteppedResult_t *inp)
+{
+	float F = inp->fractional *(1.0f / 256.0f);
+	float IF = 1.0 - F;
+	return table[inp->index] * IF + table[inp->index + 1] * F;
+}
 
+void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out)
+{
+	//max(floor(x + 0.25), (x + 0.25 - floor(x + 0.25)) * 2 + floor(x + 0.25) - 1)
+
+	uint32_t X = (param * steps)/256;
+	X += 64;
+
+	int FloorX = X &0xffffff00;
+	int Aside = FloorX;
+	int Bside = (X - (FloorX)) * 2 + (FloorX)-256;
+	int M = (Aside > Bside) ? Aside : Bside;
+	
+	out->index = M >> 8;
+	out->fractional = M & 0xff;
+	
+}
 
 int32_t Inertia_Update(struct Inertia_t *inert)
 {
@@ -96,7 +117,7 @@ void BigFish_Init(struct BigFish_t *fish, int samplerate)
 	};
 
 	WaveBlepOsc_Init(&fish->WaveOsc);
-
+	Organ_Init(&fish->Organ);
 	VosimOsc_Init(&fish->Vosim);
 	fish->SampleRate = samplerate;
 	fish->Clipper.Init(samplerate);	
@@ -154,46 +175,46 @@ void BigFish_Update(struct BigFish_t *fish)
 	ADSR_ApplyParameters(&fish->FilterEnvelope, fish->Parameters[FILTER_ATTACK], fish->Parameters[FILTER_DECAY], 0,0);
 }
 
-void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int len)
+void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	float spread = (fish->Parameters[OSC_SPREAD]) / 65536.0f; 
 	float size = (fish->Parameters[OSC_SIZE ]) / 65536.0f;
 	HyperOsc_Update(&fish->HyperSawOsc, fish->SampleRate, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ = HyperOsc_Get(&fish->HyperSawOsc) * (32768.0f);
+		*buffer++ =(int)( HyperOsc_Get(&fish->HyperSawOsc) * (32768.0f));
 	}
 }
 
-void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int len)
+void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	float spread = (fish->Parameters[OSC_SPREAD] ) / 65536.0f;
 	float size = (fish->Parameters[OSC_SIZE]) / 65536.0f;
 	HyperPulse_Update(&fish->HyperPulseOsc, fish->SampleRate, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ = HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f );
+		*buffer++ =(int)( HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f ));
 	}
 }
 
-void SuperFish(struct BigFish_t *fish, int32_t *buffer, int len)
+void SuperFish(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	MinBlepOsc_Update(&fish->SawOsc, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
-	MinBlepOsc_Update(&fish->PulseOsc, fish->SampleRate, fish->CenterFreq * 2.0, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
+	MinBlepOsc_Update(&fish->PulseOsc, fish->SampleRate, fish->CenterFreq * 2.0f, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
 	float size = fish->Parameters[OSC_SIZE] / 2.0f;
-	float invsize = 32768 - size;
+	float invsize = 32768.0f - size;
 	while (len--)
 	{
 
 		float A = MinBlepOsc_Get(&fish->SawOsc);
 		float B = MinBlepOsc_GetPulse(&fish->PulseOsc);
-		*buffer++ = (B * size) + (A*invsize) ;
+		*buffer++ =(int)( (B * size) + (A*invsize) );
 	}
 }
 
 
 
-void Vosim(struct BigFish_t *fish, int32_t *buffer, int len)
+void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	VosimOsc_Update(&fish->Vosim, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE]/65536.0f, fish->Parameters[OSC_SPREAD]);
 	while (len--)
@@ -203,16 +224,17 @@ void Vosim(struct BigFish_t *fish, int32_t *buffer, int len)
 	}
 }
 
-void Organ(struct BigFish_t *fish, int32_t *buffer, int len)
+void Organ(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
+	Organ_Update(&fish->Organ, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE] / 65536.0f, fish->Parameters[OSC_SPREAD]);
 	while (len--)
 	{
 
-		*buffer++ = 0;
+		*buffer++ = Organ_Get(&fish->Organ) * 32768;;
 	}
 }
 
-void Choir(struct BigFish_t *fish, int32_t *buffer, int len)
+void Choir(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	while (len--)
 	{
@@ -220,7 +242,7 @@ void Choir(struct BigFish_t *fish, int32_t *buffer, int len)
 	}
 }
 
-void Grain(struct BigFish_t *fish, int32_t *buffer, int len)
+void Grain(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	WaveBlepOsc_Update(&fish->WaveOsc, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
 	
@@ -229,10 +251,17 @@ void Grain(struct BigFish_t *fish, int32_t *buffer, int len)
 
 		float A = WaveBlepOsc_Get(&fish->WaveOsc);
 		
-		*buffer++ = A*32768.0f;
+		*buffer++ = (int)(A*32768.0f);
 	}
 }
 
+void Copy(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+{	
+	while (len--)
+	{
+		*buffer++ = *bufferB++;
+	}
+}
 
 float formant_filter(double *coeffs, double *memory, float in)
 {
@@ -278,6 +307,72 @@ static inline float DoQScaling(float c, float note, float fQScaling)
 	return 1 + (v2 - 1)*(2 * fQScaling - 1);
 }
 
+void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout, int len, float FilterEnvScale, float FilterEnvResult)
+{
+
+	float cutoff = (fish->Parameters[FILTER_CUTOFF] / 65535.0f);
+	cutoff = cutoff + (FilterEnvResult * FilterEnvScale) / 32768.0f;
+	if (cutoff < 0) cutoff = 0; else if (cutoff > 1) cutoff = 1;
+	cutoff *= 5;
+	int IDX1 = floor(cutoff);
+	int IDX2 = IDX1 + 1;
+
+
+
+	int32_t *b = bufferout;
+
+	float IA = cutoff - (IDX1);
+	float A = 1.0 - IA;
+
+	IDX1 += 15;
+	IDX2 += 15;
+
+	FormantSet_t T;
+	float Levels[5];
+	float Total = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		T.Formants[i].Freq = Formants[IDX1].Formants[i].Freq * A + Formants[IDX2].Formants[i].Freq * IA;
+		Levels[i] = DBToLevel(Formants[IDX1].Formants[i].Ampl * A + Formants[IDX2].Formants[i].Ampl * IA);
+		T.Formants[i].Bandwidth = Formants[IDX1].Formants[i].Bandwidth * A + Formants[IDX2].Formants[i].Bandwidth * IA;
+		Total += Levels[i];
+
+		float f1 = T.Formants[i].Freq - T.Formants[i].Bandwidth / 2;
+		float f2 = T.Formants[i].Freq + T.Formants[i].Bandwidth / 2;
+
+		float oct = log2f(f2 / f1);
+
+		fish->filters[i].rbjBPF(T.Formants[i].Freq, 10, fish->SampleRate, 1.0);
+		fish->filters[i].ClearException();
+//		fish->filters[i].rbjHPF(T.Formants[i].Freq, 6 + fish->Parameters[FILTER_RESONANCE]/200.0f, fish->SampleRate);
+	}
+
+
+	float in[32];
+	float out[5][32];
+	for (int i = 0; i < 32; i++)
+	{
+		in[i] = bufferin[i];
+	};
+//	for (int i = 0; i < 5; i++)
+//	{
+//		fish->filters[i].Process(in, out[i], len);
+//	}
+
+	for (int i = 0; i < len; i++)
+	{
+		float outp = 0;
+		for (int j = 0; j < 5; j++)
+		{
+			outp += fish->Resonator[j].feed(bufferin[i], (fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[j].Freq) * Levels[j];
+		}
+		//	*b++ = outp;
+
+		bufferout[i] = outp / Total;//
+									//				fish->Resonator[0].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[0].Freq) * Levels[0] +
+									//fish->Resonator[1].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[1].Freq) * Levels[1];
+	}
+}
 
 void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout, int len)
 {
@@ -286,7 +381,10 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	float freq = 20000 * (V*V*V);
 
 	float mul[__FILTERKEYTRACK_COUNT] = { -2.0f,-1.5f, -1.0f,-0.5f,0.0f,0.5f,1.0f,1.5f,2.0f };
-	int KeyTrack = ((int32_t)fish->Parameters[FILTER_KEYTRACK] * (__FILTERKEYTRACK_COUNT - 1)) / 65536;
+	SteppedResult_t sr;
+	GetSteppedResult(fish->Parameters[FILTER_KEYTRACK], __FILTERKEYTRACK_COUNT - 1, &sr);
+
+	int KeyTrack = sr.index;
 
 	float FilterEnvScale = (fish->Parameters[FILTER_ENVELOPE] - 32768) / 32768.0f;
 	if (FilterEnvScale > 0) FilterEnvScale *= FilterEnvScale; else FilterEnvScale *= -FilterEnvScale;
@@ -294,14 +392,14 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 
 	int32_t FilterEnvResult = ADSR_GetCurved(&fish->FilterEnvelope, fish->SampleRate / len);
 
-	if (KeyTrack != FILTERKEYTRACK_OFF)
+	if (sr.index != FILTERKEYTRACK_OFF || sr.fractional != 0)
 	{
 		float note = cutoffin * 127;
 		int64_t ENV = int64_t(FilterEnvResult);
 		
 		//float adsr = (ENV * FilterEnvScale * 127) / (127 * 65535.0f);
 		freq = 440.0 * pow(2.0, (note - 69) / 12);
-		freq += fish->CenterFreq * mul[KeyTrack];
+		freq += fish->CenterFreq * GetInterpolatedResultFloat(mul, &sr);
 		
 		float adsr = (ENV * FilterEnvScale * 15000) / 65536.0;
 		freq += adsr;
@@ -322,81 +420,17 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 
 	if (mode == FILTERTYPE_VOCAL)
 	{
-		float cutoff = (fish->Parameters[FILTER_CUTOFF] / 65535.0f);
-		cutoff = cutoff + (FilterEnvResult * FilterEnvScale) / 32768.0f;
-		if (cutoff < 0) cutoff = 0; else if (cutoff > 1) cutoff = 1;
-		cutoff *= 5;
-		int IDX1 = floor(cutoff);
-		int IDX2 = IDX1 +1;
-
-
-
-		int32_t *b = bufferout;
-
-		float IA = cutoff - (IDX1 );
-		float A = 1.0 - IA;
-
-		IDX1 += 15;
-		IDX2 += 15;
-
-		FormantSet_t T;
-		float Levels[5];
-		float Total = 0;
-		for (int i = 0; i < 5; i++)
-		{
-			T.Formants[i].Freq = Formants[IDX1].Formants[i].Freq * A + Formants[IDX2].Formants[i].Freq * IA;
-			Levels[i] = DBToLevel(Formants[IDX1].Formants[i].Ampl * A + Formants[IDX2].Formants[i].Ampl * IA);
-			T.Formants[i].Bandwidth = Formants[IDX1].Formants[i].Bandwidth * A + Formants[IDX2].Formants[i].Bandwidth * IA;
-			Total += Levels[i];
-
-			float f1 = T.Formants[i].Freq - T.Formants[i].Bandwidth / 2;
-			float f2 = T.Formants[i].Freq + T.Formants[i].Bandwidth / 2;
-
-			float oct = log2f(f2 / f1);
-
-			fish->filters[i].rbjBPF(T.Formants[i].Freq, 10, fish->SampleRate,1.0);
-			fish->filters[i].ClearException();
-//			fish->filters[i].rbjHPF(T.Formants[i].Freq, 6 + fish->Parameters[FILTER_RESONANCE]/200.0f, fish->SampleRate);
-
-		}
-
-
-		float in[32];
-		float out[5][32];
-		for (int i = 0; i < 32; i++)
-		{
-			in[i] = bufferin[i];
-		}
-		for (int i = 0; i < 5; i++)
-		{
-		//	fish->filters[i].Process(in, out[i], len);
-		}
-		
-		for (int i = 0; i < len; i++)
-		{
-			float outp = 0;
-			for (int j = 0; j < 5; j++)
-			{
-				outp += fish->Resonator[j].feed(bufferin[i], (fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[j].Freq) * Levels[j];
-			}
-		//	*b++ = outp;
-			
-			bufferout[i] = outp / Total;//
-//				fish->Resonator[0].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[0].Freq) * Levels[0] +
-				//fish->Resonator[1].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[1].Freq) * Levels[1];
-		}
+		BigFish_VocalFilter(fish, bufferin, bufferout, len, FilterEnvScale, FilterEnvResult);
 		return;
 	}
-	
-
 
 	float ResonanceParamVal = fish->Parameters[FILTER_RESONANCE] / 65536.0f;
 	float fResonance2 = 14 * ResonanceParamVal*ResonanceParamVal*ResonanceParamVal + 5 * ResonanceParamVal + 1.0f;
 	fResonance2 *= fResonance2;
 	fResonance2 = (float)(1.0 + (fResonance2 - 1.0f)*(DoQScaling(freq*(1.f / 44100.f), 0, 1)));
 	float fResonance2NS = fResonance2;
-	float const sr = fish->SampleRate;
-	float const odsr = (1.f / sr);
+	float const srate = fish->SampleRate;
+	float const odsr = (1.f / srate);
 
 	float out[32];
 	float in[32];
@@ -415,13 +449,13 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 		fish->filters[0].zoelzerLPF(freq, fResonance2, odsr);		
 		break;
 	case FILTERTYPE_HP:
-		fish->filters[0].rbjHPF(freq*HIGHCOMP, fResonance2, sr);
+		fish->filters[0].rbjHPF(freq*HIGHCOMP, fResonance2, srate);
 		break;
 	case FILTERTYPE_BP:
-		fish->filters[0].rbjBPF(freq, fResonance2*0.25f, sr);
+		fish->filters[0].rbjBPF(freq, fResonance2*0.25f, srate);
 		break;
 	case FILTERTYPE_BR:
-		fish->filters[0].rbjBRF(freq, fResonance2*0.25f, sr); 
+		fish->filters[0].rbjBRF(freq, fResonance2*0.25f, srate); 
 		break;
 
 	}
@@ -457,7 +491,6 @@ void BigFish_Drive(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout
 	}
 }
 
-
 void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_t *bufferMAIN, int len)
 {
 	BigFish_Update(fish);
@@ -472,55 +505,37 @@ void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_
 	float freq = 440 * powf(2.0f, Note/  12.0f);
 	fish->CenterFreq = freq;
 	
-	int shapemul = (fish->Parameters[OSC_SHAPE] * 6 * 256) / 65536;
 	
 	int32_t A[MAXFISHBUFFER];
 	int32_t B[MAXFISHBUFFER];
 	int32_t OSC[MAXFISHBUFFER];
 	int32_t AMPED[MAXFISHBUFFER];
 	int32_t MAIN[MAXFISHBUFFER];
+	typedef void GenFunc(BigFish_t *, int32_t *, int32_t *, int);
+	
+	GenFunc* Funcs[8] = {HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
+
+	SteppedResult_t sr;
+	GetSteppedResult(fish->Parameters[OSC_SHAPE], 6, &sr);
+
+	int FuncIdx = sr.index;
+	int32_t crossfade = sr.fractional;
+	int32_t icrossfade = 256 - crossfade;
 
 	while (len > 0)
 	{
 		int L = __min(len, MAXFISHBUFFER);
 		len -= L;
-
-		switch (shapemul / 256)
-		{
-		case 0:
-			HyperSaw(fish, A, L);
-			HyperPulse(fish, B, L);
-			break;
-		case 1:
-			HyperPulse(fish, A, L);
-			SuperFish(fish, B, L);
-			break;
-		case 2:
-			SuperFish(fish, A, L);
-			Vosim(fish, B, L);
-			break;
-		case 3:
-			Vosim(fish, A, L);
-			Organ(fish, B, L);
-			break;
-		case 4:
-			Organ(fish, A, L);
-			Choir(fish, B, L);
-			break;
-		case 5:
-			Choir(fish, A, L);
-			Grain(fish, B, L);
-			break;
-		}
-
-		int32_t crossfade = shapemul & 0xff;
-		int32_t icrossfade = 256 - crossfade;
-
+		Funcs[FuncIdx](fish, A, B, L);
+		Funcs[FuncIdx+1](fish, B, A, L);
+		
 		for (int i = 0; i < L; i++)
 		{
 			int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope, fish->SampleRate);
 			OSC[i] = (((B[i] * crossfade + A[i] * icrossfade) / 256));
-			AMPED[i] = (OSC[i]*AmpEnvelope) / 65535;
+			int64_t inter = ((int64_t)OSC[i] * (int64_t)AmpEnvelope);
+			inter /= (int64_t)65536;
+			AMPED[i] =(int) inter;
 			*bufferOSCOUT++ = OSC[i];
 		}
 

@@ -10,6 +10,8 @@
 #include "ADSREnvelope.h"
 #include "PlatinumClip.h"
 #include "BleppyOscs.h"
+#include "OrganOsc.h"
+
 #ifndef __min
 #define __min(a,b) (((a)<(b))?(a):(b))
 #endif
@@ -211,7 +213,7 @@ public:
 	{
 		for (int i = 0; i < length; i++)
 		{
-			int in = *input++;// * double(1 << 8);
+			int in = (int)*input++;// * double(1 << 8);
 
 			float o = (float)in;
 			float n = (float)( o*m_fB0 + fx1*m_fB1 + fx2*m_fB2 - fy1*m_fA1 - fy2*m_fA2 ) ;
@@ -259,7 +261,7 @@ public:
 		int x1 = X1;
 		int x2 = X2;
 
-		if (input == NULL) {
+	/*	if (input == NULL) {
 			for (int i = 0; i < length; i++) {
 				int64_t out = int64_t(b1) * int64_t(x1) + int64_t(b2) * int64_t(x2) - int64_t(a1) * int64_t(y1) - int64_t(a2) * int64_t(y2);
 				int out32 = int(out >> 24);
@@ -287,7 +289,7 @@ public:
 			 A1 = a1  ;
 			 A2 = a2  ;
 			return;
-		}
+		}*/
 
 		for (int i = 0; i < length; i++) {
 			int in = *input++ << 8;// * double(1 << 8);
@@ -447,6 +449,7 @@ typedef struct BigFish_t
 	MinBlepOsc_t SawOsc;
 	MinBlepOsc_t PulseOsc;
 	WaveBlep_t WaveOsc;
+	Organ_t Organ;
 	double FormantMemory[10];
 
 	Inertia_t Accent;
@@ -456,7 +459,13 @@ typedef struct BigFish_t
 	PlatinumClip Clipper;
 } BigFish_t;
 
+typedef struct SteppedResult_t
+{
+	uint8_t index;
+	uint8_t fractional;
+} SteppedResult_t;
 
+void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
 
 void BigFish_Init(struct BigFish_t *fish, int samplerate);
 void BigFish_Update(struct BigFish_t *fish);

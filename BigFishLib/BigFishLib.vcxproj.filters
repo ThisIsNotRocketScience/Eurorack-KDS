@@ -63,6 +63,9 @@
     <ClInclude Include="BigFishDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OrganOsc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BigFish.cpp">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ADSREnvelope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrganOsc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

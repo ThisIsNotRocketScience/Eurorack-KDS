@@ -153,6 +153,7 @@
     <ClInclude Include="mblep_48000.h" />
     <ClInclude Include="mblep_88200.h" />
     <ClInclude Include="mblep_96000.h" />
+    <ClInclude Include="OrganOsc.h" />
     <ClInclude Include="PlatinumClip.h" />
     <ClInclude Include="RBJfilter.h" />
   </ItemGroup>
@@ -161,6 +162,7 @@
     <ClCompile Include="BigFish.cpp" />
     <ClCompile Include="BleppyOscs.cpp" />
     <ClCompile Include="MinBlepGen.cpp" />
+    <ClCompile Include="OrganOsc.cpp" />
     <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

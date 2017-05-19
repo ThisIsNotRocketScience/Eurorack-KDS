@@ -284,6 +284,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 		Env->CurrentTarget = 0;
 
 		int32_t Delta = -Env->ReleaseStart / EnvelopeLength(Env->R, Env->Speed, SampleRate);
+		if (Delta == 0) Delta = -1;
 		Env->Current += Delta;
 		Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * ENVFIXED(1)) / __max(1, (Env->ReleaseStart));
 
