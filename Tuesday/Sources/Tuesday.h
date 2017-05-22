@@ -128,6 +128,7 @@ struct Tuesday_PatternGen
 
 	uint8_t switchmode;
 	uint8_t commitchange;
+	uint8_t TicksPerMeasure;
 
 };
 

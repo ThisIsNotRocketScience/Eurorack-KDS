@@ -183,7 +183,15 @@ static int32_t SustainLevel(int sus)
 	return (sus * ENVFIXED(1)) >> 10;
 }
 
-int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
+void ADSR_Update(struct ADSR_Envelope_t *Env, int SampleRate)
+{
+	Env->Aconv = EnvelopeLength(Env->A, Env->Speed, SampleRate);
+	Env->Dconv = EnvelopeLength(Env->D, Env->Speed, SampleRate);
+	Env->Sconv = SustainLevel(Env->S);
+	Env->Rconv = EnvelopeLength(Env->R, Env->Speed, SampleRate);
+}
+
+int ADSR_Get(struct ADSR_Envelope_t *Env)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -195,7 +203,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 	case ENVSTATE_ATTACK:
 	{
 		Env->CurrentTarget = ENVFIXED(1);
-		int L = EnvelopeLength(Env->A, Env->Speed, SampleRate);;
+		int L = Env->Aconv;
 		int32_t Delta = ENVFIXED(1) / L;
 		Env->Current += Delta;
 		Env->AttackProgress = ((Env->Current - Env->AttackStart) * ENVFIXED(1)) / __max(1, (ENVFIXED(1) - Env->AttackStart));
@@ -223,10 +231,10 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 
 	case ENVSTATE_DECAY:
 	{
-		int32_t SusLev = SustainLevel(Env->S);
+		int32_t SusLev = Env->Sconv;
 		Env->CurrentTarget = SusLev;
 
-		int32_t Delta = -(ENVFIXED(1) - SusLev) / EnvelopeLength(Env->D, Env->Speed, SampleRate);
+		int32_t Delta = -(ENVFIXED(1) - SusLev) / Env->Dconv;
 		Env->Current += Delta;
 		if (Env->DecayStart > SusLev)
 		{
@@ -270,10 +278,10 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 
 	case ENVSTATE_SUSTAIN:
 	{
-		int32_t SusLev = SustainLevel(Env->S);
+		int32_t SusLev = Env->Sconv;
 		Env->CurrentTarget = SusLev;
 
-		int32_t Delta = (SustainLevel(Env->S) - Env->Current) / 5;
+		int32_t Delta = (Env->Sconv - Env->Current) / 5;
 		Env->Current += Delta;
 		Env->CurvedOutput = Env->Current;
 	}
@@ -283,10 +291,12 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 	{
 		Env->CurrentTarget = 0;
 
-		int32_t Delta = -Env->ReleaseStart / EnvelopeLength(Env->R, Env->Speed, SampleRate);
+		int32_t Delta = -Env->ReleaseStart / Env->Rconv;
 		if (Delta == 0) Delta = -1;
 		Env->Current += Delta;
-		Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * ENVFIXED(1)) / __max(1, (Env->ReleaseStart));
+		int64_t T = (((Env->ReleaseStart - Env->Current)) * (int64_t)ENVFIXED(1));
+		T /= (int64_t)__max(1, (Env->ReleaseStart));
+		Env->ReleaseProgress = (int)T;// (((Env->ReleaseStart - Env->Current)) * ENVFIXED(1)) / __max(1, (Env->ReleaseStart));
 
 		if (Env->Current <= 0)
 		{
@@ -360,13 +370,13 @@ int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate)
 
 	Env->LinearOutput = Env->Current;
 
-	return Env->LinearOutput;
+	return Env->LinearOutput >> (ENVFIXEDBITS - 16);
 }
 
 
 
-int ADSR_GetCurved(struct ADSR_Envelope_t *Env, int SampleRate)
+int ADSR_GetCurved(struct ADSR_Envelope_t *Env)
 {
-	ADSR_Get(Env, SampleRate);
-	return Env->CurvedOutput;
+	ADSR_Get(Env);
+	return Env->CurvedOutput >> (ENVFIXEDBITS - 16);
 }

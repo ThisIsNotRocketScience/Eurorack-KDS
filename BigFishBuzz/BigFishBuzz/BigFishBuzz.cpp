@@ -137,22 +137,22 @@ CMachineParameter const paraPITCH_CHORD = { pt_word, "Chord", "Chord", 0,	0xfffe
 CMachineParameter const paraOSC_SHAPE = { pt_word, "Shape", "Shape", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
 CMachineParameter const paraOSC_SIZE = { pt_word, "Size", "Size", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
 CMachineParameter const paraOSC_SPREAD = { pt_word, "Spread", "Spread", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
-CMachineParameter const paraAMP_ATTACK = { pt_word, "Attack", "Attack", 0,	0xfffe, 0xffff, MPF_STATE, 10<<8 };
-CMachineParameter const paraAMP_DECAY = { pt_word, "Decay", "Decay", 0,	0xfffe, 0xffff, MPF_STATE, 10<<8 };
-CMachineParameter const paraAMP_SUSTAIN = { pt_word, "Sustain", "Sustain", 0,	0xfffe, 0xffff, MPF_STATE, 64<<8 };
-CMachineParameter const paraAMP_RELEASE = { pt_word, "Release", "Releae", 0,	0xfffe, 0xffff, MPF_STATE, 64<<8 };
+CMachineParameter const paraAMP_ATTACK = { pt_word, "Attack", "Attack", 0,	0xfffe, 0xffff, MPF_STATE, 10<<9 };
+CMachineParameter const paraAMP_DECAY = { pt_word, "Decay", "Decay", 0,	0xfffe, 0xffff, MPF_STATE, 10<<9 };
+CMachineParameter const paraAMP_SUSTAIN = { pt_word, "Sustain", "Sustain", 0,	0xfffe, 0xffff, MPF_STATE, 64<<9 };
+CMachineParameter const paraAMP_RELEASE = { pt_word, "Release", "Releae", 0,	0xfffe, 0xffff, MPF_STATE, 64<<9 };
 CMachineParameter const paraFILTER_TYPE= { pt_word, "Filter Type", "Filter Type", 0,	4, 0xffff, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_CUTOFF = { pt_word, "Cutoff", "Cutoff", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<8};
-CMachineParameter const paraFILTER_RESONANCE = { pt_word, "Resonance", "Resonance", 0,	0xfffe, 0xffff, MPF_STATE, 20<<8 };
+CMachineParameter const paraFILTER_CUTOFF = { pt_word, "Cutoff", "Cutoff", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<9};
+CMachineParameter const paraFILTER_RESONANCE = { pt_word, "Resonance", "Resonance", 0,	0xfffe, 0xffff, MPF_STATE, 20<<9 };
 CMachineParameter const paraFILTER_PEAKS = { pt_word, "Peaks", "Peaks", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
 CMachineParameter const paraFILTER_DRIFT = { pt_word, "Drift", "Drift", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_KEYTRACK = { pt_word, "Keytrack", "Keytrack", 0,	0xfffe, 0xffff, MPF_STATE, 63<<8};
-CMachineParameter const paraFILTER_ENVELOPE = { pt_word, "Filter Envelope", "Filter Envelope", 0,	0xfffe, 0xffff, MPF_STATE, 90<<8 };
-CMachineParameter const paraFILTER_DRIVE = { pt_word, "Drive", "Drive", 0,	0xfffe, 0xffff, MPF_STATE, 90<<8 };
+CMachineParameter const paraFILTER_KEYTRACK = { pt_word, "Keytrack", "Keytrack", 0,	0xfffe, 0xffff, MPF_STATE, 63<<9};
+CMachineParameter const paraFILTER_ENVELOPE = { pt_word, "Filter Envelope", "Filter Envelope", 0,	0xfffe, 0xffff, MPF_STATE, 90<<9 };
+CMachineParameter const paraFILTER_DRIVE = { pt_word, "Drive", "Drive", 0,	0xfffe, 0xffff, MPF_STATE, 90<<9 };
 CMachineParameter const paraFILTER_ATTACK = { pt_word, "Filter Attack", "Filter Attack", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
-CMachineParameter const paraFILTER_DECAY = { pt_word, "Filter Decay", "Filter Decay", 0,	0xfffe, 0xffff, MPF_STATE, 40<<8 };
+CMachineParameter const paraFILTER_DECAY = { pt_word, "Filter Decay", "Filter Decay", 0,	0xfffe, 0xffff, MPF_STATE, 40<<9 };
 
-CMachineParameter const paraFILTER_ACCENT = { pt_word, "Accent Amount", "Accent Amount", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<8};
+CMachineParameter const paraFILTER_ACCENT = { pt_word, "Accent Amount", "Accent Amount", 0,	0xfffe, 0xffff, MPF_STATE, 80 <<9};
 
 CMachineParameter const paraAMP_VELOCITY = { pt_word, "Velocity", "Velocity", 0,	0xfffe, 0xffff, MPF_STATE, 0 };
 
@@ -236,8 +236,11 @@ public:
 	virtual char const *DescribeValue(int const param, int const value);
 	virtual void Stop();
 
+	virtual void MidiNote(int const channel, int const value, int const velocity);
+
 public:
 	BigFish *Fish;
+	int activenote;
 
 	float lastmingain;
 	bool IdleMode;
@@ -254,6 +257,7 @@ mi::mi()
 	GlobalVals = &gval;
 	Fish = NULL;
 	AttrVals = NULL;
+	activenote = -1;
 }
 
 mi::~mi()
@@ -442,6 +446,27 @@ char const *mi::DescribeValue(int const param, int const value)
 	return txt;
 }
 
+void mi::MidiNote(int const channel, int const value, int const velocity) 
+{
+	if (pCB->HostMIDIFiltering())
+	{
+		if (velocity == 0 && activenote == value)
+		{
+			Fish->SetGate(FISHGATE_GATE, 0);
+		}
+		else if (velocity > 0)
+		{
+			activenote = value;
+			Fish->SetParam(AMP_VELOCITY, velocity * 512);
+			Fish->SetGate(FISHGATE_GATE, 0);
+			Fish->CheckGates();
+			Fish->SetGate(FISHGATE_GATE, 1);
+			Fish->SetNote(activenote);
+		}
+	}
+
+}
+
 void mi::Tick()
 {
 	for (int i = 0; i < __PARAMCOUNT; i++)
@@ -490,6 +515,6 @@ void mi::Stop()
 bool mi::Work(float *psamples, int numsamples, int const mode)
 {
 	Fish->Process(psamples, numsamples);
-
-	return true;
+	for (int i = 0; i < numsamples; i++) if (psamples[i] != 0) return true;
+	return false;
 }

@@ -690,6 +690,23 @@ void UI_SelectOption()
 
 }
 
+
+void UI_GlobalSettings()
+{
+	if (pressed(&algosw_state))
+	{
+		Tuesday.UIMode = UI_NORMAL;
+		SaveSettingsEeprom();
+		return;
+	}
+
+	if (pressed(&tpbsw_state))
+	{
+		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1 )  % 4;
+	}
+
+}
+
 void UI_Calibration()
 {
 	if (pressed(&algosw_state))
@@ -835,6 +852,9 @@ int main(void)
 	LoadEeprom();
 	LoadEepromSettings();
 	LoadEepromCalibration();
+
+
+
 	TI1_Enable();
 	AD1_Measure(FALSE);
 
@@ -896,6 +916,8 @@ int main(void)
 		case UI_SELECTOPTION: UI_SelectOption(); break;
 
 		case UI_CALIBRATION: UI_Calibration(); break;
+
+		case UI_GLOBALSETTINGS: UI_GlobalSettings(); break;
 
 		case UI_NORMAL: UI_Normal(); break;
 

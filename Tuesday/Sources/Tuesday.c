@@ -38,6 +38,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	
 	SetPatternFunc(ALGO_RANDOM, &Algo_Random_Gen, &Algo_Random_Init, &NoPatternInit, 1);
 
+	P->TicksPerMeasure = 96;
 	P->ClockConnected = 0;
 	P->lastnote = 0;
 	P->CoolDown = 0;
@@ -216,7 +217,7 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 //		}
 
 		int bpm = 1 + (200 * T->tempo) / 256;
-		int msecperbeat = (1000 * 60) / (96 * (bpm/4));
+		int msecperbeat = (1000 * 60) / (T->TicksPerMeasure * (bpm/4));
 
 
 		if (clockmode == 0)
@@ -248,7 +249,7 @@ void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 		P->Gates[GATE_CLOCK] = GATE_MINGATETIME;
 
 
-		if (P->clockssincereset >= 96)
+		if (P->clockssincereset >= P->TicksPerMeasure)
 		{
 			P->clockssincereset = 0;
 			P->Measure++;
@@ -257,7 +258,7 @@ void Tuesday_Clock(struct Tuesday_PatternGen *P, int ClockVal)
 
 
 		//if (clockshad >= 96 / (Pattern.TPB * 4) || directtick == 1)
-		P->NewTick = (P->Measure * (P->CurrentPattern.TPB * 4)  + ((P->clockssincereset * (P->CurrentPattern.TPB * 4))/96)) % P->CurrentPattern.Length;
+		P->NewTick = (P->Measure * (P->CurrentPattern.TPB * 4)  + ((P->clockssincereset * (P->CurrentPattern.TPB * 4))/P->TicksPerMeasure)) % P->CurrentPattern.Length;
 		if (P->DoReset == 1)
 		{
 			P->DoReset = 0;
@@ -342,7 +343,7 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params
 			if (P->extclockssinceresetcounter[i] == i)
 			{
 				P->extclockssinceresetcounter[i] = 0;
-				P->extclockssincereset[i] = (P->extclockssincereset[i] + 1)%96;
+				P->extclockssincereset[i] = (P->extclockssincereset[i] + 1)%P->TicksPerMeasure;
 			}
 		}
 		P->timesincelastclocktick = 0;

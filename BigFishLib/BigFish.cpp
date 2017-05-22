@@ -388,9 +388,10 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 
 	float FilterEnvScale = (fish->Parameters[FILTER_ENVELOPE] - 32768) / 32768.0f;
 	if (FilterEnvScale > 0) FilterEnvScale *= FilterEnvScale; else FilterEnvScale *= -FilterEnvScale;
+	
+	ADSR_Update(&fish->FilterEnvelope, fish->SampleRate/len);
 
-
-	int32_t FilterEnvResult = ADSR_GetCurved(&fish->FilterEnvelope, fish->SampleRate / len);
+	int32_t FilterEnvResult = ADSR_GetCurved(&fish->FilterEnvelope);
 
 	if (sr.index != FILTERKEYTRACK_OFF || sr.fractional != 0)
 	{
@@ -522,6 +523,8 @@ void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_
 	int32_t crossfade = sr.fractional;
 	int32_t icrossfade = 256 - crossfade;
 
+	ADSR_Update(&fish->AmpEnvelope, fish->SampleRate);
+
 	while (len > 0)
 	{
 		int L = __min(len, MAXFISHBUFFER);
@@ -531,7 +534,7 @@ void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_
 		
 		for (int i = 0; i < L; i++)
 		{
-			int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope, fish->SampleRate);
+			int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope);
 			OSC[i] = (((B[i] * crossfade + A[i] * icrossfade) / 256));
 			int64_t inter = ((int64_t)OSC[i] * (int64_t)AmpEnvelope);
 			inter /= (int64_t)65536;

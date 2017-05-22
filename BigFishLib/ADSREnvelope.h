@@ -42,6 +42,12 @@ typedef struct ADSR_Envelope_t
 	uint16_t D;
 	uint16_t S;
 	uint16_t R;
+
+	int32_t Aconv;
+	int32_t Dconv;
+	int32_t Sconv;
+	int32_t Rconv;
+
 	uint16_t Curvature;
 	unsigned char AttackCurve;
 
@@ -69,11 +75,13 @@ typedef struct ADSR_Envelope_t
 	int32_t CurrentTarget;
 } ADSR_Envelope_t;
 
-int ADSR_Get(struct ADSR_Envelope_t *Env, int SampleRate);
-int ADSR_GetCurved(struct ADSR_Envelope_t *Env, int SampleRate);
+int ADSR_Get(struct ADSR_Envelope_t *Env);
+int ADSR_GetCurved(struct ADSR_Envelope_t *Env);
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackTable);
 void ADSR_Trigger(struct ADSR_Envelope_t *Env, unsigned char N);
 void ADSR_BuildTable();
+void ADSR_Update(struct ADSR_Envelope_t *Env, int SampleRate);
+
 uint32_t GetExpTable(uint32_t inp, int table);
 
 #endif
