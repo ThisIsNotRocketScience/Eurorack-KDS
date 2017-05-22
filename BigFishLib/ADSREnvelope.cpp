@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+#define ENVFIXMAX ((1<<ENVFIXEDBITS)-1)
 #define EXPTABLEBITS 8
 #define EXPTABLELENGTH (1<<EXPTABLEBITS)
 
@@ -26,19 +27,35 @@ void ADSR_BuildTable()
 	};
 };
 
+__inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
+{
+	uint64_t R = A;
+	A += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
+	return (uint32_t)A;
+}
+
+__inline uint32_t FixedScale(uint32_t A, uint32_t B)
+{
+	uint64_t R = A;
+	R *= (int64_t)ENVFIXMAX;
+	R /= (int64_t)B;
+	return (int)R;
+
+}
+
 uint32_t GetExpTable(uint32_t inp,int table)
 {
 	int i1 = inp >> 24;
 	int i2 = i1 + 1;
 	if (i2 == EXPTABLELENGTH)
 	{
-		return exptable[table][EXPTABLELENGTH - 1];
+		return exptable[table][EXPTABLELENGTH - 1] << (ENVFIXEDBITS - 16);
 	}
 	uint32_t fracmask = 0x00ffffff;
 	uint32_t frac = (inp & fracmask);
 	frac >>= EXPTABLEBITS;
 	uint32_t ifrac = 0x10000 - frac;
-	return ((exptable[table][i1] * ifrac)>>16)  + ((exptable[table][i2] * frac)>>16);
+	return (((exptable[table][i1] * ifrac)>>16)  + ((exptable[table][i2] * frac)>>16)) << (ENVFIXEDBITS-16);
 }
 
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackCurve)
@@ -206,7 +223,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		int L = Env->Aconv;
 		int32_t Delta = ENVFIXED(1) / L;
 		Env->Current += Delta;
-		Env->AttackProgress = ((Env->Current - Env->AttackStart) * ENVFIXED(1)) / __max(1, (ENVFIXED(1) - Env->AttackStart));
+		Env->AttackProgress = FixedScale((Env->Current - Env->AttackStart) , __max(1, (ENVFIXED(1) - Env->AttackStart)));
 
 
 
@@ -218,13 +235,22 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		else
 		{
 			uint32_t AP = Env->AttackProgress;
-			if (AP > 0xffff) AP = 0xffffffff; else AP <<= 16;
-
+			int M = ENVFIXMAX;
+			if (AP > M)
+			{
+				AP = 0xffffffff;
+			}
+			else
+			{
+				AP <<= (32 - ENVFIXEDBITS);
+			}
 			uint32_t ExpT = GetExpTable(AP, Env->AttackCurve);
-			uint32_t ExpTM = ExpT * (ENVFIXED(1) - Env->AttackStart);
-			uint32_t ExpTD = ExpTM / ENVFIXED(1);
-			ExpTD += Env->AttackStart;
-			Env->CurvedOutput = ExpTD;
+
+			
+//			uint32_t ExpTM = ExpT * (ENVFIXED(1) - Env->AttackStart);
+	//		uint32_t ExpTD = ExpTM / ENVFIXED(1);
+		//	ExpTD += Env->AttackStart;
+			Env->CurvedOutput = FixedMac(Env->AttackStart, ExpT, ENVFIXED(1) - Env->AttackStart);;
 		}
 	}
 	break;
@@ -234,16 +260,12 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		int32_t SusLev = Env->Sconv;
 		Env->CurrentTarget = SusLev;
 
-		int32_t Delta = -(ENVFIXED(1) - SusLev) / Env->Dconv;
+		int32_t Delta =  -(ENVFIXED(1) - SusLev) / Env->Dconv;
 		Env->Current += Delta;
 		if (Env->DecayStart > SusLev)
-		{
-			int32_t waytogo = Env->Current - SusLev;
-			uint32_t L = ENVFIXED(1) - SusLev;
-			uint32_t Travel = Env->Current - SusLev;
-			Travel *= ENVFIXED(1);
+		{			
 			
-			Env->DecayProgress = Travel / L;
+			Env->DecayProgress = FixedScale(Env->Current - SusLev, __max(1, ENVFIXED(1) - SusLev));
 			Env->DecayProgress = ENVFIXED(1) - Env->DecayProgress;
 		}
 		else
@@ -267,11 +289,13 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		else
 		{
 			uint32_t DP = Env->DecayProgress;
-			if (DP > 0xffff) DP = 0xffffffff; else DP <<= 16;
-			uint32_t EXPT = 0xffff - GetExpTable(DP, ENVTABLE_EXP);
-			uint32_t scaler = ENVFIXED(1) - SusLev;
-			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
-			Env->CurvedOutput = SusLev + curved;
+			if (DP > ENVFIXMAX ) DP = 0xffffffff; else DP <<= (32 - ENVFIXEDBITS);			
+			uint32_t EXPT = ENVFIXMAX - GetExpTable(DP, ENVTABLE_EXP);
+			uint32_t scaler = ENVFIXMAX - SusLev;
+
+			Env->CurvedOutput = FixedMac(SusLev, EXPT, scaler);
+//			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
+	//		Env->CurvedOutput = SusLev + curved;
 		}
 	}
 	break;
@@ -294,9 +318,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		int32_t Delta = -Env->ReleaseStart / Env->Rconv;
 		if (Delta == 0) Delta = -1;
 		Env->Current += Delta;
-		int64_t T = (((Env->ReleaseStart - Env->Current)) * (int64_t)ENVFIXED(1));
-		T /= (int64_t)__max(1, (Env->ReleaseStart));
-		Env->ReleaseProgress = (int)T;// (((Env->ReleaseStart - Env->Current)) * ENVFIXED(1)) / __max(1, (Env->ReleaseStart));
+		Env->ReleaseProgress = FixedScale(Env->ReleaseStart - Env->Current, __max(1, (Env->ReleaseStart)));
 
 		if (Env->Current <= 0)
 		{
@@ -314,14 +336,13 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		else
 		{
 			uint32_t RP = Env->ReleaseProgress;
-			if (RP > 0xffff) RP = 0xffffffff; else RP <<= 16;
-			uint32_t EXPT = 0xffff - GetExpTable(((uint32_t)RP), ENVTABLE_EXP);
-			uint32_t scaler = Env->ReleaseStartCurved;
-			uint32_t curved = (EXPT * scaler) / ENVFIXED(1);
-			Env->CurvedOutput = curved;
+			if (RP > ENVFIXMAX) RP = 0xffffffff; else RP <<= (32 - ENVFIXEDBITS);
 
-		}
-		
+			uint32_t EXPT = ENVFIXMAX - GetExpTable(((uint32_t)RP), ENVTABLE_EXP) ;
+			uint32_t scaler = Env->ReleaseStartCurved;
+			uint32_t curved = FixedMac(0, EXPT, scaler);
+			Env->CurvedOutput = curved;
+		}		
 	}
 	break;
 

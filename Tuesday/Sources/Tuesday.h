@@ -241,6 +241,7 @@ extern "C"
 	extern void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P);
 	extern void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
 	extern void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed);
+	extern void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S);
 
 	extern void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
 	extern void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);

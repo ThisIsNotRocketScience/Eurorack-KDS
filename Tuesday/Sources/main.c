@@ -493,7 +493,7 @@ void NOINLINE _SetupLeds()
 	case UI_GLOBALSETTINGS:
 		{
 			int S = Settings.ClockSubDivMode;
-			ShowSets(0,0,0,S);
+			ShowSets(0,0,S,0);
 		}
 		break;
 	case UI_CALIBRATION:
@@ -691,11 +691,13 @@ void UI_SelectOption()
 }
 
 
+
 void UI_GlobalSettings()
 {
 	if (pressed(&algosw_state))
 	{
 		Tuesday.UIMode = UI_NORMAL;
+		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
 		SaveSettingsEeprom();
 		return;
 	}
@@ -703,6 +705,8 @@ void UI_GlobalSettings()
 	if (pressed(&tpbsw_state))
 	{
 		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1 )  % 4;
+		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
+
 	}
 
 }
@@ -853,7 +857,7 @@ int main(void)
 	LoadEepromSettings();
 	LoadEepromCalibration();
 
-
+	Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
 
 	TI1_Enable();
 	AD1_Measure(FALSE);
@@ -886,6 +890,7 @@ int main(void)
 	ShiftOut();
 
 
+	Tuesday.UIMode = UI_NORMAL;
 
 	if (islongpress( &scalesw_state))
 	{
@@ -897,14 +902,17 @@ int main(void)
 
 		if (islongpress( &tpbsw_state))
 		{
-			FactoryReset(0);
+			Tuesday.UIMode = UI_GLOBALSETTINGS;
 		}
-		if (islongpress( &beatsw_state))
+		else
 		{
-			FactoryReset(1);
-		}
+			if (islongpress( &beatsw_state))
+			{
+				FactoryReset(1);
+			}
 
-		Tuesday.UIMode = UI_NORMAL;
+			Tuesday.UIMode = UI_NORMAL;
+		}
 	}
 
 	for (;;)

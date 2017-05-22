@@ -386,6 +386,7 @@ void RunTest(const char * name, int i)
 
 	printf("%s (%d): \tmin %d \tmax %d\tavg:%2f\tHas Offs: %d\n", name, i, min, max, avg, HasOffs ? 1 : 0);
 }
+
 void CalTest()
 {
 	for (int i = 0; i < 4096; i += 256)
@@ -394,6 +395,7 @@ void CalTest()
 		printf("%d %d\n", i, R);
 	}
 }
+
 void PrintPlot(int V, int min, int max)
 {
 	float F = (V - min) / (float)(max - min);
@@ -440,15 +442,17 @@ void ExpTest()
 	ADSR_BuildTable();
 	ADSR_Envelope_t Env;
 	ADSR_Init(&Env, ENVMODE_GATE, 0, ENVTABLE_LOG);
-	Env.A = 140;
-	Env.D = 140;
+	Env.A = 140<<1;
+	Env.D = 140<<2;
 	Env.S = 150;
-	Env.R = 160;
+	Env.R = 160<<1;
 	ADSR_Trigger(&Env, 1);
+	ADSR_Update(&Env, 1000);
 	for (int i = 0; i < 1000; i++)
 	{
-		int R = ADSR_Get(&Env, 10000);
-		int R2 = Env.CurvedOutput;
+
+		int R = ADSR_Get(&Env);
+		int R2 = Env.CurvedOutput >> (ENVFIXEDBITS - 16);
 		if (i == 500) ADSR_Trigger(&Env, 0);
 		//if (i%10 == 0) PrintPlot(R, 0, 0xffff);
 		if (i % 10 == 0) PrintPlot2(R,R2, 0, 0xffff);

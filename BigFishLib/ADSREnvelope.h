@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define ENVFIXEDBITS 16
+#define ENVFIXEDBITS 20
 
 #define ENVFRACMASK ((1<<ENVFIXEDBITS) - 1)
 
@@ -71,8 +71,8 @@ typedef struct ADSR_Envelope_t
 	int32_t ReleaseProgress;
 
 
-	int32_t Current;
-	int32_t CurrentTarget;
+	uint32_t Current;
+	uint32_t CurrentTarget;
 } ADSR_Envelope_t;
 
 int ADSR_Get(struct ADSR_Envelope_t *Env);

@@ -15,6 +15,17 @@ void NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternIni
 	PF->Dither = dither;
 }
 
+void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S)
+{
+	switch(S->ClockSubDivMode % 4)
+	{
+	case 0: P->TicksPerMeasure = 4 * 4;break;
+	case 1: P->TicksPerMeasure = 8 * 4;break;
+	case 2: P->TicksPerMeasure = 16 * 4;break;
+	case 3: P->TicksPerMeasure = 24 * 4;break;
+	}
+}
+
 void Tuesday_Init(struct Tuesday_PatternGen *P)
 {
 	for (int i = 0; i < ALGO_COUNT; i++)
