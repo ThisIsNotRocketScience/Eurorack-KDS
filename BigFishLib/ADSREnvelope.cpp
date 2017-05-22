@@ -305,8 +305,16 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		int32_t SusLev = Env->Sconv;
 		Env->CurrentTarget = SusLev;
 
-		int32_t Delta = (Env->Sconv - Env->Current) / 5;
+		int32_t Delta = ((int32_t )Env->Sconv - (int32_t )Env->Current) / 5;
+		if (Delta < 0)
+		{
+	
 		Env->Current += Delta;
+		}
+		else
+		{
+			Env->Current += Delta;
+		}
 		Env->CurvedOutput = Env->Current;
 	}
 	break;

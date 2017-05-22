@@ -478,7 +478,7 @@ void mi::Tick()
 			case FILTER_TYPE:
 			{
 				int F = gval.params[i];
-				int filtermode = (((int32_t)F) * 65536) / (__FILTERTYPE_COUNT-1 );
+				int filtermode = (((int32_t)F) * 65535) / (__FILTERTYPE_COUNT-1 );
 				Fish->Fish.Parameters[FILTER_TYPE] = filtermode;
 				
 

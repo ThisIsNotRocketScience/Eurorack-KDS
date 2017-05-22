@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
     <ClCompile Include="..\..\Tuesday\Sources\main.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />

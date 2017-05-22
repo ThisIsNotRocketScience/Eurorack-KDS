@@ -417,7 +417,7 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 
 	if (freq < 30) freq = 30; else if (freq > 20000) freq = 20000;
 
-	int mode = (fish->Parameters[FILTER_TYPE] * (__FILTERTYPE_COUNT - 1)) / 65536;
+	int mode = (fish->Parameters[FILTER_TYPE] * (__FILTERTYPE_COUNT - 1)) / 65535;
 
 	if (mode == FILTERTYPE_VOCAL)
 	{

@@ -306,9 +306,9 @@ float HyperOsc_Get(struct HyperOsc_t *osc)
 	for (int o = 0; o < osc->HyperSet.Active; o++)
 	{
 		osc->mPhase[o] += osc->mPhaseIncrement[o];
-		while (osc->mPhase[o] >= 1.0f)
+		if (osc->mPhase[o] >= 1.0f)
 		{
-			osc->mPhase[o] -= 1.0f;
+			while (osc->mPhase[o] >= 1.0f) osc->mPhase[o] -= 1.0f;
 			float exactCrossTime = 1.0f - ((osc->mPhaseIncrement[o] - osc->mPhase[o]) / osc->mPhaseIncrement[o]);
 			AddBlep(osc->circularBuffer, osc->index, osc->HyperSet.Level[o] * 2, exactCrossTime);
 		}
