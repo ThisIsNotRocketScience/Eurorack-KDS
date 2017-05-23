@@ -280,7 +280,7 @@ public:
 		}
 		if (NoteTimes[highest] > -1)
 		{
-			if (highest != activenote)
+			if (note != activenote)
 			{
 
 				activenote = highest;

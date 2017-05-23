@@ -280,18 +280,14 @@ public:
 		}
 		if (NoteTimes[highest] > -1)
 		{
-			if (highest != activenote)
-			{
+			activenote = highest;
 
-				activenote = highest;
-
-
-				Fish->SetParam(AMP_VELOCITY, NoteVelocities[highest] * 512);
-				Fish->SetGate(FISHGATE_GATE, 0);
-				Fish->CheckGates();
-				Fish->SetGate(FISHGATE_GATE, 1);
-				Fish->SetNote(activenote);
-			}
+			
+			Fish->SetParam(AMP_VELOCITY, NoteVelocities[highest] * 512);
+			Fish->SetGate(FISHGATE_GATE, 0);
+			Fish->CheckGates();
+			Fish->SetGate(FISHGATE_GATE, 1);
+			Fish->SetNote(activenote);
 
 		}
 		else
@@ -517,7 +513,7 @@ void mi::MidiNote(int const channel, int const value, int const velocity)
 {
 	if (pCB->HostMIDIFiltering())
 	{
-		if (velocity == 0)
+		if (velocity == 0 && activenote == value)
 		{
 			RemoveNoteFromStack(value);
 			

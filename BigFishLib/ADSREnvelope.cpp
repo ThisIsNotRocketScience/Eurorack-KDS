@@ -27,21 +27,39 @@ void ADSR_BuildTable()
 	};
 };
 
+
+
 __inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
 {
+
+//	return A + (((B >> 8) * (C >> 8)) >> 16);
+
 	uint64_t R = A;
-	A += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
-	return (uint32_t)A;
+	R += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
+	return (uint32_t)R;
 }
 
 __inline uint32_t FixedScale(uint32_t A, uint32_t B)
 {
+//	return (((B << 8) / (B)));
+
 	uint64_t R = A;
 	R *= (int64_t)ENVFIXMAX;
 	R /= (int64_t)B;
-	return (int)R;
-
+	return (uint32_t)R;
 }
+
+__inline int32_t iFixedScale(int32_t A, int32_t B)
+{
+	//	return (((B << 8) / (B)));
+
+	int64_t R = A;
+	R *= (int64_t)ENVFIXMAX;
+	R /= (int64_t)B;
+	return (int32_t)R;
+}
+
+
 
 uint32_t GetExpTable(uint32_t inp,int table)
 {
@@ -197,7 +215,7 @@ static int32_t EnvelopeLength(int inp, int speed, int samplerate)
 
 static int32_t SustainLevel(int sus)
 {
-	return (sus * ENVFIXED(1)) >> 10;
+	return (sus * ((1<<(ENVFIXEDBITS - 10)) -1));
 }
 
 void ADSR_Update(struct ADSR_Envelope_t *Env, int SampleRate)
@@ -259,9 +277,10 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 	{
 		int32_t SusLev = Env->Sconv;
 		Env->CurrentTarget = SusLev;
-
-		int32_t Delta =  -(ENVFIXED(1) - SusLev) / Env->Dconv;
-		Env->Current += Delta;
+		int32_t travel = (ENVFIXED(1) - SusLev);
+		int32_t Delta = travel/Env->Dconv;
+		Env->Current -= Delta;
+		
 		if (Env->DecayStart > SusLev)
 		{			
 			
@@ -323,7 +342,8 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 	{
 		Env->CurrentTarget = 0;
 
-		int32_t Delta = -Env->ReleaseStart / Env->Rconv;
+		int32_t Delta = Env->ReleaseStart / Env->Rconv;
+		Delta = -Delta;
 		if (Delta == 0) Delta = -1;
 		Env->Current += Delta;
 		Env->ReleaseProgress = FixedScale(Env->ReleaseStart - Env->Current, __max(1, (Env->ReleaseStart)));
@@ -368,35 +388,7 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 		Env->StateLeds[i] = 0;
 	}
 
-	if (Env->State != ENVSTATE_IDLE)
-	{
-		int32_t L1 = (Env->AttackProgress * 7 + Env->DecayProgress * 7) / 2;
-		int idx = L1 >> ENVFIXEDBITS;
-		uint8_t frac = (uint8_t)((L1 & ENVFRACMASK) >> (ENVFIXEDBITS - 8));
-
-		if (idx >= 0)
-		{
-			if (idx <= 7) Env->StateLeds[(idx + 1)] = frac;
-			if (idx < 7)  Env->StateLeds[(idx)] = ~frac;
-		}
-
-		if (Env->State == ENVSTATE_SUSTAIN)
-		{
-			Env->StateLeds[7] = 255;
-			Env->StateLeds[8] = 255;
-		}
-
-		if (Env->State == ENVSTATE_RELEASE)
-		{
-			L1 = (Env->ReleaseProgress) * (4) + (0);
-			idx = (L1 >> ENVFIXEDBITS) + 9;
-			frac = (uint8_t)((L1 & ENVFRACMASK) >> (ENVFIXEDBITS - 8));
-
-			if (idx < 12) Env->StateLeds[(idx + 1)] = frac;
-			if (idx < 13) Env->StateLeds[(idx)] = ~frac;
-		}
-	}
-
+	
 	Env->LinearOutput = Env->Current;
 
 	return Env->LinearOutput >> (ENVFIXEDBITS - 16);
