@@ -6,7 +6,7 @@
 
 #define SINETABLE_BITS	11
 #define SINETABLE_SIZE	(1 << SINETABLE_BITS)
-static uint16_t const SineTable[SINETABLE_SIZE +1];
+static uint16_t const SineTable[SINETABLE_SIZE + 1] = {0};
 
 inline int16_t FixedSin(uint32_t const phase)
 {
