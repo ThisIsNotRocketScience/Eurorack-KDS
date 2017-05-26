@@ -19,7 +19,7 @@ by the component.
 <tr><td colspan="4" class="ttitle1">LATCH Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
 <tr><td>0x40048038</td><td>SIM_SCGC5</td>
-<td class="regNotResetVal">0x00041D82</td>
+<td class="regNotResetVal">0x00041182</td>
  <td>SIM_SCGC5 register, peripheral LATCH.</td></tr>
 <tr><td>0x400FF0D4</td><td>GPIOD_PDDR</td>
 <td class="regNotResetVal">0x00000001</td>
@@ -84,13 +84,13 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40048038</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00041D82</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00041182</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00040182</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>13</td><td>PORTE</td><td>0x00</td><td>Port E Clock Gate Control</td>
 <tr><td>12</td><td>PORTD</td><td>0x01</td><td>Port D Clock Gate Control</td>
-<tr><td>11</td><td>PORTC</td><td>0x01</td><td>Port C Clock Gate Control</td>
-<tr><td>10</td><td>PORTB</td><td>0x01</td><td>Port B Clock Gate Control</td>
+<tr><td>11</td><td>PORTC</td><td>0x00</td><td>Port C Clock Gate Control</td>
+<tr><td>10</td><td>PORTB</td><td>0x00</td><td>Port B Clock Gate Control</td>
 <tr><td>9</td><td>PORTA</td><td>0x00</td><td>Port A Clock Gate Control</td>
 <tr><td>0</td><td>LPTMR</td><td>0x00</td><td>Low Power Timer Access Control</td>
 </tr></table>

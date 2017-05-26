@@ -41,7 +41,7 @@
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\PDD\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\IO_Map\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Static_Code\Peripherals\</Path>
-      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
+      <Path>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Sources\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\goldfish\Generated_Code\</Path>
     </IncludePaths>

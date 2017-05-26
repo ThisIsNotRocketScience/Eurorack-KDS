@@ -7,7 +7,7 @@
 **     Version     : Component 01.100, Driver 1.1, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-24, 02:55, # CodeGen: 2
+**     Date/Time   : 2017-05-26, 00:39, # CodeGen: 34
 **     Abstract    :
 **
 **     Settings    :
@@ -274,7 +274,7 @@
 **                  Pin 5                                  : <Automatic>
 **                  Direction                              : <Automatic>
 **                  Pin 6                                  : <Automatic>
-**                  Direction                              : <Automatic>
+**                  Direction                              : Output
 **                  Pin 7                                  : CMP0_IN1/PTC7/SPI0_SIN/USB_SOF_OUT/I2S0_RX_FS
 **                  Direction                              : Output
 **                  Pin 8                                  : ADC1_SE4b/CMP0_IN2/PTC8/I2S0_MCLK
@@ -321,7 +321,7 @@
 **              Peripheral Type I2S                        : 
 **                Custom name                              : I2S0
 **                I2S0                                     : 
-**                  MCLK - Master clock                    : <Automatic>
+**                  MCLK - Master clock                    : CMP0_IN0/PTC6/LLWU_P10/SPI0_SOUT/PDB0_EXTRG/I2S0_RX_BCLK/I2S0_MCLK
 **                  RX_BCLK - RX bit clock                 : <Automatic>
 **                  Direction                              : <Automatic>
 **                  RX_FS - RX frame sync                  : <Automatic>
@@ -718,8 +718,8 @@
 **                Open drain                               : <Automatic>
 **                Drive strength                           : <Automatic>
 **                Passive filter                           : <Automatic>
-**                Pull select                              : <Automatic>
-**                Pull enable                              : <Automatic>
+**                Pull select                              : Pullup
+**                Pull enable                              : Enabled
 **              Pin 46: CMP1_IN1/PTC3/LLWU_P7/SPI0_PCS1/UART1_RX/FTM0_CH2/CLKOUT/I2S0_TX_BCLK/LPUART0_RX: 
 **                Custom name, Signal name                 : CMP1_IN1/PTC3/LLWU_P7/SPI0_PCS1/UART1_RX/FTM0_CH2/CLKOUT/I2S0_TX_BCLK/LPUART0_RX
 **                Slew rate                                : <Automatic>
@@ -829,8 +829,8 @@
 **                Open drain                               : <Automatic>
 **                Drive strength                           : <Automatic>
 **                Passive filter                           : <Automatic>
-**                Pull select                              : <Automatic>
-**                Pull enable                              : <Automatic>
+**                Pull select                              : Pullup
+**                Pull enable                              : Enabled
 **                Digital filter                           : <Automatic>
 **              Pin 61: PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/EWM_IN/SPI1_PCS0: 
 **                Custom name, Signal name                 : PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/EWM_IN/SPI1_PCS0

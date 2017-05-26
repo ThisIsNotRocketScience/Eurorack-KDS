@@ -173,11 +173,6 @@
     <ClInclude Include="..\..\Tuesday\Sources\main.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BigFishLib\BigFishLib.vcxproj">
-      <Project>{8679d3d1-4cb0-45a8-a4f1-f37a58fccae3}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

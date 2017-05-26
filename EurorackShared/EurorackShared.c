@@ -1,9 +1,10 @@
 #include "EurorackShared.h"
-
+#ifndef BIGFISH
 #ifndef WIN32
 #include "DAC.c"
 #include "Eeprom.c"
 #include "LEDS.c"
+#endif
 #endif
 
 struct EuroRack_Calibration MasterCalibration;

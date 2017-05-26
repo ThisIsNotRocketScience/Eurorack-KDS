@@ -39,34 +39,9 @@
 extern "C" {
 #endif 
 
-
+extern void Timer10khz();
+extern void ADCMUXING();
 /* User includes (#include below this line is not maintained by Processor Expert) */
-
-/*
-** ===================================================================
-**     Event       :  AD1_OnMeasurementComplete (module Events)
-**
-**     Component   :  AD1 [ADC_LDD]
-*/
-/*!
-**     @brief
-**         Called after measurement is done, [Interrupt service/event]
-**         is enabled, OnMeasurementComplete event is enabled and ADC
-**         device is enabled. See [SetEventMask()] method or [Event
-**         mask] property group to enable this event and [Enable]
-**         method or [Enabled in init. code] property to enable ADC
-**         device. If DMA is enabled , this event is called after the
-**         configured number of measurements and DMA transfer is done.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. The pointer is passed
-**                           as the parameter of Init method. 
-*/
-/* ===================================================================*/
-void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
-{
-  /* Write your code here ... */
-}
 
 /*
 ** ===================================================================
@@ -91,53 +66,7 @@ void AD1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void ADMUXED_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
 {
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Event       :  CI2C1_OnMasterBlockSent (module Events)
-**
-**     Component   :  CI2C1 [I2C_LDD]
-*/
-/*!
-**     @brief
-**         This event is called when I2C in master mode finishes the
-**         transmission of the data successfully. This event is not
-**         available for the SLAVE mode and if MasterSendBlock is
-**         disabled. 
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. This pointer is passed
-**                           as the parameter of Init method.
-*/
-/* ===================================================================*/
-void CI2C1_OnMasterBlockSent(LDD_TUserData *UserDataPtr)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Event       :  CI2C1_OnMasterBlockReceived (module Events)
-**
-**     Component   :  CI2C1 [I2C_LDD]
-*/
-/*!
-**     @brief
-**         This event is called when I2C is in master mode and finishes
-**         the reception of the data successfully. This event is not
-**         available for the SLAVE mode and if MasterReceiveBlock is
-**         disabled.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. This pointer is passed
-**                           as the parameter of Init method.
-*/
-/* ===================================================================*/
-void CI2C1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr)
-{
-  /* Write your code here ... */
+	ADCMUXING();
 }
 
 /*
@@ -154,6 +83,190 @@ void CI2C1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr)
 */
 /* ===================================================================*/
 void Cpu_OnNMI(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  TI1_OnInterrupt (module Events)
+**
+**     Component   :  TI1 [TimerInt_LDD]
+*/
+/*!
+**     @brief
+**         Called if periodic event occur. Component and OnInterrupt
+**         event must be enabled. See [SetEventMask] and [GetEventMask]
+**         methods. This event is available only if a [Interrupt
+**         service/event] is enabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer passed as
+**                           the parameter of Init method.
+*/
+/* ===================================================================*/
+void TI1_OnInterrupt(LDD_TUserData *UserDataPtr)
+{
+	Timer10khz();
+}
+
+/*
+** ===================================================================
+**     Event       :  ADMUXED_OnEnd (module Events)
+**
+**     Component   :  ADMUXED [ADC]
+**     Description :
+**         This event is called after the measurement (which consists
+**         of <1 or more conversions>) is/are finished.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+extern int Measuring;
+void ADMUXED_OnEnd(void)
+{
+	Measuring = 0;
+
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ADMUXED_OnCalibrationEnd (module Events)
+**
+**     Component   :  ADMUXED [ADC]
+**     Description :
+**         This event is called when the calibration has been finished.
+**         User should check if the calibration pass or fail by
+**         Calibration status method./nThis event is enabled only if
+**         the <Interrupt service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ADMUXED_OnCalibrationEnd(void)
+{
+  /* Write your code here ... */
+}
+
+
+#define BLOCK_SIZE 10U
+#define SLOTS_PER_FRAME 1U
+
+extern volatile bool DataReceivedFlag;
+extern volatile bool DataSentFlag;
+extern volatile uint8_t TxCounter;
+extern volatile LDD_SSI_TError ComError;
+extern LDD_TError Error;
+extern LDD_TDeviceData *MyI2SPtr;
+extern void NextBlock();
+
+/*
+** ===================================================================
+**     Event       :  SSI1_OnBlockSent (module Events)
+**
+**     Component   :  SSI1 [SSI_LDD]
+*/
+/*!
+**     @brief
+**         This event is called after the last character from the
+**         output buffer is moved to the transmitter. This event is
+**         available only if the SendBlock method is enabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void SSI1_OnBlockSent(LDD_TUserData *UserDataPtr)
+{
+  DataSentFlag = TRUE;
+//  SSI1_DisableTransfer(SSI1_DeviceData, LDD_SSI_TRANSMITTER);
+
+  NextBlock();
+}
+
+/*
+** ===================================================================
+**     Event       :  SSI1_OnBlockReceived (module Events)
+**
+**     Component   :  SSI1 [SSI_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when the requested number of data is
+**         moved to the input buffer. This event is available only if
+**         the ReceiveBlock method is enabled.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void SSI1_OnBlockReceived(LDD_TUserData *UserDataPtr)
+{
+	// SSI1_DisableTransfer(MyI2SPtr, LDD_SSI_RECEIVER);         /* Disable receiver */
+	  DataReceivedFlag = TRUE;
+}
+
+/*
+** ===================================================================
+**     Event       :  SSI1_OnError (module Events)
+**
+**     Component   :  SSI1 [SSI_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when a channel error (not the error
+**         returned by a given method) occurs. The errors can be read
+**         using <GetError> method.
+**     @param
+**         UserDataPtr     - Pointer to the user or
+**                           RTOS specific data. The pointer is passed
+**                           as the parameter of Init method. 
+*/
+/* ===================================================================*/
+void SSI1_OnError(LDD_TUserData *UserDataPtr)
+{
+	 Error = SSI1_GetError(MyI2SPtr, (LDD_SSI_TError *)&ComError);
+}
+
+/*
+** ===================================================================
+**     Event       :  ADMAIN_OnEnd (module Events)
+**
+**     Component   :  ADMAIN [ADC]
+**     Description :
+**         This event is called after the measurement (which consists
+**         of <1 or more conversions>) is/are finished.
+**         The event is available only when the <Interrupt
+**         service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ADMAIN_OnEnd(void)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  ADMAIN_OnCalibrationEnd (module Events)
+**
+**     Component   :  ADMAIN [ADC]
+**     Description :
+**         This event is called when the calibration has been finished.
+**         User should check if the calibration pass or fail by
+**         Calibration status method./nThis event is enabled only if
+**         the <Interrupt service/event> property is enabled.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void ADMAIN_OnCalibrationEnd(void)
 {
   /* Write your code here ... */
 }

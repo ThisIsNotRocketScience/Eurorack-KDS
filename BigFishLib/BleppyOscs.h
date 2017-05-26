@@ -78,8 +78,8 @@ typedef struct HyperPulse_t
 
 
 
-extern float *blep;
-extern int32_t *intblep;
+extern const float blep[48*32*2];
+extern const int32_t intblep[48*32];
 
 
 void AddBlep(float *circbuffer, int index, float scale, float crosstime);

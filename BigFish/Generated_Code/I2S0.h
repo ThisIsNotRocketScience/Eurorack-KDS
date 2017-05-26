@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-24, 04:21, # CodeGen: 9
+**     Date/Time   : 2017-05-26, 01:39, # CodeGen: 36
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -20,41 +20,41 @@
 **            Clock setting                                : 
 **              Clock source                               : Core/System clock
 **              Clock multiplier                           : multiply by 1
-**              Clock divider                              : divide by 1
-**              Clock ratio                                : 1
+**              Clock divider                              : divide by 5
+**              Clock ratio                                : 5
 **              MCLK clock source/direction                : Internal
-**              MCLK out frequency                         : 120 MHz
+**              MCLK out frequency                         : 24 MHz
 **              Transmit clock setting                     : 
-**                Clock source                             : I2S0_MCLK_out
+**                Clock source                             : Bus_clock
 **                Bit clock divider                        : divide by 2
 **                Bit clock source/direction               : External
 **                Bit clock frequency                      : I2S0_BCLK_Pin
 **                Synchronous mode                         : Asynchronous
 **                Bit clock swap                           : no
-**                Bit clock input                          : internal
+**                Bit clock input                          : external
 **              Receive clock setting                      : 
-**                Clock source                             : I2S0_MCLK_out
+**                Clock source                             : Bus_clock
 **                Bit clock divider                        : divide by 2
 **                Bit clock source/direction               : External
 **                Bit clock frequency                      : I2S0_BCLK_Pin
-**                Synchronous mode                         : Asynchronous
+**                Synchronous mode                         : Synchronous with transmitter
 **                Bit clock swap                           : no
-**                Bit clock input                          : internal
+**                Bit clock input                          : external
 **            Transmit configuration                       : 
 **              Frame sync source/direction                : External
 **              Frame sync mode                            : Continuous
-**              Frame sync active state                    : High
-**              Frame sync initiated                       : first bit of data
-**              Frame sync width [bits]                    : 1
-**              Frame size [words]                         : 1
-**              Shift direction                            : LSB first
-**              Data clocked out on                        : rising edge
-**              First bit shifted index                    : 0
-**              Word 0 width [bits]                        : 8
-**              Word N width [bits]                        : 8
+**              Frame sync active state                    : Low
+**              Frame sync initiated                       : one bit before the data
+**              Frame sync width [bits]                    : 32
+**              Frame size [words]                         : 2
+**              Shift direction                            : MSB first
+**              Data clocked out on                        : falling edge
+**              First bit shifted index                    : 31
+**              Word 0 width [bits]                        : 32
+**              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
-**              Data channel                               : Disabled
-**              FIFO empty watermark                       : 0
+**              Data channel                               : Enabled
+**              FIFO empty watermark                       : 1
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -63,18 +63,18 @@
 **            Receive configuration                        : 
 **              Frame sync source/direction                : External
 **              Frame sync mode                            : Continuous
-**              Frame sync active state                    : High
-**              Frame sync initiated                       : first_bit_of_data
-**              Frame sync width [bits]                    : 1
-**              Frame size [words]                         : 1
-**              Shift direction                            : LSB first
-**              Data clocked in on                         : rising edge
-**              First bit shifted index                    : 0
-**              Word 0 width [bits]                        : 8
-**              Word N width [bits]                        : 8
+**              Frame sync active state                    : Low
+**              Frame sync initiated                       : one_bit_before_the_data
+**              Frame sync width [bits]                    : 32
+**              Frame size [words]                         : 2
+**              Shift direction                            : MSB first
+**              Data clocked in on                         : falling edge
+**              First bit shifted index                    : 31
+**              Word 0 width [bits]                        : 32
+**              Word N width [bits]                        : 32
 **              Word flag configuration [words]            : 1
-**              Data channel                               : Disabled
-**              FIFO full watermark                        : 1
+**              Data channel                               : Enabled
+**              FIFO full watermark                        : 2
 **              FIFO packing mode                          : Disabled
 **              FIFO function after error                  : Next frame
 **              Time slot mask                             : 0
@@ -82,45 +82,50 @@
 **              Stop in debug mode                         : yes
 **          Pins                                           : 
 **            Transmit pins                                : 
-**              Serial transmit data pin                   : Disabled
-**              Serial bit clock pin                       : Disabled
-**              Serial frame sync pin                      : Disabled
+**              Serial transmit data pin                   : Enabled
+**                Pin                                      : ADC0_SE15/PTC1/LLWU_P6/SPI0_PCS3/UART1_RTS_b/FTM0_CH0/I2S0_TXD0/LPUART0_RTS_b
+**              Serial bit clock pin                       : Enabled
+**                Pin                                      : PTB18/FTM2_CH0/I2S0_TX_BCLK/FTM2_QD_PHA
+**              Serial frame sync pin                      : Enabled
+**                Pin                                      : PTB19/FTM2_CH1/I2S0_TX_FS/FTM2_QD_PHB
 **            Receive pins                                 : 
-**              Serial receive data pin                    : Disabled
+**              Serial receive data pin                    : Enabled
+**                Pin                                      : PTC5/LLWU_P9/SPI0_SCK/LPTMR0_ALT2/I2S0_RXD0/CMP0_OUT/FTM0_CH2
 **              Serial bit clock pin                       : Disabled
 **              Serial frame sync pin                      : Disabled
-**            Serial master clock pin                      : Disabled
+**            Serial master clock pin                      : Enabled
+**              Pin                                        : <Automatic>
 **          Interrupts/DMA                                 : 
 **            Transmit                                     : 
 **              Tx interrupt                               : INT_I2S0_Tx
-**              Interrupt request                          : <Automatic>
+**              Interrupt request                          : Enabled
 **              Interrupt priority                         : <Automatic>
-**              Tx ISR Name                                : 
+**              Tx ISR Name                                : I2S0_TX
 **              Tx Word start interrupt                    : Disabled
-**              Tx sync error interrupt                    : Disabled
-**              Tx FIFO error interrupt                    : Disabled
+**              Tx sync error interrupt                    : Enabled
+**              Tx FIFO error interrupt                    : Enabled
 **              Tx FIFO warning interrupt                  : Disabled
-**              Tx FIFO request interrupt                  : Disabled
+**              Tx FIFO request interrupt                  : Enabled
 **              Tx FIFO warning DMA                        : Disabled
 **              Tx FIFO request DMA                        : Disabled
 **            Receive                                      : 
 **              Rx interrupt                               : INT_I2S0_Rx
-**              Interrupt request                          : <Automatic>
+**              Interrupt request                          : Enabled
 **              Interrupt priority                         : <Automatic>
-**              Rx ISR Name                                : 
+**              Rx ISR Name                                : I2S0_RX
 **              Rx Word start interrupt                    : Disabled
-**              Rx sync error interrupt                    : Disabled
-**              Rx FIFO error interrupt                    : Disabled
+**              Rx sync error interrupt                    : Enabled
+**              Rx FIFO error interrupt                    : Enabled
 **              Rx FIFO warning interrupt                  : Disabled
 **              Rx FIFO request interrupt                  : Disabled
 **              Rx FIFO warning DMA                        : Disabled
 **              Rx FIFO request DMA                        : Disabled
 **          Initialization                                 : 
-**            Transmitter                                  : Disabled
-**            Transmitter bit clock                        : Disabled
-**            Receiver                                     : Disabled
-**            Receiver bit clock                           : Disabled
-**            Call Init method                             : no
+**            Transmitter                                  : Enabled
+**            Transmitter bit clock                        : Enabled
+**            Receiver                                     : Enabled
+**            Receiver bit clock                           : Enabled
+**            Call Init method                             : yes
 **            Utilize after reset values                   : default
 **     Contents    :
 **         Init - void I2S0_Init(void);
@@ -184,6 +189,20 @@ extern "C" {
 #define I2S0_Init I2S0_Init
 /* PDD macros peripheral base address parameter */
 #define I2S0_DEVICE I2S0_BASE_PTR
+/*
+** ===================================================================
+** The interrupt service routine must be implemented by user in one
+** of the user modules (see I2S0.c file for more information).
+** ===================================================================
+*/
+PE_ISR(I2S0_TX);
+/*
+** ===================================================================
+** The interrupt service routine must be implemented by user in one
+** of the user modules (see I2S0.c file for more information).
+** ===================================================================
+*/
+PE_ISR(I2S0_RX);
 
 #ifdef __cplusplus
 }

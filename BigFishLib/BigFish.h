@@ -292,7 +292,7 @@ public:
 		}*/
 
 		for (int i = 0; i < length; i++) {
-			int in = *input++ << 8;// * double(1 << 8);
+			int in = *input++ << 6;// * double(1 << 8);
 
 			int64_t out = int64_t(b0) * int64_t(in)
 				+ int64_t(b1) * int64_t(x1)
@@ -306,7 +306,7 @@ public:
 			y2 = y1;
 			y1 = out32;
 
-			*to++ = out32 >> 8;// * (1.0 / double(1 << 8));
+			*to++ = out32 >> 6;// * (1.0 / double(1 << 8));
 
 
 			b0 += B0inc;
@@ -337,7 +337,7 @@ __inline float zOSSquashDenormals(float v)
 class cwaveguide
 {
 public:
-#define MAX_WG_DELAY 20000
+#define MAX_WG_DELAY 20
 	float buffer[MAX_WG_DELAY];
 	cwaveguide()
 	{
@@ -366,12 +366,12 @@ public:
 
 	Filter F;
 	Filter F2;
-	inline float feed(float const in, float const feedback, double const delay)
+	inline float feed(float const in, float const feedback, double  delay)
 	{
 		if (delay <= 0)
 		{
-		};
-
+		}
+		else if (delay > MAX_WG_DELAY - 1) delay = MAX_WG_DELAY;
 		
 		// calculate delay offset
 		double back = (double)counter - delay;
@@ -470,7 +470,7 @@ void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
 void BigFish_Init(struct BigFish_t *fish, int samplerate);
 void BigFish_Update(struct BigFish_t *fish);
 void BigFish_CheckGates(struct BigFish_t *fish);
-void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_t *bufferMAIN, int len);
+inline void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *filterInput, int32_t *bufferOSCOUT, int32_t *bufferMAIN, int len);
 
 
 float *GenerateMinBLEP(int zeroCrossings, int overSampling);

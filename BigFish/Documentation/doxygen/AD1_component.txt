@@ -18,7 +18,7 @@ by the component.
 <td class="regNotResetVal">0x00000047</td>
  <td>ADC0_SC1A register, peripheral AD1.</td></tr>
 <tr><td>0x4004803C</td><td>SIM_SCGC6</td>
-<td class="regNotResetVal">0x48000081</td>
+<td class="regNotResetVal">0x48000001</td>
  <td>SIM_SCGC6 register, peripheral AD1.</td></tr>
 <tr><td>0xE000E427</td><td>NVICIP39</td>
 <td class="regNotResetVal">0x00000070</td>
@@ -27,7 +27,7 @@ by the component.
 <td class="regNotResetVal">0x00000080</td>
  <td>NVICISER1 register, peripheral AD1.</td></tr>
 <tr><td>0x40048038</td><td>SIM_SCGC5</td>
-<td class="regNotResetVal">0x00041D82</td>
+<td class="regNotResetVal">0x00041182</td>
  <td>SIM_SCGC5 register, peripheral AD1.</td></tr>
 <tr><td>0x4004C014</td><td>PORTD_PCR5</td>
 <td class="regResetVal">0x00000000</td>
@@ -39,13 +39,13 @@ by the component.
 <td class="regResetVal">0x00000000</td>
  <td>ADC0_SC2 register, peripheral AD1.</td></tr>
 <tr><td>0x4003B008</td><td>ADC0_CFG1</td>
-<td class="regNotResetVal">0x0000007D</td>
+<td class="regNotResetVal">0x0000003E</td>
  <td>ADC0_CFG1 register, peripheral AD1.</td></tr>
 <tr><td>0x4003B00C</td><td>ADC0_CFG2</td>
 <td class="regNotResetVal">0x00000010</td>
  <td>ADC0_CFG2 register, peripheral AD1.</td></tr>
 <tr><td>0x4003B024</td><td>ADC0_SC3</td>
-<td class="regNotResetVal">0x00000044</td>
+<td class="regNotResetVal">0x00000046</td>
  <td>ADC0_SC3 register, peripheral AD1.</td></tr>
 </table>
 Color Denotes Reset Value
@@ -155,7 +155,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x48000081</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x48000001</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x40000001</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>31</td><td>DAC0</td><td>0x00</td><td>DAC0 Clock Gate Control</td>
@@ -172,7 +172,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>12</td><td>SPI0</td><td>0x00</td><td>SPI0 Clock Gate Control</td>
 <tr><td>10</td><td>LPUART0</td><td>0x00</td><td>LPUART0 Clock Gate Control</td>
 <tr><td>9</td><td>RNGA</td><td>0x00</td><td>RNGA Clock Gate Control</td>
-<tr><td>7</td><td>ADC1</td><td>0x01</td><td>ADC1 Clock Gate Control</td>
+<tr><td>7</td><td>ADC1</td><td>0x00</td><td>ADC1 Clock Gate Control</td>
 <tr><td>1</td><td>DMAMUX</td><td>0x00</td><td>DMA Mux Clock Gate Control</td>
 <tr><td>0</td><td>FTF</td><td>0x01</td><td>Flash Memory Clock Gate Control</td>
 </tr></table>
@@ -289,13 +289,13 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40048038</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00041D82</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00041182</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00040182</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>13</td><td>PORTE</td><td>0x00</td><td>Port E Clock Gate Control</td>
 <tr><td>12</td><td>PORTD</td><td>0x01</td><td>Port D Clock Gate Control</td>
-<tr><td>11</td><td>PORTC</td><td>0x01</td><td>Port C Clock Gate Control</td>
-<tr><td>10</td><td>PORTB</td><td>0x01</td><td>Port B Clock Gate Control</td>
+<tr><td>11</td><td>PORTC</td><td>0x00</td><td>Port C Clock Gate Control</td>
+<tr><td>10</td><td>PORTB</td><td>0x00</td><td>Port B Clock Gate Control</td>
 <tr><td>9</td><td>PORTA</td><td>0x00</td><td>Port A Clock Gate Control</td>
 <tr><td>0</td><td>LPTMR</td><td>0x00</td><td>Low Power Timer Access Control</td>
 </tr></table>
@@ -521,14 +521,14 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4003B008</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x0000007D</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x0000003E</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>ADLPC</td><td>0x00</td><td>Low-Power Configuration</td>
-<tr><td>5 - 6</td><td>ADIV</td><td>0x02</td><td>Clock Divide Select</td>
+<tr><td>5 - 6</td><td>ADIV</td><td>0x00</td><td>Clock Divide Select</td>
 <tr><td>4</td><td>ADLSMP</td><td>0x01</td><td>Sample Time Configuration</td>
 <tr><td>2 - 3</td><td>MODE</td><td>0x02</td><td>Conversion mode selection</td>
-<tr><td>0 - 1</td><td>ADICLK</td><td>0x00</td><td>Input Clock Select</td>
+<tr><td>0 - 1</td><td>ADICLK</td><td>0x02</td><td>Input Clock Select</td>
 </tr></table>
 <div class="reghdr1">ADC0_CFG2</div>
 <div class="regdiag">
@@ -630,14 +630,14 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4003B024</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000044</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000046</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>CAL</td><td>0x00</td><td>Calibration</td>
 <tr><td>6</td><td>CALF</td><td>0x01</td><td>Calibration Failed Flag</td>
 <tr><td>3</td><td>ADCO</td><td>0x00</td><td>Continuous Conversion Enable</td>
 <tr><td>2</td><td>AVGE</td><td>0x01</td><td>Hardware Average Enable</td>
-<tr><td>0 - 1</td><td>AVGS</td><td>0x00</td><td>Hardware Average Select</td>
+<tr><td>0 - 1</td><td>AVGS</td><td>0x02</td><td>Hardware Average Select</td>
 </tr></table>
 */
 /*!
@@ -666,14 +666,14 @@ registers of the peripheral(s) configured by the component.
 **          High-speed conversion mode                     : Disabled
 **          Asynchro clock output                          : Disabled
 **          Sample time                                    : 24 clock periods
-**          Number of conversions                          : 4
-**          Conversion time                                : 31 µs
-**          ADC clock                                      : 5.999 MHz (166.667 ns)
-**          Single conversion time - Single-ended          : 30.583 us
-**          Single conversion time - Differential          : 36.583 us
-**          Additional conversion time - Single-ended      : 30 us
-**          Additional conversion time - Differential      : 36 us
-**          Result type                                    : unsigned 16 bits, right justified
+**          Number of conversions                          : 16
+**          Conversion time                                : 90 µs
+**          ADC clock                                      : 8 MHz (125 ns)
+**          Single conversion time - Single-ended          : 90.458 us
+**          Single conversion time - Differential          : 108.458 us
+**          Additional conversion time - Single-ended      : 90 us
+**          Additional conversion time - Differential      : 108 us
+**          Result type                                    : unsigned 16 bits, left justified
 **          Trigger                                        : Disabled
 **          Voltage reference                              : 
 **            High voltage reference                       : 

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PE_PROJECT_SETTINGS_DOCUMENTATION>
+  <PE_product_version v="version 10.5 for Freescale Microcontrollers" />
+  <PE_core_version v="Processor Expert Version 0521" />
+  <CPU_Bean name="Cpu" type="MK22FN256DC12">
+    <Enabled v="N" />
+    <Properties>
+      <Component_name v="Cpu" />
+      <CPU_type v="MK22FN256VDC12" />
+      <group name="Low power mode settings">
+        <EmptySection_DummyValue />
+      </group>
+      <group name="Common settings">
+        <Initialization_priority v="minimal priority" />
+        <Watchdog_disable v="yes" />
+        <Utilize_after_reset_values v="default" />
+      </group>
+    </Properties>
+    <Methods>
+      <EmptySection_DummyValue />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+    </Events>
+    <Compiler v="GNU C Compiler" />
+    <CompilerProperties>
+      <Compiler v="GNU C Compiler" />
+      <enumgroup name="Unhandled vectors" v="One handler for all">
+        <EmptySection_DummyValue />
+      </enumgroup>
+      <boolgroup name="Generate debugger files" v="yes">
+        <Generate_mem_file v="yes" />
+      </boolgroup>
+      <group name="Startup">
+        <Add_startup_file v="yes" />
+      </group>
+      <boolgroup name="Generate linker file" v="yes">
+        <Stack_size v="1024" />
+        <Heap_size v="0" />
+        <Set_memory_segments_to_default v="Click to set default &amp;gt;" />
+        <Default_memory_for_interrupts v="INTERNAL RAM" />
+        <Default_memory_for_code v="INTERNAL RAM" />
+        <Default_memory_for_data v="INTERNAL RAM" />
+        <list name="ROM/RAM Areas" v="5">
+          <group name="MemoryArea0">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_interrupts" />
+              <Qualifier v="RX" />
+              <Address v="0" />
+              <Size v="408" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea1">
+            <boolgroup name="ROM/RAM Area" v="Disabled" />
+          </group>
+          <group name="MemoryArea2">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_text" />
+              <Qualifier v="RX" />
+              <Address v="1040" />
+              <Size v="261104" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea3">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_data_1FFFC000" />
+              <Qualifier v="RW" />
+              <Address v="536854528" />
+              <Size v="16384" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea4">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_data" />
+              <Qualifier v="RW" />
+              <Address v="536870912" />
+              <Size v="32768" />
+            </boolgroup>
+          </group>
+        </list>
+      </boolgroup>
+    </CompilerProperties>
+  </CPU_Bean>
+  <CPU_Bean name="Cpu" type="MK22FN256LH12">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="Cpu" />
+      <CPU_type v="MK22FN256VLH12" />
+      <group name="Low power mode settings">
+        <EmptySection_DummyValue />
+      </group>
+      <group name="Common settings">
+        <Initialization_priority v="minimal priority" />
+        <Watchdog_disable v="yes" />
+        <Utilize_after_reset_values v="default" />
+      </group>
+    </Properties>
+    <Methods>
+      <EmptySection_DummyValue />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+    </Events>
+    <Compiler v="GNU C Compiler" />
+    <CompilerProperties>
+      <Compiler v="GNU C Compiler" />
+      <enumgroup name="Unhandled vectors" v="One handler for all">
+        <EmptySection_DummyValue />
+      </enumgroup>
+      <boolgroup name="Generate debugger files" v="no" />
+      <group name="Startup">
+        <Add_startup_file v="yes" />
+      </group>
+      <boolgroup name="Generate linker file" v="yes">
+        <Stack_size v="1024" />
+        <Heap_size v="0" />
+        <Set_memory_segments_to_default v="Click to set default &amp;gt;" />
+        <Default_memory_for_interrupts v="INTERNAL FLASH" />
+        <Default_memory_for_code v="INTERNAL FLASH" />
+        <Default_memory_for_data v="INTERNAL RAM" />
+        <list name="ROM/RAM Areas" v="5">
+          <group name="MemoryArea0">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_interrupts" />
+              <Qualifier v="RX" />
+              <Address v="0" />
+              <Size v="408" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea1">
+            <boolgroup name="ROM/RAM Area" v="Disabled" />
+          </group>
+          <group name="MemoryArea2">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_text" />
+              <Qualifier v="RX" />
+              <Address v="1040" />
+              <Size v="261104" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea3">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_data_1FFFC000" />
+              <Qualifier v="RW" />
+              <Address v="536854528" />
+              <Size v="16384" />
+            </boolgroup>
+          </group>
+          <group name="MemoryArea4">
+            <boolgroup name="ROM/RAM Area" v="Enabled">
+              <Name v="m_data" />
+              <Qualifier v="RW" />
+              <Address v="536870912" />
+              <Size v="32768" />
+            </boolgroup>
+          </group>
+        </list>
+      </boolgroup>
+    </CompilerProperties>
+  </CPU_Bean>
+  <Bean name="Pins1" type="PinSettings">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="Pins1" />
+      <PinSettings_IP_Block v="PinSettings" />
+      <Processor v="MK22FN256LH12" />
+    </Properties>
+    <Methods>
+      <EmptySection_DummyValue />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
+  <Bean name="SSI1" type="SSI_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="SSI1" />
+      <Device v="I2S0" />
+      <boolgroup name="Interrupt service/event" v="Enabled">
+        <Input_interrupt v="INT_I2S0_Rx" />
+        <Input_interrupt_priority v="medium priority" />
+        <Output_interrupt v="INT_I2S0_Tx" />
+        <Output_interrupt_priority v="medium priority" />
+      </boolgroup>
+      <group name="Settings">
+        <Mode v="Normal" />
+        <Synchronous_mode v="Enabled" />
+        <Gated_clock_mode v="Disabled" />
+        <Network_mode v="Disabled" />
+        <Two_channel_multiplexing v="Disabled" />
+        <boolgroup name="AC97 settings" v="Disabled" />
+        <boolgroup name="Receiver" v="Enabled">
+          <Sign_extension v="Disabled" />
+          <Width v="16 bits" />
+          <Bit_0 v="LSB aligned" />
+          <Data_type v="unsigned 16 bits" />
+          <Capture_clock_edge v="Rising" />
+          <Frame_sync_clock v="Enabled" />
+          <MSB_first v="yes" />
+          <Frame_rate v="1" />
+          <Receive_slot_mask v="4294967295" />
+          <HW_input_buffer_size v="Max buffer size" />
+          <HW_input_watermark v="1" />
+          <Stop_in_Stop_mode v="no" />
+          <Stop_in_Debug_mode v="no" />
+          <boolgroup name="DMA" v="Disabled" />
+        </boolgroup>
+        <boolgroup name="Transmitter" v="Enabled">
+          <Sync_to_frame_signal v="Enabled" />
+          <Width v="16 bits" />
+          <Bit_0 v="LSB aligned" />
+          <Data_type v="unsigned 16 bits" />
+          <Shift_clock_edge v="Rising" />
+          <Frame_sync_clock v="Enabled" />
+          <MSB_first v="yes" />
+          <Frame_rate v="1" />
+          <Transmit_slot_mask v="4294967295" />
+          <HW_output_buffer_size v="Max buffer size" />
+          <HW_output_watermark v="1" />
+          <Stop_in_Stop_mode v="no" />
+          <Stop_in_Debug_mode v="no" />
+          <boolgroup name="DMA" v="Disabled" />
+        </boolgroup>
+        <enumgroup name="Master clock" v="Output pin">
+          <Pin v="CMP0_IN0/PTC6/LLWU_P10/SPI0_SOUT/PDB0_EXTRG/I2S0_RX_BCLK/I2S0_MCLK" />
+          <Clock_rate v="12.8 kHz" />
+        </enumgroup>
+        <boolgroup name="Receive data" v="Enabled">
+          <Pin v="PTC5/LLWU_P9/SPI0_SCK/LPTMR0_ALT2/I2S0_RXD0/CMP0_OUT/FTM0_CH2" />
+        </boolgroup>
+        <boolgroup name="Transmit data" v="Enabled">
+          <Pin v="ADC0_SE15/PTC1/LLWU_P6/SPI0_PCS3/UART1_RTS_b/FTM0_CH0/I2S0_TXD0/LPUART0_RTS_b" />
+        </boolgroup>
+        <boolgroup name="Receive clock" v="Disabled" />
+        <boolgroup name="Transmit clock" v="Enabled">
+          <Pin v="PTB18/FTM2_CH0/I2S0_TX_BCLK/FTM2_QD_PHA" />
+          <Clock_idle_state v="0" />
+          <boolgroup name="Direction" v="Input" />
+        </boolgroup>
+        <boolgroup name="Receive frame sync" v="Disabled" />
+        <boolgroup name="Transmit frame sync" v="Enabled">
+          <Pin v="PTB19/FTM2_CH1/I2S0_TX_FS/FTM2_QD_PHB" />
+          <Direction v="Input" />
+          <Active_state v="High" />
+          <Frame_sync_length v="one-word" />
+          <Frame_sync_initiated v="as the first bit of data" />
+        </boolgroup>
+      </group>
+      <group name="Initialization">
+        <Enabled_in_init__code v="yes" />
+        <group name="Event mask">
+          <OnBlockSent v="Enabled" />
+          <OnBlockSent1 v="Disabled" />
+          <OnBlockReceived v="Enabled" />
+          <OnBlockReceived1 v="Disabled" />
+          <OnError v="Enabled" />
+          <OnReceiveFrameSync v="Disabled" />
+          <OnTransmitFrameSync v="Disabled" />
+          <OnReceiveLastSlot v="Disabled" />
+          <OnTransmitLastSlot v="Disabled" />
+          <OnReceiveComplete v="Disabled" />
+          <OnTransmitComplete v="Disabled" />
+          <OnAC97TagUpdated v="Disabled" />
+          <OnAC97CommandAddressUpdated v="Disabled" />
+          <OnAC97CommandDataUpdated v="Disabled" />
+        </group>
+      </group>
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="generate code" />
+      <Enable v="don&amp;apos;t generate code" />
+      <Disable v="don&amp;apos;t generate code" />
+      <SetEventMask v="don&amp;apos;t generate code" />
+      <GetEventMask v="don&amp;apos;t generate code" />
+      <EnableTransfer v="generate code" />
+      <DisableTransfer v="generate code" />
+      <SendBlock v="generate code" />
+      <ReceiveBlock v="generate code" />
+      <SendBlocks v="don&amp;apos;t generate code" />
+      <ReceiveBlocks v="don&amp;apos;t generate code" />
+      <GetSentDataNum v="generate code" />
+      <GetReceivedDataNum v="generate code" />
+      <GetBlockSentStatus v="don&amp;apos;t generate code" />
+      <GetBlockReceivedStatus v="don&amp;apos;t generate code" />
+      <CancelBlockTransmission v="don&amp;apos;t generate code" />
+      <CancelBlockReception v="don&amp;apos;t generate code" />
+      <SendBlock1 v="don&amp;apos;t generate code" />
+      <ReceiveBlock1 v="don&amp;apos;t generate code" />
+      <GetSentDataNum1 v="don&amp;apos;t generate code" />
+      <GetReceivedDataNum1 v="don&amp;apos;t generate code" />
+      <GetBlockSentStatus1 v="don&amp;apos;t generate code" />
+      <GetBlockReceivedStatus1 v="don&amp;apos;t generate code" />
+      <CancelBlockTransmission1 v="don&amp;apos;t generate code" />
+      <CancelBlockReception1 v="don&amp;apos;t generate code" />
+      <GetError v="generate code" />
+      <GetStatus v="don&amp;apos;t generate code" />
+      <SetTransmitSlotMask v="don&amp;apos;t generate code" />
+      <SetReceiveSlotMask v="don&amp;apos;t generate code" />
+      <SetAC97Tag v="don&amp;apos;t generate code" />
+      <GetAC97Tag v="don&amp;apos;t generate code" />
+      <SendAC97Command v="don&amp;apos;t generate code" />
+      <GetAC97CommandAddress v="don&amp;apos;t generate code" />
+      <GetAC97CommandData v="don&amp;apos;t generate code" />
+      <SetAC97SlotMask v="don&amp;apos;t generate code" />
+      <GetAC97SlotMask v="don&amp;apos;t generate code" />
+      <Main v="don&amp;apos;t generate code" />
+      <GetStats v="don&amp;apos;t generate code" />
+      <ClearStats v="don&amp;apos;t generate code" />
+      <SetOperationMode v="don&amp;apos;t generate code" />
+      <GetDriverState v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <Event_module_name v="Events" />
+      <event name="OnBlockSent" v="generate code">
+        <Event_procedure_name v="SSI1_OnBlockSent" />
+      </event>
+      <event name="OnBlockReceived" v="generate code">
+        <Event_procedure_name v="SSI1_OnBlockReceived" />
+      </event>
+      <event name="OnBlockSent1" v="don&amp;apos;t generate code" />
+      <event name="OnBlockReceived1" v="don&amp;apos;t generate code" />
+      <event name="OnError" v="generate code">
+        <Event_procedure_name v="SSI1_OnError" />
+      </event>
+      <event name="OnReceiveFrameSync" v="don&amp;apos;t generate code" />
+      <event name="OnTransmitFrameSync" v="don&amp;apos;t generate code" />
+      <event name="OnReceiveLastSlot" v="don&amp;apos;t generate code" />
+      <event name="OnTransmitLastSlot" v="don&amp;apos;t generate code" />
+      <event name="OnReceiveComplete" v="don&amp;apos;t generate code" />
+      <event name="OnTransmitComplete" v="don&amp;apos;t generate code" />
+      <event name="OnAC97TagUpdated" v="don&amp;apos;t generate code" />
+      <event name="OnAC97CommandAddressUpdated" v="don&amp;apos;t generate code" />
+      <event name="OnAC97CommandDataUpdated" v="don&amp;apos;t generate code" />
+    </Events>
+  </Bean>
+</PE_PROJECT_SETTINGS_DOCUMENTATION>
+

@@ -49,6 +49,7 @@ public:
 	}
 };
 
+int32_t input[MAXFISHBUFFER] = { 0 };
 class BigFish
 {
 public :
@@ -71,7 +72,7 @@ public :
 		{
 			int L = __min(numsamples, MAXFISHBUFFER);
 			UpdateParams();
-			BigFish_GenerateBlock(&Fish, blockOSC, blockMAIN, L);
+			BigFish_GenerateBlock(&Fish, input, blockOSC, blockMAIN, L);
 			for (int i = 0; i < L; i++)
 			{
 				*psamples++ = blockMAIN[i] *1.0f / (float)(1<<2);
@@ -119,7 +120,6 @@ public :
 		Fish.PitchInput = pitchtarget;
 	}
 };
-
 
 inline double DBToAmplitude(double const a)
 {

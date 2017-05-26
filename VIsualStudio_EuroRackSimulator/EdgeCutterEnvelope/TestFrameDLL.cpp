@@ -3,7 +3,12 @@
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Algo.h"
 
-#include "../../BigFishLib/BigFish.h"
+#include "../../BigFishLib/BigFish.cpp"
+#include "../../BigFishLib/BleppyOscs.cpp"
+#include "../../BigFishLib/OrganOsc.cpp"
+#include "../../BigFishLib/ADSREnvelope.cpp"
+
+
 
 struct BigFish_t Fish;
 struct Tuesday_PatternGen Tuesday;
@@ -298,11 +303,11 @@ void FishCycle()
 {
 	int bufferosc[1000];
 	int buffermain[1000];
-
+	int inputfalse[1000];
 	for (int i = 0; i < 127; i++)
 	{
 		printf(".");
-		BigFish_GenerateBlock(&Fish, bufferosc, buffermain, 1000);
+		BigFish_GenerateBlock(&Fish, inputfalse, bufferosc, buffermain, 1000);
 		checkbuffer(bufferosc, 1000);
 		checkbuffer(buffermain, 1000);
 
@@ -310,7 +315,7 @@ void FishCycle()
 		Fish.PitchInput = pitchtarget;
 
 		Fish.Gates[GATE_GATE] = 1;
-		BigFish_GenerateBlock(&Fish, bufferosc, buffermain, 1000);
+		BigFish_GenerateBlock(&Fish, inputfalse, bufferosc, buffermain, 1000);
 		checkbuffer(bufferosc, 1000);
 		checkbuffer(buffermain, 1000);
 		Fish.Gates[GATE_GATE] = 0;

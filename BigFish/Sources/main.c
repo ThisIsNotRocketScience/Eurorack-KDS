@@ -31,15 +31,30 @@
 #include "Cpu.h"
 #include "Events.h"
 #include "Pins1.h"
-#include "CI2C1.h"
+#include "TI1.h"
+#include "TU1.h"
 #include "ADMUXED.h"
-#include "AD1.h"
+#include "AdcLdd1.h"
+#include "I2C1.h"
+#include "SDA1.h"
+#include "BitIoLdd1.h"
+#include "SCL1.h"
+#include "BitIoLdd2.h"
+#include "GATE_TRIGGER.h"
+#include "GATE_BUTTON.h"
+#include "FILTER_BUTTON.h"
+#include "ACCENT_TRIGGER.h"
+#include "ADMAIN.h"
+#include "AdcLdd2.h"
 #include "LATCH.h"
 #include "CLOCK.h"
 #include "SHIFTERS.h"
 #include "ADCSELA.h"
 #include "ADCSELB.h"
 #include "ADCSELC.h"
+#include "CODEC_PDN.h"
+#include "WAIT1.h"
+#include "GI2C1.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -49,6 +64,8 @@
 #include "Init_Config.h"
 /* User includes (#include below this line is not maintained by Processor Expert) */
 extern void cppmain();
+
+
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -61,6 +78,7 @@ int main(void)
 
   /* Write your code here */
   /* For example: for(;;) { } */
+
   cppmain();
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

@@ -41,7 +41,7 @@
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\PDD\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\IO_Map\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\Peripherals\</Path>
-      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
+      <Path>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\</Path>
       <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\</Path>
     </IncludePaths>
@@ -55,18 +55,33 @@
   </PATHS>
   <FILES>
     <GeneratedCs>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ACCENT_TRIGGER.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELA.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELB.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELC.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADMAIN.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADMUXED.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CI2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AdcLdd2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\BitIoLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\BitIoLdd2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CLOCK.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CODEC_PDN.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\FILTER_BUTTON.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GATE_BUTTON.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GATE_TRIGGER.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GI2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\I2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\Pins1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SCL1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SDA1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SHIFTERS.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\TI1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\TU1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\main.c</PathName>
@@ -76,15 +91,25 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\System\Vectors.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ACCENT_TRIGGER.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELA.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELB.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADCSELC.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADMAIN.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\ADMUXED.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CI2C1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\AdcLdd2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\BitIoLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\BitIoLdd2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CLOCK.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CODEC_PDN.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\CPU_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\FILTER_BUTTON.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GATE_BUTTON.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GATE_TRIGGER.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\GI2C1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\I2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\I2S0.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\I2S0_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\IO_Map.h</PathName>
@@ -95,10 +120,16 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\PE_LDD.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\PE_Types.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\Pins1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SCL1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SDA1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\SHIFTERS.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\TI1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\Vectors_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\LEDS.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Sources\ak4558.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\IO_Map\MK22F25612.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\PDD\ADC_PDD.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\BigFish\Static_Code\PDD\CMP_PDD.h</PathName>

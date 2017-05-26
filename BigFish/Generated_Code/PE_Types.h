@@ -6,7 +6,7 @@
 **     Component   : PE_Types
 **     Version     : Driver 01.01
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-24, 02:55, # CodeGen: 2
+**     Date/Time   : 2017-05-26, 03:59, # CodeGen: 38
 **     Abstract    :
 **         PE_Types.h - contains definitions of basic types,
 **         register access macros and hardware specific macros
@@ -204,15 +204,23 @@ typedef unsigned long int       uint32;
 ** is used internally as an index to the array of LDD device structures.
 ** ===========================================================================
 */
-#define PE_LDD_COMPONENT_CI2C1_ID                0x00U
-#define PE_LDD_COMPONENT_ADMUXED_ID              0x01U
-#define PE_LDD_COMPONENT_AD1_ID                  0x02U
-#define PE_LDD_COMPONENT_LATCH_ID                0x03U
-#define PE_LDD_COMPONENT_CLOCK_ID                0x04U
-#define PE_LDD_COMPONENT_SHIFTERS_ID             0x05U
-#define PE_LDD_COMPONENT_ADCSELA_ID              0x06U
-#define PE_LDD_COMPONENT_ADCSELB_ID              0x07U
-#define PE_LDD_COMPONENT_ADCSELC_ID              0x08U
+#define PE_LDD_COMPONENT_LATCH_ID                0x00U
+#define PE_LDD_COMPONENT_CLOCK_ID                0x01U
+#define PE_LDD_COMPONENT_SHIFTERS_ID             0x02U
+#define PE_LDD_COMPONENT_ADCSELA_ID              0x03U
+#define PE_LDD_COMPONENT_ADCSELB_ID              0x04U
+#define PE_LDD_COMPONENT_ADCSELC_ID              0x05U
+#define PE_LDD_COMPONENT_CODEC_PDN_ID            0x06U
+#define PE_LDD_COMPONENT_BitIoLdd1_ID            0x07U
+#define PE_LDD_COMPONENT_BitIoLdd2_ID            0x08U
+#define PE_LDD_COMPONENT_TU1_ID                  0x09U
+#define PE_LDD_COMPONENT_TI1_ID                  0x0AU
+#define PE_LDD_COMPONENT_AdcLdd1_ID              0x0BU
+#define PE_LDD_COMPONENT_GATE_TRIGGER_ID         0x0CU
+#define PE_LDD_COMPONENT_GATE_BUTTON_ID          0x0DU
+#define PE_LDD_COMPONENT_FILTER_BUTTON_ID        0x0EU
+#define PE_LDD_COMPONENT_ACCENT_TRIGGER_ID       0x0FU
+#define PE_LDD_COMPONENT_AdcLdd2_ID              0x10U
 
 /*
 ** ===================================================================

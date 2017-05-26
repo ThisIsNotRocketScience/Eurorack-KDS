@@ -1,59 +1,59 @@
 /*!
-  \page ADMUXED ADMUXED (ADC_LDD)
+  \page AdcLdd1 AdcLdd1 (ADC_LDD)
 **         This device "ADC_LDD" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
 **
 
-- \subpage ADMUXED_settings
-- \subpage ADMUXED_regs_overview  
-- \subpage ADMUXED_regs_details
-- \ref ADMUXED_module "Component documentation" 
-\page ADMUXED_regs_overview Registers Initialization Overview
+- \subpage AdcLdd1_settings
+- \subpage AdcLdd1_regs_overview  
+- \subpage AdcLdd1_regs_details
+- \ref AdcLdd1_module "Component documentation" 
+\page AdcLdd1_regs_overview Registers Initialization Overview
 This page contains the initialization values for the registers of the peripheral(s) configured
 by the component. 
 <table>
-<tr><td colspan="4" class="ttitle1">ADMUXED Initialization</td></tr>
+<tr><td colspan="4" class="ttitle1">AdcLdd1 Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
 <tr><td>0x40027000</td><td>ADC1_SC1A</td>
 <td class="regNotResetVal">0x00000047</td>
- <td>ADC1_SC1A register, peripheral ADMUXED.</td></tr>
+ <td>ADC1_SC1A register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4004803C</td><td>SIM_SCGC6</td>
-<td class="regNotResetVal">0x40000081</td>
- <td>SIM_SCGC6 register, peripheral ADMUXED.</td></tr>
+<td class="regNotResetVal">0x41000081</td>
+ <td>SIM_SCGC6 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0xE000E449</td><td>NVICIP73</td>
 <td class="regNotResetVal">0x00000070</td>
- <td>NVICIP73 register, peripheral ADMUXED.</td></tr>
+ <td>NVICIP73 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0xE000E108</td><td>NVICISER2</td>
 <td class="regNotResetVal">0x00000200</td>
- <td>NVICISER2 register, peripheral ADMUXED.</td></tr>
+ <td>NVICISER2 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x40048038</td><td>SIM_SCGC5</td>
-<td class="regNotResetVal">0x00040D82</td>
- <td>SIM_SCGC5 register, peripheral ADMUXED.</td></tr>
+<td class="regNotResetVal">0x00041D82</td>
+ <td>SIM_SCGC5 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4004B024</td><td>PORTC_PCR9</td>
 <td class="regResetVal">0x00000000</td>
- <td>PORTC_PCR9 register, peripheral ADMUXED.</td></tr>
+ <td>PORTC_PCR9 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4004B028</td><td>PORTC_PCR10</td>
 <td class="regResetVal">0x00000000</td>
- <td>PORTC_PCR10 register, peripheral ADMUXED.</td></tr>
+ <td>PORTC_PCR10 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4004B02C</td><td>PORTC_PCR11</td>
 <td class="regResetVal">0x00000000</td>
- <td>PORTC_PCR11 register, peripheral ADMUXED.</td></tr>
+ <td>PORTC_PCR11 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x40027020</td><td>ADC1_SC2</td>
 <td class="regResetVal">0x00000000</td>
- <td>ADC1_SC2 register, peripheral ADMUXED.</td></tr>
+ <td>ADC1_SC2 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x40027008</td><td>ADC1_CFG1</td>
-<td class="regNotResetVal">0x0000007D</td>
- <td>ADC1_CFG1 register, peripheral ADMUXED.</td></tr>
+<td class="regNotResetVal">0x0000004E</td>
+ <td>ADC1_CFG1 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x4002700C</td><td>ADC1_CFG2</td>
 <td class="regNotResetVal">0x00000010</td>
- <td>ADC1_CFG2 register, peripheral ADMUXED.</td></tr>
+ <td>ADC1_CFG2 register, peripheral AdcLdd1.</td></tr>
 <tr><td>0x40027024</td><td>ADC1_SC3</td>
-<td class="regNotResetVal">0x00000047</td>
- <td>ADC1_SC3 register, peripheral ADMUXED.</td></tr>
+<td class="regNotResetVal">0x00000040</td>
+ <td>ADC1_SC3 register, peripheral AdcLdd1.</td></tr>
 </table>
 Color Denotes Reset Value
 <br/>
-\page ADMUXED_regs_details Register Initialization Details
+\page AdcLdd1_regs_details Register Initialization Details
 This page contains detailed description of initialization values for the 
 registers of the peripheral(s) configured by the component. 
 
@@ -158,7 +158,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004803C</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x40000081</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x41000081</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x40000001</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>31</td><td>DAC0</td><td>0x00</td><td>DAC0 Clock Gate Control</td>
@@ -166,7 +166,7 @@ registers of the peripheral(s) configured by the component.
 <tr><td>27</td><td>ADC0</td><td>0x00</td><td>ADC0 Clock Gate Control</td>
 <tr><td>26</td><td>FTM2</td><td>0x00</td><td>FTM2 Clock Gate Control</td>
 <tr><td>25</td><td>FTM1</td><td>0x00</td><td>FTM1 Clock Gate Control</td>
-<tr><td>24</td><td>FTM0</td><td>0x00</td><td>FTM0 Clock Gate Control</td>
+<tr><td>24</td><td>FTM0</td><td>0x01</td><td>FTM0 Clock Gate Control</td>
 <tr><td>23</td><td>PIT</td><td>0x00</td><td>PIT Clock Gate Control</td>
 <tr><td>22</td><td>PDB</td><td>0x00</td><td>PDB Clock Gate Control</td>
 <tr><td>18</td><td>CRC</td><td>0x00</td><td>CRC Clock Gate Control</td>
@@ -292,11 +292,11 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40048038</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00040D82</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00041D82</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00040182</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>13</td><td>PORTE</td><td>0x00</td><td>Port E Clock Gate Control</td>
-<tr><td>12</td><td>PORTD</td><td>0x00</td><td>Port D Clock Gate Control</td>
+<tr><td>12</td><td>PORTD</td><td>0x01</td><td>Port D Clock Gate Control</td>
 <tr><td>11</td><td>PORTC</td><td>0x01</td><td>Port C Clock Gate Control</td>
 <tr><td>10</td><td>PORTB</td><td>0x01</td><td>Port B Clock Gate Control</td>
 <tr><td>9</td><td>PORTA</td><td>0x00</td><td>Port A Clock Gate Control</td>
@@ -583,14 +583,14 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40027008</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x0000007D</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x0000004E</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>ADLPC</td><td>0x00</td><td>Low-Power Configuration</td>
 <tr><td>5 - 6</td><td>ADIV</td><td>0x02</td><td>Clock Divide Select</td>
-<tr><td>4</td><td>ADLSMP</td><td>0x01</td><td>Sample Time Configuration</td>
+<tr><td>4</td><td>ADLSMP</td><td>0x00</td><td>Sample Time Configuration</td>
 <tr><td>2 - 3</td><td>MODE</td><td>0x02</td><td>Conversion mode selection</td>
-<tr><td>0 - 1</td><td>ADICLK</td><td>0x00</td><td>Input Clock Select</td>
+<tr><td>0 - 1</td><td>ADICLK</td><td>0x02</td><td>Input Clock Select</td>
 </tr></table>
 <div class="reghdr1">ADC1_CFG2</div>
 <div class="regdiag">
@@ -692,20 +692,20 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40027024</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000047</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000040</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>7</td><td>CAL</td><td>0x00</td><td>Calibration</td>
 <tr><td>6</td><td>CALF</td><td>0x01</td><td>Calibration Failed Flag</td>
 <tr><td>3</td><td>ADCO</td><td>0x00</td><td>Continuous Conversion Enable</td>
-<tr><td>2</td><td>AVGE</td><td>0x01</td><td>Hardware Average Enable</td>
-<tr><td>0 - 1</td><td>AVGS</td><td>0x02</td><td>Hardware Average Select</td>
+<tr><td>2</td><td>AVGE</td><td>0x00</td><td>Hardware Average Enable</td>
+<tr><td>0 - 1</td><td>AVGS</td><td>0x00</td><td>Hardware Average Select</td>
 </tr></table>
 */
 /*!
-\page ADMUXED_settings Component Settings
+\page AdcLdd1_settings Component Settings
 \code
-**          Component name                                 : ADMUXED
+**          Component name                                 : AdcLdd1
 **          A/D converter                                  : ADC1
 **          Discontinuous mode                             : no
 **          Interrupt service/event                        : Enabled
@@ -731,21 +731,21 @@ registers of the peripheral(s) configured by the component.
 **          Low-power mode                                 : Disabled
 **          High-speed conversion mode                     : Disabled
 **          Asynchro clock output                          : Disabled
-**          Sample time                                    : 24 clock periods
-**          Number of conversions                          : 32
-**          Conversion time                                : 240 µs
-**          ADC clock                                      : 5.999 MHz (166.667 ns)
-**          Single conversion time - Single-ended          : 240.583 us
-**          Single conversion time - Differential          : 288.583 us
-**          Additional conversion time - Single-ended      : 240 us
-**          Additional conversion time - Differential      : 288 us
+**          Sample time                                    : 4 clock periods
+**          Number of conversions                          : 1
+**          Conversion time                                : 6.25 µs
+**          ADC clock                                      : 4 MHz (250 ns)
+**          Single conversion time - Single-ended          : 7.583 us
+**          Single conversion time - Differential          : 9.833 us
+**          Additional conversion time - Single-ended      : 6.25 us
+**          Additional conversion time - Differential      : 8.5 us
 **          Result type                                    : unsigned 16 bits, right justified
 **          Trigger                                        : Disabled
 **          Voltage reference                              : 
 **            High voltage reference                       : 
-**              Volt. ref. pin                             : VREFH
+**              Volt. ref. pin                             : <Automatic>
 **            Low voltage reference                        : 
-**              Volt. ref. pin                             : VREFL
+**              Volt. ref. pin                             : <Automatic>
 **          Initialization                                 : 
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : no

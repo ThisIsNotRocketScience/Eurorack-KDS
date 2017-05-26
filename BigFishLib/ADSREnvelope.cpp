@@ -28,25 +28,53 @@ void ADSR_BuildTable()
 };
 
 
+#ifndef WIN32
+#define __INLINE inline
+#define __ASM __asm__
+
+
+__attribute__((always_inline)) static __INLINE int32_t smmla(int32_t acc, int32_t a, int32_t b)
+{
+	int32_t result;
+
+	__ASM volatile ("smmlar %0, %2, %3, %1" : "=r" (result) : "r" (acc), "r" (a), "r" (b));
+	return result;
+}
+
+#endif
 
 __inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
 {
-
-//	return A + (((B >> 8) * (C >> 8)) >> 16);
+#ifndef WIN32
 
 	uint64_t R = A;
 	R += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
 	return (uint32_t)R;
+
+	return smmla(A, B, C);
+#else
+	//	return A + (((B >> 8) * (C >> 8)) >> 16);
+
+	uint64_t R = A;
+	R += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
+	return (uint32_t)R;
+#endif
 }
 
 __inline uint32_t FixedScale(uint32_t A, uint32_t B)
 {
 //	return (((B << 8) / (B)));
-
+#ifdef WIN32
 	uint64_t R = A;
 	R *= (int64_t)ENVFIXMAX;
 	R /= (int64_t)B;
 	return (uint32_t)R;
+#else
+	uint64_t R = A;
+	R *= (int64_t)ENVFIXMAX;
+	R /= (int64_t)B;
+	return (uint32_t)R;
+#endif
 }
 
 __inline int32_t iFixedScale(int32_t A, int32_t B)
@@ -61,7 +89,7 @@ __inline int32_t iFixedScale(int32_t A, int32_t B)
 
 
 
-uint32_t GetExpTable(uint32_t inp,int table)
+__inline uint32_t GetExpTable(uint32_t inp,int table)
 {
 	int i1 = inp >> 24;
 	int i2 = i1 + 1;
@@ -89,34 +117,12 @@ void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackCurve
 	Env->AttackProgress = 0;
 	Env->DecayProgress = 0;
 	Env->ReleaseProgress = 0;
-	for (int i = 0; i < 4; i++)
-	{
-		Env->Gates[i] = 0;
-	}
+	
 }
 
 static void SwitchToState(struct ADSR_Envelope_t *Env, int newstate)
 {
-	switch (Env->State)
-	{
-	case ENVSTATE_SUSTAIN:
-		Env->StateLeds[7] = 0;
-		Env->StateLeds[8] = 0;
-		break;
-
-	case ENVSTATE_ATTACK:
-		Env->Gates[GATE_ATTACKEND] = GATE_COUNTDOWN;
-		break;
-
-	case ENVSTATE_DECAY:
-		Env->Gates[GATE_DECAYEND] = GATE_COUNTDOWN;
-		break;
-
-	case ENVSTATE_RELEASE:
-		Env->Gates[GATE_RELEASEEND] = GATE_COUNTDOWN;
-		break;
-	}
-
+	
 	Env->State = newstate;
 
 	switch (Env->State)
@@ -134,7 +140,7 @@ static void SwitchToState(struct ADSR_Envelope_t *Env, int newstate)
 		Env->ReleaseStart = Env->Current;
 		Env->ReleaseStartCurved = Env->CurvedOutput;
 		if (Env->ReleaseStart == 0) Env->State = ENVSTATE_IDLE;
-		Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN;
+		
 		break;
 
 	case ENVSTATE_DECAY:
@@ -155,8 +161,7 @@ static void SwitchToState(struct ADSR_Envelope_t *Env, int newstate)
 		Env->AttackProgress = ENVFIXED(1);
 		Env->DecayProgress = ENVFIXED(1);
 		Env->ReleaseProgress = 0;
-		Env->StateLeds[7] = 255;
-		Env->StateLeds[8] = 255;
+		
 		break;
 	}
 }
@@ -220,26 +225,22 @@ static int32_t SustainLevel(int sus)
 
 void ADSR_Update(struct ADSR_Envelope_t *Env, int SampleRate)
 {
-	Env->Aconv = EnvelopeLength(Env->A, Env->Speed, SampleRate);
+	Env->Aconv = ENVFIXED(1) / EnvelopeLength(Env->A, Env->Speed, SampleRate);
 	Env->Dconv = EnvelopeLength(Env->D, Env->Speed, SampleRate);
 	Env->Sconv = SustainLevel(Env->S);
 	Env->Rconv = EnvelopeLength(Env->R, Env->Speed, SampleRate);
 }
 
-int ADSR_Get(struct ADSR_Envelope_t *Env)
+__inline int ADSR_Get(struct ADSR_Envelope_t *Env)
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (Env->Gates[i]) Env->Gates[i]--;
-	}
+	
 
 	switch (Env->State)
 	{
 	case ENVSTATE_ATTACK:
 	{
 		Env->CurrentTarget = ENVFIXED(1);
-		int L = Env->Aconv;
-		int32_t Delta = ENVFIXED(1) / L;
+		int32_t const Delta = Env->Aconv;
 		Env->Current += Delta;
 		Env->AttackProgress = FixedScale((Env->Current - Env->AttackStart) , __max(1, (ENVFIXED(1) - Env->AttackStart)));
 
@@ -377,15 +378,6 @@ int ADSR_Get(struct ADSR_Envelope_t *Env)
 	case ENVSTATE_IDLE:
 		Env->CurrentTarget = 0;
 		break;
-	}
-
-	
-	
-
-
-	for (int i = 0; i < 13; i++)
-	{
-		Env->StateLeds[i] = 0;
 	}
 
 	

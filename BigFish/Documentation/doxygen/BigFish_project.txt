@@ -26,16 +26,24 @@
 <br/>
 
 \page page_components Components 
-- \subpage I2S0
-- \subpage CI2C1
-- \subpage ADMUXED
-- \subpage AD1
 - \subpage LATCH
 - \subpage CLOCK
 - \subpage SHIFTERS
 - \subpage ADCSELA
 - \subpage ADCSELB
 - \subpage ADCSELC
+- \subpage CODEC_PDN
+- \subpage BitIoLdd1
+- \subpage BitIoLdd2
+- \subpage TU1
+- \subpage TI1
+- \subpage AdcLdd1
+- \subpage GATE_TRIGGER
+- \subpage GATE_BUTTON
+- \subpage FILTER_BUTTON
+- \subpage ACCENT_TRIGGER
+- \subpage I2S0
+- \subpage AdcLdd2
 
 */
 
@@ -68,16 +76,24 @@
 <br/>
 
 \page page_components Components 
-- \subpage I2S0
-- \subpage CI2C1
-- \subpage ADMUXED
-- \subpage AD1
 - \subpage LATCH
 - \subpage CLOCK
 - \subpage SHIFTERS
 - \subpage ADCSELA
 - \subpage ADCSELB
 - \subpage ADCSELC
+- \subpage CODEC_PDN
+- \subpage BitIoLdd1
+- \subpage BitIoLdd2
+- \subpage TU1
+- \subpage TI1
+- \subpage AdcLdd1
+- \subpage GATE_TRIGGER
+- \subpage GATE_BUTTON
+- \subpage FILTER_BUTTON
+- \subpage ACCENT_TRIGGER
+- \subpage I2S0
+- \subpage AdcLdd2
 
 */
 

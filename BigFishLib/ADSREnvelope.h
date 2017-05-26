@@ -58,9 +58,7 @@ typedef struct ADSR_Envelope_t
 
 	int State;
 	
-	unsigned char Gates[5];
-	unsigned char StateLeds[14];
-
+	
 	int32_t AttackStart;
 	int32_t DecayStart;
 	int32_t ReleaseStart;

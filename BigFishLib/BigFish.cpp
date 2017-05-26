@@ -5,10 +5,14 @@
 #include "DistortionTable_2.h"
 //#include "bleptables.h"
 
-#include <math.h>
+#ifdef WIN32
+#define MEMATTR 
+#else
+#define MEMATTR __attribute__((section(".data")))
+#endif
 
-float *blep;
-int32_t *intblep;
+
+#include <math.h>
 
 #include "FormantTable.h"
 
@@ -106,15 +110,6 @@ float DBToLevel(float db)
 
 void BigFish_Init(struct BigFish_t *fish, int samplerate)
 {
-
-
-
-	blep = GenerateMinBLEP(24, 32);
-	intblep = new int32_t[48 * 32];
-	for (int i = 0; i < 48 * 32; i++)
-	{
-		intblep[i] = int(blep[i] * (1 << 24));
-	};
 
 	WaveBlepOsc_Init(&fish->WaveOsc);
 	Organ_Init(&fish->Organ);
@@ -492,7 +487,7 @@ void BigFish_Drive(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferout
 	}
 }
 
-void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_t *bufferMAIN, int len)
+inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t *bufferOSCOUT, int32_t *bufferMAIN, int len)
 {
 	BigFish_Update(fish);
 
@@ -514,6 +509,7 @@ void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_
 	int32_t MAIN[MAXFISHBUFFER];
 	typedef void GenFunc(BigFish_t *, int32_t *, int32_t *, int);
 	
+	//GenFunc* Funcs[8] = {SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish};//HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
 	GenFunc* Funcs[8] = {HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
 
 	SteppedResult_t sr;
@@ -529,21 +525,36 @@ void BigFish_GenerateBlock(struct BigFish_t *fish, int32_t *bufferOSCOUT, int32_
 	{
 		int L = __min(len, MAXFISHBUFFER);
 		len -= L;
-		Funcs[FuncIdx](fish, A, B, L);
-		Funcs[FuncIdx+1](fish, B, A, L);
-		
-		for (int i = 0; i < L; i++)
+		if (sr.fractional > 0)
 		{
-			int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope);
-			OSC[i] = (((B[i] * crossfade + A[i] * icrossfade) / 256));
-			int64_t inter = ((int64_t)OSC[i] * (int64_t)AmpEnvelope);
-			inter /= (int64_t)65536;
-			AMPED[i] =(int) inter;
-			*bufferOSCOUT++ = OSC[i];
-		}
+			Funcs[FuncIdx](fish, A, B, L);
+			Funcs[FuncIdx + 1](fish, B, A, L);
 
-		BigFish_Filter(fish, AMPED, MAIN, L);
-		BigFish_Drive(fish, MAIN, MAIN, L);
+			for (int i = 0; i < L; i++)
+			{
+				int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope);
+				OSC[i] = (((B[i] * crossfade + A[i] * icrossfade) / 256));
+				int64_t inter = ((int64_t)OSC[i] * (int64_t)AmpEnvelope);
+				inter /= (int64_t)65536;
+				AMPED[i] = (int)inter;
+				*bufferOSCOUT++ = OSC[i];
+			}
+		}
+		else
+		{
+			Funcs[FuncIdx](fish, A, B, L);
+			for (int i = 0; i < L; i++)
+			{
+				int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope);
+				OSC[i] = A[i];
+				int64_t inter = ((int64_t)OSC[i] * (int64_t)AmpEnvelope);
+				inter /= (int64_t)65536;
+				AMPED[i] = (int)inter;
+				*bufferOSCOUT++ = OSC[i];
+			}
+		}
+	BigFish_Filter(fish, AMPED, MAIN, L);
+	BigFish_Drive(fish, MAIN, MAIN, L);
 	
 		for (int i = 0; i < L; i++)
 		{

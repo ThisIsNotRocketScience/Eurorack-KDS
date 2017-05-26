@@ -8,11 +8,11 @@
 
 typedef struct Organ_t
 {
-	float mPhase;
-	float mPhase2;
-	float mPhaseIncrement;
-	float mPhaseIncrement2;
-	float spread;
+	uint32_t mPhase;
+	uint32_t mPhase2;
+	uint32_t mPhaseIncrement;
+	uint32_t mPhaseIncrement2;
+	uint32_t spread;
 } Organ_t;
 
 void Organ_Init(struct Organ_t *osc);
