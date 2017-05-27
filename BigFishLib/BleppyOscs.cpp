@@ -1,6 +1,7 @@
 #include "BleppyOscs.h"
 #include <math.h>
 #include <stdlib.h>
+#include "PowFast.hpp"
 
 #define LERP(F,A,B) ((B-A)*F+A)
 #define LERPINT(F,A,B, FBITS ) (((B-A)*F>>FBITS) + A)
@@ -10,6 +11,123 @@
 #else
 #define MEMATTR __attribute__((section(".data")))
 #endif
+
+float shift23 = (1 << 23);
+float OOshift23 = 1.0 / (1 << 23);
+
+float pow2(float i)
+{
+	float PowBodge = 0.33971f;
+	float x;
+	float y = i - floorf(i);
+	y = (y - y*y)*PowBodge;
+
+	x = i + 127 - y;
+	x *= shift23; //pow(2,23);
+	*(int*)&x = (int)x;
+	return x;
+}
+
+
+const int32_t intblep[48 * 32 * 2] = {
+	65535, -1,65534, -2,65532, -2,65530, -3,65527, -3,65524, -5,65519, -5,65514, -7,65507, -7,65500, -9,65491, -10,65481, -11,65470, -14,65456, -15,65441, -17,65424, -19,
+	65405, -22,65383, -25,65358, -28,65330, -32,65298, -35,65263, -41,65222, -45,65177, -51,65126, -57,65069, -64,65005, -72,64933, -79,64854, -89,64765, -99,64666, -109,64557, -120,
+	64437, -134,64303, -146,64157, -162,63995, -177,63818, -193,63625, -212,63413, -231,63182, -251,62931, -272,62659, -296,62363, -319,62044, -345,61699, -371,61328, -399,60929, -428,60501, -458,
+	60043, -490,59553, -523,59030, -556,58474, -591,57883, -627,57256, -665,56591, -701,55890, -741,55149, -780,54369, -820,53549, -860,52689, -901,51788, -943,50845, -984,49861, -1025,48836, -1067,
+	47769, -1108,46661, -1148,45513, -1189,44324, -1227,43097, -1267,41830, -1303,40527, -1340,39187, -1374,37813, -1407,36406, -1439,34967, -1468,33499, -1496,32003, -1520,30483, -1542,28941, -1563,27378, -1579,
+	25799, -1594,24205, -1605,22600, -1612,20988, -1617,19371, -1618,17753, -1616,16137, -1610,14527, -1599,12928, -1587,11341, -1569,9772, -1548,8224, -1522,6702, -1495,5207, -1461,3746, -1425,2321, -1385,
+	936, -1341,-405, -1294,-1699, -1244,-2943, -1190,-4133, -1133,-5266, -1073,-6339, -1011,-7350, -945,-8295, -878,-9173, -808,-9981, -737,-10718, -663,-11381, -590,-11971, -514,-12485, -437,-12922, -361,
+	-13283, -285,-13568, -208,-13776, -132,-13908, -56,-13964, 17,-13947, 91,-13856, 161,-13695, 230,-13465, 296,-13169, 360,-12809, 422,-12387, 479,-11908, 533,-11375, 584,-10791, 630,-10161, 674,
+	-9487, 711,-8776, 746,-8030, 775,-7255, 799,-6456, 819,-5637, 835,-4802, 844,-3958, 850,-3108, 850,-2258, 846,-1412, 837,-575, 821,246, 805,1051, 781,1832, 754,2586, 723,
+	3309, 689,3998, 649,4647, 608,5255, 563,5818, 515,6333, 464,6797, 413,7210, 358,7568, 303,7871, 246,8117, 189,8306, 131,8437, 74,8511, 16,8527, -41,8486, -97,
+	8389, -151,8238, -203,8035, -254,7781, -303,7478, -347,7131, -391,6740, -429,6311, -466,5845, -499,5346, -527,4819, -552,4267, -572,3695, -589,3106, -601,2505, -610,1895, -613,
+	1282, -613,669, -607,62, -598,-536, -586,-1122, -569,-1691, -549,-2240, -524,-2764, -496,-3260, -466,-3726, -431,-4157, -396,-4553, -356,-4909, -315,-5224, -273,-5497, -229,-5726, -183,
+	-5909, -138,-6047, -90,-6137, -44,-6181, 2,-6179, 48,-6131, 93,-6038, 137,-5901, 179,-5722, 219,-5503, 258,-5245, 294,-4951, 327,-4624, 358,-4266, 386,-3880, 409,-3471, 431,
+	-3040, 449,-2591, 462,-2129, 472,-1657, 479,-1178, 483,-695, 481,-214, 476,262, 468,730, 458,1188, 442,1630, 424,2054, 403,2457, 379,2836, 351,3187, 323,3510, 291,
+	3801, 258,4059, 223,4282, 187,4469, 149,4618, 110,4728, 72,4800, 34,4834, -6,4828, -44,4784, -81,4703, -118,4585, -153,4432, -187,4245, -219,4026, -248,3778, -276,
+	3502, -301,3201, -323,2878, -342,2536, -360,2176, -373,1803, -383,1420, -390,1030, -395,635, -395,240, -392,-152, -387,-539, -379,-918, -367,-1285, -353,-1638, -335,-1973, -316,
+	-2289, -293,-2582, -269,-2851, -243,-3094, -215,-3309, -185,-3494, -154,-3648, -123,-3771, -90,-3861, -57,-3918, -25,-3943, 9,-3934, 41,-3893, 73,-3820, 104,-3716, 134,-3582, 162,
+	-3420, 189,-3231, 214,-3017, 237,-2780, 258,-2522, 277,-2245, 292,-1953, 306,-1647, 316,-1331, 324,-1007, 330,-677, 332,-345, 331,-14, 327,313, 322,635, 314,949, 302,
+	1251, 289,1540, 273,1813, 255,2068, 234,2302, 213,2515, 189,2704, 164,2868, 139,3007, 111,3118, 83,3201, 56,3257, 27,3284, -2,3282, -29,3253, -57,3196, -84,
+	3112, -110,3002, -134,2868, -158,2710, -180,2530, -200,2330, -218,2112, -234,1878, -248,1630, -260,1370, -269,1101, -276,825, -280,545, -283,262, -282,-20, -279,-299, -275,
+	-574, -266,-840, -257,-1097, -246,-1343, -231,-1574, -215,-1789, -198,-1987, -179,-2166, -158,-2324, -136,-2460, -114,-2574, -91,-2665, -66,-2731, -42,-2773, -17,-2790, 7,-2783, 32,
+	-2751, 55,-2696, 78,-2618, 101,-2517, 121,-2396, 142,-2254, 160,-2094, 176,-1918, 192,-1726, 206,-1520, 217,-1303, 226,-1077, 233,-844, 239,-605, 242,-363, 243,-120, 241,
+	121, 238,359, 233,592, 226,818, 216,1034, 205,1239, 192,1431, 178,1609, 162,1771, 144,1915, 126,2041, 107,2148, 87,2235, 66,2301, 45,2346, 23,2369, 3,
+	2372, -19,2353, -40,2313, -60,2253, -80,2173, -98,2075, -116,1959, -133,1826, -148,1678, -161,1517, -174,1343, -184,1159, -193,966, -200,766, -205,561, -209,352, -209,
+	143, -209,-66, -206,-272, -203,-475, -196,-671, -189,-860, -180,-1040, -168,-1208, -157,-1365, -142,-1507, -128,-1635, -112,-1747, -96,-1843, -78,-1921, -60,-1981, -42,-2023, -24,
+	-2047, -4,-2051, 13,-2038, 32,-2006, 50,-1956, 67,-1889, 83,-1806, 99,-1707, 113,-1594, 127,-1467, 138,-1329, 150,-1179, 158,-1021, 167,-854, 172,-682, 177,-505, 180,
+	-325, 182,-143, 180,37, 179,216, 175,391, 170,561, 164,725, 155,880, 146,1026, 135,1161, 124,1285, 110,1395, 97,1492, 82,1574, 67,1641, 52,1693, 36,
+	1729, 19,1748, 4,1752, -13,1739, -29,1710, -43,1667, -59,1608, -73,1535, -87,1448, -99,1349, -110,1239, -121,1118, -130,988, -138,850, -144,706, -150,556, -153,
+	403, -156,247, -157,90, -155,-65, -155,-220, -151,-371, -146,-517, -140,-657, -133,-790, -125,-915, -115,-1030, -105,-1135, -93,-1228, -82,-1310, -69,-1379, -55,-1434, -42,
+	-1476, -28,-1504, -14,-1518, 0,-1518, 14,-1504, 27,-1477, 41,-1436, 53,-1383, 66,-1317, 77,-1240, 87,-1153, 98,-1055, 106,-949, 113,-836, 121,-715, 126,-589, 129,
+	-460, 133,-327, 135,-192, 135,-57, 133,76, 132,208, 129,337, 124,461, 119,580, 113,693, 104,797, 97,894, 87,981, 77,1058, 66,1124, 56,1180, 43,
+	1223, 32,1255, 20,1275, 8,1283, -4,1279, -16,1263, -28,1235, -39,1196, -50,1146, -60,1086, -70,1016, -79,937, -87,850, -94,756, -100,656, -105,551, -110,
+	441, -113,328, -115,213, -116,97, -115,-18, -114,-132, -113,-245, -109,-354, -105,-459, -100,-559, -94,-653, -87,-740, -80,-820, -71,-891, -62,-953, -53,-1006, -43,
+	-1049, -33,-1082, -23,-1105, -12,-1117, -2,-1119, 8,-1111, 18,-1093, 29,-1064, 37,-1027, 47,-980, 56,-924, 63,-861, 71,-790, 77,-713, 83,-630, 88,-542, 92,
+	-450, 95,-355, 98,-257, 98,-159, 99,-60, 98,38, 97,135, 95,230, 91,321, 87,408, 83,491, 77,568, 70,638, 64,702, 57,759, 48,807, 41,
+	848, 32,880, 23,903, 14,917, 5,922, -3,919, -12,907, -21,886, -29,857, -37,820, -45,775, -51,724, -58,666, -64,602, -69,533, -74,459, -77,
+	382, -81,301, -82,219, -84,135, -85,50, -83,-33, -84,-117, -82,-199, -79,-278, -76,-354, -72,-426, -68,-494, -62,-556, -57,-613, -51,-664, -44,-708, -38,
+	-746, -30,-776, -23,-799, -15,-814, -8,-822, 0,-822, 7,-815, 15,-800, 22,-778, 28,-750, 35,-715, 42,-673, 46,-627, 53,-574, 56,-518, 61,-457, 64,
+	-393, 66,-327, 69,-258, 71,-187, 71,-116, 71,-45, 69,24, 69,93, 68,161, 64,225, 62,287, 58,345, 54,399, 49,448, 44,492, 39,531, 33,
+	564, 27,591, 20,611, 15,626, 8,634, 2,636, -5,631, -11,620, -17,603, -22,581, -29,552, -33,519, -38,481, -43,438, -47,391, -50,341, -53,
+	288, -56,232, -58,174, -59,115, -59,56, -59,-3, -59,-62, -59,-121, -57,-178, -55,-233, -52,-285, -50,-335, -46,-381, -42,-423, -38,-461, -34,-495, -28,
+	-523, -24,-547, -19,-566, -13,-579, -8,-587, -3,-590, 3,-587, 8,-579, 13,-566, 17,-549, 23,-526, 27,-499, 31,-468, 35,-433, 38,-395, 41,-354, 44,
+	-310, 46,-264, 47,-217, 49,-168, 49,-119, 50,-69, 49,-20, 48,28, 47,75, 46,121, 44,165, 41,206, 38,244, 36,280, 32,312, 28,340, 24,
+	364, 20,384, 16,400, 11,411, 7,418, 3,421, -2,419, -6,413, -10,403, -15,388, -18,370, -23,347, -25,322, -29,293, -31,262, -34,228, -37,
+	191, -38,153, -39,114, -40,74, -41,33, -41,-8, -41,-49, -40,-89, -40,-129, -38,-167, -36,-203, -35,-238, -32,-270, -30,-300, -27,-327, -24,-351, -20,
+	-371, -18,-389, -13,-402, -10,-412, -7,-419, -3,-422, 1,-421, 4,-417, 8,-409, 12,-397, 14,-383, 18,-365, 20,-345, 23,-322, 25,-297, 28,-269, 29,
+	-240, 30,-210, 32,-178, 33,-145, 33,-112, 33,-79, 33,-46, 33,-13, 31,18, 31,49, 29,78, 28,106, 26,132, 24,156, 21,177, 19,196, 17,
+	213, 13,226, 11,237, 8,245, 5,250, 2,252, -1,251, -4,247, -7,240, -9,231, -12,219, -15,204, -16,188, -19,169, -21,148, -23,125, -24,
+	101, -25,76, -26,50, -26,24, -26,-2, -27,-29, -27,-56, -27,-83, -26,-109, -25,-134, -24,-158, -22,-180, -22,-202, -19,-221, -17,-238, -16,-254, -13,
+	-267, -11,-278, -8,-286, -6,-292, -4,-296, -1,-297, 2,-295, 4,-291, 6,-285, 8,-277, 11,-266, 13,-253, 15,-238, 17,-221, 18,-203, 20,-183, 22,
+	-161, 23,-138, 23,-115, 25,-90, 25,-65, 26,-39, 26,-13, 25,12, 26,38, 25,63, 26,89, 24,113, 24,137, 24,161, 22,183, 21,204, 20,
+	224, 19,243, 18,261, 17,278, 15,293, 14,307, 13,320, 12,332, 10,342, 10,352, 8,360, 7,367, 7,374, 6,380, 5,385, 5,390, 4,
+	394, 4,398, 3,401, 4,405, 3,408, 4,412, 4,416, 3,419, 5,424, 4,428, 5,433, 6,439, 6,445, 6,451, 7,458, 7,465, 7,
+	472, 8,480, 9,489, 8,497, 8,505, 9,514, 8,522, 8,530, 8,538, 7,545, 6,551, 5,556, 5,561, 3,564, 2,566, 0,566, -1,
+	565, -3,562, -5,557, -7,550, -10,540, -11,529, -14,515, -16,499, -19,480, -21,459, -23,436, -26,410, -29,381, -30,351, -33,318, -35,283, -38,
+	245, -39,206, -41,165, -42,123, -44,79, -45,34, -44,-10, -47,-57, -47,-104, -47,-151, -46,-197, -46,-243, -46,-289, -44,-333, -43,-376, -41,-417, -40,
+	-457, -37,-494, -35,-529, -32,-561, -28,-589, -26,-615, -23,-638, -18,-656, -15,-671, -11,-682, -7,-689, -3,-692, 1,-691, 5,-686, 9,-677, 14,-663, 17,
+	-646, 22,-624, 25,-599, 29,-570, 33,-537, 35,-502, 39,-463, 42,-421, 44,-377, 46,-331, 48,-283, 49,-234, 51,-183, 52,-131, 52,-79, 52,-27, 51,
+	24, 51,75, 50,125, 49,174, 47,221, 45,266, 43,309, 39,348, 37,385, 34,419, 30,449, 26,475, 22,497, 18,515, 14,529, 10,539, 5,
+	544, 1,545, -4,541, -8,533, -12,521, -17,504, -20,484, -25,459, -28,431, -32,399, -35,364, -38,326, -40,286, -43,243, -45,198, -47,151, -48,
+	103, -48,55, -50,5, -48,-43, -50,-93, -48,-141, -48,-189, -46,-235, -45,-280, -43,-323, -40,-363, -37,-400, -35,-435, -31,-466, -28,-494, -24,-518, -21,
+	-539, -16,-555, -13,-568, -8,-576, -4,-580, 0,-580, 5,-575, 8,-567, 13,-554, 17,-537, 20,-517, 24,-493, 27,-466, 31,-435, 33,-402, 36,-366, 38,
+	-328, 41,-287, 42,-245, 43,-202, 44,-158, 45,-113, 45,-68, 45,-23, 43,20, 44,64, 42,106, 41,147, 38,185, 37,222, 34,256, 32,288, 28,
+	316, 25,341, 22,363, 18,381, 15,396, 11,407, 7,414, 3,417, -1,416, -4,412, -9,403, -12,391, -15,376, -19,357, -23,334, -25,309, -29,
+	280, -31,249, -33,216, -35,181, -37,144, -38,106, -39,67, -41,26, -39,-13, -40,-53, -41,-94, -39,-133, -39,-172, -37,-209, -36,-245, -34,-279, -32,
+	-311, -29,-340, -27,-367, -24,-391, -20,-411, -18,-429, -14,-443, -11,-454, -8,-462, -4,-466, 0,-466, 3,-463, 7,-456, 10,-446, 13,-433, 16,-417, 20,
+	-397, 22,-375, 25,-350, 27,-323, 30,-293, 31,-262, 33,-229, 34,-195, 35,-160, 36,-124, 36,-88, 37,-51, 36,-15, 34,19, 35,54, 33,87, 32,
+	119, 31,150, 28,178, 26,204, 24,228, 21,249, 19,268, 15,283, 13,296, 9,305, 6,311, 3,314, 0,314, -3,311, -7,304, -9,295, -13,
+	282, -15,267, -18,249, -21,228, -23,205, -25,180, -27,153, -28,125, -30,95, -31,64, -32,32, -32,0, -32,-32, -32,-64, -33,-97, -31,-128, -31,
+	-159, -30,-189, -28,-217, -26,-243, -25,-268, -23,-291, -20,-311, -18,-329, -15,-344, -13,-357, -10,-367, -7,-374, -4,-378, -1,-379, 2,-377, 4,-373, 7,
+	-366, 11,-355, 12,-343, 16,-327, 17,-310, 20,-290, 22,-268, 23,-245, 25,-220, 27,-193, 27,-166, 28,-138, 29,-109, 29,-80, 30,-50, 29,-21, 27,
+	6, 28,34, 27,61, 26,87, 24,111, 23,134, 20,154, 19,173, 17,190, 14,204, 12,216, 9,225, 7,232, 5,237, 1,238, -1,237, -4,
+	233, -6,227, -8,219, -11,208, -14,194, -15,179, -18,161, -19,142, -21,121, -22,99, -24,75, -24,51, -25,26, -26,0, -25,-25, -26,-51, -27,
+	-78, -25,-103, -25,-128, -24,-152, -23,-175, -22,-197, -20,-217, -19,-236, -16,-252, -15,-267, -13,-280, -11,-291, -8,-299, -6,-305, -4,-309, -1,-310, 1,
+	-309, 4,-305, 5,-300, 8,-292, 10,-282, 12,-270, 14,-256, 16,-240, 18,-222, 18,-204, 21,-183, 21,-162, 22,-140, 22,-118, 24,-94, 23,-71, 23,
+	-48, 24,-24, 22,-2, 21,19, 22,41, 20,61, 19,80, 18,98, 16,114, 15,129, 13,142, 11,153, 9,162, 7,169, 4,173, 3,176, 1,
+	177, -2,175, -3,172, -6,166, -8,158, -9,149, -11,138, -13,125, -15,110, -15,95, -18,77, -18,59, -19,40, -20,20, -20,0, -19,-19, -21,
+	-40, -21,-61, -20,-81, -20,-101, -20,-121, -18,-139, -18,-157, -16,-173, -16,-189, -13,-202, -13,-215, -10,-225, -9,-234, -8,-242, -5,-247, -3,-250, -2,
+	-252, 0,-252, 2,-250, 4,-246, 6,-240, 8,-232, 9,-223, 11,-212, 12,-200, 13,-187, 15,-172, 16,-156, 16,-140, 17,-123, 18,-105, 18,-87, 19,
+	-68, 18,-50, 18,-32, 18,-14, 17,3, 17,20, 16,36, 15,51, 14,65, 13,78, 11,89, 10,99, 9,108, 7,115, 5,120, 4,124, 2,
+	126, 1,127, -1,126, -3,123, -5,118, -5,113, -8,105, -9,96, -10,86, -11,75, -13,62, -13,49, -14,35, -15,20, -16,4, -14,-10, -16,
+	-26, -16,-42, -16,-58, -16,-74, -16,-90, -14,-104, -15,-119, -13,-132, -13,-145, -11,-156, -11,-167, -9,-176, -8,-184, -6,-190, -6,-196, -3,-199, -3,
+	-202, 0,-202, 0,-202, 2,-200, 4,-196, 5,-191, 6,-185, 7,-178, 9,-169, 9,-160, 11,-149, 12,-137, 12,-125, 13,-112, 13,-99, 14,-85, 14,
+	-71, 14,-57, 14,-43, 13,-30, 14,-16, 13,-3, 12,9, 11,20, 11,31, 11,42, 9,51, 8,59, 7,66, 6,72, 5,77, 4,81, 2,
+	83, 1,84, -1,83, -1,82, -3,79, -4,75, -5,70, -7,63, -7,56, -8,48, -9,39, -10,29, -10,19, -11,8, -11,-3, -12,-15, -12,
+	-27, -12,-39, -12,-51, -12,-63, -11,-74, -12,-86, -11,-97, -10,-107, -9,-116, -9,-125, -8,-133, -8,-141, -6,-147, -5,-152, -4,-156, -3,-159, -2,
+	-161, -1,-162, 0,-162, 1,-161, 3,-158, 3,-155, 4,-151, 6,-145, 6,-139, 7,-132, 8,-124, 8,-116, 9,-107, 9,-98, 10,-88, 10,-78, 11,
+	-67, 10,-57, 10,-47, 10,-37, 10,-27, 10,-17, 9,-8, 8,0, 8,8, 8,16, 7,23, 6,29, 5,34, 5,39, 3,42, 3,45, 2,
+	47, 0,47, 0,47, -1,46, -2,44, -3,41, -4,37, -4,33, -6,27, -5,22, -7,15, -7,8, -8,0, -7,-7, -8,-15, -9,-24, -8,
+	-32, -9,-41, -9,-50, -8,-58, -9,-67, -8,-75, -8,-83, -7,-90, -7,-97, -6,-103, -6,-109, -5,-114, -5,-119, -3,-122, -3,-125, -2,-127, -2,
+	-129, 0,-129, 0,-129, 1,-128, 2,-126, 3,-123, 3,-120, 4,-116, 4,-112, 5,-107, 6,-101, 6,-95, 6,-89, 7,-82, 7,-75, 7,-68, 8,
+	-60, 7,-53, 8,-45, 7,-38, 7,-31, 7,-24, 6,-18, 6,-12, 6,-6, 5,-1, 4,3, 4,7, 4,11, 3,14, 2,16, 2,18, 1,
+	19, 0,19, 0,19, -1,18, -2,16, -2,14, -2,12, -4,8, -4,4, -4,0, -3,-3, -6,-9, -5,-14, -6,-20, -5,-25, -6,-31, -6,
+	-37, -6,-43, -6,-49, -6,-55, -6,-61, -6,-67, -5,-72, -5,-77, -5,-82, -4,-86, -4,-90, -3,-93, -3,-96, -2,-98, -2,-100, -1,-101, -1,
+	-102, 0,-102, 0,-102, 1,-101, 2,-99, 2,-97, 2,-95, 3,-92, 4,-88, 3,-85, 4,-81, 5,-76, 4,-72, 5,-67, 5,-62, 5,-57, 5,
+	-52, 5,-47, 5,-42, 5,-37, 4,-33, 5,-28, 5,-23, 4,-19, 3,-16, 4,-12, 3,-9, 3,-6, 2,-4, 2,-2, 1,-1, 1,0, 0,
+};
+
 
 const float blep[48 * 32 * 2] = {
 	0.999990f, -0.000013f,0.999977f, -0.000024f,0.999952f, -0.000034f,0.999918f, -0.000045f,0.999874f, -0.000057f,0.999817f, -0.000069f,0.999749f, -0.000083f,0.999665f, -0.000097f,0.999568f, -0.000114f,0.999453f, -0.000132f,0.999321f, -0.000153f,0.999169f, -0.000175f,0.998994f, -0.000200f,0.998793f, -0.000228f,0.998565f, -0.000260f,0.998305f, -0.000295f,
@@ -155,41 +273,126 @@ void HyperCalculate_Spread(struct HyperSet_t *set, float spread, float size)
 	for (int i = 0; i<NewnSaws; i++)
 	{
 		set->Level[i] = NewSawLevel[i];
+		set->iLevel[i] = (int)((1<<14) * set->Level[i]);
 	};
 	set->Active = NewnSaws;
 
 	set->Freq[0] = 1;
-	float DetuneMul  = (((1.0) / 2.0f))*(spread * (1.0f / 6.0f))*(0.5f / (fSaws*0.5f));
+	float DetuneMul  = (((1.0f) / 2.0f))*(spread * (1.0f / 6.0f))*(0.5f / (fSaws*0.5f));
 
 	for (int i = 1; i<set->Active; i++)
 	{
 		float Detune = ((((float)i * DetuneMul)));
 		if (i & 2)
 		{
-			set->Freq[i] = powf(2.f, Detune);
+			set->Freq[i] = pow2(Detune);
 		}
 		else
 		{
-			set->Freq[i] = powf(2.f, -Detune);
+			set->Freq[i] = pow2(-Detune);
 		};
 	};
 }
 
-void AddBlep(float *circbuffer, int index, float scale, float crosstime)
-{
 
-	float tempIndex = (crosstime*32.0f);
-	int b1 = (int)floor(tempIndex);
-	float tempFraction = tempIndex - (float)b1;
+void AddBlep(float *fcircbuffer, int findex, float fscale, float fcrosstime)
+{
+	float ftempIndex = (fcrosstime*32.0f);
+	int fb1 = (int)floor(ftempIndex);
+	float ftempFraction = ftempIndex - (float)fb1;
+	fb1 *= 2;
+	for (int i = 0; i < 47; i++)
+	{
+		fcircbuffer[(findex ++) & 63] += fscale * (float)( (blep[fb1] +  ftempFraction *blep[fb1+1])) ;
+		fb1 += 64;
+	}
+}
+
+
+#ifndef WIN32
+#define __INLINE inline
+#define __ASM __asm__
+
+
+__attribute__((always_inline)) static __INLINE int32_t SMMLA(int32_t acc, int32_t a, int32_t b)
+{
+	int32_t result;
+
+	__ASM volatile ("smmla %0, %2, %3, %1" : "=r" (result) : "r" (acc), "r" (a), "r" (b));
+	return result;
+}
+#else
+
+int32_t SMMLA(int32_t acc, int32_t a, int32_t b)
+{
+	int64_t R = (int64_t)a * (int64_t)b;
+	R >>= 32;
+	R += acc;
+	return (int32_t)R;
+}
+
+#endif
+
+
+int32_t blepres[49] = { 8191, 8054, 5971, 117, -1185, 1048, -738, 475, -286, 156,
+-71, 15, 17, -40, 50, -57, 55, -56, 47, -49, 36, -38, 23, -30, 12, -20, 49, 70,
+-57, 3, 12, -41, 35, -49, 35, -45, 29, -38, 22, -31, 15, -25, 10, -20, 5, -16,
+2, 0, 0 };
+
+
+MEMATTR void AddBlepFixed(int32_t *circbuffer, int index, int32_t scale, uint32_t crosstime)
+{
+	uint32_t  tempIndex = crosstime;
+	uint32_t b1 = tempIndex >> 27;
+
+	uint32_t tempFraction2 = (tempIndex << 5);
+	tempFraction2 >>= 16;
+
+	int32_t tempFraction = tempIndex & ((1 << 28) - 1);
+	tempFraction *= 8;
+	int32_t scale2 = scale;
+	//scale = scale * (int32_t)8192 ;
+	scale <<= 17;
 	b1 *= 2;
 	for (int i = 0; i < 47; i++)
 	{
-		circbuffer[(index ++) % 48] += scale * (float)( (blep[b1] +  tempFraction *blep[b1+1])) ;
+		int32_t A = intblep[b1]>>1;
+		int32_t B = intblep[b1 + 1]>>1;	
+		int32_t C = SMMLA(A, B , tempFraction)  ;
+
+		circbuffer[index]  = SMMLA(circbuffer[index], C, scale ) ;
+		
+		index = (index + 1)&63;
 		b1 += 64;
 	}
-
-
 }
+
+
+
+MEMATTR void AddBlepFixedRef(int32_t *circbuffer, int index, int32_t scale, uint32_t crosstime)
+{
+	uint32_t  tempIndex = crosstime;
+	uint32_t b1 = tempIndex >> 27;
+	uint32_t tempFraction = (tempIndex << 5);
+	tempFraction >>= 16;
+	b1 *= 2;
+	for (int i = 0; i < 47; i++)
+	{
+		int32_t A = intblep[b1];
+		int32_t B = intblep[b1 + 1];
+		int32_t C = tempFraction * B;
+		C >>= 16;
+		C += A;   // C = A + B * tempfraction
+		C >>= 2;
+		C *= scale;
+		C >>= 14;
+		circbuffer[(index) & 63] += C;
+		index++;
+		b1 += 64;
+	}
+}
+
+
 /*
 void AddBlep_Int(int32_t *circbuffer, int index, int32_t scale, int32_t crosstime)
 {
@@ -207,7 +410,8 @@ void AddBlep_Int(int32_t *circbuffer, int index, int32_t scale, int32_t crosstim
 		
 		tempIndex += 32;
 	}
-}*/
+}
+*/
 
 
 void WaveBlepOsc_Init(struct WaveBlep_t *osc)
@@ -219,36 +423,36 @@ void WaveBlepOsc_Init(struct WaveBlep_t *osc)
 	osc->PrevOut = 0;
 	osc->mPhaseIncrement = 0.1f;
 	osc->waveindex = 0;
-	for (int i = 0; i < 48; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		osc->circularBuffer[i] = 0;
 		osc->circularBufferInt[i] = 0;
 	}
 }
-void WaveBlepOsc_Update(struct WaveBlep_t *osc, int samplerate, float centerfreq, float size, float spread)
+void WaveBlepOsc_Update(struct WaveBlep_t *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = centerfreq / (float)samplerate;
+	float C = centerfreq * odsr;
 	osc->mPhaseIncrement = C;
 	osc->speedmul = (2 + (size * (6.0f / 65536.0f)));
 	osc->mPhaseIncrement2 = osc->mPhaseIncrement * osc->speedmul;
-	size /= 32768;
-	spread /= 32768;
+	size /= 32768.0f;
+	spread /= 32768.0f;
 	osc->wavea[0] = sinf(size);
-	osc->wavea[1] = sinf(size*1.1);
-	osc->wavea[2] = sinf(size*1.2);
-	osc->wavea[3] = cosf(spread*3.10);
-	osc->wavea[4] = cosf(spread*2.4);
-	osc->wavea[5] = cosf(size*1.1230);
-	osc->wavea[6] = cosf(spread*5.20);
-	osc->wavea[7] = sinf(size * .510 + spread*0.6120);
-	osc->waveb[0] = sinf(size*1.4);
-	osc->waveb[1] = sinf(size*1.5);
-	osc->waveb[2] = sinf(size*1.7);
-	osc->waveb[3] = cosf(spread*5.10);
-	osc->waveb[4] = cosf(spread*3.4);
-	osc->waveb[5] = cosf(size*2.4230);
-	osc->waveb[6] = cosf(spread*2.20);
-	osc->waveb[7] = sinf(size * 1.510 + spread*2.6120);
+	osc->wavea[1] = sinf(size*1.1f);
+	osc->wavea[2] = sinf(size*1.2f);
+	osc->wavea[3] = cosf(spread*3.10f);
+	osc->wavea[4] = cosf(spread*2.4f);
+	osc->wavea[5] = cosf(size*1.1230f);
+	osc->wavea[6] = cosf(spread*5.20f);
+	osc->wavea[7] = sinf(size * .510f + spread*0.6120f);
+	osc->waveb[0] = sinf(size*1.4f);
+	osc->waveb[1] = sinf(size*1.5f);
+	osc->waveb[2] = sinf(size*1.7f);
+	osc->waveb[3] = cosf(spread*5.10f);
+	osc->waveb[4] = cosf(spread*3.4f);
+	osc->waveb[5] = cosf(size*2.4230f);
+	osc->waveb[6] = cosf(spread*2.20f);
+	osc->waveb[7] = sinf(size * 1.510f + spread*2.6120f);
 	int max = osc->speedmul -2;
 //	osc->wavea[max] = osc->wavea[0];
 	//osc->waveb[max] = osc->wavea[0];
@@ -262,7 +466,7 @@ float WaveBlepOsc_Get(struct  WaveBlep_t *osc)
 {
 	osc->mMasterPhase += osc->mPhaseIncrement;
 	osc->mSlavePhase += osc->mPhaseIncrement2;
-	osc->index = (osc->index + 1) % 48;
+	osc->index = (osc->index + 1) & 63;
 	while (osc->mMasterPhase >= 1.0)
 	{
 		osc->mMasterPhase -= 1.0;
@@ -311,27 +515,27 @@ void VosimOsc_Init(struct VosimBlep_t *osc)
 	osc->Sign = -1000;
 	osc->VosimStep = 10;
 	osc->mPhaseIncrement = 0.1f;
-	for (int i = 0; i < 48; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		osc->circularBuffer[i] = 0;
 	}
 }
-void VosimOsc_Update(struct VosimBlep_t *osc, int samplerate, float centerfreq, float size, float spread)
+void VosimOsc_Update(struct VosimBlep_t *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = centerfreq / (float)samplerate;
+	float C = centerfreq *odsr;
 	osc->mPhaseIncrement = C;
-	osc->mPhaseIncrement2 = ((400 + 18000 * size) / (float)samplerate)*6.283f;
+	osc->mPhaseIncrement2 = ((400 + 18000 * size) *odsr)*6.283f;
 }
 float VosimOsc_GetO(struct  VosimBlep_t *osc)
 {
 	osc->mPhase += osc->mPhaseIncrement;
-	osc->index = (osc->index + 1) % 48;
+	osc->index = (osc->index + 1)  & 63 ;
 
 	while (osc->mPhase >= 1.0)
 	{
 		osc->mPhase -= 1.0;
 		float exactCrossTime = 1.0f - ((osc->mPhaseIncrement - osc->mPhase) / osc->mPhaseIncrement);
-		float NewVosim = osc->VosimStep - 32768 / 16;
+		int NewVosim = osc->VosimStep - (32768 / 16);
 		if (NewVosim <= 0) NewVosim = 32768;
 		if (osc->Sign>0)
 		{
@@ -339,15 +543,15 @@ float VosimOsc_GetO(struct  VosimBlep_t *osc)
 
 			float	step = NewVosim + osc->VosimStep;
 			AddBlep(osc->circularBuffer, osc->index, step, exactCrossTime);
-			osc->OutVal = -NewVosim;
+			osc->OutVal = -(float)NewVosim;
 		}
 		else
 		{
-			float	step = NewVosim + osc->VosimStep;
+			float	step =(float)NewVosim + osc->VosimStep;
 
 			AddBlep(osc->circularBuffer, osc->index, -step, exactCrossTime);
 			osc->Sign = 1;
-			osc->OutVal = NewVosim;
+			osc->OutVal = (float)NewVosim;
 		}
 
 		osc->VosimStep = NewVosim;
@@ -365,15 +569,15 @@ float VosimOsc_Get(struct  VosimBlep_t *osc)
 {
 	osc->mPhase += osc->mPhaseIncrement;
 	osc->mPhase2 += osc->mPhaseIncrement2;
-	osc->index = (osc->index + 1) % 48;
-	while (osc->mPhase2 >= 3.1415 * 2)
+	osc->index = (osc->index + 1) & 63;
+	while (osc->mPhase2 >= 3.1415f * 2.0f)
 	{
-		osc->mPhase2 -= 3.1415*2.0;
+		osc->mPhase2 -= 3.1415f*2.0f;
 	}
 
-	while (osc->mPhase >= 1.0)
+	while (osc->mPhase >= 1.0f)
 	{
-		osc->mPhase -= 1.0;
+		osc->mPhase -= 1.0f;
 		float exactCrossTime = 1.0f - ((osc->mPhaseIncrement - osc->mPhase) / osc->mPhaseIncrement);
 		AddBlep(osc->circularBuffer, osc->index, 1, exactCrossTime);
 	}
@@ -390,43 +594,56 @@ void HyperOsc_Init(struct HyperOsc_t *osc)
 	for (int i = 0; i < MAXHYPER; i++)
 	{
   		osc->mPhase[i] = 0;
-		osc->mPhaseIncrement[i] = 0.1f;
+		osc->mPhaseIncrement[i] = 1;
 	}
-	for (int i = 0; i < 48; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		osc->circularBuffer[i] = 0;
 	}
 }
-inline void HyperOsc_Update(struct HyperOsc_t *osc, int samplerate, float centerfreq, float size, float spread)
+
+inline void HyperOsc_Update(struct HyperOsc_t *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = centerfreq / (float)samplerate;
+	float C = centerfreq * odsr;
 
 	HyperCalculate_Spread(&osc->HyperSet, spread, size);
 
 	for (int i = 0; i < osc->HyperSet.Active; i++)
 	{
-		osc->mPhaseIncrement[i] = C * osc->HyperSet.Freq[i];;
+ 		float F = (C * osc->HyperSet.Freq[i]);
+		uint32_t C2 = (unsigned long)((65536.f*65536.f) * (F));
+		osc->mPhaseIncrement[i] = C2;
 	}
 }
 
-inline float HyperOsc_Get(struct HyperOsc_t *osc)
+inline int32_t HyperOsc_Get(struct HyperOsc_t *osc)
 {
-	osc->index = (osc->index + 1) % 48;
+	osc->index = (osc->index + 1) & 63;
 	for (int o = 0; o < osc->HyperSet.Active; o++)
 	{
-		osc->mPhase[o] += osc->mPhaseIncrement[o];
-		if (osc->mPhase[o] >= 1.0f)
-		{
-			while (osc->mPhase[o] >= 1.0f) osc->mPhase[o] -= 1.0f;
-			float exactCrossTime = 1.0f - ((osc->mPhaseIncrement[o] - osc->mPhase[o]) / osc->mPhaseIncrement[o]);
-			AddBlep(osc->circularBuffer, osc->index, osc->HyperSet.Level[o] * 2, exactCrossTime);
-		}
 
-		osc->circularBuffer[osc->index] += ((osc->mPhase[o] - osc->mPhaseIncrement[o]) * 2 - 1.0f) * osc->HyperSet.Level[o];
+		osc->mPhase[o] += osc->mPhaseIncrement[o];
+		
+		if (~osc->mLastPhase[o] < osc->mPhaseIncrement[o])
+		{
+			uint32_t crosstime = osc->mPhaseIncrement[o] - osc->mPhase[o];
+			crosstime /= osc->mPhaseIncrement[o] >> 16;
+			crosstime = ~(crosstime << 16);
+			AddBlepFixed(osc->circularBuffer, osc->index , osc->HyperSet.iLevel[o], crosstime);
+		}
+		uint32_t saw = (osc->mPhase[o]);// - osc->mPhaseIncrement[o]);
+		saw >>= 16;
+		int32_t si = (int32_t)saw;
+		si -= 32768;
+		si *= osc->HyperSet.iLevel[o];
+		si >>= 16;
+		osc->circularBuffer[osc->index] += si;
+		osc->mLastPhase[o] = osc->mPhase[o];
+	
 	}
 
-	float output = osc->circularBuffer[osc->index];
-	osc->circularBuffer[osc->index] = 0.0f;
+	int32_t output = osc->circularBuffer[osc->index];
+	osc->circularBuffer[osc->index] = 0;
 	return output;
 }
 
@@ -440,14 +657,14 @@ void HyperPulse_Init(struct HyperPulse_t *osc)
 		osc->mPhase[i] = 0;
 		osc->mPhaseIncrement[i] = 0.1f;
 	}
-	for (int i = 0; i < 48; i++)
+	for (int i = 0; i < 64; i++)
 	{
 		osc->circularBuffer[i] = 0;
 	}
 }
-void HyperPulse_Update(struct HyperPulse_t  *osc, int samplerate, float centerfreq, float size, float spread)
+void HyperPulse_Update(struct HyperPulse_t  *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = (centerfreq * 2) / (float)samplerate;
+	float C = (centerfreq * 2) * odsr;
 	HyperCalculate_Spread(&osc->HyperSet, spread, size);
 
 
@@ -458,11 +675,11 @@ void HyperPulse_Update(struct HyperPulse_t  *osc, int samplerate, float centerfr
 }
 inline  float HyperPulse_Get(struct HyperPulse_t *osc)
 {
-	osc->index = (osc->index + 1) % 48;
+	osc->index = (osc->index + 1) & 63;
 	for (int o = 0; o < osc->HyperSet.Active; o++)
 	{
 		osc->mPhase[o] += osc->mPhaseIncrement[o];
-		while (osc->mPhase[o] >= 1.0f)
+		if (osc->mPhase[o] >= 1.0f)
 		{
 			osc->mPhase[o] -= 1.0f;
 			float exactCrossTime = 1.0f - ((osc->mPhaseIncrement[o] - osc->mPhase[o]) / osc->mPhaseIncrement[o]);
@@ -491,62 +708,81 @@ void MinBlepOsc_Init(struct MinBlepOsc_t *osc)
 {
 	osc->index = 0;
 	osc->mPhase = 0;
+	osc->mLastPhase = 0;
 	osc->Sign = -1;
-	osc->mPhaseIncrement = 0.1f;
-	for (int i = 0; i < 48; i++)
+	osc->mPhaseIncrement = 1;
+	for (int i = 0; i < 64; i++)
 	{
 		osc->circularBuffer[i] = 0;
 	}
 }
-MEMATTR void MinBlepOsc_Update(struct MinBlepOsc_t *osc, int samplerate, float centerfreq, float size, float spread)
+MEMATTR void MinBlepOsc_Update(struct MinBlepOsc_t *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = centerfreq / (float)samplerate;
+	uint32_t C = (unsigned long)((65536.f*65536.f) * (centerfreq * odsr));
 	osc->mPhaseIncrement = C;
 }
-MEMATTR float MinBlepOsc_Get(struct  MinBlepOsc_t *osc)
+MEMATTR int32_t MinBlepOsc_Get(struct  MinBlepOsc_t *osc)
 {
-	osc->mPhase += osc->mPhaseIncrement;
-	osc->index = (osc->index + 1) % 48;
-
-	while (osc->mPhase >= 1.0)
-	{
-		osc->mPhase -= 1.0;
-		float exactCrossTime = 1.0f - ((osc->mPhaseIncrement - osc->mPhase) / osc->mPhaseIncrement);
-		AddBlep(osc->circularBuffer, osc->index, 1, exactCrossTime);
+	osc->mPhase += osc->mPhaseIncrement;	
+	osc->index = (osc->index + 1) & 63;
+	if (~osc->mLastPhase < osc->mPhaseIncrement)
+	{		
+		uint32_t crosstime = osc->mPhaseIncrement - osc->mPhase;
+		crosstime /= osc->mPhaseIncrement >> 16;
+		crosstime = ~(crosstime<<16);
+		AddBlepFixed(osc->circularBuffer, osc->index, 0x2000, crosstime);
 	}
 
-	osc->circularBuffer[osc->index] += (osc->mPhase - osc->mPhaseIncrement);
-	float output = osc->circularBuffer[osc->index];
-	osc->circularBuffer[osc->index] = 0.0f;
-	return output * 2.0 - 1.0;
-}
-float MinBlepOsc_GetPulse(struct  MinBlepOsc_t *osc)
-{
-	osc->mPhase += osc->mPhaseIncrement;
-	osc->index = (osc->index + 1) % 48;
+	uint32_t saw = (osc->mPhase);// - osc->mPhaseIncrement[o]);
+	saw >>= 16;
+	int32_t si = (int32_t)saw;
+	si -= 32768;
+	si *= 0x2000;
+	si >>= 16;
 
-	while (osc->mPhase >= 1.0)
+
+
+	osc->circularBuffer[osc->index] += si;
+	int32_t output = osc->circularBuffer[osc->index];
+	osc->circularBuffer[osc->index] = 0;
+	osc->mLastPhase = osc->mPhase;
+	return output ;
+}
+
+int32_t MinBlepOsc_GetPulse(struct  MinBlepOsc_t *osc)
+{
+	
+	osc->mPhase += osc->mPhaseIncrement;
+	osc->index = (osc->index + 1) & 63;
+
+	if (osc->mLastPhase > osc->mPhase)
 	{
-		osc->mPhase -= 1.0;
-		float exactCrossTime = 1.0f - ((osc->mPhaseIncrement - osc->mPhase) / osc->mPhaseIncrement);
+		
+		uint32_t crosstime = osc->mPhaseIncrement - osc->mPhase;
+		crosstime /= (osc->mPhaseIncrement >> 16);
+		crosstime = ~(crosstime << 16);
 
 		if (osc->Sign>0)
 		{
-			AddBlep(osc->circularBuffer, osc->index, 2, exactCrossTime);
-			osc->Sign = -1;
+		
+			//		crosstime <<= 16;
+			AddBlepFixed(osc->circularBuffer, osc->index, 0x2000, crosstime);						
+			osc->Sign = -(0x1000);
 		}
 		else
 		{
-			AddBlep(osc->circularBuffer, osc->index, -2, exactCrossTime);
-			osc->Sign = 1;
+			AddBlepFixed(osc->circularBuffer, osc->index, -(0x2000), crosstime);
+//			AddBlepFixed(osc->circularBuffer, osc->index, -2, uint32_t(exactCrossTime*65536.0*65536.0));
+			osc->Sign = 0x1000;
 		}
 
 
 	}
 
 	osc->circularBuffer[osc->index] += osc->Sign;
-	float output = osc->circularBuffer[osc->index];
-	osc->circularBuffer[osc->index] = 0.0f;
+	int32_t output = osc->circularBuffer[osc->index];
+	osc->circularBuffer[osc->index] = 0;
+	osc->mLastPhase = osc->mPhase;
 	return output;
 }
 

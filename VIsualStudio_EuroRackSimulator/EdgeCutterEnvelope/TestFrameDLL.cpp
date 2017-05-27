@@ -341,13 +341,15 @@ void RunFishTest()
 	Fish.Parameters[PITCH_COARSE] = (64 * 65536) / 127;;
 	Fish.Parameters[PITCH_FINE] = (64 * 65536) / 127;;
 
+	//Fish.Parameters[OSC_SHAPE] = ( * 65536) / 127;;
+
 	FishCycle();
 
 	for (int i = 0; i < 2; i++)
 	{
-		for (int i = 0; i < __PARAMCOUNT; i++)
+		for (int i2 = 0; i2 < __PARAMCOUNT; i2++)
 		{
-			Fish.Parameters[i] = rand()%65536;
+			Fish.Parameters[i2] = rand()%65536;
 		}
 		FishCycle();
 	}
@@ -463,7 +465,7 @@ void ExpTest()
 		if (i % 10 == 0) PrintPlot2(R,R2, 0, 0xffff);
 	}
 
-	for (uint32_t i = 0; i < (uint32_t)(65536 * 60000); i += uint32_t( 60000 * 600))
+	for (uint32_t i = 0; i < (uint32_t)(65536.0* 60000); i += uint32_t( 60000 * 600))
 	{
 //		printf("%08x\n",GetExpTable(i));
 	}
@@ -485,8 +487,8 @@ BOOL WINAPI DllMain(
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
 		BigFish_Init(&Fish, 44100);
-		ExpTest();
-//		RunFishTest();
+//		ExpTest();
+		RunFishTest();
 		LFOStatic.Speed = 0x80;
 		Init();
 

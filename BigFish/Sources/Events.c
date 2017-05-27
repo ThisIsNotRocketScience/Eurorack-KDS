@@ -66,7 +66,6 @@ extern void ADCMUXING();
 /* ===================================================================*/
 void ADMUXED_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
 {
-	ADCMUXING();
 }
 
 /*
@@ -127,7 +126,7 @@ void TI1_OnInterrupt(LDD_TUserData *UserDataPtr)
 extern int Measuring;
 void ADMUXED_OnEnd(void)
 {
-	Measuring = 0;
+	Measuring = 1;
 
   /* Write your code here ... */
 }
@@ -151,88 +150,6 @@ void ADMUXED_OnCalibrationEnd(void)
   /* Write your code here ... */
 }
 
-
-#define BLOCK_SIZE 10U
-#define SLOTS_PER_FRAME 1U
-
-extern volatile bool DataReceivedFlag;
-extern volatile bool DataSentFlag;
-extern volatile uint8_t TxCounter;
-extern volatile LDD_SSI_TError ComError;
-extern LDD_TError Error;
-extern LDD_TDeviceData *MyI2SPtr;
-extern void NextBlock();
-
-/*
-** ===================================================================
-**     Event       :  SSI1_OnBlockSent (module Events)
-**
-**     Component   :  SSI1 [SSI_LDD]
-*/
-/*!
-**     @brief
-**         This event is called after the last character from the
-**         output buffer is moved to the transmitter. This event is
-**         available only if the SendBlock method is enabled.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. The pointer is passed
-**                           as the parameter of Init method. 
-*/
-/* ===================================================================*/
-void SSI1_OnBlockSent(LDD_TUserData *UserDataPtr)
-{
-  DataSentFlag = TRUE;
-//  SSI1_DisableTransfer(SSI1_DeviceData, LDD_SSI_TRANSMITTER);
-
-  NextBlock();
-}
-
-/*
-** ===================================================================
-**     Event       :  SSI1_OnBlockReceived (module Events)
-**
-**     Component   :  SSI1 [SSI_LDD]
-*/
-/*!
-**     @brief
-**         This event is called when the requested number of data is
-**         moved to the input buffer. This event is available only if
-**         the ReceiveBlock method is enabled.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. The pointer is passed
-**                           as the parameter of Init method. 
-*/
-/* ===================================================================*/
-void SSI1_OnBlockReceived(LDD_TUserData *UserDataPtr)
-{
-	// SSI1_DisableTransfer(MyI2SPtr, LDD_SSI_RECEIVER);         /* Disable receiver */
-	  DataReceivedFlag = TRUE;
-}
-
-/*
-** ===================================================================
-**     Event       :  SSI1_OnError (module Events)
-**
-**     Component   :  SSI1 [SSI_LDD]
-*/
-/*!
-**     @brief
-**         This event is called when a channel error (not the error
-**         returned by a given method) occurs. The errors can be read
-**         using <GetError> method.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. The pointer is passed
-**                           as the parameter of Init method. 
-*/
-/* ===================================================================*/
-void SSI1_OnError(LDD_TUserData *UserDataPtr)
-{
-	 Error = SSI1_GetError(MyI2SPtr, (LDD_SSI_TError *)&ComError);
-}
-
 /*
 ** ===================================================================
 **     Event       :  ADMAIN_OnEnd (module Events)
@@ -247,9 +164,11 @@ void SSI1_OnError(LDD_TUserData *UserDataPtr)
 **     Returns     : Nothing
 ** ===================================================================
 */
+
 void ADMAIN_OnEnd(void)
 {
-  /* Write your code here ... */
+
+	Measuring = 3;
 }
 
 /*

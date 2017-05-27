@@ -17,30 +17,30 @@
 #include "FormantTable.h"
 
 const float chordtable[16][4] = {
-	{ powf(2, 0.0f / 12.0f), 0, 0, 0 },
-	{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.05f / 12.0f) }, // Fat Moog
-	{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 7.04f / 12.0f), powf(2, 0.1f / 12.0f) }, // Moog 5th
-	{ powf(2, -0.18f / 12.0f), powf(2, -0.07f / 12.0f), powf(2, 0.07f / 12.0f), powf(2, 0.18f / 12.0f) }, // Guru Ps1
-	{ powf(2, -0.3f / 12.0f), powf(2, -0.15f / 12.0f), powf(2, 0.15f / 12.0f), powf(2, 0.3f / 12.0f) }, // Guru Ps2
-	{ powf(2, -0.1f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.02f / 12.0f), powf(2, 16.07f / 12.0f) }, // VengaBoyz:(
+		{ powf(2, 0.0f / 12.0f), 0, 0, 0 },
+		{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.05f / 12.0f) }, // Fat Moog
+		{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 7.04f / 12.0f), powf(2, 0.1f / 12.0f) }, // Moog 5th
+		{ powf(2, -0.18f / 12.0f), powf(2, -0.07f / 12.0f), powf(2, 0.07f / 12.0f), powf(2, 0.18f / 12.0f) }, // Guru Ps1
+		{ powf(2, -0.3f / 12.0f), powf(2, -0.15f / 12.0f), powf(2, 0.15f / 12.0f), powf(2, 0.3f / 12.0f) }, // Guru Ps2
+		{ powf(2, -0.1f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.02f / 12.0f), powf(2, 16.07f / 12.0f) }, // VengaBoyz:(
 
-	{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 7.0f / 12.0f), 0 }, // major 4-7
-	{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), 0 }, // minor 3-7
-	{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // minor 4-8
-	{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // major 3-8
-	{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // minor 5-8
-	{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 9.0f / 12.0f), 0 }, // major 5-9
-	{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 10.0f / 12.0f), powf(2, 1.0f / 12.0f) }, // minor 1-5-10
-	{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 11.0f / 12.0f) }, // major 4-7-11
-	{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 10.0f / 12.0f) }, // minor 3-7-10
-	{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 9.0f / 12.0f) },  // minor 3-7-9
+		{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 7.0f / 12.0f), 0 }, // major 4-7
+		{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), 0 }, // minor 3-7
+		{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // minor 4-8
+		{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // major 3-8
+		{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 8.0f / 12.0f), 0 }, // minor 5-8
+		{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 9.0f / 12.0f), 0 }, // major 5-9
+		{ powf(2, 0.0f / 12.0f), powf(2, 5.0f / 12.0f), powf(2, 10.0f / 12.0f), powf(2, 1.0f / 12.0f) }, // minor 1-5-10
+		{ powf(2, 0.0f / 12.0f), powf(2, 4.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 11.0f / 12.0f) }, // major 4-7-11
+		{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 10.0f / 12.0f) }, // minor 3-7-10
+		{ powf(2, 0.0f / 12.0f), powf(2, 3.0f / 12.0f), powf(2, 7.0f / 12.0f), powf(2, 9.0f / 12.0f) },  // minor 3-7-9
 
 };
 
 float GetInterpolatedResultFloat(float *table, SteppedResult_t *inp)
 {
 	float F = inp->fractional *(1.0f / 256.0f);
-	float IF = 1.0 - F;
+	float IF = 1.0f - F;
 	return table[inp->index] * IF + table[inp->index + 1] * F;
 }
 
@@ -55,10 +55,10 @@ void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out)
 	int Aside = FloorX;
 	int Bside = (X - (FloorX)) * 2 + (FloorX)-256;
 	int M = (Aside > Bside) ? Aside : Bside;
-	
+
 	out->index = M >> 8;
 	out->fractional = M & 0xff;
-	
+
 }
 
 int32_t Inertia_Update(struct Inertia_t *inert)
@@ -110,7 +110,7 @@ float DBToLevel(float db)
 
 void BigFish_Init(struct BigFish_t *fish, int samplerate)
 {
-
+	fish->ODSR = 1.0f / (float)samplerate;
 	WaveBlepOsc_Init(&fish->WaveOsc);
 	Organ_Init(&fish->Organ);
 	VosimOsc_Init(&fish->Vosim);
@@ -119,8 +119,8 @@ void BigFish_Init(struct BigFish_t *fish, int samplerate)
 	fish->PitchInput = 0;
 	for (int i = 0; i < 7; i++)
 	{
-//		fish->filters[i]._mode = 0;
-	//	fish->filters[i].set_samplerate(samplerate);
+		//		fish->filters[i]._mode = 0;
+		//	fish->filters[i].set_samplerate(samplerate);
 	}
 
 	for (int i = 0; i < 10; i++) fish->FormantMemory[i] = 0;
@@ -164,7 +164,7 @@ void BigFish_Update(struct BigFish_t *fish)
 		fish->Clipper.push = (32768-Drive)>>8;
 		fish->Clipper.SetType(0);
 	}
-	
+
 	BigFish_CheckGates(fish);
 	ADSR_ApplyParameters(&fish->AmpEnvelope, fish->Parameters[AMP_ATTACK], fish->Parameters[AMP_DECAY], fish->Parameters[AMP_SUSTAIN], fish->Parameters[AMP_RELEASE]);
 	ADSR_ApplyParameters(&fish->FilterEnvelope, fish->Parameters[FILTER_ATTACK], fish->Parameters[FILTER_DECAY], 0,0);
@@ -174,10 +174,10 @@ void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len
 {
 	float spread = (fish->Parameters[OSC_SPREAD]) / 65536.0f; 
 	float size = (fish->Parameters[OSC_SIZE ]) / 65536.0f;
-	HyperOsc_Update(&fish->HyperSawOsc, fish->SampleRate, fish->CenterFreq, size, spread);
+	HyperOsc_Update(&fish->HyperSawOsc, fish->ODSR, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ =(int)( HyperOsc_Get(&fish->HyperSawOsc) * (32768.0f));
+		*buffer++ =(int)( HyperOsc_Get(&fish->HyperSawOsc));
 	}
 }
 
@@ -185,7 +185,7 @@ void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int l
 {
 	float spread = (fish->Parameters[OSC_SPREAD] ) / 65536.0f;
 	float size = (fish->Parameters[OSC_SIZE]) / 65536.0f;
-	HyperPulse_Update(&fish->HyperPulseOsc, fish->SampleRate, fish->CenterFreq, size, spread);
+	HyperPulse_Update(&fish->HyperPulseOsc, fish->ODSR, fish->CenterFreq, size, spread);
 	while (len--)
 	{
 		*buffer++ =(int)( HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f ));
@@ -194,16 +194,15 @@ void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int l
 
 void SuperFish(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
-	MinBlepOsc_Update(&fish->SawOsc, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
-	MinBlepOsc_Update(&fish->PulseOsc, fish->SampleRate, fish->CenterFreq * 2.0f, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
+	MinBlepOsc_Update(&fish->SawOsc, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
+	MinBlepOsc_Update(&fish->PulseOsc, fish->ODSR, fish->CenterFreq * 2.0f, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
 	float size = fish->Parameters[OSC_SIZE] / 2.0f;
 	float invsize = 32768.0f - size;
 	while (len--)
 	{
-
-		float A = MinBlepOsc_Get(&fish->SawOsc);
-		float B = MinBlepOsc_GetPulse(&fish->PulseOsc);
-		*buffer++ =(int)( (B * size) + (A*invsize) );
+		int32_t A = (MinBlepOsc_Get(&fish->SawOsc) >> 1) * invsize;
+		int32_t B = (MinBlepOsc_GetPulse(&fish->PulseOsc)>>1) * size;
+		*buffer++ = (A + B) >> 15;
 	}
 }
 
@@ -211,7 +210,7 @@ void SuperFish(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int le
 
 void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
-	VosimOsc_Update(&fish->Vosim, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE]/65536.0f, fish->Parameters[OSC_SPREAD]);
+	VosimOsc_Update(&fish->Vosim, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE]/65536.0f, fish->Parameters[OSC_SPREAD]);
 	while (len--)
 	{
 
@@ -221,7 +220,7 @@ void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 
 void Organ(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
-	Organ_Update(&fish->Organ, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE] / 65536.0f, fish->Parameters[OSC_SPREAD]);
+	Organ_Update(&fish->Organ, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE] / 65536.0f, fish->Parameters[OSC_SPREAD]);
 	while (len--)
 	{
 
@@ -233,19 +232,19 @@ void Choir(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
 	while (len--)
 	{
-		*buffer++ = rand();
+		*buffer++ = rand()%32768 - (32768/2);
 	}
 }
 
 void Grain(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 {
-	WaveBlepOsc_Update(&fish->WaveOsc, fish->SampleRate, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
-	
+	WaveBlepOsc_Update(&fish->WaveOsc, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
+
 	while (len--)
 	{
 
 		float A = WaveBlepOsc_Get(&fish->WaveOsc);
-		
+
 		*buffer++ = (int)(A*32768.0f);
 	}
 }
@@ -261,16 +260,16 @@ void Copy(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 float formant_filter(double *coeffs, double *memory, float in)
 {
 	float res = (float)(coeffs[0] * (in*(1.0 / 32768.0)) +
-		coeffs[1] * memory[0] +
-		coeffs[2] * memory[1] +
-		coeffs[3] * memory[2] +
-		coeffs[4] * memory[3] +
-		coeffs[5] * memory[4] +
-		coeffs[6] * memory[5] +
-		coeffs[7] * memory[6] +
-		coeffs[8] * memory[7] +
-		coeffs[9] * memory[8] +
-		coeffs[10] * memory[9]);
+			coeffs[1] * memory[0] +
+			coeffs[2] * memory[1] +
+			coeffs[3] * memory[2] +
+			coeffs[4] * memory[3] +
+			coeffs[5] * memory[4] +
+			coeffs[6] * memory[5] +
+			coeffs[7] * memory[6] +
+			coeffs[8] * memory[7] +
+			coeffs[9] * memory[8] +
+			coeffs[10] * memory[9]);
 
 	memory[9] = memory[8];
 	memory[8] = memory[7];
@@ -339,7 +338,7 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 
 		fish->filters[i].rbjBPF(T.Formants[i].Freq, 10, fish->SampleRate, 1.0);
 		fish->filters[i].ClearException();
-//		fish->filters[i].rbjHPF(T.Formants[i].Freq, 6 + fish->Parameters[FILTER_RESONANCE]/200.0f, fish->SampleRate);
+		//		fish->filters[i].rbjHPF(T.Formants[i].Freq, 6 + fish->Parameters[FILTER_RESONANCE]/200.0f, fish->SampleRate);
 	}
 
 
@@ -349,11 +348,11 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 	{
 		in[i] = bufferin[i];
 	};
-//	for (int i = 0; i < 5; i++)
-//	{
-//		fish->filters[i].Process(in, out[i], len);
-//	}
-
+	//	for (int i = 0; i < 5; i++)
+	//	{
+	//		fish->filters[i].Process(in, out[i], len);
+	//	}
+	Total = 1.0f / Total;
 	for (int i = 0; i < len; i++)
 	{
 		float outp = 0;
@@ -363,9 +362,9 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 		}
 		//	*b++ = outp;
 
-		bufferout[i] = outp / Total;//
-									//				fish->Resonator[0].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[0].Freq) * Levels[0] +
-									//fish->Resonator[1].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[1].Freq) * Levels[1];
+		bufferout[i] = outp * Total;//
+		//				fish->Resonator[0].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[0].Freq) * Levels[0] +
+		//fish->Resonator[1].feed(bufferin[i], (-fish->Parameters[FILTER_RESONANCE] * 0.999) / 65535.f, fish->SampleRate / T.Formants[1].Freq) * Levels[1];
 	}
 }
 
@@ -383,7 +382,7 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 
 	float FilterEnvScale = (fish->Parameters[FILTER_ENVELOPE] - 32768) / 32768.0f;
 	if (FilterEnvScale > 0) FilterEnvScale *= FilterEnvScale; else FilterEnvScale *= -FilterEnvScale;
-	
+
 	ADSR_Update(&fish->FilterEnvelope, fish->SampleRate/len);
 
 	int32_t FilterEnvResult = ADSR_GetCurved(&fish->FilterEnvelope);
@@ -392,23 +391,23 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	{
 		float note = cutoffin * 127;
 		int64_t ENV = int64_t(FilterEnvResult);
-		
+
 		//float adsr = (ENV * FilterEnvScale * 127) / (127 * 65535.0f);
 		freq = 440.0 * pow(2.0, (note - 69) / 12);
 		freq += fish->CenterFreq * GetInterpolatedResultFloat(mul, &sr);
-		
+
 		float adsr = (ENV * FilterEnvScale * 15000) / 65536.0;
 		freq += adsr;
-		
+
 	}
 	else
 	{		
 		int64_t ENV =  int64_t(FilterEnvResult);
-		
+
 		float adsr = (ENV * FilterEnvScale * 15000) / 65536.0;
 		freq += adsr;
 	}
-	
+
 
 	if (freq < 30) freq = 30; else if (freq > 20000) freq = 20000;
 
@@ -426,18 +425,12 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	fResonance2 = (float)(1.0 + (fResonance2 - 1.0f)*(DoQScaling(freq*(1.f / 44100.f), 0, 1)));
 	float fResonance2NS = fResonance2;
 	float const srate = fish->SampleRate;
-	float const odsr = (1.f / srate);
-
-	float out[32];
-	float in[32];
-	for (int i = 0; i < len; i++)
-	{
-		in[i] = bufferin[i];
-	}
+	float const odsr = fish->ODSR;
 
 	
 
-	float HIGHCOMP = 0.85;
+
+	float HIGHCOMP = 0.85f;
 
 	switch (mode)
 	{
@@ -455,10 +448,10 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 		break;
 
 	}
-	
 
 
-//	fish->filters[0].rbjLPF(freq, fResonance2, fish->SampleRate);
+
+	//	fish->filters[0].rbjLPF(freq, fResonance2, fish->SampleRate);
 	fish->filters[0].Process(bufferin, bufferout, len);
 	for (int i = 0; i < len; i++)
 	{
@@ -500,15 +493,15 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 	float Note = (noteindex / (float)Semi) - 69;
 	float freq = 440 * powf(2.0f, Note/  12.0f);
 	fish->CenterFreq = freq;
-	
-	
+
+
 	int32_t A[MAXFISHBUFFER];
 	int32_t B[MAXFISHBUFFER];
 	int32_t OSC[MAXFISHBUFFER];
 	int32_t AMPED[MAXFISHBUFFER];
 	int32_t MAIN[MAXFISHBUFFER];
 	typedef void GenFunc(BigFish_t *, int32_t *, int32_t *, int);
-	
+
 	//GenFunc* Funcs[8] = {SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish};//HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
 	GenFunc* Funcs[8] = {HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
 
@@ -553,9 +546,9 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 				*bufferOSCOUT++ = OSC[i];
 			}
 		}
-	BigFish_Filter(fish, AMPED, MAIN, L);
-	BigFish_Drive(fish, MAIN, MAIN, L);
-	
+		BigFish_Filter(fish, AMPED, MAIN, L);
+		BigFish_Drive(fish, MAIN, MAIN, L);
+
 		for (int i = 0; i < L; i++)
 		{
 			*bufferMAIN++ = MAIN[i];

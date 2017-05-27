@@ -433,6 +433,7 @@ typedef struct BigFish_t
 {
 
 	int SampleRate;
+	float ODSR;
 	float CenterFreq;
 	int32_t PitchInput; // (1<<14) = 1 octave
 

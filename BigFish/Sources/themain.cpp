@@ -33,7 +33,7 @@
 #include "Pins1.h"
 
 #include "ADMUXED.h"
-#include "AD1.h"
+#include "ADMAIN.h"
 #include "LATCH.h"
 #include "CLOCK.h"
 #include "SHIFTERS.h"
@@ -254,6 +254,7 @@ enum
 
 void ADCMUXING();
 int Measuring = 0;
+int MainMeasuring = 0;
 
 extern void DoProcessing(int32_t *In, int32_t *Out1,int32_t *Out2, uint32_t len);
 
@@ -281,12 +282,6 @@ void NextBlock(int32_t *input, int32_t *output)
 
 void DoProcessing(int32_t *In, int32_t *Out1,int32_t *Out2, uint32_t len)
 {
-	if (Measuring = 0);
-	{
-		ADCMUXING();
-		Measuring = 1;
-		ADMUXED_Measure(false);
-	}
 	Fish.Parameters[OSC_SHAPE] = PARAMADC[ADC_SHAPE];
 	Fish.Parameters[OSC_SPREAD] = ~PARAMADC[ADC_SPREAD];
 	Fish.Parameters[OSC_SIZE] = ~PARAMADC[ADC_SIZE];
@@ -446,8 +441,8 @@ int cppmain(void)
 	LEDS_InitHardware();
 	ak4558_init();
 
-	ADMUXED_Measure((false));
-	Measuring =1;
+	Measuring = 1;
+
 
 	BigFish_Init(&Fish, 44100);
 
@@ -470,7 +465,7 @@ int cppmain(void)
 
 
 	Fish.Gates[FISHGATE_GATE] = 1;
-	int N = 60;
+	int N = 70;
 	int32_t pitchtarget = ((N-24) * (1 << 14)) / 12;
 	Fish.PitchInput = pitchtarget;
 	BigFish_Update(&Fish);
@@ -488,6 +483,23 @@ int cppmain(void)
 			NextBlock(inbuf, outbuf);
 
 
+		}
+		switch (Measuring)
+		{
+		case 1:
+			{	ADCMUXING();
+				Measuring = 2;
+				ADMAIN_Measure(false);
+			} break;
+		case 3:
+			{
+				uint16_t values[2];
+				ADMAIN_GetValue16(values);
+				float pitchvoltage = ((values[0] * 3.3f)/65535.0f) * 1.98f  - 1.0f;
+				Fish.PitchInput = (pitchvoltage *  (float)(1<<14));
+				Measuring = 0;
+				ADMUXED_Measure(false);
+			}break;
 		}
 
 

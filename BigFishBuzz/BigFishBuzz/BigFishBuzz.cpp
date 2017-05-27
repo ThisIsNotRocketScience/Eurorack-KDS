@@ -6,6 +6,7 @@
 #include "../../BigFishLib/MinBlepGen.cpp" 
 #include "../../BigFishLib/BleppyOscs.cpp" 
 #include "../../BigFishLib/OrganOsc.cpp" 
+#include "../../BigFishLib/PowFast.cpp" 
 
 
 #define _USE_MATH_DEFINES
@@ -26,7 +27,9 @@ class InertiaBlock
 public:
 	InertiaBlock()
 	{
-		Left = Current = Delta = 0;
+		Left = 0;
+		Current = 0;
+		Delta = 0;
 	}
 	int Left;
 	float Current;
@@ -84,7 +87,7 @@ public :
 	{
 		for (int i = 0; i < __PARAMCOUNT; i++)
 		{
-			if (!IgnoreParam(i)) Fish.Parameters[i] = Inertia[i].Get();
+			if (!IgnoreParam(i)) Fish.Parameters[i] =(uint16_t) Inertia[i].Get();
 		}
 	}
 	bool IgnoreParam(int i)
@@ -252,9 +255,6 @@ public:
 	int lastnoteid;
 	void AddNoteToStack(int note, int vel)
 	{
-		char txt[200];
-		sprintf(txt, "adding %d (%d)\n", note, vel);
-		OutputDebugStringA(txt);
 
 		NoteVelocities[note] = vel;
 		NoteTimes[note] = lastnoteid++;
@@ -269,9 +269,6 @@ public:
 	}
 	void RemoveNoteFromStack(int note)
 	{
-		char txt[200];
-		sprintf(txt, "removing %d\n", note);
-		OutputDebugStringA(txt);
 		NoteTimes[note] = -1;
 		int highest = 0;
 		for (int i = 1; i < 128; i++)

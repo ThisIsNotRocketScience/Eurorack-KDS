@@ -10,13 +10,13 @@ uint32_t exptable[__ENVTABLE_COUNT][EXPTABLELENGTH];
 
 void ADSR_BuildTable()
 {
-	float End = -64.0 / 24.0;
-	float Max = exp(End);
-	float Min = exp(0);
+	float End = -64.0f / 24.0f;
+	float Max = expf(End);
+	float Min = expf(0);
 	float iMax = 65535.0f / (Max-Min);
 	float EndL = 40;
-	float MaxL = log(EndL);
-	float MinL = log(1);
+	float MaxL = logf(EndL);
+	float MinL = logf(1);
 	float iMaxL = 65535.0f / (MaxL - MinL);
 	float lower = 100000;
 	float upper = 0;
@@ -41,11 +41,35 @@ __attribute__((always_inline)) static __INLINE int32_t smmla(int32_t acc, int32_
 	return result;
 }
 
+
+
+// UMAAL   R3, R6, R2, R7		; Multiplies R2 and R7, adds R6, adds R3, writes the 
+//								; top 32 bits to R6, and the bottom 32 bits to R3
+
+
+__attribute__((always_inline)) static __INLINE uint32_t UMAAL(uint32_t acc, uint32_t a, uint32_t b)
+{
+	uint32_t result;
+	__ASM volatile ("UMAAL %0, %1, %2, %3" : "=r" (result) : "r" (acc), "r" (a), "r" (b));
+	return acc;
+}
+
+//UMLAL   R2, R1, R3, R5   ; Multiplies R5 and R3, adds R1:R2, writes to R1:R2.
+__attribute__((always_inline)) static __INLINE uint32_t UMLAL(volatile uint32_t acc,volatile uint32_t lowbits, volatile uint32_t a, volatile uint32_t b)
+{
+	
+	__ASM volatile ("UMLAL %0, %1, %2, %3" : "=&r" (lowbits) , "=&r" (acc): "r" (a), "r" (b));
+	return acc;
+}
+
 #endif
 
 __inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
 {
 #ifndef WIN32
+
+	//return UMLAL(A,0, B5, C>>5);
+	
 
 	uint64_t R = A;
 	R += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;

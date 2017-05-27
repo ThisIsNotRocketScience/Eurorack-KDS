@@ -249,31 +249,52 @@ float *GenerateMinBLEP(int zeroCrossings, int overSampling)
 	delete buffer2;
 	return minBLEP;
 }
+
 #include <stdio.h>
+
 #include <stdint.h>
+
 int main(int argc, char **Argv)
 {
 	float *blep = GenerateMinBLEP(24, 32);
-	FILE *A = fopen("bleptable.h", "w+");
 	for (int i = 0; i < 48 * 32; i++)
 	{
 		blep[i] = 1.0f - blep[i];
 	}
-	if (A)
 	{
-		fprintf(A, "const float blep[48*32*2] = {\n\t");
-		for (int i = 0; i < 48 * 32; i++)
+		FILE *A = fopen("bleptable.h", "w+");
+		if (A)
 		{
-			fprintf(A, "%ff, %ff,", blep[i], blep[i+1] - blep[i]);
-			if (i % 16 == 15) fprintf(A, "\n\t");
+			fprintf(A, "const float blep[48*32*2] = {\n\t");
+			for (int i = 0; i < 48 * 32; i++)
+			{
+				fprintf(A, "%ff, %ff,", blep[i], blep[i + 1] - blep[i]);
+				if (i % 16 == 15) fprintf(A, "\n\t");
+			}
+			fprintf(A, "};\n");
+			fclose(A);
 		}
-		fprintf(A, "};\n");
-		fclose(A);
+	}
+	{
+		FILE *A = fopen("intbleptable.h", "w+");
+		if (A)
+		{
+			fprintf(A, "const int32_t intblep[48*32*2] = {\n\t");
+			for (int i = 0; i < 48 * 32; i++)
+			{
+				int32_t intblepA = (int32_t)(blep[i] * (float)(1 << 16));
+				int32_t intblepB = (int32_t)(blep[i+1] * (float)(1 << 16));
+				int32_t intblepDelta = intblepB - intblepA;
+				fprintf(A, "%d, %d,", intblepA, intblepDelta);
+				if (i % 16 == 15) fprintf(A, "\n\t");
+			}
+			fprintf(A, "};\n");
+			fclose(A);
+		}
 	}
 
-	
 
-#define SINETABLE_BITS	11
+#define SINETABLE_BITS	8
 #define SINETABLE_SIZE	(1 << SINETABLE_BITS)
 	
 
@@ -282,12 +303,13 @@ int main(int argc, char **Argv)
 	{
 		fprintf(B, "#define SINETABLE_BITS %d\n", SINETABLE_BITS);
 		fprintf(B, "#define SINETABLE_SIZE	(1 << SINETABLE_BITS)\n");
-		fprintf(B, "int16_t const SineTable[SINETABLE_SIZE + 1] = {\n\t");
+		fprintf(B, "int16_t const SineTable[2 * SINETABLE_SIZE + 2] = {\n\t");
 		for (int i = 0; i < SINETABLE_SIZE + 1; i++)
 		{
 			float P = (i * PI * 2.0) / (float)(SINETABLE_SIZE);
-			fprintf(B, "%d, ", (int)(sinf(P)*32767.0));
-			if (i % 16 == 15) fprintf(A, "\n\t");
+			float P2 = ((i+1) * PI * 2.0) / (float)(SINETABLE_SIZE);
+			fprintf(B, "%d,%d, ", (int)(sinf(P)*32767.0), (int)(sinf(P)*32767.0 - sinf(P)*32767.0));
+			if (i % 16 == 15) fprintf(B, "\n\t");
 		}
 		fprintf(B, "};\n");
 		fclose(B);

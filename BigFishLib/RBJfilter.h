@@ -154,6 +154,9 @@ public:
 		case RBJ_BP2:
 			alpha = sn * sinh((log(2) / 2) * q * omega / sn);
 			break;
+		default:
+			alpha = 0;
+			break;
 		}
 		
 
