@@ -43,45 +43,94 @@ inline int16_t FixedSin(uint32_t const phase)
 	return s0 + ((a * (s1))>>16);
 }
 
+extern int32_t SMMLA(int32_t acc, int32_t a, int32_t b);
 
-
-
-void Organ_Init(struct Organ_t *osc)
+MEMATTR __inline int32_t SMMLA16(int32_t s0, int32_t s1, int32_t a)
 {
-	osc->mPhase = 0;
-	osc->mPhase2 = 0;
-	osc->mPhaseIncrement = 0;
-	osc->mPhaseIncrement2 = 0;
+	return 	s0 + ((a * (s1)) >> 16);
 }
 
-void Organ_Update(struct Organ_t  *osc, float odsr, float centerfreq, float size, float spread)
+MEMATTR __inline int32_t FourSin(uint32_t const phase0, int const mul1, int const mul2, int const mul3)
 {
-	uint32_t C =  (unsigned long)((65536.f*65536.f) * (centerfreq  * odsr));
+	return FixedSin(phase0) + FixedSin(phase0 << 1) + FixedSin(phase0 << 2) + FixedSin(phase0 << 3);
 
-	osc->mPhaseIncrement = C;
-	osc->mPhaseIncrement2 = (unsigned long)((65536.f*65536.f) * (7.0f * odsr));
-	float Spr = spread / 65536.0f;
-	Spr *= Spr;
-	osc->spread =(int) ((Spr* centerfreq * 65536.0) / (330.0f) );
-}
-
-MEMATTR float Organ_Get(struct  Organ_t  *osc)
-{
-	osc->mPhase += osc->mPhaseIncrement;
-	osc->mPhase2 += osc->mPhaseIncrement2;
+	uint32_t phase1 = phase0 * mul1;
+	uint32_t phase2 = phase0 * mul2;
+	uint32_t phase3 = phase0 * mul3;
 	
+	int i0 = (phase0 >> (32 - SINETABLE_BITS));
+	int i1 = (phase1 >> (32 - SINETABLE_BITS));
+	int i2 = (phase2 >> (32 - SINETABLE_BITS));
+	int i3 = (phase3 >> (32 - SINETABLE_BITS));
+	
+	int16_t s0a = SineTable[i0 * 2];
+	int16_t s0b = SineTable[i0 * 2 + 1];
+	int16_t s1a = SineTable[i1 * 2];
+	int16_t s1b = SineTable[i1 * 2 + 1];
+	int16_t s2a = SineTable[i2 * 2];
+	int16_t s2b = SineTable[i2 * 2 + 1];
+	int16_t s3a = SineTable[i3 * 2];
+	int16_t s3b = SineTable[i3 * 2 + 1];
+
+	uint32_t a0 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
+	uint32_t a1 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
+	uint32_t a2 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
+	uint32_t a3 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
+
+	uint32_t Res = SMMLA16(s0a, s0b, a0);
+	Res += SMMLA16(s1a, s1b, a1);
+	Res += SMMLA16(s2a, s2b, a2);
+	Res += SMMLA16(s3a, s3b, a3);
+	return Res;
+}
+
+
+void Organ_Init(struct Organ_t *osc, float odsr)
+{
+	osc->mPhase2 = 0;	
+	osc->mPhaseIncrement2 = (unsigned long)((65536.f*65536.f) * (3.5f * odsr));
+
+	for (int i = 0; i < 3; i++)
+	{
+		osc->Voices[i].mPhase = 0;
+		osc->Voices[i].mPhaseIncrement = 0;
+	}
+}
+
+
+__inline void Organ_Update(struct OrganVoice_t  *osc, float odsr, float centerfreq, float size, float spread)
+{
+	float Spr = spread * (1.0f / 65536.0f);
+	Spr *= Spr;
+	osc->spread = (int)((Spr* centerfreq) * (65536.0f / 330.0f));
+	uint32_t C =  (unsigned long)((65536.f*65536.f) * (centerfreq  * odsr));
+	osc->mPhaseIncrement = C;	
+}
+
+MEMATTR int32_t Organ_GetMain(struct  Organ_t  *osc)
+{
+	osc->mPhase2 += osc->mPhaseIncrement2;
 	uint32_t P2 = osc->mPhase2;
 	//uint32_t P2F = (uint32_t)(P2 * 65536 * 65536) ;
-	uint32_t Aoff = FixedSin(P2)*osc->spread;
-	uint32_t Boff = FixedSin(P2 + (unsigned long)((65536.f*65536.f) * (1/3)) )*osc->spread;
-	uint32_t Coff = FixedSin(P2 + (unsigned long)((65536.f*65536.f) * (2 / 3)))*osc->spread;
+	osc->Aoff = FixedSin(P2);
+	osc->Boff = FixedSin(P2 + (unsigned long)((65536.f*65536.f) * (1.0f / 3.0f)));
+	osc->Coff = FixedSin(P2 + (unsigned long)((65536.f*65536.f) * (2.0f / 3.0f)));
 
-	uint32_t AP = osc->mPhase + Aoff;
-	uint32_t BP = osc->mPhase + Boff;
-	uint32_t CP = osc->mPhase + Coff;
-	float total = (4) * 32767.0f;
-	int32_t A = FixedSin(AP ) + FixedSin(AP<<1) + FixedSin(AP<<2) + FixedSin(AP <<3) ;
-	int32_t B = FixedSin(BP ) + FixedSin(BP<<1) + FixedSin(BP<<2) + FixedSin(BP <<3) ;
-	int32_t C = FixedSin(CP ) + FixedSin(CP<<1) + FixedSin(CP<<2) + FixedSin(CP <<3) ;
-	return (A + B + C) / (total *3);
+	return Organ_Get(osc, &osc->Voices[0]);
+}
+
+MEMATTR int32_t Organ_Get(struct  Organ_t  *osc, struct OrganVoice_t *voice)
+{
+	voice->mPhase += voice->mPhaseIncrement;
+	
+	uint32_t AP = voice->mPhase + osc->Aoff*voice->spread;
+	uint32_t BP = voice->mPhase + osc->Boff*voice->spread;
+	uint32_t CP = voice->mPhase + osc->Coff*voice->spread;
+	
+	int32_t A = FourSin(AP, 2, 4, 8);//  FixedSin(AP) + FixedSin(AP << 1) + FixedSin(AP << 2) + FixedSin(AP << 3);
+	int32_t B = FourSin(BP, 2, 4, 8);//  FixedSin(AP) + FixedSin(AP << 1) + FixedSin(AP << 2) + FixedSin(AP << 3);
+	int32_t C = FourSin(CP, 2, 4, 8);//  FixedSin(AP) + FixedSin(AP << 1) + FixedSin(AP << 2) + FixedSin(AP << 3);
+//	int32_t B = FixedSin(BP ) + FixedSin(BP<<1) + FixedSin(BP<<2) + FixedSin(BP <<3) ;
+	//int32_t C = FixedSin(CP ) + FixedSin(CP<<1) + FixedSin(CP<<2) + FixedSin(CP <<3) ;
+	return (A + B + C) ;
 }

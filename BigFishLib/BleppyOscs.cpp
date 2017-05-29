@@ -238,13 +238,17 @@ inline float downrampfrom1(float factor, float input)
 void HyperCalculate_Spread(struct HyperSet_t *set, float spread, float size)
 {
 	
+	float fExtraSaws = size * (MAXHYPER-1);
+	int nExtraSaws = (int)__min(floor(fExtraSaws) + 1, (MAXHYPER - 1));
 	if (fExtraSaws <= 0.000001f) nExtraSaws = 0;
+	//float fFracSaw = (float)(fExtraSaws - nExtraSaws);
 	float fFracSaw = (float)(fExtraSaws - floor(fExtraSaws));
 	float fSaws = 1 + fExtraSaws;
 	int NewnSaws = nExtraSaws + 1;
 
 	float NewSawLevel[MAXHYPER];
 
+	float NewLevel = (1.0f) / (downrampfrom1(-0.1f, fSaws) * 2);
 	for (int i = 0; i<NewnSaws; i++)
 	{
 		NewSawLevel[i] = 1;
@@ -261,8 +265,10 @@ void HyperCalculate_Spread(struct HyperSet_t *set, float spread, float size)
 	{
 		total += NewSawLevel[i];
 	}
+	float totalmult = NewLevel / total;
 	for (int i = 0; i<NewnSaws; i++)
 	{
+		NewSawLevel[i] *= totalmult;
 	}
 
 	for (int i = 0; i<NewnSaws; i++)
@@ -272,6 +278,7 @@ void HyperCalculate_Spread(struct HyperSet_t *set, float spread, float size)
 	};
 	set->Active = NewnSaws;
 
+	float DetuneMul  = (((1.0f) / 2.0f))*(spread * (1.0f / (MAXHYPER - 1)))*(0.5f / (fSaws*0.5f));
 
 	for (int i = 1; i<set->Active; i++)
 	{
@@ -335,11 +342,17 @@ MEMATTR void AddBlepFixed(int32_t *circbuffer, int index, int32_t scale, uint32_
 
 	int32_t tempFraction = tempIndex & ((1 << 28) - 1);
 	tempFraction *= 8;
+
 	scale <<= 17;
+
 	b1 *= 2;
+
 	for (int i = 0; i < 47; i++)
 	{
+		int32_t A = intblep[b1];
+		int32_t B = intblep[b1 + 1];	
 		int32_t C = SMMLA(A, B , tempFraction)  ;
+		circbuffer[index]  = SMMLA(circbuffer[index], C, scale ) ;		
 		index = (index + 1)&63;
 		b1 += 64;
 	}
@@ -482,6 +495,7 @@ float WaveBlepOsc_Get(struct  WaveBlep_t *osc)
 	osc->circularBuffer[osc->index] += osc->OutVal;
 	float output = osc->circularBuffer[osc->index];
 	osc->circularBuffer[osc->index] = 0.0f;
+	return output  * 4;
 }
 
 void VosimOsc_Init(struct VosimBlep_t *osc)
@@ -568,6 +582,8 @@ float VosimOsc_Get(struct  VosimBlep_t *osc)
 void HyperOsc_Init(struct HyperOsc_t *osc)
 {
  	osc->index = 0;
+	osc->HyperSet.Freq[0] = 1;
+
 	for (int i = 0; i < MAXHYPER; i++)
 	{
   		osc->mPhase[i] = 0;
@@ -608,6 +624,7 @@ inline int32_t HyperOsc_Get(struct HyperOsc_t *osc)
 			crosstime = ~(crosstime << 16);
 			AddBlepFixed(osc->circularBuffer, osc->index , osc->HyperSet.iLevel[o], crosstime);
 		}
+		uint32_t saw = (osc->mPhase[o]);
 		saw >>= 16;
 		int32_t si = (int32_t)saw;
 		si -= 32768;
@@ -620,15 +637,18 @@ inline int32_t HyperOsc_Get(struct HyperOsc_t *osc)
 
 	int32_t output = osc->circularBuffer[osc->index];
 	osc->circularBuffer[osc->index] = 0;
+	return output*4;
 }
 
 void HyperPulse_Init(struct HyperPulse_t *osc)
 {
 	osc->index = 0;
+	osc->HyperSet.Freq[0] = 1.0;
 	for (int i = 0; i < MAXHYPER; i++)
 	{
 		osc->Sign[i] = -1;
 		osc->mPhase[i] = 0;
+		osc->mPhaseIncrement[i] = 1;
 	}
 	for (int i = 0; i < 64; i++)
 	{
@@ -637,28 +657,52 @@ void HyperPulse_Init(struct HyperPulse_t *osc)
 }
 void HyperPulse_Update(struct HyperPulse_t  *osc, float odsr, float centerfreq, float size, float spread)
 {
+	float C = centerfreq *  2.0 * odsr;
 
+	HyperCalculate_Spread(&osc->HyperSet, spread, size);
 
 	for (int i = 0; i < osc->HyperSet.Active; i++)
 	{
+		float F = (C * osc->HyperSet.Freq[i]);
+		uint32_t C2 = (unsigned long)((65536.f*65536.f) * (F));
+		osc->mPhaseIncrement[i] = C2;
 	}
 }
+inline  int32_t HyperPulse_Get(struct HyperPulse_t *osc)
 {
+
 	osc->index = (osc->index + 1) & 63;
+
+
+
 	for (int o = 0; o < osc->HyperSet.Active; o++)
 	{
 		osc->mPhase[o] += osc->mPhaseIncrement[o];
+		if (osc->mLastPhase[o] > osc->mPhase[o])
 		{
+			uint32_t crosstime = osc->mPhaseIncrement[o] - osc->mPhase[o];
+			crosstime /= (osc->mPhaseIncrement[o] >> 16);
+			crosstime = ~(crosstime << 16);
+			
 			if (osc->Sign[o]>0)
 			{
+				AddBlepFixed(osc->circularBuffer, osc->index,  osc->HyperSet.iLevel[o], crosstime);
+				osc->Sign[o] = -osc->HyperSet.iLevel[o]/2;
 			}
 			else
 			{
+				AddBlepFixed(osc->circularBuffer, osc->index,  -osc->HyperSet.iLevel[o], crosstime);
+				osc->Sign[o] = osc->HyperSet.iLevel[o]/2;
 			}
 		}
 
+		osc->circularBuffer[osc->index] += (osc->Sign[o]);
+		osc->mLastPhase[o] = osc->mPhase[o];
 	}
 
+	int32_t output = osc->circularBuffer[osc->index];
+	osc->circularBuffer[osc->index] = 0;
+	return output  * 4;
 }
 
 
@@ -674,6 +718,7 @@ void MinBlepOsc_Init(struct MinBlepOsc_t *osc)
 		osc->circularBuffer[i] = 0;
 	}
 }
+inline void MinBlepOsc_Update(struct MinBlepOsc_t *osc, float odsr, float centerfreq, float size, float spread)
 {
 	uint32_t C = (unsigned long)((65536.f*65536.f) * (centerfreq * odsr));
 	osc->mPhaseIncrement = C;
@@ -703,6 +748,7 @@ MEMATTR int32_t MinBlepOsc_Get(struct  MinBlepOsc_t *osc)
 	int32_t output = osc->circularBuffer[osc->index];
 	osc->circularBuffer[osc->index] = 0;
 	osc->mLastPhase = osc->mPhase;
+	return output * 4;
 }
 
 int32_t MinBlepOsc_GetPulse(struct  MinBlepOsc_t *osc)
@@ -739,6 +785,7 @@ int32_t MinBlepOsc_GetPulse(struct  MinBlepOsc_t *osc)
 	int32_t output = osc->circularBuffer[osc->index];
 	osc->circularBuffer[osc->index] = 0;
 	osc->mLastPhase = osc->mPhase;
+	return output * 4;
 }
 
 
