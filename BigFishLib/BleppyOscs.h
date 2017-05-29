@@ -5,7 +5,7 @@
 #include<stdint.h>
 #include "BigFishDefs.h"
 
-#define MAXHYPER 7
+#define MAXHYPER 4
 
 typedef struct WaveBlep_t
 {
@@ -52,7 +52,7 @@ typedef struct MinBlepOsc_t
 typedef struct HyperSet_t
 {
 	float Level[MAXHYPER];
-	uint32_t iLevel[MAXHYPER];
+	int32_t iLevel[MAXHYPER];
 	float Freq[MAXHYPER];
 	int Active;
 
@@ -71,11 +71,12 @@ typedef struct HyperOsc_t
 
 typedef struct HyperPulse_t
 {
-	float mPhase[MAXHYPER];
-	float mPhaseIncrement[MAXHYPER];
-	signed char Sign[MAXHYPER];
+	uint32_t mPhase[MAXHYPER];
+	uint32_t mPhaseIncrement[MAXHYPER];
+	uint32_t mLastPhase[MAXHYPER];
+	int32_t Sign[MAXHYPER];
 	int index;
-	float circularBuffer[64];
+	int32_t circularBuffer[64];
 	struct HyperSet_t HyperSet;
 } HyperPulse_t;
 
@@ -96,7 +97,7 @@ int32_t HyperOsc_Get(struct HyperOsc_t *osc);
 
 void HyperPulse_Init(struct HyperPulse_t *osc);
 void HyperPulse_Update(struct HyperPulse_t  *osc, float odsr, float centerfreq, float size, float spread);
-float HyperPulse_Get(struct HyperPulse_t *osc);
+int32_t HyperPulse_Get(struct HyperPulse_t *osc);
 
 void MinBlepOsc_Init(struct MinBlepOsc_t *osc);
 void MinBlepOsc_Update(struct MinBlepOsc_t *osc, float odsr, float centerfreq, float size, float spread);

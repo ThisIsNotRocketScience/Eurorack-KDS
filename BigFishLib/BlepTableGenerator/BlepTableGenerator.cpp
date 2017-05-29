@@ -282,8 +282,8 @@ int main(int argc, char **Argv)
 			fprintf(A, "const int32_t intblep[48*32*2] = {\n\t");
 			for (int i = 0; i < 48 * 32; i++)
 			{
-				int32_t intblepA = (int32_t)(blep[i] * (float)(1 << 16));
-				int32_t intblepB = (int32_t)(blep[i+1] * (float)(1 << 16));
+				int32_t intblepA = (int32_t)(blep[i] * (float)(1 << 15));
+				int32_t intblepB = (int32_t)(blep[i+1] * (float)(1 << 15));
 				int32_t intblepDelta = intblepB - intblepA;
 				fprintf(A, "%d, %d,", intblepA, intblepDelta);
 				if (i % 16 == 15) fprintf(A, "\n\t");

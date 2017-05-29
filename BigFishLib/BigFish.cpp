@@ -19,7 +19,7 @@
 const float chordtable[16][4] = {
 		{ powf(2, 0.0f / 12.0f), 0, 0, 0 },
 		{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.05f / 12.0f) }, // Fat Moog
-		{ powf(2, -0.1f / 12.0f), powf(2, 0.0f / 12.0f), powf(2, 7.04f / 12.0f), powf(2, 0.1f / 12.0f) }, // Moog 5th
+		{ powf(2, -0.1f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 7.04f / 12.0f), powf(2, 0.1f / 12.0f) }, // Moog 5th
 		{ powf(2, -0.18f / 12.0f), powf(2, -0.07f / 12.0f), powf(2, 0.07f / 12.0f), powf(2, 0.18f / 12.0f) }, // Guru Ps1
 		{ powf(2, -0.3f / 12.0f), powf(2, -0.15f / 12.0f), powf(2, 0.15f / 12.0f), powf(2, 0.3f / 12.0f) }, // Guru Ps2
 		{ powf(2, -0.1f / 12.0f), powf(2, 0.1f / 12.0f), powf(2, 12.02f / 12.0f), powf(2, 16.07f / 12.0f) }, // VengaBoyz:(
@@ -110,9 +110,20 @@ float DBToLevel(float db)
 
 void BigFish_Init(struct BigFish_t *fish, int samplerate)
 {
+
+#ifdef RANGECHECKS
+	InitRange(&fish->PreFilter);
+	InitRange(&fish->PostDrive);
+	InitRange(&fish->PostFilter);
+	InitRange(&fish->HyperSawRange);
+	InitRange(&fish->OrganRange);
+	InitRange(&fish->HyperPulseRange);
+	InitRange(&fish->WaveBlepRange);
+	InitRange(&fish->SuperFishRange);
+
+
+#endif
 	fish->ODSR = 1.0f / (float)samplerate;
-	WaveBlepOsc_Init(&fish->WaveOsc);
-	Organ_Init(&fish->Organ);
 	VosimOsc_Init(&fish->Vosim);
 	fish->SampleRate = samplerate;
 	fish->Clipper.Init(samplerate);	
@@ -125,8 +136,14 @@ void BigFish_Init(struct BigFish_t *fish, int samplerate)
 
 	for (int i = 0; i < 10; i++) fish->FormantMemory[i] = 0;
 	Inertia_Init(&fish->Accent);
-	MinBlepOsc_Init(&fish->PulseOsc);
-	MinBlepOsc_Init(&fish->SawOsc);
+	for (int i = 0; i < 3; i++)
+	{
+		MinBlepOsc_Init(&fish->PulseOsc[i]);
+		MinBlepOsc_Init(&fish->SawOsc[i]);
+		WaveBlepOsc_Init(&fish->WaveOsc[i]);
+		
+	}
+	Organ_Init(&fish->Organ, fish->ODSR);
 	HyperPulse_Init(&fish->HyperPulseOsc);
 	HyperOsc_Init(&fish->HyperSawOsc);
 	ADSR_BuildTable();
@@ -170,47 +187,91 @@ void BigFish_Update(struct BigFish_t *fish)
 	ADSR_ApplyParameters(&fish->FilterEnvelope, fish->Parameters[FILTER_ATTACK], fish->Parameters[FILTER_DECAY], 0,0);
 }
 
-void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void HyperSaw(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t isize)
 {
-	float spread = (fish->Parameters[OSC_SPREAD]) / 65536.0f; 
-	float size = (fish->Parameters[OSC_SIZE ]) / 65536.0f;
+	int32_t *outbuffer = buffer;
+	int inlen = len;
+	float spread = (fish->Parameters[OSC_SPREAD]) / 65536.0f;
+	float size = isize / 65536.0f;
 	HyperOsc_Update(&fish->HyperSawOsc, fish->ODSR, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ =(int)( HyperOsc_Get(&fish->HyperSawOsc));
+		*buffer++ =HyperOsc_Get(&fish->HyperSawOsc);
 	}
+
+#ifdef RANGECHECKS
+	UpdateRangeBuffer(&fish->HyperSawRange, outbuffer, inlen);
+#endif
 }
 
-void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void HyperPulse(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t isize)
 {
+	int32_t *outbuffer = buffer;
+	int inlen = len;
 	float spread = (fish->Parameters[OSC_SPREAD] ) / 65536.0f;
-	float size = (fish->Parameters[OSC_SIZE]) / 65536.0f;
+	float size = (isize) / 65536.0f;
 	HyperPulse_Update(&fish->HyperPulseOsc, fish->ODSR, fish->CenterFreq, size, spread);
 	while (len--)
 	{
-		*buffer++ =(int)( HyperPulse_Get(&fish->HyperPulseOsc) * (32768.0f ));
+		*buffer++ =HyperPulse_Get(&fish->HyperPulseOsc) ;
 	}
+#ifdef RANGECHECKS
+	UpdateRangeBuffer(&fish->HyperPulseRange, outbuffer, inlen);
+#endif
 }
 
-void SuperFish(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void SuperFish(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t isize)
 {
-	MinBlepOsc_Update(&fish->SawOsc, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
-	MinBlepOsc_Update(&fish->PulseOsc, fish->ODSR, fish->CenterFreq * 2.0f, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
-	float size = fish->Parameters[OSC_SIZE] / 2.0f;
-	float invsize = 32768.0f - size;
-	while (len--)
+
+	int32_t *outbuffer = buffer;
+	int inlen = len;
+
+	int activeoscs = fish->ChordVoicesActive;
+	for (int i = 0; i < activeoscs; i++)
 	{
-		int32_t A = (MinBlepOsc_Get(&fish->SawOsc) >> 1) * invsize;
-		int32_t B = (MinBlepOsc_GetPulse(&fish->PulseOsc)>>1) * size;
-		*buffer++ = (A + B) >> 15;
+		MinBlepOsc_Update(&fish->SawOsc[i], fish->ODSR, fish->CenterFreq * fish->ChordPitchTable[i], isize, fish->Parameters[OSC_SPREAD]);
+		MinBlepOsc_Update(&fish->PulseOsc[i], fish->ODSR, fish->CenterFreq * 2.0f * fish->ChordPitchTable[i], isize, fish->Parameters[OSC_SPREAD]);
 	}
+	if (activeoscs > 1)
+	{
+		int size = fish->Parameters[OSC_SIZE] / 2;
+		int invsize = 32768 - size;
+		while (len--)
+		{
+			int32_t A = (MinBlepOsc_Get(&fish->SawOsc[0]) >> 1) ;
+			int32_t B = (MinBlepOsc_GetPulse(&fish->PulseOsc[0]) >> 1) ;
+			for (int i = 1; i < activeoscs; i++)
+			{
+				A += (MinBlepOsc_Get(&fish->SawOsc[i]) >> 1) ;
+				B += (MinBlepOsc_GetPulse(&fish->PulseOsc[i]) >> 1);
+			}
+			*buffer++ = (A *invsize + B *size ) >> 15;
+		}
+	}
+	else
+	{
+		int size = fish->Parameters[OSC_SIZE] / 2;
+		int invsize = 32768 - size;
+		while (len--)
+		{
+			int32_t A = (MinBlepOsc_Get(&fish->SawOsc[0]) >> 1) * invsize;
+			int32_t B = (MinBlepOsc_GetPulse(&fish->PulseOsc[0]) >> 1) * size;
+
+			*buffer++ = (A + B) >> 15;
+		}
+
+	}
+
+#ifdef RANGECHECKS
+	UpdateRangeBuffer(&fish->SuperFishRange, outbuffer, inlen);
+#endif
 }
 
 
 
-void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t size)
 {
-	VosimOsc_Update(&fish->Vosim, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE]/65536.0f, fish->Parameters[OSC_SPREAD]);
+	VosimOsc_Update(&fish->Vosim, fish->ODSR, fish->CenterFreq, size/65536.0f, fish->Parameters[OSC_SPREAD]);
 	while (len--)
 	{
 
@@ -218,17 +279,47 @@ void Vosim(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 	}
 }
 
-void Organ(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void Organ(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t isize)
 {
-	Organ_Update(&fish->Organ, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE] / 65536.0f, fish->Parameters[OSC_SPREAD]);
-	while (len--)
+	int32_t *outbuffer = buffer;
+	int inlen= len;
+	int activeoscs = fish->ChordVoicesActive;
+	for (int i = 0; i < activeoscs; i++)
+	{
+		Organ_Update(&fish->Organ.Voices[i], fish->ODSR, fish->CenterFreq * fish->ChordPitchTable[i], isize * (1.0f / 65536.0f), fish->Parameters[OSC_SPREAD]);
+	}
+	if (activeoscs > 1)
 	{
 
-		*buffer++ = Organ_Get(&fish->Organ) * 32768;;
+		while (len--)
+		{
+			int32_t A = Organ_GetMain(&fish->Organ);
+
+			for (int i = 1; i < activeoscs; i++)
+			{
+				A += Organ_Get(&fish->Organ, &fish->Organ.Voices[i]);
+					
+			}
+			*buffer++ = A / 12;
+		}
 	}
+	else
+	{
+		while (len--)
+		{
+
+			*buffer++ = Organ_GetMain(&fish->Organ)/4 ;;
+		}
+
+
+	}
+#ifdef RANGECHECKS
+	UpdateRangeBuffer(&fish->OrganRange, outbuffer, inlen);
+#endif
+
 }
 
-void Choir(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void Choir(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t size)
 {
 	while (len--)
 	{
@@ -236,20 +327,30 @@ void Choir(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
 	}
 }
 
-void Grain(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void Grain(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t size)
 {
-	WaveBlepOsc_Update(&fish->WaveOsc, fish->ODSR, fish->CenterFreq, fish->Parameters[OSC_SIZE], fish->Parameters[OSC_SPREAD]);
+
+	int32_t *outbuffer = buffer;
+	int inlen = len;
+
+
+	WaveBlepOsc_Update(&fish->WaveOsc[0], fish->ODSR, fish->CenterFreq, size, fish->Parameters[OSC_SPREAD]);
 
 	while (len--)
 	{
 
-		float A = WaveBlepOsc_Get(&fish->WaveOsc);
+		float A = WaveBlepOsc_Get(&fish->WaveOsc[0]);
 
 		*buffer++ = (int)(A*32768.0f);
 	}
+
+#ifdef RANGECHECKS
+	UpdateRangeBuffer(&fish->WaveBlepRange, outbuffer, inlen);
+#endif
+
 }
 
-void Copy(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len)
+void Copy(struct BigFish_t *fish, int32_t *buffer, int32_t *bufferB, int len, int32_t size)
 {	
 	while (len--)
 	{
@@ -336,7 +437,7 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 
 		float oct = log2f(f2 / f1);
 
-		fish->filters[i].rbjBPF(T.Formants[i].Freq, 10, fish->SampleRate, 1.0);
+		fish->filters[i].rbjBPF_withgain(T.Formants[i].Freq, 10, fish->SampleRate, 1.0);
 		fish->filters[i].ClearException();
 		//		fish->filters[i].rbjHPF(T.Formants[i].Freq, 6 + fish->Parameters[FILTER_RESONANCE]/200.0f, fish->SampleRate);
 	}
@@ -438,13 +539,13 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 		fish->filters[0].zoelzerLPF(freq, fResonance2, odsr);		
 		break;
 	case FILTERTYPE_HP:
-		fish->filters[0].rbjHPF(freq*HIGHCOMP, fResonance2, srate);
+		fish->filters[0].rbjHPF(freq*HIGHCOMP, fResonance2, odsr);
 		break;
 	case FILTERTYPE_BP:
-		fish->filters[0].rbjBPF(freq, fResonance2*0.25f, srate);
+		fish->filters[0].rbjBPF(freq, fResonance2*0.25f, odsr);
 		break;
 	case FILTERTYPE_BR:
-		fish->filters[0].rbjBRF(freq, fResonance2*0.25f, srate); 
+		fish->filters[0].rbjBRF(freq, fResonance2*0.25f, odsr); 
 		break;
 
 	}
@@ -500,7 +601,28 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 	int32_t OSC[MAXFISHBUFFER];
 	int32_t AMPED[MAXFISHBUFFER];
 	int32_t MAIN[MAXFISHBUFFER];
-	typedef void GenFunc(BigFish_t *, int32_t *, int32_t *, int);
+	typedef void GenFunc(BigFish_t *, int32_t *, int32_t *, int, int32_t);
+
+
+	SteppedResult_t src;
+	GetSteppedResult(fish->Parameters[PITCH_CHORD], 17, &src);
+	
+	fish->ChordVoicesActive = 1;
+	if (src.index > 0)
+	{
+		src.index--;
+		fish->ChordVoicesActive = 3;
+		float sf = src.fractional *(1.0f / 255.0f);
+		float isf = 1.0f - sf;
+		for (int i = 0; i < 3; i++)
+		{
+			fish->ChordPitchTable[i] = chordtable[src.index][i] * isf + chordtable[src.index + 1][i] * sf;
+		}
+	}
+	else
+	{
+		fish->ChordPitchTable[0] = 1.0f;
+	}
 
 	//GenFunc* Funcs[8] = {SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish,SuperFish};//HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
 	GenFunc* Funcs[8] = {HyperSaw, HyperPulse, SuperFish, Vosim, Organ, Choir, Grain, Copy};
@@ -518,10 +640,15 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 	{
 		int L = __min(len, MAXFISHBUFFER);
 		len -= L;
+		int32_t Size = fish->Parameters[OSC_SIZE];
+
 		if (sr.fractional > 0)
 		{
-			Funcs[FuncIdx](fish, A, B, L);
-			Funcs[FuncIdx + 1](fish, B, A, L);
+
+			float frac = sr.fractional * (1.0f / 255.0f);
+			float ifrac = 1.0 - frac;
+			Funcs[FuncIdx](fish, A, B, L, Size * ifrac );
+			Funcs[FuncIdx + 1](fish, B, A, L, Size * frac);
 
 			for (int i = 0; i < L; i++)
 			{
@@ -535,7 +662,7 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 		}
 		else
 		{
-			Funcs[FuncIdx](fish, A, B, L);
+			Funcs[FuncIdx](fish, A, B, L, Size);
 			for (int i = 0; i < L; i++)
 			{
 				int32_t AmpEnvelope = ADSR_GetCurved(&fish->AmpEnvelope);
@@ -546,12 +673,52 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 				*bufferOSCOUT++ = OSC[i];
 			}
 		}
+
+#ifdef RANGECHECKS
+		UpdateRangeBuffer(&fish->PreFilter, AMPED, L);
+#endif
+
 		BigFish_Filter(fish, AMPED, MAIN, L);
+
+#ifdef RANGECHECKS
+		UpdateRangeBuffer(&fish->PostFilter, MAIN, L);
+#endif
 		BigFish_Drive(fish, MAIN, MAIN, L);
+
+#ifdef RANGECHECKS
+		UpdateRangeBuffer(&fish->PostDrive, MAIN, L);
+#endif
 
 		for (int i = 0; i < L; i++)
 		{
 			*bufferMAIN++ = MAIN[i];
 		}
 	}
+}
+
+void InitRange(RangeChecker_t *R)
+{
+	R->bits = 0;
+	R->valuecount = 0;
+	R->max = 0;
+	R->min = 0;
+	R->signedvalues = 0;
+}
+
+void UpdateRange(RangeChecker_t *R, int64_t inv)
+{
+	if (R->valuecount == 0)
+	{
+		R->max = R->min = inv;
+	}
+	R->valuecount++;
+	if (inv > R->max) R->max = inv; else if (inv < R->min) R->min = inv;
+
+	if (R->min < 0) R->signedvalues = true;
+}
+
+
+void UpdateRangeBuffer(RangeChecker_t *R, int32_t *buffer, int len)
+{
+	for (int i = 0; i < len; i++) UpdateRange(R, buffer[i]);
 }

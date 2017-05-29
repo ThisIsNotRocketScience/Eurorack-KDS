@@ -1,0 +1,34 @@
+﻿  BigFish.cpp
+BigFish.cpp(204): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
+BigFish.cpp(205): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
+BigFish.cpp(246): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+BigFish.cpp(297): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
+BigFish.cpp(340): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(367): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+BigFish.cpp(375): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(385): warning C4244: '=': conversion from 'float' to 'uint16_t', possible loss of data
+BigFish.cpp(387): warning C4244: '=': conversion from 'float' to 'uint8_t', possible loss of data
+BigFish.cpp(390): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+BigFish.cpp(391): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+BigFish.cpp(405): warning C4244: '=': conversion from 'int32_t' to 'float', possible loss of data
+BigFish.cpp(417): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+BigFish.cpp(417): warning C4244: 'argument': conversion from 'int32_t' to 'const float', possible loss of data
+BigFish.cpp(421): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+BigFish.cpp(402): warning C4101: 'out': unreferenced local variable
+BigFish.cpp(430): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(452): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(455): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(463): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(474): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
+BigFish.cpp(483): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+BigFish.cpp(483): warning C4244: 'initializing': conversion from 'int' to 'const float', possible loss of data
+BigFish.cpp(600): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+BigFish.cpp(601): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+BigFish.cpp(602): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  BleppyOscs.cpp
+BleppyOscs.cpp(445): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+BleppyOscs.cpp(533): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+BleppyOscs.cpp(658): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  OrganOsc.cpp
+  Test.cpp
+  BigFishLib.vcxproj -> C:\Projects\Code\Kinetis2\Eurorack-KDS\VIsualStudio_EuroRackSimulator\Release\BigFishLib.lib

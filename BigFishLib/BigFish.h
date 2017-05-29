@@ -78,9 +78,9 @@ public:
 
 	}
 
-	void rbjBPF(float fc, float bw, float esr)
+	void rbjBPF(float fc, float bw, float odsr)
 	{
-		float omega = (float)(2 * 3.141592654f*fc / esr);
+		float omega = (float)(2 * 3.141592654f*fc * odsr);
 		float sn = (float)sin(omega);
 		float cs = (float)cos(omega);
 		float alpha = (float)(sn / sinh(log(2.0f) / 2 * bw*omega / sn));
@@ -102,9 +102,9 @@ public:
 	}
 
 
-	void rbjHPF(double fc, double Q, double esr, double gain = 1.0)
+	void rbjHPF(double fc, double Q, double odsr, double gain = 1.0)
 	{
-		float omega = (float)(2 * 3.141592654f*fc / esr);
+		float omega = (float)(2 * 3.141592654f*fc * odsr);
 		//    float sn=sin(omega);
 		//    float cs=cos(omega);
 		float sn = (float)(omega + omega*omega*omega*(1.0 / 6.0) + omega*omega*omega*omega*omega*(1.0 / 120));
@@ -125,9 +125,9 @@ public:
 		B1 = int(m_fB1 * (double)(1 << FILTERBITS));
 		B2 = int(m_fB2 * (double)(1 << FILTERBITS));
 	}
-	void rbjBPF(double fc, double Q, double esr, double gain = 1.0)
+	void rbjBPF_withgain(float fc, float Q, float odsr, float gain = 1.0)
 	{
-		float omega = (float)(2 * 3.141592654f*fc / esr);
+		float omega = (float)(2 * 3.141592654f*fc * odsr);
 		//    float sn=sin(omega);
 		//    float cs=cos(omega);
 		float sn = (float)(omega + omega*omega*omega*(1.0 / 6.0) + omega*omega*omega*omega*omega*(1.0 / 120));
@@ -148,9 +148,9 @@ public:
 		B1 = int(m_fB1 * (double)(1 << FILTERBITS));
 		B2 = int(m_fB2 * (double)(1 << FILTERBITS));
 	}
-	void rbjBRF(double fc, double Q, double esr, double gain = 1.0)
+	void rbjBRF(float fc, float Q, float odsr, float gain = 1.0)
 	{
-		float omega = (float)(2 * 3.141592654f*fc / esr);
+		float omega = (float)(2 * 3.141592654f*fc * odsr);
 		//    float sn=sin(omega);
 		//    float cs=cos(omega);
 		float sn = (float)(omega + omega*omega*omega*(1.0 / 6.0) + omega*omega*omega*omega*omega*(1.0 / 120));
@@ -426,8 +426,22 @@ public:
 	}
 	int counter;
 };
+#define RANGECHECKS
+#ifdef RANGECHECKS
+typedef struct RangeChecker_t
+{
+	int64_t min;
+	int64_t max;
+	int64_t valuecount;
+	int32_t bits;
+	bool signedvalues;
+} RangeChecker_t;
 
+void InitRange(RangeChecker_t *R);
+void UpdateRange(RangeChecker_t *R, int64_t inv);
+void UpdateRangeBuffer(RangeChecker_t *R, int32_t *buffer, int len);
 
+#endif
 
 typedef struct BigFish_t
 {
@@ -447,17 +461,30 @@ typedef struct BigFish_t
 	VosimBlep_t Vosim;
 	HyperOsc_t HyperSawOsc;
 	HyperPulse_t HyperPulseOsc;
-	MinBlepOsc_t SawOsc;
-	MinBlepOsc_t PulseOsc;
-	WaveBlep_t WaveOsc;
+	MinBlepOsc_t SawOsc[3];
+	MinBlepOsc_t PulseOsc[3];
+	WaveBlep_t WaveOsc[3];
 	Organ_t Organ;
+	int ChordVoicesActive;
 	double FormantMemory[10];
+	float ChordPitchTable[3];
 
 	Inertia_t Accent;
 	struct ADSR_Envelope_t AmpEnvelope;
 	struct ADSR_Envelope_t FilterEnvelope; // s and r set to 0 for plain AD envelope. 
 	cwaveguide Resonator[5];
 	PlatinumClip Clipper;
+
+#ifdef RANGECHECKS
+	RangeChecker_t PreFilter;
+	RangeChecker_t PostFilter;
+	RangeChecker_t PostDrive;
+	RangeChecker_t HyperSawRange;
+	RangeChecker_t OrganRange;
+	RangeChecker_t HyperPulseRange;
+	RangeChecker_t WaveBlepRange;
+	RangeChecker_t SuperFishRange;
+#endif
 } BigFish_t;
 
 typedef struct SteppedResult_t
