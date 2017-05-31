@@ -36,7 +36,7 @@ extern "C"
 	}
 	void __cdecl DoClock(int state)
 	{
-		Tuesday_Clock(&Tuesday, state);
+		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
 	}
 	__declspec(dllexport) void __stdcall Init()
 	{
@@ -195,7 +195,7 @@ extern "C"
 	__declspec(dllexport) void __stdcall Tuesday_ClockTick(int ClockConnected, int val)
 	{
 		Tuesday.ClockConnected = ClockConnected;
-		Tuesday_Clock(&Tuesday, val);
+		Tuesday_Clock(&Tuesday, &TuesdaySettings,&TuesdayParams,val);
 	}
 
 	__declspec(dllexport) void __stdcall Tuesday_DoTimer()
@@ -253,7 +253,7 @@ void DoSubDivTest(int clockmode, int maxclocks, int tpbopt)
 	int cv = 0;
 	for (int i = 0; i < maxclocks; i++)
 	{
-		Tuesday_Clock(&Tuesday, ((cv++)%2==0)?1:0);
+		Tuesday_Clock(&Tuesday,&TuesdaySettings, &TuesdayParams, ((cv++)%2==0)?1:0);
 
 		int nonzeroes = 0;
 		for (int j = 0; j < TUESDAY_GATES - 1; j++)

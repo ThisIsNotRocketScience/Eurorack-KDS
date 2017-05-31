@@ -22,8 +22,8 @@ void ADSR_BuildTable()
 	float upper = 0;
 	for (int i = 0; i < EXPTABLELENGTH; i++)
 	{
-		exptable[ENVTABLE_EXP][i] = (exp((i * End) / (float)(EXPTABLELENGTH - 1)) - Min) * iMax ;		
-		exptable[ENVTABLE_LOG][i] = (log(1 + (i * (EndL-1)) / (float)(EXPTABLELENGTH - 1)) - MinL) * iMaxL;
+		exptable[ENVTABLE_EXP][i] = (int)((exp((i * End) / (float)(EXPTABLELENGTH - 1)) - Min) * iMax) ;		
+		exptable[ENVTABLE_LOG][i] = (int)((log(1 + (i * (EndL-1)) / (float)(EXPTABLELENGTH - 1)) - MinL) * iMaxL);
 	};
 };
 

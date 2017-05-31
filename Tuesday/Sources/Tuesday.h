@@ -230,7 +230,7 @@ extern "C"
 #endif
 	extern int CalibrateAdjust(int input);
 	extern void Tuesday_Init(struct Tuesday_PatternGen *T);
-	extern void Tuesday_Clock(struct Tuesday_PatternGen *T, int ClockVal);
+	extern void Tuesday_Clock(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par, int ClockVal);
 	extern void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params, int state);
 	extern void Tuesday_Reset(struct Tuesday_PatternGen *T);
 	extern void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);

@@ -444,7 +444,7 @@ void WaveBlepOsc_Update(struct WaveBlep_t *osc, float odsr, float centerfreq, fl
 	osc->waveb[5] = cosf(size*2.4230f);
 	osc->waveb[6] = cosf(spread*2.20f);
 	osc->waveb[7] = sinf(size * 1.510f + spread*2.6120f);
-	int max = osc->speedmul -2;
+//	int max = osc->speedmul -2;
 //	osc->wavea[max] = osc->wavea[0];
 	//osc->waveb[max] = osc->wavea[0];
 //	osc->wavea[max+1] = osc->wavea[0];

@@ -83,6 +83,7 @@ public :
 			numsamples -= L;
 		}
 	}
+	
 	void UpdateParams()
 	{
 		for (int i = 0; i < __PARAMCOUNT; i++)
@@ -90,6 +91,7 @@ public :
 			if (!IgnoreParam(i)) Fish.Parameters[i] =(uint16_t) Inertia[i].Get();
 		}
 	}
+	
 	bool IgnoreParam(int i)
 	{
 		switch (i)
@@ -99,10 +101,10 @@ public :
 		}
 		return false;
 	}
+
 	void SetParam(int p, int v)
 	{
-		Inertia[p].SetTarget(v );
-		
+		Inertia[p].SetTarget((float)v);		
 	}
 	
 	InertiaBlock Inertia[__PARAMCOUNT];
@@ -389,12 +391,12 @@ char const *mi::DescribeValue(int const param, int const value)
 
 			if (value<32768)
 			{
-				float V = (32768 - value) / 327.68;
+				float V = (32768 - value) / 327.68f;
 				sprintf_s(txt, 16, "%.1f%% Fuzz", V);
 			}
 			else
 			{
-				float V = (value- 32768) / (327.67);
+				float V = (value- 32768) / (327.67f);
 				sprintf_s(txt, 16, "%.1f%% Clean", V);
 			}
 		}

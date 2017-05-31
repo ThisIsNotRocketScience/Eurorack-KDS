@@ -13,20 +13,20 @@
  **         No public methods
  **
  ** ###################################################################*/
-/*!
- ** @file main.c
- ** @version 01.01
- ** @brief
- **         Main module.
- **         This module contains user's application code.
- */
-/*!
- **  @addtogroup main_module main module documentation
- **  @{
- */
-/* MODULE main */
+ /*!
+  ** @file main.c
+  ** @version 01.01
+  ** @brief
+  **         Main module.
+  **         This module contains user's application code.
+  */
+  /*!
+   **  @addtogroup main_module main module documentation
+   **  @{
+   */
+   /* MODULE main */
 
-/* Including needed modules to compile this module/procedure */
+   /* Including needed modules to compile this module/procedure */
 #include "Cpu.h"
 #include "Events.h"
 #include "AD1.h"
@@ -87,10 +87,10 @@ byte pwm = 0;
 
 void _SetupLeds();
 
-struct denoise_state_t algosw_state = {0};
-struct denoise_state_t scalesw_state = {0};
-struct denoise_state_t beatsw_state = {0};
-struct denoise_state_t tpbsw_state = {0};
+struct denoise_state_t algosw_state = { 0 };
+struct denoise_state_t scalesw_state = { 0 };
+struct denoise_state_t beatsw_state = { 0 };
+struct denoise_state_t tpbsw_state = { 0 };
 
 void UpdateButtons()
 {
@@ -123,7 +123,7 @@ void UpdateGates()
 	}
 }
 
-void __attribute__ ((noinline)) ShiftOut()
+void __attribute__((noinline)) ShiftOut()
 {
 	pwm += 16;
 
@@ -157,11 +157,11 @@ void __attribute__ ((noinline)) ShiftOut()
 	}
 
 	LATCH_SetVal(LATCH_DeviceData);
-				}
+}
 
 void doTick()
 {
-	Tuesday_Tick(&Tuesday,&Params);
+	Tuesday_Tick(&Tuesday, &Params);
 	ShiftOut();
 }
 
@@ -172,12 +172,12 @@ void PatternReset()
 
 void ExtClockTick(int state)
 {
-	Tuesday_ExtClock(&Tuesday,&Params, state);
+	Tuesday_ExtClock(&Tuesday, &Params, state);
 }
 
 void DoClock(int state)
 {
-	Tuesday_Clock(&Tuesday, state);
+	Tuesday_Clock(&Tuesday, &Settings, state);
 }
 
 // half-millisecond timer -> update each dacchannel in turn
@@ -186,7 +186,7 @@ void doTimer()
 	tickssincecommit++;
 	UpdateButtons();
 
-	switch(Tuesday.UIMode)
+	switch (Tuesday.UIMode)
 	{
 	case UI_NORMAL:
 	case UI_GLOBALSETTINGS:
@@ -195,11 +195,11 @@ void doTimer()
 
 		Tuesday_TimerTick(&Tuesday, &Params);
 
-		if (Tuesday.T%2==0)
+		if (Tuesday.T % 2 == 0)
 		{
 			if (Tuesday.CVOutCountDown > 0)
 			{
-				Tuesday.CVOut  += Tuesday.CVOutDelta;
+				Tuesday.CVOut += Tuesday.CVOutDelta;
 				Tuesday.CVOutCountDown--;
 				if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
 			}
@@ -207,7 +207,7 @@ void doTimer()
 			{
 				Tuesday.CVOut = Tuesday.CVOutTarget;
 			}
-			DAC_Write(0, Tuesday.CVOut >> 16) ;
+			DAC_Write(0, Tuesday.CVOut >> 16);
 		}
 		else
 		{
@@ -232,39 +232,39 @@ void doTimer()
 		}
 		else
 		{
-			if (Tuesday.intensity > 128+28)
+			if (Tuesday.intensity > 128 + 28)
 			{
-				CalibPattern = DAC_NOTE(12*3, chan);
+				CalibPattern = DAC_NOTE(12 * 3, chan);
 			}
 			else
 			{
-				CalibPattern = ((Tuesday.T >> 4)& 0x01) ? DAC_NOTE(12*1, chan): DAC_NOTE(12*3, chan);
+				CalibPattern = ((Tuesday.T >> 4) & 0x01) ? DAC_NOTE(12 * 1, chan) : DAC_NOTE(12 * 3, chan);
 			}
 		}
 
-		uint32_t CalibNote =0 ;
-		uint32_t CalibVel =0 ;
+		uint32_t CalibNote = 0;
+		uint32_t CalibVel = 0;
 		Tuesday.T++;
 
-		switch(Tuesday.CalibTarget)
+		switch (Tuesday.CalibTarget)
 		{
-		case CALIBRATION_NOTE: CalibNote = CalibPattern; CalibVel= 0;break;
-		case CALIBRATION_VEL: CalibNote = 0; CalibVel= CalibPattern;break;
+		case CALIBRATION_NOTE: CalibNote = CalibPattern; CalibVel = 0; break;
+		case CALIBRATION_VEL: CalibNote = 0; CalibVel = CalibPattern; break;
 		}
 
-		if (Tuesday.T%2 == 0)
+		if (Tuesday.T % 2 == 0)
 		{
-			DAC_Write(0,CalibNote);
+			DAC_Write(0, CalibNote);
 		}
 		else
 		{
-			DAC_Write(1,CalibVel);
+			DAC_Write(1, CalibVel);
 		}
 	}
 	break;
 	}
 
-	if (Tuesday.T%2 ==0)
+	if (Tuesday.T % 2 == 0)
 	{
 		_SetupLeds();
 	}
@@ -362,21 +362,21 @@ void SaveEeprom()
 {
 	int paramsize = sizeof(Params);
 	EE24_WriteByte(EEPROM_OPTIONBASE, VERSIONBYTE);
-	EE24_WriteBlock(EEPROM_OPTIONBASE+1, (byte *)&Params, paramsize);
+	EE24_WriteBlock(EEPROM_OPTIONBASE + 1, (byte *)&Params, paramsize);
 }
 
 void SaveSettingsEeprom()
 {
 	int settingssize = sizeof(Settings);
 	EE24_WriteByte(EEPROM_SETTINGSBASE, VERSIONBYTE);
-	EE24_WriteBlock(EEPROM_SETTINGSBASE+1, (byte *)&Settings, settingssize);
+	EE24_WriteBlock(EEPROM_SETTINGSBASE + 1, (byte *)&Settings, settingssize);
 }
 
 void SaveCalibrationEeprom()
 {
 	int calibrationsize = sizeof(MasterCalibration);
 	EE24_WriteByte(EEPROM_CALIBRATIONBASE, CALIBRATIONVERSIONBYTE);
-	EE24_WriteBlock(EEPROM_CALIBRATIONBASE+1, (byte *)&MasterCalibration, calibrationsize);
+	EE24_WriteBlock(EEPROM_CALIBRATIONBASE + 1, (byte *)&MasterCalibration, calibrationsize);
 }
 
 void LoadEepromSettings()
@@ -387,7 +387,7 @@ void LoadEepromSettings()
 	{
 		int settingssize = sizeof(Settings);
 
-		EE24_ReadBlock(EEPROM_SETTINGSBASE+ 1, (byte *)&Settings, settingssize);
+		EE24_ReadBlock(EEPROM_SETTINGSBASE + 1, (byte *)&Settings, settingssize);
 	}
 	else
 	{
@@ -402,7 +402,7 @@ void LoadEepromCalibration()
 	if (Ver == CALIBRATIONVERSIONBYTE)
 	{
 		int calibrationsize = sizeof(MasterCalibration);
-		EE24_ReadBlock(EEPROM_CALIBRATIONBASE+ 1, (byte *)&MasterCalibration, calibrationsize);
+		EE24_ReadBlock(EEPROM_CALIBRATIONBASE + 1, (byte *)&MasterCalibration, calibrationsize);
 		if (EuroRack_ValidateCalibration() > 0)
 		{
 			SaveCalibrationEeprom();
@@ -421,7 +421,7 @@ void LoadEeprom()
 	if (Ver == VERSIONBYTE)
 	{
 		int paramsize = sizeof(Params);
-		EE24_ReadBlock(EEPROM_OPTIONBASE+1, (byte *)&Params, paramsize);
+		EE24_ReadBlock(EEPROM_OPTIONBASE + 1, (byte *)&Params, paramsize);
 		Tuesday_ValidateParams(&Params);
 	}
 	else
@@ -431,16 +431,16 @@ void LoadEeprom()
 }
 
 void NOINLINE ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
-				{
+{
 	if (ticksgroup > -1) SetLedNumber(0, ticksgroup);
 	if (beatsgroup > -1) SetLedNumber(4, beatsgroup);
 	if (scalegroup > -1) SetLedNumber(8, scalegroup);
 	if (algogroup > -1) SetLedNumber(12, algogroup);
-				}
+}
 
 void NOINLINE _SetupLeds()
 {
-	switch(Tuesday.UIMode)
+	switch (Tuesday.UIMode)
 	{
 	case UI_STARTUP:
 		// give the opening animation some breathing space
@@ -456,15 +456,15 @@ void NOINLINE _SetupLeds()
 	case UI_SELECTOPTION:
 	{
 		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
-		int D = -1 ;
-		if ((tickssincecommit>>8) & 0x1) D = Tuesday.OptionIndex;
+		int D = -1;
+		if ((tickssincecommit >> 8) & 0x1) D = Tuesday.OptionIndex;
 
-		switch(Tuesday.OptionSelect)
+		switch (Tuesday.OptionSelect)
 		{
 		case OPTION_ALGO:
 		{
 			int S = Settings.algooptions[Tuesday.OptionIndex];
-			ShowSets(D, (S >> 4) & 0x03, S&0x3, (S>>2)&0x03);
+			ShowSets(D, (S >> 4) & 0x03, S & 0x3, (S >> 2) & 0x03);
 		}
 		break;
 		case OPTION_SCALE:
@@ -475,35 +475,35 @@ void NOINLINE _SetupLeds()
 		break;
 		case OPTION_BEATS:
 		{
-			int S = Settings.beatoptions[Tuesday.OptionIndex]-1;
-			ShowSets( S&0x3, (S>>2)&0x03, (S>>4)&0x03, D);
+			int S = Settings.beatoptions[Tuesday.OptionIndex] - 1;
+			ShowSets(S & 0x3, (S >> 2) & 0x03, (S >> 4) & 0x03, D);
 		}
 		break;
 		case OPTION_TPB:
 		{
-			int S = Settings.tpboptions[Tuesday.OptionIndex]-1;
-			ShowSets( S&0x3, (S>>2)&0x03, D, (S>>4)&0x03);
+			int S = Settings.tpboptions[Tuesday.OptionIndex] - 1;
+			ShowSets(S & 0x3, (S >> 2) & 0x03, D, (S >> 4) & 0x03);
 		}
 		break;
 		}
 	}break;
 
 	case UI_GLOBALSETTINGS:
-		{
-			for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLedTargets[i] = 0;
+	{
+		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
 
-			int S = Settings.ClockSubDivMode;
-			ShowSets(-1,-1,S,-1);
-			Tuesday.StateLedTargets[4] = 255;
-			Tuesday.StateLedTargets[5] = 255;
-			Tuesday.StateLedTargets[6] = 255;
-			Tuesday.StateLedTargets[7] = 255;
+		int S = Settings.ClockSubDivMode;
+		ShowSets(-1, -1, S, -1);
+		Tuesday.StateLedTargets[4] = 255;
+		Tuesday.StateLedTargets[5] = 255;
+		Tuesday.StateLedTargets[6] = 255;
+		Tuesday.StateLedTargets[7] = 255;
 
-		}
-		break;
+	}
+	break;
 	case UI_CALIBRATION:
-		for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLedTargets[i] = 0;
-		switch(Tuesday.CalibTarget)
+		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
+		switch (Tuesday.CalibTarget)
 		{
 		case CALIBRATION_VEL:
 			Tuesday.Gates[GATE_ACCENT] = 1;
@@ -527,11 +527,11 @@ void NOINLINE _SetupLeds()
 		{
 			Tuesday.Gates[GATE_ACCENT] = 0;
 			Tuesday.Gates[GATE_GATE] = 0;
-			unsigned char T = Triangle(tickssincecommit << 23)>>24;
-			for(int i = 0;i<4;i++)
+			unsigned char T = Triangle(tickssincecommit << 23) >> 24;
+			for (int i = 0; i < 4; i++)
 			{
 				Tuesday.StateLedTargets[i] = T;
-				Tuesday.StateLedTargets[i+4] = ~T;
+				Tuesday.StateLedTargets[i + 4] = ~T;
 			}
 		}
 		break;
@@ -584,11 +584,11 @@ void FactoryReset(int all)
 
 void UI_SelectOption()
 {
-	int butconf,but1, but2, but3;
-	int butconflong =0;;
+	int butconf, but1, but2, but3;
+	int butconflong = 0;;
 	int S = 0;
 	int MaxS = 64;
-	switch(Tuesday.OptionSelect)
+	switch (Tuesday.OptionSelect)
 	{
 	case OPTION_ALGO:
 	{
@@ -650,12 +650,12 @@ void UI_SelectOption()
 	{
 		S = NewS;
 
-		switch(Tuesday.OptionSelect)
+		switch (Tuesday.OptionSelect)
 		{
-		case OPTION_ALGO:  Settings.algooptions[Tuesday.OptionIndex] =  S ; break;
-		case OPTION_BEATS: Settings.beatoptions[Tuesday.OptionIndex] =  (S+1) ; break;
-		case OPTION_TPB:   Settings.tpboptions[Tuesday.OptionIndex] =  (S+1) ; break;
-		case OPTION_SCALE: Settings.scale[Tuesday.OptionIndex] =  S ; break;
+		case OPTION_ALGO:  Settings.algooptions[Tuesday.OptionIndex] = S; break;
+		case OPTION_BEATS: Settings.beatoptions[Tuesday.OptionIndex] = (S + 1); break;
+		case OPTION_TPB:   Settings.tpboptions[Tuesday.OptionIndex] = (S + 1); break;
+		case OPTION_SCALE: Settings.scale[Tuesday.OptionIndex] = S; break;
 		}
 		Tuesday.switchmode = 1;
 		SaveSettingsEeprom();
@@ -665,7 +665,7 @@ void UI_SelectOption()
 	{
 		Tuesday.OptionIndex = (Tuesday.OptionIndex + 1) % 4;
 
-		switch(Tuesday.OptionSelect)
+		switch (Tuesday.OptionSelect)
 		{
 		case OPTION_ALGO:  Params.algo = Tuesday.OptionIndex; break;
 		case OPTION_BEATS: Params.beatopt = Tuesday.OptionIndex; break;
@@ -682,19 +682,14 @@ void UI_SelectOption()
 
 		switch (Tuesday.OptionSelect)
 		{
-			
-			
+
+
 		case OPTION_ALGO:  Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO; break;
 		case OPTION_SCALE: Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE; break;
 
 		}
-
-
 	}
-
-
 }
-
 
 
 void UI_GlobalSettings()
@@ -709,11 +704,10 @@ void UI_GlobalSettings()
 
 	if (pressed(&tpbsw_state))
 	{
-		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1 )  % 4;
+		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1) % 4;
 		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
 
 	}
-
 }
 
 void UI_Calibration()
@@ -754,7 +748,7 @@ void UI_Calibration()
 	}
 	else
 	{
-		if ( islongpress(&tpbsw_state ))
+		if (islongpress(&tpbsw_state))
 		{
 			if (Tuesday.CalibTarget == CALIBRATION_VEL)
 			{
@@ -879,9 +873,9 @@ int main(void)
 			G(0,3),G(1,0),G(2,1),G(3,2)
 
 	};
-	for(int j =0 ;j<16;j++)
+	for (int j = 0; j < 16; j++)
 	{
-		int idx = a[15-j];
+		int idx = a[15 - j];
 		Tuesday.StateLedTargets[idx] = 255;
 		ShiftOut();
 		WAIT1_Waitms(70);
@@ -889,7 +883,7 @@ int main(void)
 
 
 
-	for (int i = 0;i < 16;i++)
+	for (int i = 0; i < 16; i++)
 	{
 		Tuesday.StateLedTargets[i] = 0;
 	}
@@ -899,27 +893,27 @@ int main(void)
 
 	Tuesday.UIMode = UI_NORMAL;
 
-	if (islongpress( &scalesw_state))
+	if (islongpress(&scalesw_state))
 	{
 		Tuesday.UIMode = UI_CALIBRATION;
-		Tuesday.CalibTarget =CALIBRATION_NOTARGET;
+		Tuesday.CalibTarget = CALIBRATION_NOTARGET;
 	}
 	else
 	{
 
-//		if (islongpress( &tpbsw_state))
-	//	{
-		//	Tuesday.UIMode = UI_GLOBALSETTINGS;
-	//	}
-		//else
-	//	{
-			if (islongpress( &beatsw_state))
-			{
-				FactoryReset(1);
-			}
+		//		if (islongpress( &tpbsw_state))
+			//	{
+				//	Tuesday.UIMode = UI_GLOBALSETTINGS;
+			//	}
+				//else
+			//	{
+		if (islongpress(&beatsw_state))
+		{
+			FactoryReset(1);
+		}
 
-			Tuesday.UIMode = UI_NORMAL;
-	//	}
+		Tuesday.UIMode = UI_NORMAL;
+		//	}
 	}
 
 	for (;;)
@@ -971,24 +965,24 @@ int main(void)
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+/*** End of RTOS startup code.  ***/
+/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for (;;) {}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */
 /*!
  ** @}
  */
-/*
- ** ###################################################################
- **
- **     This file was created by Processor Expert 10.5 [05.21]
- **     for the Freescale Kinetis series of microcontrollers.
- **
- ** ###################################################################
- */
+ /*
+  ** ###################################################################
+  **
+  **     This file was created by Processor Expert 10.5 [05.21]
+  **     for the Freescale Kinetis series of microcontrollers.
+  **
+  ** ###################################################################
+  */

@@ -447,7 +447,7 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 	float out[5][32];
 	for (int i = 0; i < 32; i++)
 	{
-		in[i] = bufferin[i];
+		in[i] =(int) bufferin[i];
 	};
 	//	for (int i = 0; i < 5; i++)
 	//	{
@@ -525,7 +525,6 @@ void BigFish_Filter(struct BigFish_t *fish, int32_t *bufferin, int32_t *bufferou
 	fResonance2 *= fResonance2;
 	fResonance2 = (float)(1.0 + (fResonance2 - 1.0f)*(DoQScaling(freq*(1.f / 44100.f), 0, 1)));
 	float fResonance2NS = fResonance2;
-	float const srate = fish->SampleRate;
 	float const odsr = fish->ODSR;
 
 	
@@ -646,7 +645,7 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 		{
 
 			float frac = sr.fractional * (1.0f / 255.0f);
-			float ifrac = 1.0 - frac;
+			float ifrac = 1.0f - frac;
 			Funcs[FuncIdx](fish, A, B, L, Size * ifrac );
 			Funcs[FuncIdx + 1](fish, B, A, L, Size * frac);
 
