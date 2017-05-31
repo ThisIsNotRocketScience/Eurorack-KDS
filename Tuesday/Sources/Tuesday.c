@@ -19,10 +19,10 @@ void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_
 {
 	switch(S->ClockSubDivMode % 4)
 	{
-	case 0: P->TicksPerMeasure = 4 * 4;break;  // 16
-	case 1: P->TicksPerMeasure = 8 * 4;break;  // 32
-	case 2: P->TicksPerMeasure = 16 * 4;break; // 64
-	case 3: P->TicksPerMeasure = 24 * 4;break; // 96
+	case CLOCKSUBDIV_4: P->TicksPerMeasure = 4 * 4;break;  // 16
+	case CLOCKSUBDIV_8: P->TicksPerMeasure = 8 * 4;break;  // 32
+	case CLOCKSUBDIV_16: P->TicksPerMeasure = 16 * 4;break; // 64
+	case CLOCKSUBDIV_24PPQN: P->TicksPerMeasure = 24 * 4;break; // 96
 	}
 }
 

@@ -695,7 +695,7 @@ inline void BigFish_GenerateBlock(struct BigFish_t *fish,int32_t *input, int32_t
 		}
 	}
 }
-
+#ifdef RANGECHECKS
 void InitRange(RangeChecker_t *R)
 {
 	R->bits = 0;
@@ -722,3 +722,4 @@ void UpdateRangeBuffer(RangeChecker_t *R, int32_t *buffer, int len)
 {
 	for (int i = 0; i < len; i++) UpdateRange(R, buffer[i]);
 }
+#endif

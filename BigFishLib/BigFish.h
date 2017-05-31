@@ -426,7 +426,7 @@ public:
 	}
 	int counter;
 };
-#define RANGECHECKS
+//#define RANGECHECKS
 #ifdef RANGECHECKS
 typedef struct RangeChecker_t
 {

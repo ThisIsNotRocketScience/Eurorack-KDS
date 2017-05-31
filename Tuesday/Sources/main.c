@@ -189,6 +189,7 @@ void doTimer()
 	switch(Tuesday.UIMode)
 	{
 	case UI_NORMAL:
+	case UI_GLOBALSETTINGS:
 	case UI_SELECTOPTION:
 	{
 
@@ -215,9 +216,6 @@ void doTimer()
 		UpdateGates();
 	}
 	break;
-	case UI_GLOBALSETTINGS:
-		//
-		break;
 	case UI_CALIBRATION:
 	{
 		uint32_t CalibPattern = 0;
@@ -492,8 +490,15 @@ void NOINLINE _SetupLeds()
 
 	case UI_GLOBALSETTINGS:
 		{
+			for (int i = 0;i<TUESDAY_LEDS;i++) Tuesday.StateLedTargets[i] = 0;
+
 			int S = Settings.ClockSubDivMode;
-			ShowSets(0,0,S,0);
+			ShowSets(-1,-1,S,-1);
+			Tuesday.StateLedTargets[4] = 255;
+			Tuesday.StateLedTargets[5] = 255;
+			Tuesday.StateLedTargets[6] = 255;
+			Tuesday.StateLedTargets[7] = 255;
+
 		}
 		break;
 	case UI_CALIBRATION:
@@ -694,7 +699,7 @@ void UI_SelectOption()
 
 void UI_GlobalSettings()
 {
-	if (pressed(&algosw_state))
+	if (pressed(&beatsw_state))
 	{
 		Tuesday.UIMode = UI_NORMAL;
 		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
@@ -825,6 +830,8 @@ void UI_Normal()
 	{
 		if (islongpress(&tpbsw_state)) // longpress!
 		{
+
+			Tuesday.UIMode = UI_GLOBALSETTINGS;
 			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
 			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
 		}
@@ -900,19 +907,19 @@ int main(void)
 	else
 	{
 
-		if (islongpress( &tpbsw_state))
-		{
-			Tuesday.UIMode = UI_GLOBALSETTINGS;
-		}
-		else
-		{
+//		if (islongpress( &tpbsw_state))
+	//	{
+		//	Tuesday.UIMode = UI_GLOBALSETTINGS;
+	//	}
+		//else
+	//	{
 			if (islongpress( &beatsw_state))
 			{
 				FactoryReset(1);
 			}
 
 			Tuesday.UIMode = UI_NORMAL;
-		}
+	//	}
 	}
 
 	for (;;)

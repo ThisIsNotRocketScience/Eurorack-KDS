@@ -230,12 +230,18 @@ extern "C"
 
 #include <Windows.h>
 #include <stdio.h>
-void RunTimingTest()
+
+void DoSubDivTest(int clockmode, int maxclocks, int tpbopt)
 {
+
 	Init();
+	TuesdaySettings.ClockSubDivMode = clockmode;
+	Tuesday_SetupClockSubdivision(&Tuesday, &TuesdaySettings);
+
 	Tuesday.CurrentPattern.TPB = 4;
 	Tuesday.tempo = 128;
 	Tuesday.intensity = 100;
+	TuesdayParams.tpbopt = tpbopt;
 	Tuesday_UpdatePattern(0, 0, 4, 4, 200, 0, 0, 255);
 	int LastI = 0;
 	int gates[TUESDAY_GATES];
@@ -244,10 +250,11 @@ void RunTimingTest()
 	int LastNewTick = -3;
 	Tuesday_Reset(&Tuesday);
 	int lastnonzeroes = -1;
-	for (int i = 0; i < 250*96; i++)
+	int cv = 0;
+	for (int i = 0; i < maxclocks; i++)
 	{
+		Tuesday_Clock(&Tuesday, ((cv++)%2==0)?1:0);
 
-		Tuesday_TimerTick(&Tuesday, &TuesdayParams);
 		int nonzeroes = 0;
 		for (int j = 0; j < TUESDAY_GATES - 1; j++)
 		{
@@ -264,12 +271,12 @@ void RunTimingTest()
 			{
 				nonzeroes += Tuesday.Gates[j];
 				char L[TUESDAY_GATES] = { 'G', 'a', 'L', 'b', 'c', 't' };
-				printf("%c ", Tuesday.Gates[j] > 0 ? L[j] :' ');
+				printf("%c ", Tuesday.Gates[j] > 0 ? L[j] : ' ');
 				Tuesday.Gates[j] = 0;
 			}
 		}
 
-		
+
 		if (Tuesday.Tick != LastTick || Tuesday.NewTick != LastNewTick)
 		{
 			if (!print)
@@ -279,7 +286,7 @@ void RunTimingTest()
 			print = true;
 			if (Tuesday.Tick != LastTick || Tuesday.NewTick != LastNewTick)
 			{
-				printf("NewTick: %d - Tick: %d - delta %d ",Tuesday.NewTick, Tuesday.Tick, i - LastI);
+				printf("NewTick: %d - Tick: %d - delta %d ", Tuesday.NewTick, Tuesday.Tick, i - LastI);
 				LastI = i;
 				LastTick = Tuesday.Tick;
 				LastNewTick = Tuesday.NewTick;
@@ -287,6 +294,22 @@ void RunTimingTest()
 		}
 		if (print) printf("\n");
 	}
+}
+
+void RunTimingTest()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		printf("**** 4 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		DoSubDivTest(CLOCKSUBDIV_4, 4 * 4, i);
+		printf("\n\n**** 8 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		DoSubDivTest(CLOCKSUBDIV_8, 8 * 4,i);
+		printf("\n\n**** 16 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		DoSubDivTest(CLOCKSUBDIV_16, 16 * 4,i);
+		printf("\n\n**** 24 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		DoSubDivTest(CLOCKSUBDIV_24PPQN, 24 * 4,i);
+	}
+
 }
 
 void checkbuffer(int32_t *buf, int len)
@@ -488,7 +511,7 @@ BOOL WINAPI DllMain(
 		Wobbler_Init(&LFOStatic);
 		BigFish_Init(&Fish, 44100);
 //		ExpTest();
-		RunFishTest();
+	//	RunFishTest();
 		LFOStatic.Speed = 0x80;
 		Init();
 
@@ -507,7 +530,7 @@ BOOL WINAPI DllMain(
 		RunTest("Random", ALGO_RANDOM);
 		*/
 
-	//	RunTimingTest();
+		RunTimingTest();
 
 		if (0)
 		{

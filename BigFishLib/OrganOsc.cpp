@@ -11,7 +11,7 @@
 
 #define SINETABLE_BITS 8
 #define SINETABLE_SIZE	(1 << SINETABLE_BITS)
-int16_t const SineTable[2 * SINETABLE_SIZE + 2] = {
+int16_t SineTable[2 * SINETABLE_SIZE + 2] = {
 	0,804, 804,803, 1607,802, 2410,801, 3211,799, 4011,796, 4807,793, 5601,790, 6392,786, 7179,782, 7961,777, 8739,772, 9511,766, 10278,760, 11038,753, 11792,746,
 	12539,739, 13278,731, 14009,722, 14732,713, 15446,704, 16150,694, 16845,684, 17530,674, 18204,663, 18867,651, 19519,640, 20159,627, 20787,615, 21402,602, 22004,589, 22594,575,
 	23169,561, 23731,547, 24278,532, 24811,517, 25329,502, 25831,486, 26318,471, 26789,454, 27244,438, 27683,421, 28105,404, 28510,387, 28897,370, 29268,352, 29621,334, 29955,316,
@@ -45,41 +45,43 @@ inline int16_t FixedSin(uint32_t const phase)
 
 extern int32_t SMMLA(int32_t acc, int32_t a, int32_t b);
 
-MEMATTR __inline int32_t SMMLA16(int32_t s0, int32_t s1, int32_t a)
+
+MEMATTR int32_t SMMLA16(int32_t s0, int32_t s1, int32_t a)
 {
 	return 	s0 + ((a * (s1)) >> 16);
 }
 
-MEMATTR __inline int32_t FourSin(uint32_t const phase0, int const mul1, int const mul2, int const mul3)
+
+MEMATTR int32_t FourSin(uint32_t const phase0, int const mul1, int const mul2, int const mul3)
 {
-	return FixedSin(phase0) + FixedSin(phase0 << 1) + FixedSin(phase0 << 2) + FixedSin(phase0 << 3);
+	//return FixedSin(phase0) + FixedSin(phase0 << 1) + FixedSin(phase0 << 2) + FixedSin(phase0 << 3);
 
 	uint32_t phase1 = phase0 * mul1;
 	uint32_t phase2 = phase0 * mul2;
 	uint32_t phase3 = phase0 * mul3;
-	
+
 	int i0 = (phase0 >> (32 - SINETABLE_BITS));
 	int i1 = (phase1 >> (32 - SINETABLE_BITS));
 	int i2 = (phase2 >> (32 - SINETABLE_BITS));
 	int i3 = (phase3 >> (32 - SINETABLE_BITS));
-	
+
 	int16_t s0a = SineTable[i0 * 2];
+	uint32_t a0 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 	int16_t s0b = SineTable[i0 * 2 + 1];
 	int16_t s1a = SineTable[i1 * 2];
+	uint32_t Res = SMMLA16(s0a, s0b, a0);
 	int16_t s1b = SineTable[i1 * 2 + 1];
+	uint32_t a1 = (phase1 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
+	Res += SMMLA16(s1a, s1b, a1);
+	uint32_t a2 = (phase2 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 	int16_t s2a = SineTable[i2 * 2];
+	uint32_t a3 = (phase3 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 	int16_t s2b = SineTable[i2 * 2 + 1];
+	Res += SMMLA16(s2a, s2b, a2);
 	int16_t s3a = SineTable[i3 * 2];
 	int16_t s3b = SineTable[i3 * 2 + 1];
 
-	uint32_t a0 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	uint32_t a1 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	uint32_t a2 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	uint32_t a3 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 
-	uint32_t Res = SMMLA16(s0a, s0b, a0);
-	Res += SMMLA16(s1a, s1b, a1);
-	Res += SMMLA16(s2a, s2b, a2);
 	Res += SMMLA16(s3a, s3b, a3);
 	return Res;
 }

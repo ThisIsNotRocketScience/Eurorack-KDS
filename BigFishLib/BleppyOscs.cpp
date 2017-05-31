@@ -657,7 +657,7 @@ void HyperPulse_Init(struct HyperPulse_t *osc)
 }
 void HyperPulse_Update(struct HyperPulse_t  *osc, float odsr, float centerfreq, float size, float spread)
 {
-	float C = centerfreq *  2.0 * odsr;
+	float C = centerfreq *  2.0f * odsr;
 
 	HyperCalculate_Spread(&osc->HyperSet, spread, size);
 
