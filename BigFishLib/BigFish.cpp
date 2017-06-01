@@ -432,8 +432,8 @@ void BigFish_VocalFilter(struct BigFish_t *fish, int32_t *bufferin, int32_t *buf
 		T.Formants[i].Bandwidth = Formants[IDX1].Formants[i].Bandwidth * A + Formants[IDX2].Formants[i].Bandwidth * IA;
 		Total += Levels[i];
 
-		float f1 = T.Formants[i].Freq - T.Formants[i].Bandwidth / 2;
-		float f2 = T.Formants[i].Freq + T.Formants[i].Bandwidth / 2;
+		float f1 =(float)( T.Formants[i].Freq - T.Formants[i].Bandwidth / 2);
+		float f2 =(float)( T.Formants[i].Freq + T.Formants[i].Bandwidth / 2);
 
 		float oct = log2f(f2 / f1);
 

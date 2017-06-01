@@ -231,7 +231,7 @@ extern "C"
 	extern int CalibrateAdjust(int input);
 	extern void Tuesday_Init(struct Tuesday_PatternGen *T);
 	extern void Tuesday_Clock(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par, int ClockVal);
-	extern void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params, int state);
+	extern void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params, struct Tuesday_Settings *S, int state);
 	extern void Tuesday_Reset(struct Tuesday_PatternGen *T);
 	extern void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
 	extern void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
@@ -242,7 +242,7 @@ extern "C"
 	extern void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P);
 	extern void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
 	extern void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed);
-	extern void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S);
+	extern void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par);
 
 	extern void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
 	extern void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);

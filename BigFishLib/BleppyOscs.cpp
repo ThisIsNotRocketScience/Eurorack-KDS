@@ -420,6 +420,7 @@ void WaveBlepOsc_Init(struct WaveBlep_t *osc)
 		osc->circularBufferInt[i] = 0;
 	}
 }
+
 void WaveBlepOsc_Update(struct WaveBlep_t *osc, float odsr, float centerfreq, float size, float spread)
 {
 	float C = centerfreq * odsr;

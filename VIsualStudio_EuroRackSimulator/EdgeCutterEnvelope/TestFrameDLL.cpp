@@ -236,7 +236,7 @@ void DoSubDivTest(int clockmode, int maxclocks, int tpbopt)
 
 	Init();
 	TuesdaySettings.ClockSubDivMode = clockmode;
-	Tuesday_SetupClockSubdivision(&Tuesday, &TuesdaySettings);
+	Tuesday_SetupClockSubdivision(&Tuesday, &TuesdaySettings, &TuesdayParams);
 
 	Tuesday.CurrentPattern.TPB = 4;
 	Tuesday.tempo = 128;

@@ -179,3 +179,20 @@ void denoise(int sw_down, struct denoise_state_t *state)
 	}
 }
 
+void InitCounter()
+{
+	KIN1_InitCycleCounter();
+	KIN1_ResetCycleCounter(); 
+	KIN1_EnableCycleCounter(); 
+}
+
+uint32_t StartCounting()
+{
+	return KIN1_GetCycleCounter(); 
+}
+
+uint32_t EndCount(uint32_t start)
+{
+	uint32_t Ec = KIN1_GetCycleCounter();
+	return Ec - start;
+}

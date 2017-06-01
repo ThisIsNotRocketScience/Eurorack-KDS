@@ -172,12 +172,12 @@ void PatternReset()
 
 void ExtClockTick(int state)
 {
-	Tuesday_ExtClock(&Tuesday, &Params, state);
+	Tuesday_ExtClock(&Tuesday, &Params,&Settings, state);
 }
 
 void DoClock(int state)
 {
-	Tuesday_Clock(&Tuesday, &Settings, state);
+	Tuesday_Clock(&Tuesday, &Settings,&Params, state);
 }
 
 // half-millisecond timer -> update each dacchannel in turn
@@ -697,7 +697,7 @@ void UI_GlobalSettings()
 	if (pressed(&beatsw_state))
 	{
 		Tuesday.UIMode = UI_NORMAL;
-		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
+		Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
 		SaveSettingsEeprom();
 		return;
 	}
@@ -705,7 +705,7 @@ void UI_GlobalSettings()
 	if (pressed(&tpbsw_state))
 	{
 		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1) % 4;
-		Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
+		Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
 
 	}
 }
@@ -825,6 +825,8 @@ void UI_Normal()
 		if (islongpress(&tpbsw_state)) // longpress!
 		{
 
+			Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
+			Tuesday.commitchange = 1;
 			Tuesday.UIMode = UI_GLOBALSETTINGS;
 			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
 			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
@@ -858,7 +860,7 @@ int main(void)
 	LoadEepromSettings();
 	LoadEepromCalibration();
 
-	Tuesday_SetupClockSubdivision(&Tuesday, &Settings);
+	Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
 
 	TI1_Enable();
 	AD1_Measure(FALSE);
@@ -965,13 +967,13 @@ int main(void)
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-/*** End of RTOS startup code.  ***/
-/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for (;;) {}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */
