@@ -1,0 +1,118 @@
+<CodeGenerationInfo>
+  <ToolchainSettings>
+    <option>
+      <name>PE_G_4PEx_ToolChain_CompilerCpp_SearchUserPaths</name>
+      <values lines_count="4">
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/pdd/inc"</Line>
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/iofiles"</Line>
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+    <option>
+      <name>PE_G_4PEx_ToolChain_Compiler_SearchUserPaths</name>
+      <values lines_count="4">
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/pdd/inc"</Line>
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/iofiles"</Line>
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+  </ToolchainSettings>
+  <GeneratedFilesList>
+    <GeneratedByPE>
+      <File Name="Documentation/doxygen/TimerIntLdd1_component.txt" FileDate="2016-12-24, 22:31:57" FileAge="1482615117215" FileType="45637" CompNumb="9" />
+      <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/PTA.c" FileDate="2016-12-28, 03:47:15" FileAge="1482893235999" FileType="45637" CompNumb="23" />
+      <File Name="Generated_Code/EE241.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484812" FileType="45637" CompNumb="49" />
+      <File Name="Documentation/doxygen/Wobbler_project.txt" FileDate="2017-04-16, 03:18:04" FileAge="1492305484973" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/EE241.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484802" FileType="45637" CompNumb="49" />
+      <File Name="Documentation/doxygen/CLOCK_component.txt" FileDate="2016-12-28, 04:07:54" FileAge="1482894474305" FileType="45637" CompNumb="31" />
+      <File Name="Generated_Code/DATA.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799490" FileType="45637" CompNumb="30" />
+      <File Name="Sources/Events.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484986" FileType="131328" />
+      <File Name="Generated_Code/DATA.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799488" FileType="45637" CompNumb="30" />
+      <File Name="Static_Code/PDD/COP_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Sources/Events.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484989" FileType="131328" />
+      <File Name="Generated_Code/KSDK1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799449" FileType="45637" CompNumb="48" />
+      <File Name="Static_Code/PDD/TPM_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Static_Code/PDD/UART0_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Documentation/Wobbler_Settings.xml" FileDate="2017-04-16, 03:18:05" FileAge="1492305485205" FileType="3072" />
+      <File Name="Generated_Code/KSDK1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799447" FileType="45637" CompNumb="48" />
+      <File Name="Documentation/doxygen/pex.doxyfile" FileDate="2016-12-28, 01:59:59" FileAge="1482886799430" FileType="45637" CompNumb="2" />
+      <File Name="Static_Code/PDD/FTFA_PDD.h" FileDate="2015-04-10, 18:37:18" FileAge="1428683838000" FileType="262144" />
+      <File Name="Generated_Code/LATCH.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799495" FileType="45637" CompNumb="29" />
+      <File Name="Documentation/Wobbler.txt" FileDate="2017-04-16, 03:18:05" FileAge="1492305485477" FileType="3072" />
+      <File Name="Static_Code/PDD/CMP_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/LATCH.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799493" FileType="45637" CompNumb="29" />
+      <File Name="Documentation/doxygen/RoutingReport_component.txt" FileDate="2016-09-29, 21:51:28" FileAge="1475178688744" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/CI2C1.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484944" FileType="45637" CompNumb="51" />
+      <File Name="Documentation/doxygen/PTB_component.txt" FileDate="2017-04-16, 03:18:04" FileAge="1492305484935" FileType="45637" CompNumb="47" />
+      <File Name="Generated_Code/CI2C1.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484948" FileType="45637" CompNumb="51" />
+      <File Name="Static_Code/PDD/LPTMR_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/RETRIGGERINT.h" FileDate="2016-12-28, 04:07:54" FileAge="1482894474311" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/PE_LDD.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484978" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/Vectors.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484982" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/RETRIGGERINT.c" FileDate="2016-12-28, 04:07:54" FileAge="1482894474316" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/PE_LDD.c" FileDate="2016-12-28, 04:07:54" FileAge="1482894474356" FileType="45637" CompNumb="2" />
+      <File Name="Static_Code/PDD/PORT_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Static_Code/IO_Map/MKL02Z4.h" FileDate="2015-04-10, 18:29:58" FileAge="1428683398000" FileType="262144" />
+      <File Name="Sources/main.h" FileDate="2016-12-28, 02:01:56" FileAge="1482886916674" FileType="128" />
+      <File Name="Documentation/doxygen/DACSEL_component.txt" FileDate="2016-09-29, 21:51:29" FileAge="1475178689031" FileType="45637" CompNumb="24" />
+      <File Name="Static_Code/PDD/SPI_PDD.h" FileDate="2015-04-10, 18:37:18" FileAge="1428683838000" FileType="262144" />
+      <File Name="Generated_Code/PE_Error.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799442" FileType="45637" />
+      <File Name="Sources/main.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484960" FileType="128" />
+      <File Name="Static_Code/PDD/SIM_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Documentation/doxygen/pex.css" FileDate="2016-09-29, 21:51:28" FileAge="1475178688580" FileType="16384" CompNumb="2" />
+      <File Name="Static_Code/PDD/ADC_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Documentation/doxygen/AdcLdd1_component.txt" FileDate="2016-12-28, 02:02:11" FileAge="1482886931365" FileType="45637" CompNumb="19" />
+      <File Name="Generated_Code/CLOCK.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799485" FileType="45637" CompNumb="31" />
+      <File Name="Documentation/doxygen/TU1_component.txt" FileDate="2016-12-24, 22:31:57" FileAge="1482615117211" FileType="45637" CompNumb="10" />
+      <File Name="Generated_Code/CLOCK.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799483" FileType="45637" CompNumb="31" />
+      <File Name="Generated_Code/DACSEL.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799512" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/TI1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799531" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/DACSEL.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799509" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/TI1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799529" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/AdcLdd1.h" FileDate="2016-12-28, 02:02:11" FileAge="1482886931357" FileType="45637" CompNumb="19" />
+      <File Name="Generated_Code/GI2C1.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484825" FileType="45637" CompNumb="50" />
+      <File Name="Generated_Code/AdcLdd1.c" FileDate="2016-12-28, 02:02:11" FileAge="1482886931360" FileType="45637" CompNumb="19" />
+      <File Name="Documentation/doxygen/DATA_component.txt" FileDate="2016-12-28, 04:07:54" FileAge="1482894474300" FileType="45637" CompNumb="30" />
+      <File Name="Generated_Code/GI2C1.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484821" FileType="45637" CompNumb="50" />
+      <File Name="Documentation/doxygen/RETRIGGERINT_component.txt" FileDate="2016-12-28, 04:07:54" FileAge="1482894474322" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/WAIT1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799464" FileType="45637" CompNumb="42" />
+      <File Name="Project_Settings/Startup_Code/startup.c" FileDate="2016-09-28, 15:41:58" FileAge="1475070118211" FileType="16384" CompNumb="2" />
+      <File Name="Generated_Code/WAIT1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799462" FileType="45637" CompNumb="42" />
+      <File Name="Generated_Code/IntI2cLdd1.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484837" FileType="45637" CompNumb="52" />
+      <File Name="Generated_Code/IntI2cLdd1.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484834" FileType="45637" CompNumb="52" />
+      <File Name="Generated_Code/IO_Map.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799439" FileType="45637" />
+      <File Name="Static_Code/PDD/GPIO_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/Cpu.h" FileDate="2016-12-28, 04:07:54" FileAge="1482894474344" FileType="45637" CompNumb="2" />
+      <File Name="Static_Code/PDD/PDD_Types.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/Cpu.c" FileDate="2017-04-16, 03:18:04" FileAge="1492305484969" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/SM1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799548" FileType="45637" CompNumb="7" />
+      <File Name="Generated_Code/TU1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799542" FileType="45637" CompNumb="10" />
+      <File Name="Static_Code/PDD/I2C_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Generated_Code/SM1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799545" FileType="45637" CompNumb="7" />
+      <File Name="Documentation/doxygen/PTA_component.txt" FileDate="2016-12-28, 03:47:16" FileAge="1482893236004" FileType="45637" CompNumb="23" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2017-04-16, 03:18:04" FileAge="1492305484953" FileType="45637" />
+      <File Name="Documentation/Wobbler_SIGNALS.txt" FileDate="2017-04-16, 03:18:05" FileAge="1492305485022" FileType="3072" />
+      <File Name="Static_Code/PDD/SysTick_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="Static_Code/PDD/MCM_PDD.h" FileDate="2015-04-10, 18:37:18" FileAge="1428683838000" FileType="262144" />
+      <File Name="Documentation/doxygen/LATCH_component.txt" FileDate="2016-12-28, 04:07:54" FileAge="1482894474295" FileType="45637" CompNumb="29" />
+      <File Name="Generated_Code/TU1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799540" FileType="45637" CompNumb="10" />
+      <File Name="Static_Code/PDD/MCG_PDD.h" FileDate="2015-04-10, 18:37:20" FileAge="1428683840000" FileType="262144" />
+      <File Name="ProjectInfo.xml" FileDate="2017-04-16, 03:18:05" FileAge="1492305485473" FileType="45637" />
+      <File Name="Documentation/doxygen/IntI2cLdd1_component.txt" FileDate="2017-04-16, 03:18:04" FileAge="1492305484832" FileType="45637" CompNumb="52" />
+      <File Name="Project_Settings/Linker_Files/ProcessorExpert.ld" FileDate="2016-12-28, 01:59:59" FileAge="1482886799424" FileType="8" CompNumb="2" />
+      <File Name="Generated_Code/TimerIntLdd1.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799536" FileType="45637" CompNumb="9" />
+      <File Name="Generated_Code/AD1.h" FileDate="2016-12-28, 04:11:26" FileAge="1482894686597" FileType="45637" CompNumb="18" />
+      <File Name="Generated_Code/TimerIntLdd1.c" FileDate="2016-12-28, 01:59:59" FileAge="1482886799534" FileType="45637" CompNumb="9" />
+      <File Name="Generated_Code/AD1.c" FileDate="2016-12-28, 04:11:26" FileAge="1482894686601" FileType="45637" CompNumb="18" />
+      <File Name="Documentation/doxygen/SM1_component.txt" FileDate="2016-09-29, 21:51:29" FileAge="1475178689222" FileType="45637" CompNumb="7" />
+      <File Name="Generated_Code/PE_Const.h" FileDate="2016-12-28, 01:59:59" FileAge="1482886799440" FileType="45637" />
+      <File Name="Generated_Code/PTB.h" FileDate="2016-12-28, 03:47:15" FileAge="1482893235954" FileType="45637" CompNumb="47" />
+      <File Name="Generated_Code/PTB.c" FileDate="2016-12-28, 03:47:16" FileAge="1482893236011" FileType="45637" CompNumb="47" />
+      <File Name="Generated_Code/PTA.h" FileDate="2016-12-28, 03:47:15" FileAge="1482893235982" FileType="45637" CompNumb="23" />
+    </GeneratedByPE>
+  </GeneratedFilesList>
+  <CodeGenReference>10</CodeGenReference>
+</CodeGenerationInfo>

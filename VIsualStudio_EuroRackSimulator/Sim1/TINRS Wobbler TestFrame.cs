@@ -21,7 +21,6 @@ namespace Sim1
                 linvalues.Add(0);
                 values2.Add(0);
                 linvalues2.Add(0);
-
             }
 
             TestFrameLoader.Init();
@@ -47,15 +46,12 @@ namespace Sim1
         private void Sustain_Scroll(object sender, EventArgs e)
         {
             RebuildLFO();
-
             pictureBox1.Invalidate();
         }
 
         private void Release_Scroll(object sender, EventArgs e)
         {
-
-            RebuildLFO();
-
+            RebuildLFO();        
             pictureBox1.Invalidate();
         }
 
@@ -79,13 +75,11 @@ namespace Sim1
                 D = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
                 linvalues2[i] = D;
             }
-
         }
 
         private void Curvature_Scroll(object sender, EventArgs e)
         {
             RebuildLFO();
-
             pictureBox1.Invalidate();
         }
 

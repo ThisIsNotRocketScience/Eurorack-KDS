@@ -31,34 +31,36 @@ namespace Sim1
 
             dockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
 
-            if (false)
+            if (true)
             {
                 TINRS_Tuesday_TestFrame tf = new TINRS_Tuesday_TestFrame();
                 tf.Show(this.dockPanel, DockState.Document);
                 tf.Text = "Tuesday";
             }
-            if (true)
+            if (false)
             {
                 TINRS_Tuesday_Lights lf = new TINRS_Tuesday_Lights();
                 lf.Show(this.dockPanel, DockState.Document);
                 lf.Text = "Tuesday Lights";
             }
 
-//            tf.Focus();
+            //            tf.Focus();
 
 
-         //   WobblerTestFrame wf = new WobblerTestFrame();
-            //wf.Show(this.dockPanel, DockState.Document);
-            //wf.Text = "Wobbler";
+            //   WobblerTestFrame wf = new WobblerTestFrame();
+            //   wf.Show(this.dockPanel, DockState.Document);
+            //  wf.Text = "Wobbler";
+            WobblerSetup ws = new WobblerSetup();
+            ws.Show(this.dockPanel, DockState.Document);
+            ws.Text = "Wobbler Setup";
 
+            // EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
+            // ef.Show(this.dockPanel, DockState.Document);
+            // ef.Text = "EdgeCutter";
 
-            EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
-            ef.Show(this.dockPanel, DockState.Document);
-            ef.Text = "EdgeCutter";
-
-            BigFishTestFrame bf = new BigFishTestFrame();
-            bf.Show(this.dockPanel, DockState.Document);
-            bf.Text = "BigFish";
+            // BigFishTestFrame bf = new BigFishTestFrame();
+            // bf.Show(this.dockPanel, DockState.Document);
+            // bf.Text = "BigFish";
 
 
         }

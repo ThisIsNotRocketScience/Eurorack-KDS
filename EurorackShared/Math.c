@@ -69,6 +69,14 @@ extern "C"
 
 	}
 
+	int32_t Cosine(uint32_t phase)
+	{
+		phase += 0x2000000;
+		int32_t P = phase >> 17;		
+		return isin_S4(P) << 17;
+	}
+
+
 	int32_t SawTooth(uint32_t phase)
 	{
 		return (*(int32_t*)&phase) >> 2;

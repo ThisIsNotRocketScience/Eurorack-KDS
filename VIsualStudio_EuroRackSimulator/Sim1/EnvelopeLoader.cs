@@ -144,6 +144,18 @@ namespace Sim1
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void LFOTrigger(int value, int staticlfo);
 
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern float RunPendulum();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern float RunPendulum2();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern float RunPendulumInt();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern float RunPendulum2Int();
+
         #endregion
     }
 }

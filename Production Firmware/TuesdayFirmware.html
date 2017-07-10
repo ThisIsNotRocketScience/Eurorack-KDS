@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>Tuesday - Upgrading your firmware</title>
+
+<style>
+body,html{
+color: black;
+background-color: white;
+font-family: arial;
+margin:10px;
+}
+h2{
+margin-top: 20px;
+}
+h3{
+margin-top: 20px;
+padding-top:20px;
+border-top: 1px solid #d0d0d0;
+}
+h4{
+margin-top: 20px;
+}
+li{
+margin-bottom: 10px;
+}
+
+</style></head>
+
+<body>
+<h1>Tuesday - Firmware Upgrade Guide</h1>
+<h2>Upgrade procedure</h2>
+
+<ul><li><b>IF YOUR TUESDAY BOX CONTAINED A SMALL PAPER SLIP WITH DETAILS ABOUT CHANGING THE CLOCK RATE, YOU ALREADY HAVE FIRMWARE VERSION 1.1. YOU DO NOT NEED TO UPGRADE.</b></li></ul>
+
+<h3>Things you will need</h3>
+<ul>
+<li>a Tuesday in a suitably powered Eurorack</li>
+<li>a patch cable</li>
+<li>an MP3 player with loud headphone out (a mobile phone is excellent for this)</li>
+<li>The level testing mp3: <a href="http://www.thisisnotrocketscience.nl/TINRS-Tuesday-LevelTest.mp3">DOWNLOAD</a></li>
+<li>The firmware mp3: <a href="http://www.thisisnotrocketscience.nl/TINRS-Tuesday-2017-06-01.mp3">DOWNLOAD</a></li>
+</ul>
+
+<h3>Upgrading</h3>
+<ul><li><b>as always: READ ALL THE INSTRUCTIONS FIRST!</b></li></ul>
+
+<h4>Testing if your MP3 player works well with the upgrade procedure</h4>
+<ol>
+<li>Disconnect all patch cables from the Tuesday.</li>
+<li>Put the "!" knob in center position.</li>
+<li>Put the level test MP3 on an MP3 player.</li>
+<li>A phone or laptop can be used. Make sure the MP3 player is NOT connected to WIFI/mobile services. If you can, please use airplane mode. If any sound interrupts the playback of the file, the firmware update will fail/be faulty</li>
+<li>Disable all postprocessing on the audio playback. This means no EQ, bass boost, etc.</li>
+<li>Connect the MP3 player's headphone socket to the "!" port on the Tuesday.</li>
+<li>Power down your Eurorack.</li>
+<li>While holding the <b>ALGO</b> button down, power up your Eurorack.</li>
+<li>The Tuesday should not show its normal boot-cycle, but instead it is showing incoming audio level.</li>
+<li>Let go of the <b>ALGO</b> button.</li>
+<li>Turn up the volume on your MP3 player to maximum.</li>
+<li>Play the level test MP3 file in to the Tuesday.</li>
+<li>If the levels are right and the signal is pure, the <b>LOOP</b> LED will stay on almost constantly during the playback of the file. You are now ready to flash the firmware! If you are still uncertain, you can confirm the functioning even further by patching the note or velocity output to another module. It should produce a rough sinewave output.</li>
+<li>If you do NOT see the <b>LOOP</b> LED during the playback of the file:
+<br>Try to adjust the volume of the player and check if the "!" knob is centered and try again. If this still does not work, please try another MP3 player.</li>
+
+</ol>
+<h4>Flashing the new firmware</h4>
+<ol>
+<li>Disconnect all patch cables from the Tuesday.</li>
+<li>Put the "!" knob in center position.</li>
+<li>Put the firmware MP3 on an MP3 player.</li>
+<li>A phone or laptop can be used. Make sure the MP3 player is NOT connected to WIFI/mobile services. If you can, please use airplane mode. If any sound interrupts the playback of the file, the firmware update will fail/be faulty</li>
+<li>Disable all postprocessing on the audio playback. This means no EQ, bass boost, etc.</li>
+<li>Connect the MP3 player's headphone socket to the "!" port on the Tuesday.</li>
+<li>Power down your Eurorack.</li>
+<li>While holding the <b>ALGO</b> button down, power up your Eurorack.</li>
+<li>The Tuesday should not show its normal boot-cycle, but instead it is showing incoming audio level.</li>
+<li>Let go of the <b>ALGO</b> button.</li>
+
+<li>Turn up the volume on your MP3 player to maximum.</li>
+<li>Play the Firmware MP3 file in to the Tuesday. </li>
+<li>After a few seconds the LEDs next to <b>ALGO</b>, <b>SCALE</b>, <b>TICKS</b> and <b>BEATS</b> will start lighting up one by one to show the progress.</li>
+<li>After the entire MP3 has played, the Tuesday will reboot and you can start playing with your new firmware!</li>
+<li>If anything goes wrong during playback of the firmware MP3, one or more of the LEDs next to <b>ALGO</b>, <b>SCALE</b>, <b>TICKS</b> and <b>BEATS</b> will start blinking:
+<br>Try to adjust the volume of the player and check if the "!" knob is centered and start again. If this still does not work - please try another MP3 player, as some devices have post-processing on the audio which might impede correct transfer. You can also use the test-procedure above to see if the system is receiving data correctly. If problems persist, please contact <a href="mailto:priscilla@thisisnotrocketscience.nl">us.</a></li>
+</ol>	
+
+<h2>Changelog</h2>
+<h3>Firmware Version 1.1 (June 2017)</h3>
+New features:
+
+<h4>Master clock division</h4>
+The Tuesday originally shipped with firmware that expected 24PPQN clock speed. After some discussions with early adopters - several timing modes were added.
+These are: 
+<ul>
+<li>1tick = 1step</li>
+<li>2tick = 1step</li>
+<li>16 PPQN</li>
+<li>24 PPQN </li>
+</ul>
+to change the timing mode, press and hold the <b>TICKS</b> button until the entire <b>BEATS</b> area lights up.
+You can now select a timing mode by pressing the <b>TICKS</b> button. After you have made your selection, press the <b>BEATS</b> button to resume normal operation<br><br>
+
+Please see the "Master clock division" chapter in the <a href="TINRS Tuesday Manual v1.1.pdf">UPDATED MANUAL</a> for details and further instructions.
+</body>
+</html>

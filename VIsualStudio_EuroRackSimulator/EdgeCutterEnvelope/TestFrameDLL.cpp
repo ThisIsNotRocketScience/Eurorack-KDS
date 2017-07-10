@@ -1,5 +1,6 @@
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.h"
+#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Wobbler2.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
 #include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Algo.h"
 
@@ -7,6 +8,7 @@
 #include "../../BigFishLib/BleppyOscs.cpp"
 #include "../../BigFishLib/OrganOsc.cpp"
 #include "../../BigFishLib/ADSREnvelope.cpp"
+#include "../../BigFishLib/FMOsc.cpp" 
 
 
 
@@ -38,8 +40,16 @@ extern "C"
 	{
 		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
 	}
+
+	struct Wobbler2_Pendulum Pendulum;
+	struct Wobbler2_PendulumInt PendulumInt;
+
+
 	__declspec(dllexport) void __stdcall Init()
 	{
+		Wobbler2_InitPendulum(&Pendulum);
+		Wobbler2_InitIntPendulum(&PendulumInt);
+
 		EdgeCutter_LoadSettings(&EnvSettings, &EnvParams);
 		EdgeCutter_Init(&EnvRunning);
 		EdgeCutter_Init(&EnvStatic);
@@ -225,7 +235,27 @@ extern "C"
 		return Tuesday.Gates[GATE_GATE] > 0;
 	}
 
+	__declspec(dllexport) float RunPendulum()
+	{
+		Wobbler2_DoublePendulum(&Pendulum, 0.05);
+		return Pendulum.A;
+	}
 
+	__declspec(dllexport) float RunPendulum2()
+	{
+		return Pendulum.B;
+	}
+
+	__declspec(dllexport) float RunPendulumInt()
+	{
+		Wobbler2_DoublePendulumInt(&PendulumInt, (int)((0.05) * (1<<16)));
+		return PendulumInt.A;
+	}
+
+	__declspec(dllexport) float RunPendulum2Int()
+	{
+		return PendulumInt.B;
+	}
 }
 
 #include <Windows.h>

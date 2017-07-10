@@ -42,6 +42,9 @@
     <ClCompile Include="..\..\Tuesday\Sources\main.c">
       <Filter>ExcludedFromCompilation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Tuesday\Sources\main.h">
       <Filter>ExcludedFromCompilation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WobblerV2\Sources\Wobbler2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

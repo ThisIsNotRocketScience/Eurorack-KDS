@@ -68,6 +68,7 @@ extern "C"
 	int32_t LERP(int32_t *V, int total, int fade);
 
 	int32_t Sine(uint32_t phase);
+	int32_t Cosine(uint32_t phase);
 	int32_t SawTooth(uint32_t phase);
 	int32_t Pulse(uint32_t phase);
 	int32_t Triangle(uint32_t phase);

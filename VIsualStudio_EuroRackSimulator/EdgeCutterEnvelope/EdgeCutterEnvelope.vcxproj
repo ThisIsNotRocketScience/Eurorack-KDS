@@ -153,6 +153,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
+    <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
     <ClCompile Include="TestFrameDLL.cpp" />
   </ItemGroup>
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\Tuesday\Sources\Algo_TriTrance.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_Wobble.h" />
     <ClInclude Include="..\..\Tuesday\Sources\main.h" />
+    <ClInclude Include="..\..\WobblerV2\Sources\Wobbler2.h" />
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
