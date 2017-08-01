@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.c" />
     <ClCompile Include="..\..\EdgeCutter\Sources\EdgeCutter.c" />
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
     <ClCompile Include="..\..\EurorackShared\Math.c" />
@@ -158,6 +159,7 @@
     <ClCompile Include="TestFrameDLL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.h" />
     <ClInclude Include="..\..\EurorackShared\EURORACKSHARED.H" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo.h" />
     <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h" />

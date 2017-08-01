@@ -7,6 +7,7 @@
 #include "../../BigFishLib/BleppyOscs.cpp" 
 #include "../../BigFishLib/OrganOsc.cpp" 
 #include "../../BigFishLib/PowFast.cpp" 
+#include "../../BigFishLib/FMOsc.cpp" 
 
 
 #define _USE_MATH_DEFINES
@@ -416,8 +417,8 @@ char const *mi::DescribeValue(int const param, int const value)
 	case OSC_SHAPE:
 	{
 
-		SteppedResult_t sr;
-		GetSteppedResult(Fish->Fish.Parameters[OSC_SHAPE], 6, &sr);
+		BigFish_SteppedResult_t sr;
+		BigFish_GetSteppedResult(Fish->Fish.Parameters[OSC_SHAPE], 6, &sr);
 
 		int FuncIdx = sr.index;
 		int32_t crossfade = sr.fractional;
@@ -451,8 +452,8 @@ char const *mi::DescribeValue(int const param, int const value)
 
 	case FILTER_KEYTRACK:
 	{
-		SteppedResult_t sr;
-		GetSteppedResult(Fish->Fish.Parameters[FILTER_KEYTRACK], __FILTERKEYTRACK_COUNT - 1, &sr);
+		BigFish_SteppedResult_t sr;
+		BigFish_GetSteppedResult(Fish->Fish.Parameters[FILTER_KEYTRACK], __FILTERKEYTRACK_COUNT - 1, &sr);
 	
 		int KeyTrackIdx = sr.index;
 		int32_t crossfade = sr.fractional;

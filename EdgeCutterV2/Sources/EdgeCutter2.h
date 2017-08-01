@@ -1,6 +1,6 @@
 
-#define EDGECUTTER_MAXMODE 3
-#define EDGECUTTER_MAXSPEED 2
+#define EdgeCutter2_MAXMODE 3
+#define EdgeCutter2_MAXSPEED 2
 #include <stdint.h>
 
 #define FIXEDBITS 15
@@ -10,13 +10,13 @@
 #define FIXED(x) ((int32_t)( x * (float)(1<<FIXEDBITS)))
 
 
-struct EdgeCutter_Params
+struct EdgeCutter2_Params
 {
 	unsigned char mode;
 	unsigned char speed;
 };
 
-struct EdgeCutter_Settings
+struct EdgeCutter2_Settings
 {
 	unsigned char SlowSpeedMult;
 };
@@ -39,7 +39,7 @@ struct EdgeCutter_Settings
 #define GATE_COUNTDOWN 30;
 
 
-struct EdgeCutter_Envelope
+struct EdgeCutter2_Envelope
 {
 	unsigned char A;
 	unsigned char D;
@@ -74,11 +74,11 @@ struct EdgeCutter_Envelope
 extern "C"
 {
 #endif
-	extern int EdgeCutter_GetEnv(struct EdgeCutter_Envelope *Env, struct EdgeCutter_Params *Params);
-	extern void EdgeCutter_Init(struct EdgeCutter_Envelope *Env);
-	extern void EdgeCutter_Trigger(struct EdgeCutter_Envelope *Env, unsigned char N, struct EdgeCutter_Params *Params);
-	extern void EdgeCutter_LoadSettings(struct EdgeCutter_Settings *settings, struct EdgeCutter_Params *params);
-	extern void EdgeCutter_ValidateParams(struct EdgeCutter_Params *params);
+	extern int EdgeCutter2_GetEnv(struct EdgeCutter2_Envelope *Env, struct EdgeCutter2_Params *Params);
+	extern void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env);
+	extern void EdgeCutter2_Trigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params);
+	extern void EdgeCutter2_LoadSettings(struct EdgeCutter2_Settings *settings, struct EdgeCutter2_Params *params);
+	extern void EdgeCutter2_ValidateParams(struct EdgeCutter2_Params *params);
 #ifdef __cplusplus
 }
 #endif

@@ -315,6 +315,25 @@ int main(int argc, char **Argv)
 		fclose(B);
 	}
 
+	FILE *C = fopen("freqtable.h", "w+");
+	if (C)
+	{
+		
+		
+		fprintf(C, "float const PowTab[129*2] = {\n\t");
+		float P = 0;
+		float P2 = 0;
+		for (int i = 0; i < 128 + 1; i++)
+		{
+			P = powf(2.0, (i - 69) / 12.0f);
+			P2 = powf(2.0, ((i+1) - 69) / 12.0f);
+
+			fprintf(C, "%f,%f, ", P, P2-P);
+			if (i % 16 == 15) fprintf(C, "\n\t");
+		}
+		fprintf(C, "%f, %f};\n", P,P2-P);
+		fclose(C);
+	}
 
 
 	for (int i = 0; i < SINETABLE_SIZE + 1; i++)

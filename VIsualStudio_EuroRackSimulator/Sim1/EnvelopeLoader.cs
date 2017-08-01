@@ -151,10 +151,10 @@ namespace Sim1
         public static extern float RunPendulum2();
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern float RunPendulumInt();
+        public static extern void RunPendulumInt();
 
-        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern float RunPendulum2Int();
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern float RunPendulum2Int(Int32 SpringOrMass, Int32 ID, Int32 Coord);
 
         #endregion
     }

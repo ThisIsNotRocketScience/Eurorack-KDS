@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Wobbler\Sources\Wobbler.h">
@@ -93,6 +96,9 @@
       <Filter>ExcludedFromCompilation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\WobblerV2\Sources\Wobbler2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

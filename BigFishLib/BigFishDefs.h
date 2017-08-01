@@ -100,4 +100,23 @@ enum
 	ENV_RELEASE
 };
 
+
+typedef struct BigFishGlobals_t
+{
+	float odsr;
+	float fSamplerate;
+	int nSamplerate;
+	float fcminuspi_sr;
+	float fc2pi_sr;
+} BigFishGlobals_t;
+
+#ifdef WIN32
+extern BigFishGlobals_t globals;
+#else
+extern const BigFishGlobals_t globals;
+#endif
+
+#define PI 3.14159265358979f
+
+
 #endif

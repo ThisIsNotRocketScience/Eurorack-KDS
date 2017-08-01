@@ -2,6 +2,13 @@
 #include <math.h>
 #include <stdlib.h>
 
+#ifdef WIN32
+#define MEMATTR 
+#else
+#define MEMATTR __attribute__((section(".data")))
+#endif
+
+
 #define ENVFIXMAX ((1<<ENVFIXEDBITS)-1)
 #define EXPTABLEBITS 8
 #define EXPTABLELENGTH (1<<EXPTABLEBITS)
@@ -64,12 +71,11 @@ __attribute__((always_inline)) static __INLINE uint32_t UMLAL(volatile uint32_t 
 
 #endif
 
-__inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
+uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
 {
 #ifndef WIN32
 
-	//return UMLAL(A,0, B5, C>>5);
-	
+	//return UMLAL(A,0, B, C);
 
 	uint64_t R = A;
 	R += ((uint64_t)B) * ((uint64_t)C) >> ENVFIXEDBITS;
@@ -85,7 +91,7 @@ __inline uint32_t FixedMac(uint32_t A, uint32_t B, uint32_t C) // res = A + B*C;
 #endif
 }
 
-__inline uint32_t FixedScale(uint32_t A, uint32_t B)
+ uint32_t FixedScale(uint32_t A, uint32_t B)
 {
 //	return (((B << 8) / (B)));
 #ifdef WIN32
@@ -111,9 +117,7 @@ __inline int32_t iFixedScale(int32_t A, int32_t B)
 	return (int32_t)R;
 }
 
-
-
-__inline uint32_t GetExpTable(uint32_t inp,int table)
+MEMATTR uint32_t GetExpTable(uint32_t inp,int table)
 {
 	int i1 = inp >> 24;
 	int i2 = i1 + 1;
@@ -125,7 +129,11 @@ __inline uint32_t GetExpTable(uint32_t inp,int table)
 	uint32_t frac = (inp & fracmask);
 	frac >>= EXPTABLEBITS;
 	uint32_t ifrac = 0x10000 - frac;
-	return (((exptable[table][i1] * ifrac)>>16)  + ((exptable[table][i2] * frac)>>16)) << (ENVFIXEDBITS-16);
+
+	int32_t A = exptable[table][i1];
+	int32_t B = exptable[table][i2];
+
+	return (A + (((B-A)*ifrac)>>16)) << (ENVFIXEDBITS-16);
 }
 
 void ADSR_Init(struct ADSR_Envelope_t *Env, int Mode, int Speed, int AttackCurve)
@@ -235,7 +243,7 @@ static unsigned long EnvelopeRange(uint32_t V, int speed)
 
 static int32_t EnvelopeLength(int inp, int speed, int samplerate)
 {
-	float V = inp / 1024.0f;
+	float V = inp * (1/ 1024.0f);
 	V = (V * 0.95f + 0.05f);
 	int R = 1 + (int)((V * V * V) * samplerate * (speed ? 1 : 2));
 	if (R < 2) R = 2;
@@ -255,7 +263,7 @@ void ADSR_Update(struct ADSR_Envelope_t *Env, int SampleRate)
 	Env->Rconv = EnvelopeLength(Env->R, Env->Speed, SampleRate);
 }
 
-__inline int ADSR_Get(struct ADSR_Envelope_t *Env)
+int ADSR_Get(struct ADSR_Envelope_t *Env)
 {
 	
 

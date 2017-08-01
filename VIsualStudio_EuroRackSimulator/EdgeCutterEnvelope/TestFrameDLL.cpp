@@ -41,8 +41,8 @@ extern "C"
 		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
 	}
 
-	struct Wobbler2_Pendulum Pendulum;
-	struct Wobbler2_PendulumInt PendulumInt;
+	Wobbler2_Pendulum_t Pendulum;
+	SpringMassSystem_t PendulumInt;
 
 
 	__declspec(dllexport) void __stdcall Init()
@@ -246,15 +246,40 @@ extern "C"
 		return Pendulum.B;
 	}
 
-	__declspec(dllexport) float RunPendulumInt()
+	__declspec(dllexport) void RunPendulumInt()
 	{
-		Wobbler2_DoublePendulumInt(&PendulumInt, (int)((0.05) * (1<<16)));
-		return PendulumInt.A;
+		Wobbler2_DoublePendulumInt(&PendulumInt, (int)((0.4) * (1<<16)));
+		
 	}
 
-	__declspec(dllexport) float RunPendulum2Int()
+	__declspec(dllexport) float RunPendulum2Int(int32_t SpringOrMass, int32_t ID, int32_t Coord)
 	{
-		return PendulumInt.B;
+		switch (SpringOrMass)
+		{
+		case 0:
+			switch (Coord)
+			{
+			case 0: return PendulumInt.Masses[ID].Pos.X;
+			case 1: return PendulumInt.Masses[ID].Pos.Y;
+			case 2: return PendulumInt.Masses[ID].Speed.X;
+			case 3: return PendulumInt.Masses[ID].Speed.Y;
+			case 4: return PendulumInt.Masses[ID].Force.X;
+			case 5: return PendulumInt.Masses[ID].Force.Y;
+			}
+			break;
+		case 1:
+			switch (Coord)
+			{
+			case 0: return PendulumInt.Springs[ID].A;
+			case 1: return PendulumInt.Springs[ID].B;
+			case 2: return PendulumInt.Springs[ID].K;
+			}
+		case 2:
+			return PendulumInt.MassCount;
+		case 3:
+			return PendulumInt.SpringCount;
+		}
+		return 0;
 	}
 }
 

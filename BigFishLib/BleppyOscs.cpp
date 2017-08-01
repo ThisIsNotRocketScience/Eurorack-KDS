@@ -496,7 +496,7 @@ float WaveBlepOsc_Get(struct  WaveBlep_t *osc)
 	osc->circularBuffer[osc->index] += osc->OutVal;
 	float output = osc->circularBuffer[osc->index];
 	osc->circularBuffer[osc->index] = 0.0f;
-	return output  * 4;
+	return output  * 32768.0f;
 }
 
 void VosimOsc_Init(struct VosimBlep_t *osc)
@@ -724,6 +724,7 @@ inline void MinBlepOsc_Update(struct MinBlepOsc_t *osc, float odsr, float center
 	uint32_t C = (unsigned long)((65536.f*65536.f) * (centerfreq * odsr));
 	osc->mPhaseIncrement = C;
 }
+
 MEMATTR int32_t MinBlepOsc_Get(struct  MinBlepOsc_t *osc)
 {
 	osc->mPhase += osc->mPhaseIncrement;	
