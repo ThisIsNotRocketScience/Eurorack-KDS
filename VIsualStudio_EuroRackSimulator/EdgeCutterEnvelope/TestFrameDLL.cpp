@@ -1,14 +1,14 @@
-#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutter\Sources\EdgeCutter.h"
-#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Wobbler\Sources\Wobbler.h"
-#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Wobbler2.h"
-#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Tuesday.h"
-#include "C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Algo.h"
+#include "..\..\EdgeCutter\Sources\EdgeCutter.h"
+#include "..\..\Wobbler\Sources\Wobbler.h"
+#include "..\..\WobblerV2\Sources\Wobbler2.h"
+#include "..\..\Tuesday\Sources\Tuesday.h"
+#include "..\..\Tuesday\Sources\Algo.h"
 
 #include "../../BigFishLib/BigFish.cpp"
 #include "../../BigFishLib/BleppyOscs.cpp"
 #include "../../BigFishLib/OrganOsc.cpp"
 #include "../../BigFishLib/ADSREnvelope.cpp"
-#include "../../BigFishLib/FMOsc.cpp" 
+//#include "../../BigFishLib/FMOsc.cpp" 
 
 
 
