@@ -64,6 +64,7 @@
 #include "../../BigFishLib/BleppyOscs.cpp"
 #include "../../BigFishLib/MinBlepGen.cpp"
 #include "../../BigFishLib/OrganOsc.cpp"
+#include "../../BigFishLib/FMOsc.cpp"
 
 
 #include "ak4558.h"

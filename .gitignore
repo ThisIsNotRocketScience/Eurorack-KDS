@@ -44,3 +44,5 @@ BigFishBuzz/BigFishBuzz/Blok_WaveTableCache.dat
 BigFishLib/Debug/BigFishLib.idb
 *.pdb
 *.obj
+*.log
+*.log

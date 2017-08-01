@@ -29,27 +29,101 @@ namespace Sim1
         PointF[] P1 = new PointF[300];
         PointF[] P2 = new PointF[300];
 
+        float[] iF1Hist = new float[300];
+        float[] iF2Hist = new float[300];
+        PointF[] iP1 = new PointF[300];
+        PointF[] iP2 = new PointF[300];
+
+
+        class Mass
+        {
+           public PointF Pos;
+            public PointF Speed;
+            public PointF Force;
+        }
+
+        class Spring
+        {
+            public Mass A;
+            public Mass B;
+            public float RestLength;
+        }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
 
-            float F1 = TestFrameLoader.RunPendulumInt();
-            float F2 = TestFrameLoader.RunPendulum2Int();
-            for(int i =0;i<299;i++)
-            {
-                F1Hist[i] = F1Hist[i + 1];
-                F2Hist[i] = F2Hist[i + 1];
-            }
-            F1Hist[299] =  (F1/(float)(0xffff)) % (3.1415f*2);
-            F2Hist[299] = (F2 / (float)(0xffff))% (3.1415f*2);
-            e.Graphics.Clear(Color.Black);
-
             var G = e.Graphics;
+            G.Clear(Color.Black);
             G.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             G.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
+
+            float F1 = TestFrameLoader.RunPendulum();
+            float F2 = TestFrameLoader.RunPendulum2();
+
+            TestFrameLoader.RunPendulumInt();
+            List<Mass> Masses = new List<Mass>();
+            List<Spring> Springs = new List<Spring>();
+            float rrR = TestFrameLoader.RunPendulum2Int(3, 0, 0);
+            int SpringCount = (int)rrR;
+            int MassCount = (int)TestFrameLoader.RunPendulum2Int(2, 0, 0);
+
+            float fixconvert = 1.0f / ((float)(1 << 16));
+            for(int i =0;i<MassCount;i++)
             {
-                float xx1 = 100;
-                float xy1 = 100;
+                Mass M = new Mass();
+                M.Pos.X = (TestFrameLoader.RunPendulum2Int(0, i, 0)* fixconvert) + 300;
+                M.Pos.Y = (TestFrameLoader.RunPendulum2Int(0, i, 1)* fixconvert) + 100;
+                M.Speed.X = TestFrameLoader.RunPendulum2Int(0, i, 2)* fixconvert;
+                M.Speed.Y = TestFrameLoader.RunPendulum2Int(0, i, 3)* fixconvert;
+                M.Force.X = TestFrameLoader.RunPendulum2Int(0, i, 4)* fixconvert;
+                M.Force.Y = TestFrameLoader.RunPendulum2Int(0, i, 5)* fixconvert;
+
+                Masses.Add(M);
+
+            }
+            for(int i =0;i<SpringCount;i++)
+            {
+                Spring newS = new Spring();
+                int A = (int)TestFrameLoader.RunPendulum2Int(1, i, 0);
+                int B = (int)TestFrameLoader.RunPendulum2Int(1, i, 1);
+                float Rest = TestFrameLoader.RunPendulum2Int(1, i, 1) *fixconvert;
+                newS.A = Masses[A];
+                newS.B = Masses[B];
+                newS.RestLength = Rest;
+                Springs.Add(newS);
+
+                G.DrawLine(Pens.Yellow, newS.A.Pos, newS.B.Pos);
+            }
+            for (int i = 0; i < MassCount; i++)
+            {
+                RectangleF rR = new RectangleF();
+                rR.X = Masses[i].Pos.X - 4;
+                rR.Y = Masses[i].Pos.Y - 4;
+                rR.Width = 8;
+                rR.Height = 8;
+
+                PointF P2 = new PointF(Masses[i].Pos.X + Masses[i].Speed.X * 20, Masses[i].Pos.Y + Masses[i].Speed.Y * 20);
+                PointF P3 = new PointF(Masses[i].Pos.X + Masses[i].Force.X * 20, Masses[i].Pos.Y + Masses[i].Force.Y * 20);
+                G.DrawLine(Pens.AliceBlue, Masses[i].Pos, P2);
+                G.DrawLine(Pens.Orange, Masses[i].Pos, P3);
+                G.FillEllipse(Brushes.Lime, rR);
+            }
+
+
+                for (int i =0;i<299;i++)
+            {
+                F1Hist[i] = F1Hist[i + 1];
+                F2Hist[i] = F2Hist[i + 1];
+                iF1Hist[i] = iF1Hist[i + 1];
+                iF2Hist[i] = iF2Hist[i + 1];
+            }
+            F1Hist[299] =  (F1/(float)(0xffff)) % (3.1415f*2);
+            F2Hist[299] = (F2 / (float)(0xffff))% (3.1415f*2);
+
+            {
+                float xx1 = 250;
+                float xy1 = 250;
                 float xx2 = xx1 + (float)Math.Sin(F1/ (float)(0xffff)) * 100;
                 float xy2 = xy1 + (float)Math.Cos(F1/ (float)(0xffff)) * 100;
                 float xx3 = xx2 + (float)Math.Sin(F2/ (float)(0xffff)) * 100;
@@ -58,10 +132,11 @@ namespace Sim1
                 G.DrawLine(Pens.White, xx1, xy1, xx2, xy2);
                 G.DrawLine(Pens.White, xx2, xy2, xx3, xy3);
 
-                for(int i =0;i<300;i++)
+
+                for (int i =0;i<300;i++)
                 {
-                    P1[i] = new PointF(i*2, 200 + F1Hist[i] * 30);
-                    P2[i] = new PointF(i*2, 400 + F2Hist[i] * 30);
+                    P1[i] = new PointF(i*2, 100 + F1Hist[i] * 30);
+                    P2[i] = new PointF(i*2, 200 + F2Hist[i] * 30);
                 }
 
                 G.DrawLines(Pens.Yellow, P1);

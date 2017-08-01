@@ -6,7 +6,7 @@ extern "C"
 {
 #endif
 
-	void EdgeCutter_Init(struct EdgeCutter_Envelope *Env)
+	void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env)
 	{
 		Env->TriggerState = 0;
 		Env->LinearOutput = 0;
@@ -22,7 +22,7 @@ extern "C"
 		}
 	}
 
-	void SwitchToState(struct EdgeCutter_Envelope *Env, int newstate)
+	static void SwitchToState(struct EdgeCutter2_Envelope *Env, int newstate)
 	{
 		switch (Env->State)
 		{
@@ -86,7 +86,7 @@ extern "C"
 		}
 	}
 
-	void EdgeCutter_Trigger(struct EdgeCutter_Envelope *Env, unsigned char N, struct EdgeCutter_Params *Params)
+	void EdgeCutter2_Trigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params)
 	{
 		if (N > 0)
 		{
@@ -114,32 +114,32 @@ extern "C"
 		}
 	}
 
-	void EdgeCutter_LoadSettings(struct EdgeCutter_Settings *settings, struct EdgeCutter_Params *params)
+	void EdgeCutter2_LoadSettings(struct EdgeCutter2_Settings *settings, struct EdgeCutter2_Params *params)
 	{
 
 	}
 
-	void EdgeCutter_ValidateParams(struct EdgeCutter_Params *params)
+	void EdgeCutter2_ValidateParams(struct EdgeCutter2_Params *params)
 	{
 
 	}
 
-	unsigned long EnvelopeRange(uint32_t V, int speed)
+	static unsigned long EnvelopeRange(uint32_t V, int speed)
 	{
 		return 1 + (((speed?1:10) * V) >> 8);
 	}
 
-	int32_t EnvelopeLength(int inp, int speed)
+	static int32_t EnvelopeLength(int inp, int speed)
 	{
 		return 1 + (((speed ? 200 : 2000) * inp) >> 8);
 	}
 
-	int32_t SustainLevel(int sus)
+	static int32_t SustainLevel(int sus)
 	{
 		return (sus * FIXED(1)) >> 8;
 	}
 
-	int EdgeCutter_GetEnv(struct EdgeCutter_Envelope *Env, struct EdgeCutter_Params *Params)
+	int EdgeCutter2_GetEnv(struct EdgeCutter2_Envelope *Env, struct EdgeCutter2_Params *Params)
 	{
 		for (int i = 0; i < 4; i++)
 		{

@@ -148,6 +148,7 @@
     <ClInclude Include="bleptables.h" />
     <ClInclude Include="DistortionTable_1.h" />
     <ClInclude Include="DistortionTable_2.h" />
+    <ClInclude Include="FMOsc.h" />
     <ClInclude Include="FormantTable.h" />
     <ClInclude Include="mblep_176400.h" />
     <ClInclude Include="mblep_192000.h" />
@@ -163,9 +164,11 @@
     <ClCompile Include="ADSREnvelope.cpp" />
     <ClCompile Include="BigFish.cpp" />
     <ClCompile Include="BleppyOscs.cpp" />
+    <ClCompile Include="FMOsc.cpp" />
     <ClCompile Include="MinBlepGen.cpp" />
     <ClCompile Include="OrganOsc.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="VocalSynth.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

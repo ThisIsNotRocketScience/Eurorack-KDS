@@ -30,13 +30,29 @@ int16_t SineTable[2 * SINETABLE_SIZE + 2] = {
 	-12539,746, -11792,753, -11038,760, -10278,766, -9511,772, -8739,777, -7961,782, -7179,786, -6392,790, -5601,793, -4807,796, -4011,799, -3211,801, -2410,802, -1607,803, -804,804,
 	0,804, };
 
+struct FullInt {
+	int32_t V;
+};
+
+struct TwoShorts {
+	int16_t a, b; // or whatever
+};
+
+typedef struct DoubleAccess {
+	union {
+		struct FullInt a;
+		struct TwoShorts b;
+	} data; // access with some_info_object.data.a or some_info_object.data.b
+} DoubleAccess ;
 
 inline int16_t FixedSin(uint32_t const phase)
 {
 	int i0 = (phase >> (32 - SINETABLE_BITS)) ;
-	
-	int16_t s0 = SineTable[i0 * 2 ];
-	int16_t s1 = SineTable[i0 * 2 + 1];
+	DoubleAccess A;
+	A.data.a.V = ((int32_t *)SineTable)[i0];
+
+	const int16_t s0 = A.data.b.a;
+	const int16_t s1 = A.data.b.b;
 
 	uint32_t a = (phase & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 
@@ -46,7 +62,7 @@ inline int16_t FixedSin(uint32_t const phase)
 extern int32_t SMMLA(int32_t acc, int32_t a, int32_t b);
 
 
-MEMATTR int32_t SMMLA16(int32_t s0, int32_t s1, int32_t a)
+inline int32_t SMMLA16(int32_t s0, int32_t s1, int32_t a)
 {
 	return 	s0 + ((a * (s1)) >> 16);
 }
@@ -63,23 +79,33 @@ MEMATTR int32_t FourSin(uint32_t const phase0, int const mul1, int const mul2, i
 	int i0 = (phase0 >> (32 - SINETABLE_BITS));
 	int i1 = (phase1 >> (32 - SINETABLE_BITS));
 	int i2 = (phase2 >> (32 - SINETABLE_BITS));
+	
 	int i3 = (phase3 >> (32 - SINETABLE_BITS));
 
-	int16_t s0a = SineTable[i0 * 2];
+	DoubleAccess A;
+	A.data.a.V = ((int32_t *)SineTable)[i0];
+	DoubleAccess B;
+	B.data.a.V = ((int32_t *)SineTable)[i1];
+	DoubleAccess C;
+	C.data.a.V = ((int32_t *)SineTable)[i2];
+	DoubleAccess D;
+	D.data.a.V = ((int32_t *)SineTable)[i3];
+
+	int16_t s0a = A.data.b.a;
 	uint32_t a0 = (phase0 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	int16_t s0b = SineTable[i0 * 2 + 1];
-	int16_t s1a = SineTable[i1 * 2];
+	int16_t s0b = A.data.b.b;
+	int16_t s1a = B.data.b.a;
 	uint32_t Res = SMMLA16(s0a, s0b, a0);
-	int16_t s1b = SineTable[i1 * 2 + 1];
+	int16_t s1b = B.data.b.b;
 	uint32_t a1 = (phase1 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
 	Res += SMMLA16(s1a, s1b, a1);
 	uint32_t a2 = (phase2 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	int16_t s2a = SineTable[i2 * 2];
+	int16_t s2a = C.data.b.a;
 	uint32_t a3 = (phase3 & ((1 << (32 - SINETABLE_BITS)) - 1)) >> ((32 - SINETABLE_BITS) - 16);
-	int16_t s2b = SineTable[i2 * 2 + 1];
+	int16_t s2b = C.data.b.b;
 	Res += SMMLA16(s2a, s2b, a2);
-	int16_t s3a = SineTable[i3 * 2];
-	int16_t s3b = SineTable[i3 * 2 + 1];
+	int16_t s3a = D.data.b.a;
+	int16_t s3b = D.data.b.b;
 
 
 	Res += SMMLA16(s3a, s3b, a3);
@@ -125,9 +151,9 @@ MEMATTR int32_t Organ_Get(struct  Organ_t  *osc, struct OrganVoice_t *voice)
 {
 	voice->mPhase += voice->mPhaseIncrement;
 	
-	uint32_t AP = voice->mPhase + osc->Aoff*voice->spread;
-	uint32_t BP = voice->mPhase + osc->Boff*voice->spread;
-	uint32_t CP = voice->mPhase + osc->Coff*voice->spread;
+	const uint32_t AP = voice->mPhase + osc->Aoff*voice->spread;
+	const uint32_t BP = voice->mPhase + osc->Boff*voice->spread;
+	const uint32_t CP = voice->mPhase + osc->Coff*voice->spread;
 	
 	int32_t A = FourSin(AP, 2, 4, 8);//  FixedSin(AP) + FixedSin(AP << 1) + FixedSin(AP << 2) + FixedSin(AP << 3);
 	int32_t B = FourSin(BP, 2, 4, 8);//  FixedSin(AP) + FixedSin(AP << 1) + FixedSin(AP << 2) + FixedSin(AP << 3);
@@ -136,3 +162,5 @@ MEMATTR int32_t Organ_Get(struct  Organ_t  *osc, struct OrganVoice_t *voice)
 	//int32_t C = FixedSin(CP ) + FixedSin(CP<<1) + FixedSin(CP<<2) + FixedSin(CP <<3) ;
 	return (A + B + C) ;
 }
+
+

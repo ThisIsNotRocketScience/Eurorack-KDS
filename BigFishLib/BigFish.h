@@ -11,6 +11,7 @@
 #include "PlatinumClip.h"
 #include "BleppyOscs.h"
 #include "OrganOsc.h"
+#include "FMOsc.h"
 
 #ifndef __min
 #define __min(a,b) (((a)<(b))?(a):(b))
@@ -78,12 +79,19 @@ public:
 
 	}
 
-	void rbjBPF(float fc, float bw, float odsr)
+	void rbjBPF(const  float fc, const float bw, const  float odsr)
 	{
-		float omega = (float)(2 * 3.141592654f*fc * odsr);
-		float sn = (float)sin(omega);
-		float cs = (float)cos(omega);
-		float alpha = (float)(sn / sinh(log(2.0f) / 2 * bw*omega / sn));
+		float const omega = (float)(2 * 3.141592654f*fc * odsr);
+		float const sn = (float)(omega + omega*omega*omega*(1.0 / 6.0) + omega*omega*omega*omega*omega*(1.0 / 120));
+		float const cs = (float)(1 - omega*omega*(1.0 / 2.0) + omega*omega*omega*omega*(1.0 / 24));
+		
+		//float sn = (float)sin(omega);
+		//float cs = (float)cos(omega);
+
+		float const sinhinp = log(2.0f) / 2 * bw*omega / sn;
+
+#define SINH(x) (x + (x*x*x)/(1*2*3) + (x*x*x*x*x)/(1*2*3*4*5))
+		float alpha = (float)(sn / SINH(sinhinp));
 
 		float inv = (float)(1.0 / (1.0 + alpha));
 
@@ -426,6 +434,46 @@ public:
 	}
 	int counter;
 };
+
+struct Resonator
+{
+	float a, b, c; 
+
+	void set(float f, float bw, float gain)
+	{
+		float const bw2 = 100;
+		float r = (float)exp(globals.fcminuspi_sr*bw);
+		c = -(r*r);
+		float omega = globals.fc2pi_sr*f;
+		float cs = (float)(1 - omega*omega*(1.0 / 2.0) + omega*omega*omega*omega*(1.0 / 24));
+		b = r*cs*2.0f;
+		a = gain*(1.0f - b - c);
+	}
+
+	float p1, p2; 
+
+	float tick(float in)
+	{
+		float x = a*in + b*p1 + c*p2;
+		p2 = p1;
+		p1 = x;
+		return x;
+	}
+};
+
+
+typedef struct VocalFilter_t
+{
+	float Aspiration;
+	float Voicing;
+	float Frication;
+	float lastin2;
+	float hpb1;
+	float hpb2;
+	float Bypass;
+	Resonator res[7];
+} VocalFilter_t;
+
 //#define RANGECHECKS
 #ifdef RANGECHECKS
 typedef struct RangeChecker_t
@@ -442,6 +490,7 @@ void UpdateRange(RangeChecker_t *R, int64_t inv);
 void UpdateRangeBuffer(RangeChecker_t *R, int32_t *buffer, int len);
 
 #endif
+
 
 typedef struct BigFish_t
 {
@@ -464,6 +513,7 @@ typedef struct BigFish_t
 	MinBlepOsc_t SawOsc[3];
 	MinBlepOsc_t PulseOsc[3];
 	WaveBlep_t WaveOsc[3];
+	FMOsc_t FMOsc[3];
 	Organ_t Organ;
 	int ChordVoicesActive;
 	double FormantMemory[10];
@@ -472,7 +522,8 @@ typedef struct BigFish_t
 	Inertia_t Accent;
 	struct ADSR_Envelope_t AmpEnvelope;
 	struct ADSR_Envelope_t FilterEnvelope; // s and r set to 0 for plain AD envelope. 
-	cwaveguide Resonator[5];
+	VocalFilter_t VocalFilter;
+
 	PlatinumClip Clipper;
 
 #ifdef RANGECHECKS
@@ -487,14 +538,14 @@ typedef struct BigFish_t
 #endif
 } BigFish_t;
 
-typedef struct SteppedResult_t
+typedef struct BigFish_SteppedResult_t
 {
 	uint8_t index;
 	uint8_t fractional;
-} SteppedResult_t;
+} BigFish_SteppedResult_t;
 
-void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
-
+void BigFish_GetSteppedResult(uint16_t param, uint8_t steps, BigFish_SteppedResult_t *out);
+float BigFish_GetInterpolatedResultFloat(float *table, BigFish_SteppedResult_t *inp);
 void BigFish_Init(struct BigFish_t *fish, int samplerate);
 void BigFish_Update(struct BigFish_t *fish);
 void BigFish_CheckGates(struct BigFish_t *fish);

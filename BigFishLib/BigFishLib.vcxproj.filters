@@ -66,6 +66,9 @@
     <ClInclude Include="OrganOsc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FMOsc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BigFish.cpp">
@@ -84,6 +87,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OrganOsc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VocalSynth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FMOsc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
