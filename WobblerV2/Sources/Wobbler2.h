@@ -16,6 +16,7 @@ struct Wobbler2_Settings
 #define Wobbler2_ATTACK 2
 #define Wobbler2_IDLE 3
 #define Wobbler2_RELEASE 4
+#define WOBBLER_FIXBITS 24
 
 struct Wobbler2_RandomGen
 {
@@ -40,16 +41,38 @@ typedef struct Wobbler2_Pendulum_t
 	int32_t B;
 	float m1;
 	float m2;
+	
+	float l1;
+	float l2;
+	float g;
+	float mu;
+
+
+	float _2sub1;
+	float _1sub2;
+	float c1sub2;
+	float c1sub2SQUARED;
+	float s1sub2;
+	float T1a1, T1a2, T1a, T1;
+	float T2b1, T2b, T2;
+	float T3b, T3, T4;
+	float T5a1, T5a2, T5a, T5;
+	float T6b, T6;
+	
+	float st1;
+	float st2;
+	float dTheta1SQUARED;
+	float dTheta2SQUARED;
+	float l1_x_dTheta1SQUARED;
+	float l2_x_dTheta2SQUARED;
+
 	float Theta1;
 	float Theta2;
 	float d2Theta1;
 	float d2Theta2;
 	float dTheta1;
 	float dTheta2;
-	float l1;
-	float l2;
-	float g;
-	float mu;
+
 } Wobbler2_Pendulum_t;
 
 typedef struct ivec_t
@@ -86,23 +109,44 @@ typedef struct SpringMassSystem_t
 	Mass_t Masses[5];
 } SpringMassSystem_t;
 
-struct Wobbler2_PendulumInt
+typedef struct Wobbler2_PendulumInt_t
 {
 	int32_t A;
 	int32_t B;
 	int32_t m1;
 	int32_t m2;
+	
+	int32_t l1;
+	int32_t l2;
+	int32_t g;
+	int32_t mu;
+
+
+	uint32_t _2sub1;
+	uint32_t _1sub2;
+	int32_t c1sub2;
+	int32_t c1sub2SQUARED;
+	int32_t s1sub2;
+	int32_t T1a1, T1a2, T1a, T1;
+	int32_t T2b1, T2b, T2;
+	int32_t T3b, T3, T4;
+	int32_t T5a1, T5a2, T5a, T5;
+	int32_t T6b, T6;
+
+	int32_t st1;
+	int32_t st2;
+	int32_t dTheta1SQUARED;
+	int32_t dTheta2SQUARED;
+	int32_t l1_x_dTheta1SQUARED;
+	int32_t l2_x_dTheta2SQUARED;
+
 	uint32_t Theta1;
 	uint32_t Theta2;
 	int32_t d2Theta1;
 	int32_t d2Theta2;
 	int32_t  dTheta1;
 	int32_t dTheta2;
-	int32_t l1;
-	int32_t l2;
-	int32_t g;
-	int32_t mu;
-};
+} Wobbler2_PendulumInt_t;
 
 typedef struct SteppedResult_t
 {
@@ -159,9 +203,9 @@ extern "C"
 	extern int Wobbler2_Get(Wobbler2_LFO_t *LFO, struct Wobbler2_Params *Params);
 	extern void Wobbler2_Init( Wobbler2_LFO_t *LFO);
 	extern void Wobbler2_InitPendulum( Wobbler2_Pendulum_t *Pendulum);
-	extern void Wobbler2_InitIntPendulum(SpringMassSystem_t *Pendulum);
-	extern void Wobbler2_DoublePendulumInt(SpringMassSystem_t *P, float DT);
 	extern void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT);
+	extern void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *Pendulum);
+	extern void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P);
 	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, struct Wobbler2_Params *Params);
 	extern void Wobbler2_LoadSettings(struct Wobbler2_Settings *settings, struct Wobbler2_Params *params);
 	extern void Wobbler2_ValidateParams(struct Wobbler2_Params *params);

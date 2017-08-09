@@ -123,44 +123,36 @@ extern "C"
 	void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT)
 	{
 		//while (P->Theta1 < 0) { P->Theta1 += 6.283f; P->Theta2 += 6.283f; }
-		float _2sub1 = P->Theta2 - P->Theta1;
-		float _1sub2 = P->Theta1 - P->Theta2;
-		float st1 = sin(P->Theta1);
-		float st2 = sin(P->Theta2);
-		float c1sub2 = cos(_1sub2);
-		float c1sub2SQUARED = c1sub2 * c1sub2;
-		float s1sub2 = sin(_1sub2);
-		
-		float dTheta2SQUARED = P->dTheta2 * P->dTheta2;
-		float dTheta1SQUARED = P->dTheta1 * P->dTheta1;
-		float l1_x_dTheta1SQUARED = P->l1 * dTheta1SQUARED;
-		float l2_x_dTheta2SQUARED = P->l2 * dTheta2SQUARED;
+		P->_2sub1 = P->Theta2 - P->Theta1;
+		P->_1sub2 = P->Theta1 - P->Theta2;
+		P->st1 = sin(P->Theta1);
+		P->st2 = sin(P->Theta2);
+		P->c1sub2 = cos(P->_1sub2);
+		P->c1sub2SQUARED = P->c1sub2 * P->c1sub2;
+		P->s1sub2 = sin(P->_1sub2);
+		P->dTheta2SQUARED = P->dTheta2 * P->dTheta2;
+		P->dTheta1SQUARED = P->dTheta1 * P->dTheta1;
+		P->l1_x_dTheta1SQUARED = P->l1 * P->dTheta1SQUARED;
+		P->l2_x_dTheta2SQUARED = P->l2 * P->dTheta2SQUARED;
+		P->T1a1 = P->st2 * P->c1sub2;
+		P->T1a2 = P->mu * P->st1;
+		P->T1a = P->T1a1 - P->T1a2;
+		P->T1 = P->g * P->T1a;
+		P->T2b1 = P->l1_x_dTheta1SQUARED * P->c1sub2;
+		P->T2b = P->l2_x_dTheta2SQUARED + P->T2b1;
+		P->T2 = P->T2b * P->s1sub2;
+		P->T3b = P->mu - P->c1sub2SQUARED;
+		P->T3 = P->l1*P->T3b;
+		P->T4 = P->mu * P->g * (P->st1 * P->c1sub2 - P->st2);
+		P->T5a2 = P->l2_x_dTheta2SQUARED * P->c1sub2;
+		P->T5a1 = P->l1_x_dTheta1SQUARED * P->mu;
+		P->T5a = P->T5a1 + P->T5a2;
+		P->T5 = P->T5a * P->s1sub2;
+		P->T6b = P->mu - P->c1sub2SQUARED;
+		P->T6 = P->l2 * P->T6b;
 
-		
-
-		float T1a1 = st2 * c1sub2;
-		float T1a2 = P->mu * st1;
-		float T1a = T1a1 - T1a2;
-		float T1 = P->g * T1a;
-
-		float T2b2 = l1_x_dTheta1SQUARED * c1sub2;
-		float T2b = l2_x_dTheta2SQUARED + T2b2;
-		float T2 = T2b * s1sub2;	
-		float T3b = P->mu - c1sub2SQUARED;
-		float T3 = P->l1*T3b;
-
-
-		
-		float T4 = P->mu * P->g * (st1 * c1sub2 - st2);
-		float T5a2 = l2_x_dTheta2SQUARED * c1sub2;
-		float T5a1 = l1_x_dTheta1SQUARED * P->mu;
-		float T5a = T5a1 + T5a2;
-		float T5 = T5a * s1sub2;
-		float T6b = P->mu - c1sub2SQUARED;
-		float T6 = P->l2 * T6b;
-
-		P->d2Theta1 = (T1 - T2) / (T3);
-		P->d2Theta2 = (T4 + T5) / T6;
+		P->d2Theta1 = (P->T1 - P->T2) / (P->T3);
+		P->d2Theta2 = (P->T4 + P->T5) / P->T6;
 	//	P->dTheta1 *= 0.999;
 	//	P->dTheta2 *= 0.999;
 		P->dTheta1 += P->d2Theta1*DT;
@@ -172,10 +164,95 @@ extern "C"
 	}
 
 
-#define FIXBITS 16
 
-#define F(x) ((int)(x * (1<<FIXBITS)))
-	void Wobbler2_InitIntPendulum( SpringMassSystem_t *P)
+
+
+
+#define F(x) ((int)(x * (1<<WOBBLER_FIXBITS)))
+
+#define NOF(x)  ((float)x * (1.0f / ((float)(1 << WOBBLER_FIXBITS))))
+
+	void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P)
+	{
+		const float m1 = 4.1;
+		const float m2 = 4.1;
+
+		P->A = 0;
+		P->B = 0;
+		P->m1 = F(m1);
+		P->m2 = F(m2);
+		P->Theta1 = 0;
+		P->Theta2 = 0;
+		P->d2Theta1 = 0;
+		P->d2Theta2 = 0;
+		P->dTheta1 = F(1);
+		P->dTheta2 = 0;
+		P->l1 = F(1);
+		P->l2 = F(1);
+		P->g = F(.981);
+		P->mu = F((1 + m1/ m2));
+	}
+
+	void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P)
+	{
+		int32_t DT = F(0.05);
+		
+		P->_2sub1 = P->Theta2 - P->Theta1;
+		P->_1sub2 = P->Theta1 - P->Theta2;
+
+
+		P->st1 = F(sin(NOF(P->Theta1)));
+		P->st2 = F(sin(NOF(P->Theta2)));
+		P->c1sub2 = F(cos(NOF(P->_1sub2)));
+		P->s1sub2 = F(sin(NOF(P->_1sub2)));
+
+		P->st1 = isin_S4(P->Theta1>>16)<<(WOBBLER_FIXBITS-12);
+		P->st2 = isin_S4(P->Theta2>>16) << (WOBBLER_FIXBITS - 12);;
+		P->c1sub2 = isin_S4(P->_1sub2>>16) << (WOBBLER_FIXBITS - 12);
+		P->s1sub2 = isin_S4(P->_1sub2>>16) << (WOBBLER_FIXBITS - 12);
+
+		P->c1sub2SQUARED = imul(P->c1sub2 ,P->c1sub2);
+		
+		P->dTheta2SQUARED = imul(P->dTheta2 ,P->dTheta2);
+		P->dTheta1SQUARED = imul(P->dTheta1 ,P->dTheta1);
+		P->l1_x_dTheta1SQUARED = imul(P->l1 , P->dTheta1SQUARED);
+		P->l2_x_dTheta2SQUARED = imul(P->l2 , P->dTheta2SQUARED);
+		
+		P->T1a1 = imul(P->st2 , P->c1sub2);
+		P->T1a2 = imul(P->mu, P->st1);
+		P->T1a = P->T1a1 - P->T1a2;
+		P->T1 = imul(P->g, P->T1a);
+		
+		P->T2b1 = imul(P->l1_x_dTheta1SQUARED, P->c1sub2);
+		P->T2b = P->l2_x_dTheta2SQUARED + P->T2b1;
+		P->T2 = imul(P->T2b , P->s1sub2);
+		P->T3b = P->mu - P->c1sub2SQUARED;
+		P->T3 = imul(P->l1, P->T3b);
+		
+		P->T4 = imul(P->mu , imul(P->g , (imul(P->st1 ,P->c1sub2 ) - P->st2)));
+		P->T5a2 = imul(P->l2_x_dTheta2SQUARED, P->c1sub2);
+		P->T5a1 = imul(P->l1_x_dTheta1SQUARED ,P->mu);
+		P->T5a = P->T5a1 + P->T5a2;
+		P->T5 = imul(P->T5a , P->s1sub2);
+		P->T6b = P->mu - P->c1sub2SQUARED;
+		P->T6 = imul(P->l2, P->T6b);
+
+		P->d2Theta1 = idiv(P->T1 - P->T2, P->T3);
+		P->d2Theta2 = idiv(P->T4 + P->T5 , P->T6);
+
+		P->dTheta1 = imul(F(0.999), P->dTheta1);
+		P->dTheta2 = imul(F(0.999), P->dTheta2);
+		
+			P->dTheta1 += imul(P->d2Theta1,DT);
+		P->dTheta2 += imul(P->d2Theta2,DT);
+		P->Theta1 += imul(P->dTheta1,DT);
+		P->Theta2 += imul(P->dTheta2,DT);
+		P->A = NOF(P->Theta1) * 0xffff;
+		P->B = NOF(P->Theta2) * 0xffff;
+	}
+
+
+	void Wobbler2_InitIntPendulumSpringMass( SpringMassSystem_t *P)
 	{
 		P->MassCount = 3;
 		P->SpringCount = 2;
@@ -296,22 +373,22 @@ extern "C"
 
 		/* clz = count-leading-zeros. bitpos is the position of the most significant bit,
 		relative to "1" or 1 << base */
-		bitpos = FIXBITS - int32_tclz(val);
+		bitpos = WOBBLER_FIXBITS - int32_tclz(val);
 
 		/* Calculate our first estimate.
 		We use the identity 2^a * 2^a = 2^(2*a) or:
 		sqrt(2^a) = 2^(a/2)
 		*/
 		if (bitpos > 0u) /* val > 1 */
-			x = (1u << FIXBITS) << (bitpos >> 1u);
+			x = (1u << WOBBLER_FIXBITS) << (bitpos >> 1u);
 		else if (bitpos < 0) /* 0 < val < 1 */
-			x = (1u << FIXBITS) << ((unsigned)(-bitpos) << 1u);
+			x = (1u << WOBBLER_FIXBITS) << ((unsigned)(-bitpos) << 1u);
 		else /* val == 1 */
-			x = (1u << FIXBITS);
+			x = (1u << WOBBLER_FIXBITS);
 
 		/* We need to scale val with base due to the division.
 		Also val /= 2, hence the subtraction of one*/
-		v = (unsigned long long)val << (FIXBITS - 1u);
+		v = (unsigned long long)val << (WOBBLER_FIXBITS - 1u);
 
 		/* The actual iteration */
 		x = (x >> 1u) + v / x;
@@ -326,13 +403,13 @@ extern "C"
 		int64_t R = (int64_t)a * (int64_t)b;
 
 
-		return R >> (FIXBITS);
+		return R >> (WOBBLER_FIXBITS);
 	}
 
 	int32_t idiv(int32_t a, int32_t b)
 	{
 		int64_t R = (int64_t)a;
-		R << FIXBITS;
+		R <<= WOBBLER_FIXBITS;
 		R/= (int64_t)b;
 		return R ;
 	}
@@ -367,32 +444,32 @@ extern "C"
 
 				int32_t dxnorm = idiv(dx, len);
 				int32_t dynorm = idiv(dy, len);
-				float dxf = dx / (float)(1 << FIXBITS);
-				float dyf = dy / (float)(1 << FIXBITS);
-				float lenf = len / (float)(1 << FIXBITS);
-				float extf = extension / (float)(1 << FIXBITS);;
+				float dxf = dx / (float)(1 << WOBBLER_FIXBITS);
+				float dyf = dy / (float)(1 << WOBBLER_FIXBITS);
+				float lenf = len / (float)(1 << WOBBLER_FIXBITS);
+				float extf = extension / (float)(1 << WOBBLER_FIXBITS);;
 				extf *= 0.01;
 				dxf /= lenf;
 				dyf /= lenf;
 				if (A->fixed == 1) // add double to B
 				{
-					B->Force.X += (dxf * extf * 1)*(float)(1<<FIXBITS);
-					B->Force.Y += (dyf * extf * 1)*(float)(1 << FIXBITS);
+					B->Force.X += (dxf * extf * 1)*(float)(1<<WOBBLER_FIXBITS);
+					B->Force.Y += (dyf * extf * 1)*(float)(1 << WOBBLER_FIXBITS);
 				}
 				else
 				{
 					if (B->fixed == 1) // subtract double from A
 					{
-						A->Force.X -= (dxf * extf *1)*(float)(1 << FIXBITS);
-						A->Force.Y -= (dyf * extf * 1)*(float)(1 << FIXBITS);
+						A->Force.X -= (dxf * extf *1)*(float)(1 << WOBBLER_FIXBITS);
+						A->Force.Y -= (dyf * extf * 1)*(float)(1 << WOBBLER_FIXBITS);
 					}
 					else
 					{
 						// distribute evenly.
-						B->Force.X += (dxf * extf)*(float)(1 << FIXBITS);
-						B->Force.Y += (dyf * extf)*(float)(1 << FIXBITS);
-						A->Force.X -= (dxf * extf)*(float)(1 << FIXBITS);
-						A->Force.Y -= (dyf * extf)*(float)(1 << FIXBITS);
+						B->Force.X += (dxf * extf)*(float)(1 << WOBBLER_FIXBITS);
+						B->Force.Y += (dyf * extf)*(float)(1 << WOBBLER_FIXBITS);
+						A->Force.X -= (dxf * extf)*(float)(1 << WOBBLER_FIXBITS);
+						A->Force.Y -= (dyf * extf)*(float)(1 << WOBBLER_FIXBITS);
 					}
 				}
 			}
@@ -470,7 +547,7 @@ extern "C"
 		}
 	}
 	*/
-	void Wobbler2_DoublePendulumInt(struct SpringMassSystem_t *P)
+	void Wobbler2_DoublePendulumIntSpringMass(struct SpringMassSystem_t *P)
 	{
 		UpdateSystem(P);
 	}

@@ -61,12 +61,22 @@ namespace Sim1
             for (int i = 0; i < 5; i++)
             {
                 TestFrameLoader.RunPendulum();
+                TestFrameLoader.RunPendulumInt();
+
+                //TestFrameLoader.Compare();
             }
 
             float F1 = TestFrameLoader.RunPendulum();
             float F2 = TestFrameLoader.RunPendulum2();
 
-            TestFrameLoader.RunPendulumInt();
+            int iF1 = TestFrameLoader.RunPendulumInt();
+            int iF2 = TestFrameLoader.RunPendulum2Int();
+            if (true)
+            {
+                F1 = (float)iF1;
+                F2 = (float)iF2;
+            }
+            //TestFrameLoader.RunPendulumInt();
             List<Mass> Masses = new List<Mass>();
             List<Spring> Springs = new List<Spring>();
            // float rrR = TestFrameLoader.RunPendulum2Int(3, 0, 0);
@@ -123,10 +133,16 @@ namespace Sim1
                 iF1Hist[i] = iF1Hist[i + 1];
                 iF2Hist[i] = iF2Hist[i + 1];
             }
-            F1Hist[299] =  (F1/(float)(0xffff)) % (3.1415f*2);
-            F2Hist[299] = (F2 / (float)(0xffff))% (3.1415f*2);
+            F1Hist[299] = (F1 / (float)(0xffff));
+            F2Hist[299] = (F2 / (float)(0xffff));
 
             {
+                F1 *= 6.283f  / ((float)(1 <<30)) ;
+                F1 *= 1.0f /(float) (1 << 2);
+
+                F2 *= 6.283f / ((float)(1 << 30));
+                F2 *= 1.0f / (float)(1 << 2);
+
                 float xx1 = 250;
                 float xy1 = 250;
                 float xx2 = xx1 + (float)Math.Sin(F1/ (float)(0xffff)) * 100;

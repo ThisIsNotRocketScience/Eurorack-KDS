@@ -77,6 +77,9 @@ namespace Sim1
         }
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void Compare();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int Tuesday_GetPatternLength();
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
@@ -151,10 +154,10 @@ namespace Sim1
         public static extern float RunPendulum2();
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern void RunPendulumInt();
+        public static extern Int32 RunPendulumInt();
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float RunPendulum2Int(Int32 SpringOrMass, Int32 ID, Int32 Coord);
+        public static extern Int32 RunPendulum2Int();
 
         #endregion
     }

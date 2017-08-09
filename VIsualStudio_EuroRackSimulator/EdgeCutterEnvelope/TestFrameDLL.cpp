@@ -42,7 +42,7 @@ extern "C"
 	}
 
 	Wobbler2_Pendulum_t Pendulum;
-	SpringMassSystem_t PendulumInt;
+	Wobbler2_PendulumInt_t PendulumInt;
 
 
 	__declspec(dllexport) void __stdcall Init()
@@ -246,41 +246,77 @@ extern "C"
 		return Pendulum.B;
 	}
 
-	__declspec(dllexport) void RunPendulumInt()
+	__declspec(dllexport) int32_t RunPendulumInt()
 	{
-		Wobbler2_DoublePendulumInt(&PendulumInt, (int)((0.4) * (1<<16)));
+		Wobbler2_DoublePendulumInt(&PendulumInt);
+		return PendulumInt.A;
 		
 	}
 
-	__declspec(dllexport) float RunPendulum2Int(int32_t SpringOrMass, int32_t ID, int32_t Coord)
+	__declspec(dllexport) int32_t RunPendulum2Int()
 	{
-		switch (SpringOrMass)
-		{
-		case 0:
-			switch (Coord)
-			{
-			case 0: return PendulumInt.Masses[ID].Pos.X;
-			case 1: return PendulumInt.Masses[ID].Pos.Y;
-			case 2: return PendulumInt.Masses[ID].Speed.X;
-			case 3: return PendulumInt.Masses[ID].Speed.Y;
-			case 4: return PendulumInt.Masses[ID].Force.X;
-			case 5: return PendulumInt.Masses[ID].Force.Y;
-			}
-			break;
-		case 1:
-			switch (Coord)
-			{
-			case 0: return PendulumInt.Springs[ID].A;
-			case 1: return PendulumInt.Springs[ID].B;
-			case 2: return PendulumInt.Springs[ID].K;
-			}
-		case 2:
-			return PendulumInt.MassCount;
-		case 3:
-			return PendulumInt.SpringCount;
-		}
-		return 0;
+		return PendulumInt.B;
 	}
+
+	char *GetName(int i)
+	{
+		switch (i)
+		{
+		case 0: return "_2sub1";
+		case 1: return "_1sub2";
+		case 2: return "c1sub2";
+		case 3: return "c1sub2SQUARED";
+		case 4: return "s1sub2";
+		case 5: return "T1a1";
+		case 6: return "T1a2";
+		case 7: return "T1a";
+		case 8: return "T1";
+		case 9: return "T2b1";
+		case 10: return "T2b";
+		case 11: return "T2";
+		case 12: return "T3b";
+		case 13: return "T3"; 
+		case 14: return "T4";
+		case 15: return "T5a1";
+		case 16: return "T5a2";
+		case 17: return "T5a";
+		case 18: return "T5";
+		case 19: return "T6b";
+		case 20: return "T6";		
+		case 21: return "st1";
+		case 22: return "st2";
+		case 23: return "dTheta1SQUARED";
+		case 24: return "dTheta2SQUARED";
+		case 25: return "l1_x_dTheta1SQUARED";
+		case 26: return "l2_x_dTheta2SQUARED";
+		case 27: return "Theta1";
+		case 28: return "Theta2";
+		case 29: return "d2Theta1";
+		case 30: return "d2Theta2";
+		case 31: return "dTheta1";
+		case 32: return "dTheta2";
+
+		}
+		return "beh";
+	}
+	__declspec(dllexport) void Compare()
+	{
+		printf(" Compare start\n");
+		float *A = (float*)&Pendulum._2sub1;
+		int32_t *B = (int32_t*)&PendulumInt._2sub1;
+		for (int i = 0; i < 33;i++)
+		{
+			float fB = *B *(1.0 / (1 << WOBBLER_FIXBITS));
+			float fA = *A;
+			A++;
+			B++;
+
+			float diff = fB - fA;
+			printf("%20s -> %.6f -> %.6f = %.6f\n",GetName(i), fA, fB, diff);
+		}
+		printf(" Compare done\n");
+	}
+
 }
 
 #include <Windows.h>
