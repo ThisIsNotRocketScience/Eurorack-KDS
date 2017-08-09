@@ -93,7 +93,7 @@ namespace Sim1
                 newS.RestLength = Rest;
                 Springs.Add(newS);
 
-                G.DrawLine(Pens.Yellow, newS.A.Pos, newS.B.Pos);
+                G.DrawLine(new Pen(Color.Yellow,4), newS.A.Pos, newS.B.Pos);
             }
             for (int i = 0; i < MassCount; i++)
             {
@@ -103,9 +103,9 @@ namespace Sim1
                 rR.Width = 8;
                 rR.Height = 8;
 
-                PointF P2 = new PointF(Masses[i].Pos.X + Masses[i].Speed.X * 20, Masses[i].Pos.Y + Masses[i].Speed.Y * 20);
+//                PointF P2 = new PointF(Masses[i].Pos.X + Masses[i].Speed.X * 20, Masses[i].Pos.Y + Masses[i].Speed.Y * 20);
                 PointF P3 = new PointF(Masses[i].Pos.X + Masses[i].Force.X * 20, Masses[i].Pos.Y + Masses[i].Force.Y * 20);
-                G.DrawLine(Pens.AliceBlue, Masses[i].Pos, P2);
+  //              G.DrawLine(Pens.AliceBlue, Masses[i].Pos, P2);
                 G.DrawLine(Pens.Orange, Masses[i].Pos, P3);
                 G.FillEllipse(Brushes.Lime, rR);
             }

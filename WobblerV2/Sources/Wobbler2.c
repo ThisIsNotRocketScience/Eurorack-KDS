@@ -178,6 +178,12 @@ extern "C"
 		P->Springs[1].B = 2;
 		P->Springs[1].K = F(0.5);
 		P->Springs[1].RestLength = F(40);
+		for (int i = 0; i < P->MassCount; i++)
+		{
+			P->Masses[i].PrevPos.X = P->Masses[i].Pos.X;
+			P->Masses[i].PrevPos.Y = P->Masses[i].Pos.Y;
+
+		}
 	}
 
 	typedef struct State
@@ -301,7 +307,7 @@ extern "C"
 		for (int i = 0; i < P->MassCount; i++)
 		{
 			P->Masses[i].Force.X = 0;
-			P->Masses[i].Force.Y = F(9.81);
+			P->Masses[i].Force.Y = F(0.1);
 		}
 		
 		for (int i = 0; i < P->SpringCount; i++)
@@ -330,20 +336,20 @@ extern "C"
 				float dyf = dy / (float)(1 << FIXBITS);
 				float lenf = len / (float)(1 << FIXBITS);
 				float extf = extension / (float)(1 << FIXBITS);;
-				extf *= 1;
+				extf *= 0.01;
 				dxf /= lenf;
 				dyf /= lenf;
 				if (A->fixed == 1) // add double to B
 				{
-					B->Force.X += (dxf * extf * 2)*(float)(1<<FIXBITS);
-					B->Force.Y += (dyf * extf * 2)*(float)(1 << FIXBITS);
+					B->Force.X += (dxf * extf * 1)*(float)(1<<FIXBITS);
+					B->Force.Y += (dyf * extf * 1)*(float)(1 << FIXBITS);
 				}
 				else
 				{
 					if (B->fixed == 1) // subtract double from A
 					{
-						A->Force.X -= (dxf * extf *2)*(float)(1 << FIXBITS);
-						A->Force.Y -= (dyf * extf * 2)*(float)(1 << FIXBITS);
+						A->Force.X -= (dxf * extf *1)*(float)(1 << FIXBITS);
+						A->Force.Y -= (dyf * extf * 1)*(float)(1 << FIXBITS);
 					}
 					else
 					{
@@ -361,12 +367,11 @@ extern "C"
 		{
 			if (P->Masses[i].fixed == 0)
 			{
-				P->Masses[i].Speed.X = imul(F(0.998), P->Masses[i].Speed.X);
-				P->Masses[i].Speed.Y = imul(F(0.998), P->Masses[i].Speed.Y);
-				P->Masses[i].Speed.X += imul(F(0.1), P->Masses[i].Force.X);
-				P->Masses[i].Speed.Y += imul(F(0.1), P->Masses[i].Force.Y);
-				P->Masses[i].Pos.X += P->Masses[i].Speed.X;
-				P->Masses[i].Pos.Y += P->Masses[i].Speed.Y;
+				P->Masses[i].Pos.X += (P->Masses[i].Pos.X - P->Masses[i].PrevPos.X) + P->Masses[i].Force.X;
+				P->Masses[i].Pos.Y += (P->Masses[i].Pos.Y - P->Masses[i].PrevPos.Y) + P->Masses[i].Force.Y;
+
+				P->Masses[i].PrevPos.X = P->Masses[i].Pos.X;
+				P->Masses[i].PrevPos.Y = P->Masses[i].Pos.Y;
 			}
 			else
 			{

@@ -61,6 +61,7 @@ typedef struct ivec_t
 typedef struct Mass_t
 {
 	ivec_t Pos;
+	ivec_t PrevPos;
 	ivec_t Speed;
 	ivec_t Force;
 	int fixed;

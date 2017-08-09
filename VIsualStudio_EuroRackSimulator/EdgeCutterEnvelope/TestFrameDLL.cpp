@@ -8,7 +8,7 @@
 #include "../../BigFishLib/BleppyOscs.cpp"
 #include "../../BigFishLib/OrganOsc.cpp"
 #include "../../BigFishLib/ADSREnvelope.cpp"
-//#include "../../BigFishLib/FMOsc.cpp" 
+#include "../../BigFishLib/FMOsc.cpp" 
 
 
 
