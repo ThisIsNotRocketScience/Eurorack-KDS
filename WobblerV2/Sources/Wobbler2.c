@@ -92,16 +92,16 @@ extern "C"
 	{
 		P->A = 0;
 		P->B = 0;
-		P->m1 = 1;
-		P->m2 = 1;
+		P->m1 = 4.1;
+		P->m2 = 4.1;
 		P->Theta1 = 3.1415 / 2.0f;
 		P->Theta2 = 3.1415 / 2.0f;
 		P->d2Theta1 = 0;
 		P->d2Theta2 = 0;
 		P->dTheta1 = 0;
 		P->dTheta2 = 0;
-		P->l1 = 0.2;
-		P->l2 = 0.2;
+		P->l1 = 1;
+		P->l2 = 1;
 		P->g = .981;
 		P->mu = 1 + P->m1 / P->m2;
 	}
@@ -115,13 +115,15 @@ extern "C"
 		int32_t R = Sine(phase);
 		return (float)R / (float)(1 << 30);
 	}
+
 	void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT)
 	{
 		//while (P->Theta1 < 0) { P->Theta1 += 6.283f; P->Theta2 += 6.283f; }
+		float _2sub1 = P->Theta2 - P->Theta1;
+		float _1sub2 = P->Theta1 - P->Theta2;
+
 		float st1 = sin(P->Theta1);
 		float st2 = sin(P->Theta2);
-		float _2sub1 =P->Theta2 - P->Theta1;
-		float _1sub2 =P->Theta1 - P->Theta2;
 		float c1sub2 = cos(_1sub2);
 		float s1sub2 = sin(_1sub2);
 		P->d2Theta1 = (P->g*(st2*c1sub2 - P->mu*st1) - (P->l2*P->dTheta2*P->dTheta2 + P->l1*P->dTheta1*P->dTheta1*c1sub2)*s1sub2) / (P->l1*(P->mu - c1sub2*c1sub2));
