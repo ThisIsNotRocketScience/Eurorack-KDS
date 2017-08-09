@@ -116,18 +116,51 @@ extern "C"
 		return (float)R / (float)(1 << 30);
 	}
 
+
+	//P->d2Theta1 = (P->g*(st2*c1sub2 - P->mu*st1) - (P->l2*P->dTheta2*P->dTheta2 + P->l1*P->dTheta1*P->dTheta1*c1sub2)*s1sub2) / (P->l1*(P->mu - c1sub2*c1sub2));
+	//P->d2Theta2 = (P->mu*P->g*(st1*c1sub2 - st2) + (P->mu*P->l1*P->dTheta1*P->dTheta1 + P->l2*P->dTheta2*P->dTheta2*c1sub2)*s1sub2) / (P->l2*(P->mu - c1sub2*c1sub2));
+
 	void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT)
 	{
 		//while (P->Theta1 < 0) { P->Theta1 += 6.283f; P->Theta2 += 6.283f; }
 		float _2sub1 = P->Theta2 - P->Theta1;
 		float _1sub2 = P->Theta1 - P->Theta2;
-
 		float st1 = sin(P->Theta1);
 		float st2 = sin(P->Theta2);
 		float c1sub2 = cos(_1sub2);
+		float c1sub2SQUARED = c1sub2 * c1sub2;
 		float s1sub2 = sin(_1sub2);
-		P->d2Theta1 = (P->g*(st2*c1sub2 - P->mu*st1) - (P->l2*P->dTheta2*P->dTheta2 + P->l1*P->dTheta1*P->dTheta1*c1sub2)*s1sub2) / (P->l1*(P->mu - c1sub2*c1sub2));
-		P->d2Theta2 = (P->mu*P->g*(st1*c1sub2 - st2) + (P->mu*P->l1*P->dTheta1*P->dTheta1 + P->l2*P->dTheta2*P->dTheta2*c1sub2)*s1sub2) / (P->l2*(P->mu - c1sub2*c1sub2));
+		
+		float dTheta2SQUARED = P->dTheta2 * P->dTheta2;
+		float dTheta1SQUARED = P->dTheta1 * P->dTheta1;
+		float l1_x_dTheta1SQUARED = P->l1 * dTheta1SQUARED;
+		float l2_x_dTheta2SQUARED = P->l2 * dTheta2SQUARED;
+
+		
+
+		float T1a1 = st2 * c1sub2;
+		float T1a2 = P->mu * st1;
+		float T1a = T1a1 - T1a2;
+		float T1 = P->g * T1a;
+
+		float T2b2 = l1_x_dTheta1SQUARED * c1sub2;
+		float T2b = l2_x_dTheta2SQUARED + T2b2;
+		float T2 = T2b * s1sub2;	
+		float T3b = P->mu - c1sub2SQUARED;
+		float T3 = P->l1*T3b;
+
+
+		
+		float T4 = P->mu * P->g * (st1 * c1sub2 - st2);
+		float T5a2 = l2_x_dTheta2SQUARED * c1sub2;
+		float T5a1 = l1_x_dTheta1SQUARED * P->mu;
+		float T5a = T5a1 + T5a2;
+		float T5 = T5a * s1sub2;
+		float T6b = P->mu - c1sub2SQUARED;
+		float T6 = P->l2 * T6b;
+
+		P->d2Theta1 = (T1 - T2) / (T3);
+		P->d2Theta2 = (T4 + T5) / T6;
 	//	P->dTheta1 *= 0.999;
 	//	P->dTheta2 *= 0.999;
 		P->dTheta1 += P->d2Theta1*DT;

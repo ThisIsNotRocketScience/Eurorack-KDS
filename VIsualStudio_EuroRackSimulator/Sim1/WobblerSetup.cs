@@ -58,18 +58,23 @@ namespace Sim1
             G.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
 
+            for (int i = 0; i < 5; i++)
+            {
+                TestFrameLoader.RunPendulum();
+            }
+
             float F1 = TestFrameLoader.RunPendulum();
             float F2 = TestFrameLoader.RunPendulum2();
 
             TestFrameLoader.RunPendulumInt();
             List<Mass> Masses = new List<Mass>();
             List<Spring> Springs = new List<Spring>();
-            float rrR = TestFrameLoader.RunPendulum2Int(3, 0, 0);
-            int SpringCount = (int)rrR;
-            int MassCount = (int)TestFrameLoader.RunPendulum2Int(2, 0, 0);
+           // float rrR = TestFrameLoader.RunPendulum2Int(3, 0, 0);
+            //int SpringCount = (int)rrR;
+            //int MassCount = (int)TestFrameLoader.RunPendulum2Int(2, 0, 0);
 
-            float fixconvert = 1.0f / ((float)(1 << 16));
-            for(int i =0;i<MassCount;i++)
+           // float fixconvert = 1.0f / ((float)(1 << 16));
+           /* for(int i =0;i<MassCount;i++)
             {
                 Mass M = new Mass();
                 M.Pos.X = (TestFrameLoader.RunPendulum2Int(0, i, 0)* fixconvert) + 300;
@@ -109,7 +114,7 @@ namespace Sim1
                 G.DrawLine(Pens.Orange, Masses[i].Pos, P3);
                 G.FillEllipse(Brushes.Lime, rR);
             }
-
+            */
 
                 for (int i =0;i<299;i++)
             {
