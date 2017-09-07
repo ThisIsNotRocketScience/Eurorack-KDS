@@ -387,7 +387,7 @@ PE_DEBUGHALT();
             <A_D_interrupt_priority v="medium priority" />
           </boolgroup>
           <boolgroup name="DMA" v="Disabled" />
-          <list name="A/D channel list" v="4">
+          <list name="A/D channel list" v="6">
             <group name="Channel 0">
               <enumgroup name="Channel mode" v="Single Ended">
                 <group name="Input">
@@ -413,6 +413,20 @@ PE_DEBUGHALT();
               <enumgroup name="Channel mode" v="Single Ended">
                 <group name="Input">
                   <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+                </group>
+              </enumgroup>
+            </group>
+            <group name="Channel 4">
+              <enumgroup name="Channel mode" v="Single Ended">
+                <group name="Input">
+                  <A_D_channel__pin_ v="ADC0_SE9/PTB10/TPM0_CH1" />
+                </group>
+              </enumgroup>
+            </group>
+            <group name="Channel 5">
+              <enumgroup name="Channel mode" v="Single Ended">
+                <group name="Input">
+                  <A_D_channel__pin_ v="ADC0_SE4/PTB2/IRQ_7/UART0_RX/UART0_TX" />
                 </group>
               </enumgroup>
             </group>
@@ -492,7 +506,7 @@ Autoselect
         <A_D_interrupt v="INT_ADC0" />
         <A_D_interrupt_priority v="medium priority" />
       </boolgroup>
-      <list name="A/D channels" v="4">
+      <list name="A/D channels" v="6">
         <group name="Channel0">
           <A_D_channel__pin_ v="ADC0_SE13/PTB13/TPM1_CH1" />
         </group>
@@ -504,6 +518,12 @@ Autoselect
         </group>
         <group name="Channel3">
           <A_D_channel__pin_ v="ADC0_SE2/PTA9/I2C1_SDA" />
+        </group>
+        <group name="Channel4">
+          <A_D_channel__pin_ v="ADC0_SE9/PTB10/TPM0_CH1" />
+        </group>
+        <group name="Channel5">
+          <A_D_channel__pin_ v="ADC0_SE4/PTB2/IRQ_7/UART0_RX/UART0_TX" />
         </group>
       </list>
       <A_D_resolution sel_value="12 bits">

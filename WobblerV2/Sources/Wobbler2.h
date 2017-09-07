@@ -3,25 +3,25 @@
 #include <stdint.h>
 #include "../../EurorackShared/EURORACKSHARED.H"
 
-struct Wobbler2_Params
+typedef struct Wobbler2_Params
 {
 	unsigned char T;
-};
+} Wobbler2_Params;
 	
-struct Wobbler2_Settings
+typedef struct Wobbler2_Settings
 {
 	unsigned char SlowSpeedMult;
-};
+} Wobbler2_Settings;
 
 #define Wobbler2_ATTACK 2
 #define Wobbler2_IDLE 3
 #define Wobbler2_RELEASE 4
 #define WOBBLER_FIXBITS 24
 
-struct Wobbler2_RandomGen
+typedef struct Wobbler2_RandomGen
 {
 	long RandomMemory;
-};
+} Wobbler2_RandomGen;
 
 
 typedef struct Wobbler2_LFO_SNH_t
@@ -53,11 +53,11 @@ typedef struct Wobbler2_Pendulum_t
 	float c1sub2;
 	float c1sub2SQUARED;
 	float s1sub2;
-	float T1a1, T1a2, T1a, T1;
-	float T2b1, T2b, T2;
-	float T3b, T3, T4;
-	float T5a1, T5a2, T5a, T5;
-	float T6b, T6;
+	//float T1a1, T1a2, T1a, T1;
+	//float T2b1, T2b, T2;
+	//float T3b, T3, T4;
+	//float T5a1, T5a2, T5a, T5;
+	//float T6b, T6;
 	
 	float st1;
 	float st2;
@@ -72,6 +72,11 @@ typedef struct Wobbler2_Pendulum_t
 	float d2Theta2;
 	float dTheta1;
 	float dTheta2;
+
+	float Damping;
+
+	int32_t As;
+	int32_t Bs;
 
 } Wobbler2_Pendulum_t;
 
@@ -155,7 +160,6 @@ typedef struct SteppedResult_t
 } SteppedResult_t;
 
 
-void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
 //float GetInterpolatedResultFloat(float *table, SteppedResult_t *inp);
 int32_t GetInterpolatedResultInt(int32_t *table, SteppedResult_t *inp);
 
@@ -169,14 +173,14 @@ typedef struct Wobbler2_LFO_t
 	uint32_t Phase1;
 	uint32_t OldPhase1;
 	uint32_t Phase2;
-	uint32_t OldPhase2;
+	int32_t OldPhase2;
 
 
 	int32_t OutputPhased;
 	int32_t Output;
 
 	unsigned char Gate[2];
-	unsigned char Led[2][9];
+	 int Led[2][9];
 	unsigned char ModeLed[3];
 	unsigned char TriggerLed;
 
@@ -185,8 +189,12 @@ typedef struct Wobbler2_LFO_t
 	uint8_t EnvelopeState;
 
 	Wobbler2_LFO_SNH_t SNH[2];
+#ifdef INTPENDULUM
+	Wobbler2_PendulumInt_t Pendulum;
+#else
 	Wobbler2_Pendulum_t Pendulum;
-	
+
+#endif
 	int synctime[3];
 	int timesincesync;
 	int extsync;
@@ -194,22 +202,29 @@ typedef struct Wobbler2_LFO_t
 
 	SpringMassSystem_t PendulumSystem;
 
+	SteppedResult_t ShapeStepped;
+
 } Wobbler2_LFO_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-	extern int Wobbler2_Get(Wobbler2_LFO_t *LFO, struct Wobbler2_Params *Params);
+
+	extern void Wobbler2_GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
+
+	extern int Wobbler2_Get(Wobbler2_LFO_t *LFO,  Wobbler2_Params *Params);
 	extern void Wobbler2_Init( Wobbler2_LFO_t *LFO);
-	extern void Wobbler2_InitPendulum( Wobbler2_Pendulum_t *Pendulum);
+	extern void Wobbler2_InitPendulum( Wobbler2_Pendulum_t *Pendulum,Wobbler2_LFO_t *LFO);
 	extern void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT);
 	extern void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *Pendulum);
 	extern void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P);
-	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, struct Wobbler2_Params *Params);
-	extern void Wobbler2_LoadSettings(struct Wobbler2_Settings *settings, struct Wobbler2_Params *params);
-	extern void Wobbler2_ValidateParams(struct Wobbler2_Params *params);
+	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, Wobbler2_Params *Params);
+	extern void Wobbler2_LoadSettings( Wobbler2_Settings *settings, Wobbler2_Params *params);
+	extern void Wobbler2_ValidateParams(Wobbler2_Params *params);
 	extern void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO);
+	extern void Wobbler2_UpdateSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W);
+	extern void Wobbler2_DoLeds(Wobbler2_LFO_t *LFO);
 
 	extern int32_t LERP(int32_t *V, int total, int fade);
 #ifdef __cplusplus

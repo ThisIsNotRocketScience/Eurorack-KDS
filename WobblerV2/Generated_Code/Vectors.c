@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:39, # CodeGen: 1
+**     Date/Time   : 2017-09-07, 02:25, # CodeGen: 7
 **     Abstract    :
 **
 **     Settings    :
@@ -119,7 +119,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x17  0x0000005C   -   ivINT_Reserved23              unused by PE */
     (tIsrFunc)&IntI2cLdd1_Interrupt,   /* 0x18  0x00000060   2   ivINT_I2C0                    used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x19  0x00000064   -   ivINT_I2C1                    unused by PE */
-    (tIsrFunc)&SM1_Interrupt,          /* 0x1A  0x00000068   0   ivINT_SPI0                    used by PE */
+    (tIsrFunc)&SM1_Interrupt,          /* 0x1A  0x00000068   2   ivINT_SPI0                    used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1B  0x0000006C   -   ivINT_Reserved27              unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1C  0x00000070   -   ivINT_UART0                   unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1D  0x00000074   -   ivINT_Reserved29              unused by PE */
@@ -139,8 +139,8 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2B  0x000000AC   -   ivINT_MCG                     unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2C  0x000000B0   -   ivINT_LPTimer                 unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2D  0x000000B4   -   ivINT_Reserved45              unused by PE */
-    (tIsrFunc)&Cpu_Interrupt,          /* 0x2E  0x000000B8   -   ivINT_PORTA                   unused by PE */
-    (tIsrFunc)&Cpu_ivINT_PORTB         /* 0x2F  0x000000BC   2   ivINT_PORTB                   used by PE */
+    (tIsrFunc)&Cpu_ivINT_PORTA,        /* 0x2E  0x000000B8   2   ivINT_PORTA                   used by PE */
+    (tIsrFunc)&Cpu_Interrupt           /* 0x2F  0x000000BC   -   ivINT_PORTB                   unused by PE */
     }
   };
   /*lint -restore Enable MISRA rule (11.4) checking. */

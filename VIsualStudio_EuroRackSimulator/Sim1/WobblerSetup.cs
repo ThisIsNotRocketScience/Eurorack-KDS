@@ -24,16 +24,58 @@ namespace Sim1
             pictureBox1.Invalidate();
         }
 
-        float[] F1Hist = new float[300];
-        float[] F2Hist = new float[300];
-        PointF[] P1 = new PointF[300];
-        PointF[] P2 = new PointF[300];
 
-        float[] iF1Hist = new float[300];
-        float[] iF2Hist = new float[300];
-        PointF[] iP1 = new PointF[300];
-        PointF[] iP2 = new PointF[300];
+        class PendulumDisp
+        {
+            public float[] F1Hist = new float[300];
+            public float[] F2Hist = new float[300];
+            public PointF[] P1 = new PointF[300];
+            public PointF[] P2 = new PointF[300];
+            public void Render(Graphics G, int x, int y )
+            {
+                {
 
+
+                    float xx1 = 120 + x;
+                    float xy1 = 120 + y;
+                    float xx2 = xx1 + (float)Math.Sin(F1Hist[299]) * 100 ;
+                    float xy2 = xy1 + (float)Math.Cos(F1Hist[299]) * 100 ;
+                    float xx3 = xx2 + (float)Math.Sin(F2Hist[299]) * 100 ;
+                    float xy3 = xy2 + (float)Math.Cos(F2Hist[299]) * 100 ;
+
+                    G.DrawLine(Pens.White, xx1, xy1, xx2, xy2);
+                    G.DrawLine(Pens.White, xx2, xy2, xx3, xy3);
+
+
+                    for (int i = 0; i < 300; i++)
+                    {
+                        P1[i] = new PointF(i*2  + x, y+ Math.Max(0, Math.Min(1000, 100 + F1Hist[i]*30)));
+                        P2[i] = new PointF(i*2  + x, y+ Math.Max(0, Math.Min(1000, 200 + F2Hist[i]*30)));
+                    }
+
+                    G.DrawLines(Pens.Yellow, P1);
+                    G.DrawLines(Pens.Blue, P2);
+                }
+
+            }
+
+            public void Update(float p1, float p2)
+            {
+                for (int i = 0; i < 299; i++)
+                {
+                    F1Hist[i] = F1Hist[i + 1];
+                    F2Hist[i] = F2Hist[i + 1];
+                }
+
+                F1Hist[299] = (p1);
+                F2Hist[299] = (p2);
+
+            }
+        }
+
+
+        PendulumDisp IntDisp = new PendulumDisp();
+        PendulumDisp FloatDisp = new PendulumDisp();
 
         class Mass
         {
@@ -69,101 +111,25 @@ namespace Sim1
             float F1 = TestFrameLoader.RunPendulum();
             float F2 = TestFrameLoader.RunPendulum2();
 
-            int iF1 = TestFrameLoader.RunPendulumInt();
-            int iF2 = TestFrameLoader.RunPendulum2Int();
-            if (true)
-            {
-                F1 = (float)iF1;
-                F2 = (float)iF2;
-            }
-            //TestFrameLoader.RunPendulumInt();
-            List<Mass> Masses = new List<Mass>();
-            List<Spring> Springs = new List<Spring>();
-           // float rrR = TestFrameLoader.RunPendulum2Int(3, 0, 0);
-            //int SpringCount = (int)rrR;
-            //int MassCount = (int)TestFrameLoader.RunPendulum2Int(2, 0, 0);
+            float iF1 = (float)TestFrameLoader.RunPendulumInt();
+            float iF2 = (float)TestFrameLoader.RunPendulum2Int();
 
-           // float fixconvert = 1.0f / ((float)(1 << 16));
-           /* for(int i =0;i<MassCount;i++)
-            {
-                Mass M = new Mass();
-                M.Pos.X = (TestFrameLoader.RunPendulum2Int(0, i, 0)* fixconvert) + 300;
-                M.Pos.Y = (TestFrameLoader.RunPendulum2Int(0, i, 1)* fixconvert) + 100;
-                M.Speed.X = TestFrameLoader.RunPendulum2Int(0, i, 2)* fixconvert;
-                M.Speed.Y = TestFrameLoader.RunPendulum2Int(0, i, 3)* fixconvert;
-                M.Force.X = TestFrameLoader.RunPendulum2Int(0, i, 4)* fixconvert;
-                M.Force.Y = TestFrameLoader.RunPendulum2Int(0, i, 5)* fixconvert;
+            // F1 *= 6.283f  / ((float)(1 <<24)) ;
+            // F2 *= 6.283f / ((float)(1 << 24));
 
-                Masses.Add(M);
+            F1 /= (float)0xffff;
+            F2 /= (float)0xffff;
+            iF1 *= 1.0f / (float)(1 << 25);
+            iF2 *= 1.0f / (float)(1 << 25);
 
-            }
-            for(int i =0;i<SpringCount;i++)
-            {
-                Spring newS = new Spring();
-                int A = (int)TestFrameLoader.RunPendulum2Int(1, i, 0);
-                int B = (int)TestFrameLoader.RunPendulum2Int(1, i, 1);
-                float Rest = TestFrameLoader.RunPendulum2Int(1, i, 1) *fixconvert;
-                newS.A = Masses[A];
-                newS.B = Masses[B];
-                newS.RestLength = Rest;
-                Springs.Add(newS);
+          
 
-                G.DrawLine(new Pen(Color.Yellow,4), newS.A.Pos, newS.B.Pos);
-            }
-            for (int i = 0; i < MassCount; i++)
-            {
-                RectangleF rR = new RectangleF();
-                rR.X = Masses[i].Pos.X - 4;
-                rR.Y = Masses[i].Pos.Y - 4;
-                rR.Width = 8;
-                rR.Height = 8;
+            FloatDisp.Update(F1, F2);
+            IntDisp.Update(iF1, iF2);
 
-//                PointF P2 = new PointF(Masses[i].Pos.X + Masses[i].Speed.X * 20, Masses[i].Pos.Y + Masses[i].Speed.Y * 20);
-                PointF P3 = new PointF(Masses[i].Pos.X + Masses[i].Force.X * 20, Masses[i].Pos.Y + Masses[i].Force.Y * 20);
-  //              G.DrawLine(Pens.AliceBlue, Masses[i].Pos, P2);
-                G.DrawLine(Pens.Orange, Masses[i].Pos, P3);
-                G.FillEllipse(Brushes.Lime, rR);
-            }
-            */
-
-                for (int i =0;i<299;i++)
-            {
-                F1Hist[i] = F1Hist[i + 1];
-                F2Hist[i] = F2Hist[i + 1];
-                iF1Hist[i] = iF1Hist[i + 1];
-                iF2Hist[i] = iF2Hist[i + 1];
-            }
-            F1Hist[299] = (F1 / (float)(0xffff));
-            F2Hist[299] = (F2 / (float)(0xffff));
-
-            {
-                F1 *= 6.283f  / ((float)(1 <<30)) ;
-                F1 *= 1.0f /(float) (1 << 2);
-
-                F2 *= 6.283f / ((float)(1 << 30));
-                F2 *= 1.0f / (float)(1 << 2);
-
-                float xx1 = 250;
-                float xy1 = 250;
-                float xx2 = xx1 + (float)Math.Sin(F1/ (float)(0xffff)) * 100;
-                float xy2 = xy1 + (float)Math.Cos(F1/ (float)(0xffff)) * 100;
-                float xx3 = xx2 + (float)Math.Sin(F2/ (float)(0xffff)) * 100;
-                float xy3 = xy2 + (float)Math.Cos(F2/ (float)(0xffff)) * 100;
-
-                G.DrawLine(Pens.White, xx1, xy1, xx2, xy2);
-                G.DrawLine(Pens.White, xx2, xy2, xx3, xy3);
-
-
-                for (int i =0;i<300;i++)
-                {
-                    P1[i] = new PointF(i*2, 100 + F1Hist[i] * 30);
-                    P2[i] = new PointF(i*2, 200 + F2Hist[i] * 30);
-                }
-
-                G.DrawLines(Pens.Yellow, P1);
-                G.DrawLines(Pens.Blue, P2);
-            }
-
+            FloatDisp.Render(G, 10, 0);
+            IntDisp.Render(G, 620, 0);
+            
             float S = (float)Math.Min(pictureBox1.Width / ((10 + 5.08 * 12)), pictureBox1.Height / (10 + 128.5));
             //S = 1.0f / S;
             float S2 = 1.0f / S;
@@ -187,6 +153,13 @@ namespace Sim1
                 float p = (i * 3.1415f) / 19.0f - 0.1f;
                 float cx = -(float)Math.Sin(p) * W1;
                 float sx = (float)Math.Cos(p) * W1 ;
+
+                int lA = TestFrameLoader.GetWobbleLed(i, 0);
+                int lB = TestFrameLoader.GetWobbleLed(i, 1);
+                G.FillEllipse(new SolidBrush(Color.FromArgb(lA,0,0)), x1 + sx - R, y1 + cx - R, R * 2, R * 2);
+                G.FillEllipse(new SolidBrush(Color.FromArgb(lB,0,0)), W - (x1 + sx) - R, y1 + cx - R, R * 2, R * 2);
+
+
                 G.DrawEllipse(new Pen(Color.Yellow, S2), x1 + sx - R, y1 + cx - R, R*2, R*2);
                 G.DrawEllipse(new Pen(Color.Yellow, S2), W - (x1 + sx ) - R, y1 + cx - R, R*2, R*2);
 //                RR += String.Format("MOVE D{0} ({1} {2}); ", i + 24, (x1 + sx).ToString().Replace(',','.'), (H*2 - ( y1 + cx)).ToString().Replace(',', '.'));
@@ -199,6 +172,11 @@ namespace Sim1
         private void timer1_Tick(object sender, EventArgs e)
         {
             pictureBox1.Invalidate();
+        }
+
+        private void TriggerButton_Click(object sender, EventArgs e)
+        {
+            TestFrameLoader.TriggerWobbler();
         }
     }
 }

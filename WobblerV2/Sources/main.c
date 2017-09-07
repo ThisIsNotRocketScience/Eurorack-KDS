@@ -69,9 +69,9 @@ int adcchannels[ADC_Count];
 #include "../../EurorackShared/Math.c"
 
 
-struct Wobbler2_LFO LFO;
-struct Wobbler2_Settings Settings;
-struct Wobbler2_Params Params;
+Wobbler2_LFO_t LFO;
+Wobbler2_Settings Settings;
+Wobbler2_Params Params;
 
 
 uint32_t t = 0;
@@ -86,7 +86,7 @@ uint32_t t = 0;
 #define NOTE(x) VOLT((x) / 12.0)
 
 
-unsigned char pwm = 3;
+ int pwm = 3;
 int counter = 0;
 
 #define SetIf(x){if (x) {DATA_SetVal(DATA_DeviceData);}else {DATA_ClrVal(DATA_DeviceData);}CLOCK_ClrVal(CLOCK_DeviceData); CLOCK_SetVal(CLOCK_DeviceData);};
@@ -96,7 +96,7 @@ int counter = 0;
 void ShiftOut()
 {
 	counter++;
-	pwm += 9;
+	pwm = (pwm + 7)&255;
 
 	LATCH_ClrVal(LATCH_DeviceData);
 
@@ -111,8 +111,8 @@ void ShiftOut()
 	SetIf(LFO.Led[1][0] > pwm);
 
 	SetIf(LFO.TriggerLed > pwm);
-	SetNotIf(LFO.Gate[1]>0);
 	SetNotIf(LFO.Gate[0]>0);
+	SetNotIf(LFO.Gate[1]>0);
 
 	unsigned int pwm2 = 10000;
 
@@ -163,13 +163,13 @@ void doTimer()
 	{
 		LinearOut = Wobbler2_Get(&LFO, &Params);
 		LinearOut = (int)(LFO.Output);
-		DAC_Write(1, LinearOut);
+		CurvedOut = (int)(LFO.OutputPhased);
+		DAC_Write(1, CurvedOut);
 	}
 	break;
 	case 1:
 	{
-		CurvedOut = (int)(LFO.OutputPhased);
-		DAC_Write(0, CurvedOut);
+		DAC_Write(0, LinearOut);
 	}
 
 	break;
@@ -256,9 +256,12 @@ int main(void)
 		{
 			LFO.Mod = ~adcchannels[ADC_MODULATION];
 			LFO.Shape = ~adcchannels[ADC_SHAPE] ;
-			LFO.Phasing = ~adcchannels[ADC_PHASING] ;
+			LFO.Phasing = (adcchannels[ADC_PHASING])>>4 ;
 			LFO.Speed = ((0xffff-adcchannels[ADC_SPEED]) >> 7);
 			measured = 0;
+
+			Wobbler2_UpdateSettings(&LFO.Pendulum, &LFO);
+
 			AD1_Measure(FALSE);
 
 		}

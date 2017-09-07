@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
 **     Abstract    :
 **
 **     Settings    :
@@ -147,13 +147,13 @@ extern volatile uint8_t SR_lock;
 
 
 /* {Default RTOS Adapter} ISR function prototype */
-PE_ISR(Cpu_ivINT_PORTB);
+PE_ISR(Cpu_ivINT_PORTA);
 /*
 ** ===================================================================
-**     Method      :  Cpu_Cpu_ivINT_PORTB (component MKL02Z32FM4)
+**     Method      :  Cpu_Cpu_ivINT_PORTA (component MKL02Z32FM4)
 **
 **     Description :
-**         This ISR services the ivINT_PORTB interrupt shared by several 
+**         This ISR services the ivINT_PORTA interrupt shared by several 
 **         components.
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================

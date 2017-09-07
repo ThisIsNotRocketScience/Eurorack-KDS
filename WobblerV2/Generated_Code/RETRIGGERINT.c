@@ -7,7 +7,7 @@
 **     Version     : Component 02.156, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
 **     Abstract    :
 **         This component, "ExtInt_LDD", provide a low level API 
 **         for unified access of external interrupts handling
@@ -16,10 +16,10 @@
 **         selected edge.
 **     Settings    :
 **          Component name                                 : RETRIGGERINT
-**          Pin                                            : ADC0_SE5/CMP0_IN3/PTB1/IRQ_6/UART0_TX/UART0_RX
+**          Pin                                            : ADC0_SE0/CMP0_IN0/PTA12/IRQ_13/LPTMR0_ALT2/TPM1_CH0/TPM_CLKIN0
 **          Pin signal                                     : 
 **          Generate interrupt on                          : both edges
-**          Interrupt                                      : INT_PORTB
+**          Interrupt                                      : INT_PORTA
 **          Interrupt priority                             : medium priority
 **          Initialization                                 : 
 **            Enabled in init. code                        : yes
@@ -91,7 +91,7 @@ typedef struct {
 /* {Default RTOS Adapter} Static object used for simulation of dynamic driver memory allocation */
 static RETRIGGERINT_TDeviceData DeviceDataPrv__DEFAULT_RTOS_ALLOC;
 /* {Default RTOS Adapter} Global variable used for passing a parameter into ISR */
-static RETRIGGERINT_TDeviceData * INT_PORTB__DEFAULT_RTOS_ISRPARAM;
+static RETRIGGERINT_TDeviceData * INT_PORTA__DEFAULT_RTOS_ISRPARAM;
 
 /*
 ** ===================================================================
@@ -123,30 +123,30 @@ LDD_TDeviceData* RETRIGGERINT_Init(LDD_TUserData *UserDataPtr)
   DeviceDataPrv->UserData = UserDataPtr;
   /* Interrupt vector(s) allocation */
   /* {Default RTOS Adapter} Set interrupt vector: IVT is static, ISR parameter is passed by the global variable */
-  INT_PORTB__DEFAULT_RTOS_ISRPARAM = DeviceDataPrv;
+  INT_PORTA__DEFAULT_RTOS_ISRPARAM = DeviceDataPrv;
   /* Initialization of Port Control registers */
-  /* PORTB_PCR1: ISF=0,MUX=1 */
-  PORTB_PCR1 = (uint32_t)((PORTB_PCR1 & (uint32_t)~(uint32_t)(
-                PORT_PCR_ISF_MASK |
-                PORT_PCR_MUX(0x06)
-               )) | (uint32_t)(
-                PORT_PCR_MUX(0x01)
-               ));
-  /* PORTB_PCR1: ISF=1,IRQC=0x0B */
-  PORTB_PCR1 = (uint32_t)((PORTB_PCR1 & (uint32_t)~(uint32_t)(
-                PORT_PCR_IRQC(0x04)
-               )) | (uint32_t)(
-                PORT_PCR_ISF_MASK |
-                PORT_PCR_IRQC(0x0B)
-               ));
-  /* NVIC_IPR7: PRI_31=0x80 */
+  /* PORTA_PCR12: ISF=0,MUX=1 */
+  PORTA_PCR12 = (uint32_t)((PORTA_PCR12 & (uint32_t)~(uint32_t)(
+                 PORT_PCR_ISF_MASK |
+                 PORT_PCR_MUX(0x06)
+                )) | (uint32_t)(
+                 PORT_PCR_MUX(0x01)
+                ));
+  /* PORTA_PCR12: ISF=1,IRQC=0x0B */
+  PORTA_PCR12 = (uint32_t)((PORTA_PCR12 & (uint32_t)~(uint32_t)(
+                 PORT_PCR_IRQC(0x04)
+                )) | (uint32_t)(
+                 PORT_PCR_ISF_MASK |
+                 PORT_PCR_IRQC(0x0B)
+                ));
+  /* NVIC_IPR7: PRI_30=0x80 */
   NVIC_IPR7 = (uint32_t)((NVIC_IPR7 & (uint32_t)~(uint32_t)(
-               NVIC_IP_PRI_31(0x7F)
+               NVIC_IP_PRI_30(0x7F)
               )) | (uint32_t)(
-               NVIC_IP_PRI_31(0x80)
+               NVIC_IP_PRI_30(0x80)
               ));
-  /* NVIC_ISER: SETENA|=0x80000000 */
-  NVIC_ISER |= NVIC_ISER_SETENA(0x80000000);
+  /* NVIC_ISER: SETENA|=0x40000000 */
+  NVIC_ISER |= NVIC_ISER_SETENA(0x40000000);
   /* Registration of the device structure */
   PE_LDD_RegisterDeviceStructure(PE_LDD_COMPONENT_RETRIGGERINT_ID,DeviceDataPrv);
   return ((LDD_TDeviceData *)DeviceDataPrv);
@@ -165,12 +165,12 @@ LDD_TDeviceData* RETRIGGERINT_Init(LDD_TUserData *UserDataPtr)
 void RETRIGGERINT_Interrupt(void)
 {
   /* {Default RTOS Adapter} ISR parameter is passed through the global variable */
-  RETRIGGERINT_TDeviceDataPtr DeviceDataPrv = INT_PORTB__DEFAULT_RTOS_ISRPARAM;
+  RETRIGGERINT_TDeviceDataPtr DeviceDataPrv = INT_PORTA__DEFAULT_RTOS_ISRPARAM;
 
   /* Check the pin interrupt flag of the shared interrupt */
-  if (PORT_PDD_GetPinInterruptFlag(PORTB_BASE_PTR, RETRIGGERINT_PIN_INDEX)) {
+  if (PORT_PDD_GetPinInterruptFlag(PORTA_BASE_PTR, RETRIGGERINT_PIN_INDEX)) {
     /* Clear the interrupt flag */
-    PORT_PDD_ClearPinInterruptFlag(PORTB_BASE_PTR, RETRIGGERINT_PIN_INDEX);
+    PORT_PDD_ClearPinInterruptFlag(PORTA_BASE_PTR, RETRIGGERINT_PIN_INDEX);
     /* Call OnInterrupt event */
     RETRIGGERINT_OnInterrupt(DeviceDataPrv->UserData);
   }
@@ -195,7 +195,7 @@ void RETRIGGERINT_Interrupt(void)
 bool RETRIGGERINT_GetVal(LDD_TDeviceData *DeviceDataPtr)
 {
   (void)DeviceDataPtr;                 /* Parameter is not used, suppress unused argument warning */
-  if ((GPIO_PDD_GetPortDataInput(PTB_BASE_PTR) & RETRIGGERINT_PIN_MASK) != 0U) {
+  if ((GPIO_PDD_GetPortDataInput(PTA_BASE_PTR) & RETRIGGERINT_PIN_MASK) != 0U) {
     return TRUE;
   } else {
     return FALSE;

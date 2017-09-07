@@ -7,7 +7,7 @@
 **     Version     : Component 02.156, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
 **     Abstract    :
 **         This component, "ExtInt_LDD", provide a low level API 
 **         for unified access of external interrupts handling
@@ -16,10 +16,10 @@
 **         selected edge.
 **     Settings    :
 **          Component name                                 : RETRIGGERINT
-**          Pin                                            : ADC0_SE5/CMP0_IN3/PTB1/IRQ_6/UART0_TX/UART0_RX
+**          Pin                                            : ADC0_SE0/CMP0_IN0/PTA12/IRQ_13/LPTMR0_ALT2/TPM1_CH0/TPM_CLKIN0
 **          Pin signal                                     : 
 **          Generate interrupt on                          : both edges
-**          Interrupt                                      : INT_PORTB
+**          Interrupt                                      : INT_PORTA
 **          Interrupt priority                             : medium priority
 **          Initialization                                 : 
 **            Enabled in init. code                        : yes
@@ -96,7 +96,7 @@ extern "C" {
 #endif 
 
 /*! Peripheral base address of a device allocated by the component. This constant can be used directly in PDD macros. */
-#define RETRIGGERINT_PRPH_BASE_ADDRESS  0x400FF040U
+#define RETRIGGERINT_PRPH_BASE_ADDRESS  0x400FF000U
   
 /*! Device data structure pointer used when auto initialization property is enabled. This constant can be passed as a first parameter to all component's methods. */
 #define RETRIGGERINT_DeviceData  ((LDD_TDeviceData *)PE_LDD_GetDeviceStructure(PE_LDD_COMPONENT_RETRIGGERINT_ID))
@@ -109,8 +109,8 @@ extern "C" {
 #define RETRIGGERINT_OnInterrupt_EVENT_ENABLED /*!< OnInterrupt event of the component RETRIGGERINT is enabled (generated) */
 
 /* Definition of implementation constants */
-#define RETRIGGERINT_PIN_INDEX 0x01U   /*!< Index of the used pin from the port */
-#define RETRIGGERINT_PIN_MASK 0x02U    /*!< Mask of the used pin from the port */
+#define RETRIGGERINT_PIN_INDEX 0x0CU   /*!< Index of the used pin from the port */
+#define RETRIGGERINT_PIN_MASK 0x1000U  /*!< Mask of the used pin from the port */
 
 /*
 ** ===================================================================

@@ -3,7 +3,7 @@
   <Header>
     <Name>WobblerV2</Name>
     <SavedBy>Stijn</SavedBy>
-    <ModificationStamp>95</ModificationStamp>
+    <ModificationStamp>96</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -19320,7 +19320,7 @@
         <ItemSymbol>_Pin</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>ADC0_SE5/CMP0_IN3/PTB1/IRQ_6/UART0_TX/UART0_RX</Value>
+        <Value>ADC0_SE0/CMP0_IN0/PTA12/IRQ_13/LPTMR0_ALT2/TPM1_CH0/TPM_CLKIN0</Value>
         <SharedPrphMode>false</SharedPrphMode>
       </ItemState>
       <ItemState>
@@ -19338,7 +19338,7 @@
       </ItemState>
       <ItemState>
         <ItemSymbol>Int</ItemSymbol>
-        <Value>INT_PORTB</Value>
+        <Value>INT_PORTA</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>InitPriority</ItemSymbol>

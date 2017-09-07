@@ -25,9 +25,13 @@ struct  EdgeCutter_Params EnvParams;
 
 
 struct  Wobbler_LFO LFORunning;
+struct  Wobbler2_LFO_t LFO2Running;
+struct  Wobbler2_Params LFO2Params;
 struct  Wobbler_LFO LFOStatic;
 struct  Wobbler_Settings LFOSettings;
 struct  Wobbler_Params LFOParams;
+//Wobbler2_Pendulum_t Pendulum;
+Wobbler2_PendulumInt_t PendulumInt;
 
 
 extern "C"
@@ -41,13 +45,12 @@ extern "C"
 		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
 	}
 
-	Wobbler2_Pendulum_t Pendulum;
-	Wobbler2_PendulumInt_t PendulumInt;
 
 
 	__declspec(dllexport) void __stdcall Init()
 	{
-		Wobbler2_InitPendulum(&Pendulum);
+		Wobbler2_Init(&LFO2Running);
+		Wobbler2_InitPendulum(&LFO2Running.Pendulum, &LFO2Running);
 		Wobbler2_InitIntPendulum(&PendulumInt);
 
 		EdgeCutter_LoadSettings(&EnvSettings, &EnvParams);
@@ -235,15 +238,36 @@ extern "C"
 		return Tuesday.Gates[GATE_GATE] > 0;
 	}
 
+	__declspec(dllexport) void TriggerWobbler()
+	{
+		Wobbler2_Trigger(&LFO2Running, 0, &LFO2Params);
+	}
+
 	__declspec(dllexport) float RunPendulum()
 	{
-		Wobbler2_DoublePendulum(&Pendulum, 0.05);
-		return Pendulum.A;
+		Wobbler2_DoublePendulum(&LFO2Running.Pendulum, 0.05);
+		LFO2Running.Output = LFO2Running.Pendulum.As;
+		LFO2Running.OutputPhased = LFO2Running.Pendulum.Bs;
+
+
+		LFO2Running.Output = LFO2Running.Output / (0xffff * 4);
+		LFO2Running.OutputPhased = LFO2Running.OutputPhased / (0xffff * 4);
+
+
+		LFO2Running.Output += 2048;// + (2540 - 2048);
+		LFO2Running.OutputPhased += 2048;// +(2540 - 2048);
+
+
+		Wobbler2_GetSteppedResult(0xffff, 2, &LFO2Running.ShapeStepped);
+		Wobbler2_DoLeds(&LFO2Running);
+
+
+		return LFO2Running.Pendulum.A;
 	}
 
 	__declspec(dllexport) float RunPendulum2()
 	{
-		return Pendulum.B;
+		return LFO2Running.Pendulum.B;
 	}
 
 	__declspec(dllexport) int32_t RunPendulumInt()
@@ -252,6 +276,12 @@ extern "C"
 		return PendulumInt.A;
 		
 	}
+	__declspec(dllexport) int32_t GetWobbleLed(int32_t i, int32_t v)
+	{
+		return LFO2Running.Led[v][i];
+		
+	}
+	
 
 	__declspec(dllexport) int32_t RunPendulum2Int()
 	{
@@ -302,7 +332,7 @@ extern "C"
 	__declspec(dllexport) void Compare()
 	{
 		printf(" Compare start\n");
-		float *A = (float*)&Pendulum._2sub1;
+		float *A = (float*)&LFO2Running.Pendulum._2sub1;
 		int32_t *B = (int32_t*)&PendulumInt._2sub1;
 		for (int i = 0; i < 33;i++)
 		{
@@ -621,7 +651,7 @@ BOOL WINAPI DllMain(
 		RunTest("Random", ALGO_RANDOM);
 		*/
 
-		RunTimingTest();
+//		RunTimingTest();
 
 		if (0)
 		{

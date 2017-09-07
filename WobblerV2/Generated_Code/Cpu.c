@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
 **     Abstract    :
 **
 **     Settings    :
@@ -261,15 +261,15 @@ volatile uint8_t SR_lock = 0x00U;      /* Lock */
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_Cpu_ivINT_PORTB (component MKL02Z32FM4)
+**     Method      :  Cpu_Cpu_ivINT_PORTA (component MKL02Z32FM4)
 **
 **     Description :
-**         This ISR services the ivINT_PORTB interrupt shared by several 
+**         This ISR services the ivINT_PORTA interrupt shared by several 
 **         components.
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-PE_ISR(Cpu_ivINT_PORTB)
+PE_ISR(Cpu_ivINT_PORTA)
 {
   RETRIGGERINT_Interrupt();            /* Call the service routine */
 }
@@ -447,8 +447,8 @@ void PE_low_level_init(void)
                 NVIC_IP_PRI_31(0xFF) |
                 NVIC_IP_PRI_30(0xFF)
                );
-  /* GPIOB_PDDR: PDD&=~2 */
-  GPIOB_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x02));
+  /* GPIOA_PDDR: PDD&=~0x1000 */
+  GPIOA_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x1000));
   /* PORTB_PCR10: ISF=0,PE=1 */
   PORTB_PCR10 = (uint32_t)((PORTB_PCR10 & (uint32_t)~(uint32_t)(
                  PORT_PCR_ISF_MASK

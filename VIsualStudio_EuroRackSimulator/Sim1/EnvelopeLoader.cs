@@ -135,6 +135,10 @@ namespace Sim1
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFOLed(int led);
 
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetWobbleLed(int i, int v);
+        
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFO(int staticlfo, int speed, int shape, int mod, int phaseing);
 
@@ -152,6 +156,9 @@ namespace Sim1
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern float RunPendulum2();
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern void TriggerWobbler();
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern Int32 RunPendulumInt();

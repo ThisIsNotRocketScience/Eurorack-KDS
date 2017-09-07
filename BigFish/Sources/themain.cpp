@@ -405,8 +405,8 @@ void Timer10khz()
 		LEDTARGET[SHAPELEDS[i]] = 0;
 	}
 
-	SteppedResult_t sr;
-	GetSteppedResult(Fish.Parameters[OSC_SHAPE], 6, &sr);
+	BigFish_SteppedResult_t sr;
+	BigFish_GetSteppedResult(Fish.Parameters[OSC_SHAPE], 6, &sr);
 	LEDTARGET[SHAPELEDS[sr.index]] = 255 - sr.fractional;
 	LEDTARGET[SHAPELEDS[sr.index+1]] =   sr.fractional;
 

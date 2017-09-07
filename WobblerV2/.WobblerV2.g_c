@@ -59,7 +59,7 @@
       <XtraAge16>1256473564</XtraAge16>
       <XtraAge17>1256473564</XtraAge17>
       <XtraAge19>1228700989</XtraAge19>
-      <XtraAge20>1256473848</XtraAge20>
+      <XtraAge20>1260852035</XtraAge20>
       <GenExtraFileType20>4</GenExtraFileType20>
       <GenExtraFileType19>5</GenExtraFileType19>
       <GenExtraFileType18>4</GenExtraFileType18>
@@ -167,7 +167,7 @@
     </GenFiles>
     <SignalListFile>Documentation\WobblerV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>95</ProjectModificationStamp>
+    <ProjectModificationStamp>96</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -175,8 +175,8 @@
     <GenComponentVersion>01.009</GenComponentVersion>
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256473564</HeaderAge>
-    <CodeAge>1256473564</CodeAge>
+    <HeaderAge>1259411082</HeaderAge>
+    <CodeAge>1259411082</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -1462,8 +1462,8 @@
     <GenComponentVersion>02.156</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256473564</HeaderAge>
-    <CodeAge>1256473564</CodeAge>
+    <HeaderAge>1259411081</HeaderAge>
+    <CodeAge>1259411081</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>9</GenNumMethods>
     <Init>true</Init>
