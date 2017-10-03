@@ -164,11 +164,6 @@ Module "SW_SPEED"  (component BitIO_LDD)
                 returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
                 property for limitations). This method cannot be disabled if direction is [input].
 
-Module "RETRIGGERINT" (component ExtInt_LDD)
-   - RETRIGGERINT_Init -This method initializes the associated peripheral(s) and the component internal variables. The method 
-                is called automatically as a part of the application initialization code.
-   - RETRIGGERINT_GetVal -Returns the actual value of the input pin of the component.
-
 Module "WAIT1"     (component Wait)
    - WAIT1_Wait10Cycles -Wait for 10 CPU cycles.
    - WAIT1_Wait100Cycles -Wait for 100 CPU cycles.
@@ -211,60 +206,6 @@ Module "GI2C1"     (component GenericI2C)
    - GI2C1_Deinit -Deinitializes the driver.
    - GI2C1_ScanDevice -Checks if a device responds on the bus with an ACK.
    - GI2C1_Init -Initializes the driver.
-
-Module "I2C1"      (component GenericSWI2C)
-   - I2C1_Init -Initializes the associated peripheral(s) and the components internal variables. The method is called 
-                automatically as a part of the application initialization code.
-   - I2C1_ResetBus -Reset bus if needed.
-   - I2C1_SendChar -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and 
-                then writes one character (byte) to the bus. The slave address must be specified before by the "SelectSlave" 
-                method or in the  component initialization section of 'Slave address init' property. When working as the SLAVE, 
-                this method writes one character (byte) to the bus. If the ERR_NOTAVAIL error code returned, the char is 
-                successfully sent to master but the master device responds by an acknowledgment instead of no acknowledgment at 
-                the end of transfer. 'OnError' event is called in this case.
-   - I2C1_RecvChar -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 1 to the I2C bus and 
-                then reads one character (byte) from the bus. The slave address must be specified before by the "SelectSlave" 
-                method or in the component initialization section of 'Slave address init' property. When working as a SLAVE, 
-                this method reads one character (byte) from the bus.
-   - I2C1_SendBlock -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and 
-                then writes the block of characters to the bus. If the component is disabled (by the "Disable" method or 
-                initialization), the block is moved to the output buffer if the 'Output buffer size' property is different from 
-                zero. The content of the output buffer is sent immediately with the stop condition at the end when the 
-                component is enabled by the "Enable" method. After the output buffer transmission, the whole output buffer is 
-                cleared. The slave address must be specified before by the "SelectSlave" method or in component initialization 
-                section of 'Slave address init' property.  When working as a SLAVE, this method writes block of characters to 
-                the bus. If the ERR_NOTAVAIL error code is returned, the whole block is successfully sent to a master but the 
-                master device responds by an acknowledgment instead of no acknowledgment sent at the end of the last block byte 
-                transfer. 'OnError' event is called in this case.
-   - I2C1_SendBlockContinue -Same is SendBlock() but does not send start condition. When working as a MASTER, this method 
-                writes 7 bits of slave address plus R/W bit = 0 to the I2C bus and then writes the block of characters to the 
-                bus. If the component is disabled (by the "Disable" method or initialization), the block is moved to the output 
-                buffer if the 'Output buffer size' property is different from zero. The content of the output buffer is sent 
-                immediately with the stop condition at the end when the component is enabled by the "Enable" method. After the 
-                output buffer transmission, the whole output buffer is cleared. The slave address must be specified before by 
-                the "SelectSlave" method or in component initialization section of 'Slave address init' property.  When working 
-                as a SLAVE, this method writes block of characters to the bus. If the ERR_NOTAVAIL error code is returned, the 
-                whole block is successfully sent to a master but the master device responds by an acknowledgment instead of no 
-                acknowledgment sent at the end of the last block byte transfer. 'OnError' event is called in this case.
-   - I2C1_RecvBlock -When working as a MASTER, this method writes 7 bits of slave address plus R/W bit = 1 to the I2C bus and 
-                then reads the block of characters from the bus. The slave address must be specified before by the 
-                "SelectSlave" method or in component initialization section of 'Slave address init' property.  When working as 
-                a SLAVE, this method reads the block of characters from the bus.
-   - I2C1_SendStop -When working as a MASTER, if the 'Automatic stop condition' property value is 'no', this method sends a 
-                valid stop  condition to the serial data line of the I2C bus to terminate the communication on the bus after 
-                using send methods. This method is enabled only if the component is in MASTER mode and 'Automatic stop 
-                condition' property value is 'no'
-   - I2C1_SelectSlave -When working as a MASTER, this method selects a new slave for communication by its slave address value. 
-                Any send or receive method are directed to or from the selected device, until a new slave device is selected by 
-                this method. If the selected slave uses 10-bit slave addressing, as the parameter 7 bits must be passed, which 
-                involves 10-bit addressing (11110XX), including two MSBs of slave address (XX). The second byte of the 10-bit 
-                slave address must be sent to the slave as a general character of send methods. This method is available only 
-                if the component is in MASTER mode.
-   - I2C1_GetSelected -When working as a MASTER, this method returns the identification address value of the slave, which is 
-                currently selected for communication with the master. If the current slave uses 10-bit slave addressing, the 
-                method returns the first 7 bits only, which involves 10-bit addressing (11110XX), including two MSBs of the 
-                slave address (XX). This method is not able to return the rest value of 10-bit slave address. This method is 
-                available only if the component is in MASTER mode.
 
 Module "CI2C1"     (component InternalI2C)
    - CI2C1_SendChar -When working as a MASTER, this method writes one (7-bit addressing) or two (10-bit addressing) slave 
@@ -310,6 +251,15 @@ Module "CI2C1"     (component InternalI2C)
    - CI2C1_SelectSlave -This method selects a new slave for communication by its 7-bit slave address value. Any send or receive 
                 method directs to or from selected device, until a new slave device is selected by this method. This method is 
                 not available for the SLAVE mode.
+
+Module "JACK_RETRIGGER" (component BitIO_LDD)
+   - JACK_RETRIGGER_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors 
+                and sets interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" 
+                value then the device is also enabled(see the description of the Enable() method). In this case the Enable() 
+                method is not necessary and needn't to be generated.
+   - JACK_RETRIGGER_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read 
+                and returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
 
 Module "Cpu"       (component MKL02Z32FM4)
 

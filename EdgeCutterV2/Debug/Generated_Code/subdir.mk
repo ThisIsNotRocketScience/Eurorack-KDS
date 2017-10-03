@@ -6,8 +6,6 @@
 C_SRCS += \
 ../Generated_Code/AD1.c \
 ../Generated_Code/AdcLdd1.c \
-../Generated_Code/BitIoLdd1.c \
-../Generated_Code/BitIoLdd2.c \
 ../Generated_Code/CI2C1.c \
 ../Generated_Code/CLOCK.c \
 ../Generated_Code/CLOCKINT.c \
@@ -16,16 +14,13 @@ C_SRCS += \
 ../Generated_Code/DATA.c \
 ../Generated_Code/EE241.c \
 ../Generated_Code/GI2C1.c \
-../Generated_Code/I2C1.c \
 ../Generated_Code/IntI2cLdd1.c \
+../Generated_Code/JACK_RETRIGGER.c \
 ../Generated_Code/KSDK1.c \
 ../Generated_Code/LATCH.c \
 ../Generated_Code/PE_LDD.c \
 ../Generated_Code/PTA.c \
 ../Generated_Code/PTB.c \
-../Generated_Code/RETRIGGERINT.c \
-../Generated_Code/SCL1.c \
-../Generated_Code/SDA1.c \
 ../Generated_Code/SM1.c \
 ../Generated_Code/SW_MODE.c \
 ../Generated_Code/SW_SPEED.c \
@@ -39,8 +34,6 @@ C_SRCS += \
 OBJS += \
 ./Generated_Code/AD1.o \
 ./Generated_Code/AdcLdd1.o \
-./Generated_Code/BitIoLdd1.o \
-./Generated_Code/BitIoLdd2.o \
 ./Generated_Code/CI2C1.o \
 ./Generated_Code/CLOCK.o \
 ./Generated_Code/CLOCKINT.o \
@@ -49,16 +42,13 @@ OBJS += \
 ./Generated_Code/DATA.o \
 ./Generated_Code/EE241.o \
 ./Generated_Code/GI2C1.o \
-./Generated_Code/I2C1.o \
 ./Generated_Code/IntI2cLdd1.o \
+./Generated_Code/JACK_RETRIGGER.o \
 ./Generated_Code/KSDK1.o \
 ./Generated_Code/LATCH.o \
 ./Generated_Code/PE_LDD.o \
 ./Generated_Code/PTA.o \
 ./Generated_Code/PTB.o \
-./Generated_Code/RETRIGGERINT.o \
-./Generated_Code/SCL1.o \
-./Generated_Code/SDA1.o \
 ./Generated_Code/SM1.o \
 ./Generated_Code/SW_MODE.o \
 ./Generated_Code/SW_SPEED.o \
@@ -72,8 +62,6 @@ OBJS += \
 C_DEPS += \
 ./Generated_Code/AD1.d \
 ./Generated_Code/AdcLdd1.d \
-./Generated_Code/BitIoLdd1.d \
-./Generated_Code/BitIoLdd2.d \
 ./Generated_Code/CI2C1.d \
 ./Generated_Code/CLOCK.d \
 ./Generated_Code/CLOCKINT.d \
@@ -82,16 +70,13 @@ C_DEPS += \
 ./Generated_Code/DATA.d \
 ./Generated_Code/EE241.d \
 ./Generated_Code/GI2C1.d \
-./Generated_Code/I2C1.d \
 ./Generated_Code/IntI2cLdd1.d \
+./Generated_Code/JACK_RETRIGGER.d \
 ./Generated_Code/KSDK1.d \
 ./Generated_Code/LATCH.d \
 ./Generated_Code/PE_LDD.d \
 ./Generated_Code/PTA.d \
 ./Generated_Code/PTB.d \
-./Generated_Code/RETRIGGERINT.d \
-./Generated_Code/SCL1.d \
-./Generated_Code/SDA1.d \
 ./Generated_Code/SM1.d \
 ./Generated_Code/SW_MODE.d \
 ./Generated_Code/SW_SPEED.d \

@@ -40,18 +40,13 @@
 #include "CLOCK.h"
 #include "SW_TRIGGER.h"
 #include "SW_SPEED.h"
-#include "RETRIGGERINT.h"
 #include "PTB.h"
 #include "KSDK1.h"
 #include "EE241.h"
 #include "GI2C1.h"
-#include "I2C1.h"
-#include "SDA1.h"
-#include "BitIoLdd1.h"
-#include "SCL1.h"
-#include "BitIoLdd2.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "JACK_RETRIGGER.h"
 #include "WAIT1.h"
 #include "SM1.h"
 #include "TI1.h"
@@ -76,18 +71,20 @@ int adcchannels[ADC_Count];
 #include "EdgeCutter2.h"
 #include "../../EurorackShared/EurorackShared.c"
 
-struct EdgeCutter_Envelope Envelope;
-struct EdgeCutter_Settings Settings;
-struct EdgeCutter_Params Params;
+EdgeCutter2_Envelope Envelope;
+EdgeCutter2_Settings Settings;
+EdgeCutter2_Params Params;
 
 static struct denoise_state_t speedsw_state = {0};
 static struct denoise_state_t modesw_state = {0};
 static struct denoise_state_t triggersw_state = {0};
+static struct denoise_state_t retriggerjack_state = {0};
 
 void UpdateButtons()
 {
+	denoise(JACK_RETRIGGER_GetVal(0), &retriggerjack_state);
 	denoise(SW_TRIGGER_GetVal(0), &triggersw_state);
-	 denoise(SW_MODE_GetVal(0), &modesw_state);
+	denoise(SW_MODE_GetVal(0), &modesw_state);
 	denoise(SW_SPEED_GetVal(0), &speedsw_state);
 
 }
@@ -152,95 +149,15 @@ void ShiftOut()
 	SetNotIf(Envelope.Gates[GATE_RELEASEEND]>0);
 
 	SetIf(outleds[3] > pwm);
-		SetIf(outleds[2] > pwm);
-		SetIf(outleds[1] > pwm);
-		SetIf(outleds[0] > pwm);
-		SetNotIf(Envelope.Gates[GATE_ATTACKEND]>0);
-
-
-		LATCH_SetVal(LATCH_DeviceData);//
-
-		return;
-
-
-	SetNotIf(Envelope.Gates[GATE_ATTACKEND]>0);
-	SetIf(outleds[0] > pwm);
-	SetIf(outleds[1] > pwm);
 	SetIf(outleds[2] > pwm);
-	SetIf(outleds[3] > pwm);
-	SetNotIf(Envelope.Gates[GATE_RELEASEEND]>0);
-	SetNotIf(Envelope.Gates[GATE_RELEASESTART]>0);
-	SetNotIf(Envelope.Gates[GATE_DECAYEND]>0);
-	SetIf(outleds[11] > pwm);
-	SetIf(outleds[10] > pwm);
-	SetIf(outleds[9] > pwm);
-	SetIf(outleds[8] > pwm);
-	SetIf(outleds[7] > pwm);
-	SetIf(outleds[6] > pwm);
-	SetIf(outleds[5] > pwm);
-	SetIf(outleds[4] > pwm);
+	SetIf(outleds[1] > pwm);
+	SetIf(outleds[0] > pwm);
+	SetNotIf(Envelope.Gates[GATE_ATTACKEND]>0);
 
-
-	SetIf(outleds[13] > pwm);
-	SetIf(outleds[14] > pwm);
-	SetIf(outleds[15] > pwm);
-
-	SetIf(outleds[16] > pwm);
-	SetIf(outleds[17] > pwm);
-
-
-	SetIf(outleds[12] > pwm);
 
 	LATCH_SetVal(LATCH_DeviceData);//
 
-//out_attack;
-//0
-//1
-//2
-//3
-//out_releasedone,
-//out_releasestart
-//out_decay
-//11,
-//10
-//9
-//8
-//7
-//6
-//5
-//4
-//mode0
-//mode1
-//mode2
-//timeshort
-//timelong
-//12
 
-
-
-	return;
-	for (int i = 0; i < 20; i++)
-	{
-		if (outleds[i] > pwm)
-		{
-			DATA_SetVal(DATA_DeviceData);
-		}
-		else
-		{
-			DATA_ClrVal(DATA_DeviceData);
-		}
-		CLOCK_ClrVal(CLOCK_DeviceData);
-		CLOCK_SetVal(CLOCK_DeviceData);
-	}
-	for (int i = 0; i < 4; i++)
-	{
-		if (Envelope.Gates[3-i] > 0)
-			DATA_ClrVal(DATA_DeviceData);
-		else
-			DATA_SetVal(DATA_DeviceData);
-		CLOCK_ClrVal(CLOCK_DeviceData);
-		CLOCK_SetVal(CLOCK_DeviceData);
-	}
 
 }
 
@@ -270,43 +187,40 @@ void doTimer()
 	t++;
 	switch(t%2)
 	{
-		case 0:
-		{
-			EdgeCutter_GetEnv(&Envelope, &Params);
-			LinearOut = Envelope.LinearOutput;
-			DAC_Write(0, LinearOut);
+	case 0:
+	{
+		EdgeCutter2_GetEnv(&Envelope, &Params);
+		LinearOut = Envelope.LinearOutput;
+		DAC_Write(0, LinearOut);
 
-			for(int i =0 ;i<13;i++)
+		for(int i =0 ;i<13;i++)
+		{
+			targetleds[i] = Envelope.StateLeds[i];
+			if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
+		}
+		for (int i = 0; i < 20; i++)
+		{
+			if (targetleds[i] > outleds[i])
+			{
+				outleds[i]++;
+			}
+			else
+			{
+				if (targetleds[i] < outleds[i])
 				{
-					targetleds[i] = Envelope.StateLeds[i];
-					if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
-
+					outleds[i]--;
 				}
-				for (int i = 0; i < 20; i++)
-					{
-						if (targetleds[i] > outleds[i])
-						{
-							outleds[i]++;
-						}
-						else
-						{
-							if (targetleds[i] < outleds[i])
-							{
-								outleds[i]--;
-							}
-
-						}
-					}
-
+			}
 		}
-		break;
-		case 1:
-		{
-			CurvedOut = Envelope.CurvedOutput;
-			DAC_Write(1, CurvedOut);
-		}
+	}
+	break;
+	case 1:
+	{
+		CurvedOut = Envelope.CurvedOutput;
+		DAC_Write(1, CurvedOut);
+	}
 
-		break;
+	break;
 	}
 	ShiftOut();
 }
@@ -348,8 +262,7 @@ void LoadEeprom()
 	{
 		int paramsize = sizeof(Params);
 		EE24_ReadBlock(1, (byte *)&Params, paramsize);
-
-		EdgeCutter_ValidateParams(&Params);
+		EdgeCutter2_ValidateParams(&Params);
 	}
 	else
 	{
@@ -363,9 +276,16 @@ void SetupLeds()
 	SetModeLeds(Params.mode);
 }
 
+int buttonpressed = 0;
+
 void EnvelopeTrigger(int sw)
 {
-	EdgeCutter_Trigger(&Envelope, sw>0?0:1, &Params);
+	if (buttonpressed == 1) return;
+	EdgeCutter2_Trigger(&Envelope, sw>0?0:1, &Params);
+	if (sw== 0)
+	{
+		outleds[18]= 255;
+	}
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -380,30 +300,29 @@ int main(void)
 
 	/* Write your code here */
 
-
-	EdgeCutter_Init(&Envelope);
+	EdgeCutter2_Init(&Envelope);
 
 #ifdef USE_SEMIHOST
 	initialise_monitor_handles();
 #endif
 
-	EdgeCutter_LoadSettings(&Settings, &Params);
+	EdgeCutter2_LoadSettings(&Settings, &Params);
 	LoadEeprom();
 
 	TI1_Enable();
 	AD1_Calibrate(TRUE);
 	AD1_Measure(FALSE);
-for(int i = 0;i<13;i++)
-{
-	for(int j =0 ;j<13;j++)
+	for(int i = 0;i<13;i++)
 	{
-		if (i == j) outleds[j] = 255;
-		else outleds[j] = 0;
-	}
+		for(int j =0 ;j<13;j++)
+		{
+			if (i == j) outleds[j] = 255;
+			else outleds[j] = 0;
+		}
 
-	ShiftOut();
-	WAIT1_Waitms(40);
-}
+		ShiftOut();
+		WAIT1_Waitms(4);
+	}
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();
@@ -417,27 +336,31 @@ for(int i = 0;i<13;i++)
 		if (pressed(&modesw_state))
 		{
 			switchmode = 1;
-			Params.mode = (Params.mode + 1) % EDGECUTTER_MAXMODE;
+			Params.mode = (Params.mode + 1) % EDGECUTTER2_MAXMODE;
 			commitchange = 1;
 		}
 
 		if (pressed(&speedsw_state))
 		{
 			switchmode = 1;
-			Params.speed = (Params.speed + 1) % EDGECUTTER_MAXSPEED;
+			Params.speed = (Params.speed + 1) % EDGECUTTER2_MAXSPEED;
 			commitchange = 1;
 		}
 
 		if (pressed(&triggersw_state) )
 		{
-			EdgeCutter_Trigger(&Envelope, 1, &Params);
+			buttonpressed = 1;
+			EdgeCutter2_Trigger(&Envelope, 1, &Params);
+			targetleds[18]  = 255;
+			outleds[18]= 255;
+
 		}
 		if (released(&triggersw_state) )
 		{
-			EdgeCutter_Trigger(&Envelope, 0 ,&Params);
+			buttonpressed = 0;
+			targetleds[18]  = 0;
+			EdgeCutter2_Trigger(&Envelope, 0 ,&Params);
 		}
-
-
 
 		if (measured == 1)
 		{
@@ -450,6 +373,8 @@ for(int i = 0;i<13;i++)
 		Envelope.S = ~(adcchannels[ADC_S] >> 8);
 		Envelope.R = ~(adcchannels[ADC_R] >> 8);
 		Envelope.Curvature = ~(adcchannels[ADC_CURVATURE] >> 8);
+		Envelope.Velocity = ~(adcchannels[ADC_VELOCITY] >> 8);
+
 
 		if (switchmode == 1)
 		{

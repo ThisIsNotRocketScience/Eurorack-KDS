@@ -39,6 +39,9 @@
 #include "RETRIGGERINT.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "CLOCK2.h"
+#include "DATA2.h"
+#include "SYNCINT.h"
 #include "PTB.h"
 #include "KSDK1.h"
 #include "EE241.h"
@@ -86,15 +89,17 @@ uint32_t t = 0;
 #define NOTE(x) VOLT((x) / 12.0)
 
 
- int pwm = 3;
+int pwm = 3;
 int counter = 0;
 
 #define SetIf(x){if (x) {DATA_SetVal(DATA_DeviceData);}else {DATA_ClrVal(DATA_DeviceData);}CLOCK_ClrVal(CLOCK_DeviceData); CLOCK_SetVal(CLOCK_DeviceData);};
 #define SetNotIf(x){if (x) {DATA_ClrVal(DATA_DeviceData);}else {DATA_SetVal(DATA_DeviceData);}CLOCK_ClrVal(CLOCK_DeviceData); CLOCK_SetVal(CLOCK_DeviceData);};
+#define SetIfdat2(x){if (x) {DATA2_SetVal(DATA2_DeviceData);}else {DATA2_ClrVal(DATA2_DeviceData);}CLOCK2_ClrVal(CLOCK2_DeviceData); CLOCK2_SetVal(CLOCK2_DeviceData);};
 
 
 void ShiftOut()
 {
+	//return;
 	counter++;
 	pwm = (pwm + 7)&255;
 
@@ -131,7 +136,17 @@ void ShiftOut()
 	SetIf(LFO.Led[0][7] > pwm);
 	SetIf(LFO.Led[0][8] > pwm);
 
-		LATCH_SetVal(LATCH_DeviceData);
+	SetIfdat2(0);
+	SetIfdat2(0);
+	SetIfdat2(0);
+	SetIfdat2(0);
+	SetIfdat2(LFO.ModeLed[2] > pwm);
+	SetIfdat2(LFO.ModeLed[1] > pwm);
+	SetIfdat2(LFO.ModeLed[0] > pwm);
+	SetIfdat2(0);
+
+
+	LATCH_SetVal(LATCH_DeviceData);
 }
 
 
@@ -205,6 +220,10 @@ void LoadEeprom()
 	}
 }
 
+void SyncIn(int sw)
+{
+	Wobbler2_SyncPulse(&LFO);
+}
 void EnvelopeTrigger(int sw)
 {
 	Wobbler2_Trigger(&LFO, sw, &Params);
@@ -269,7 +288,7 @@ int main(void)
 
 		if (commitchange == 1 && tickssincecommit >= 10)
 		{
-		//	SaveEeprom();
+			//	SaveEeprom();
 			commitchange = 0;
 			tickssincecommit = 0;
 		}

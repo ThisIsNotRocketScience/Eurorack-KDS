@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
+**     Date/Time   : 2017-10-01, 21:49, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
@@ -154,6 +154,19 @@ PE_ISR(Cpu_ivINT_PORTA);
 **
 **     Description :
 **         This ISR services the ivINT_PORTA interrupt shared by several 
+**         components.
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+
+/* {Default RTOS Adapter} ISR function prototype */
+PE_ISR(Cpu_ivINT_PORTB);
+/*
+** ===================================================================
+**     Method      :  Cpu_Cpu_ivINT_PORTB (component MKL02Z32FM4)
+**
+**     Description :
+**         This ISR services the ivINT_PORTB interrupt shared by several 
 **         components.
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================

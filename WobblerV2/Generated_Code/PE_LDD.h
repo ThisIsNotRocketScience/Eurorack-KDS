@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-10-01, 21:49, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
@@ -80,6 +80,9 @@
 #include "GI2C1.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "CLOCK2.h"
+#include "DATA2.h"
+#include "SYNCINT.h"
 
 
 /*

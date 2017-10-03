@@ -12,6 +12,7 @@ enum
 	ADC_S,
 	ADC_R,
 	ADC_CURVATURE,
+	ADC_VELOCITY,
 	ADC_Count
 };
 extern int clockup;

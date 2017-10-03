@@ -54,9 +54,11 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\AdcLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CLOCK.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CLOCK2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DACSEL.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DATA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DATA2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\EE241.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\GI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\IntI2cLdd1.c</PathName>
@@ -67,6 +69,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\PTB.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\RETRIGGERINT.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\SM1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\SYNCINT.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TI1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TU1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TimerIntLdd1.c</PathName>
@@ -83,9 +86,11 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\AdcLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CLOCK.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\CLOCK2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\Cpu.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DACSEL.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DATA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\DATA2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\EE241.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\GI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\IO_Map.h</PathName>
@@ -100,6 +105,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\PTB.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\RETRIGGERINT.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\SM1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\SYNCINT.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TI1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\TimerIntLdd1.h</PathName>

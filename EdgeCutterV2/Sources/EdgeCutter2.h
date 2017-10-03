@@ -1,6 +1,6 @@
 
-#define EdgeCutter2_MAXMODE 3
-#define EdgeCutter2_MAXSPEED 2
+#define EDGECUTTER2_MAXMODE 3
+#define EDGECUTTER2_MAXSPEED 2
 #include <stdint.h>
 
 #define FIXEDBITS 15
@@ -10,16 +10,16 @@
 #define FIXED(x) ((int32_t)( x * (float)(1<<FIXEDBITS)))
 
 
-struct EdgeCutter2_Params
+typedef struct EdgeCutter2_Params
 {
 	unsigned char mode;
 	unsigned char speed;
-};
+} EdgeCutter2_Params;
 
-struct EdgeCutter2_Settings
+typedef struct EdgeCutter2_Settings
 {
 	unsigned char SlowSpeedMult;
-};
+} EdgeCutter2_Settings;
 
 #define ENVSTATE_IDLE 0
 #define ENVSTATE_ATTACK 1
@@ -39,7 +39,7 @@ struct EdgeCutter2_Settings
 #define GATE_COUNTDOWN 30;
 
 
-struct EdgeCutter2_Envelope
+typedef struct EdgeCutter2_Envelope
 {
 	unsigned char A;
 	unsigned char D;
@@ -48,14 +48,16 @@ struct EdgeCutter2_Envelope
 	unsigned char Curvature;
 
 	unsigned char TriggerState;
+	unsigned char Velocity;
 	
 	int32_t LinearOutput;
 	int32_t CurvedOutput;
 
 	int State;
 	
-	unsigned char Gates[5];
-	unsigned char StateLeds[14];
+	unsigned char Gates[8];
+	unsigned char StateLeds[16];
+	int32_t LastLed;
 
 	int32_t AttackStart;
 	int32_t DecayStart;
@@ -68,7 +70,8 @@ struct EdgeCutter2_Envelope
 
 	int32_t Current;
 	int32_t CurrentTarget;
-};
+
+} EdgeCutter2_Envelope;
 
 #ifdef __cplusplus
 extern "C"

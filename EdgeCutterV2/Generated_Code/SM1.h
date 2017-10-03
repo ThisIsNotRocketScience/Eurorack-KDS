@@ -7,7 +7,7 @@
 **     Version     : Component 01.111, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-10-01, 20:19, # CodeGen: 4
 **     Abstract    :
 **         This component "SPIMaster_LDD" implements MASTER part of synchronous
 **         serial master-slave communication.
@@ -37,7 +37,7 @@
 **                Parity                                   : None
 **                Chip select toggling                     : yes
 **                Clock rate index                         : 0
-**            Clock rate                                   : 0.083381 µs
+**            Clock rate                                   : 0.333525 µs
 **            HW input buffer size                         : 1
 **            HW input watermark                           : 1
 **            HW output buffer size                        : Max buffer size

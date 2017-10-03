@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-10-01, 20:20, # CodeGen: 5
 **     Abstract    :
 **
 **     Settings    :
@@ -70,19 +70,14 @@
   #include "CLOCK.h"
   #include "SW_TRIGGER.h"
   #include "SW_SPEED.h"
-  #include "RETRIGGERINT.h"
   #include "WAIT1.h"
   #include "PTB.h"
   #include "KSDK1.h"
   #include "EE241.h"
   #include "GI2C1.h"
-  #include "I2C1.h"
-  #include "SDA1.h"
-  #include "BitIoLdd1.h"
-  #include "SCL1.h"
-  #include "BitIoLdd2.h"
   #include "CI2C1.h"
   #include "IntI2cLdd1.h"
+  #include "JACK_RETRIGGER.h"
   #include "Events.h"
 
 
@@ -148,7 +143,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2B  0x000000AC   -   ivINT_MCG                     unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2C  0x000000B0   -   ivINT_LPTimer                 unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2D  0x000000B4   -   ivINT_Reserved45              unused by PE */
-    (tIsrFunc)&Cpu_ivINT_PORTA,        /* 0x2E  0x000000B8   2   ivINT_PORTA                   used by PE */
+    (tIsrFunc)&Cpu_Interrupt,          /* 0x2E  0x000000B8   -   ivINT_PORTA                   unused by PE */
     (tIsrFunc)&Cpu_ivINT_PORTB         /* 0x2F  0x000000BC   2   ivINT_PORTB                   used by PE */
     }
   };

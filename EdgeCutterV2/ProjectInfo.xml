@@ -52,8 +52,6 @@
     <GeneratedCs>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\AD1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\AdcLdd1.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\BitIoLdd1.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\BitIoLdd2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CLOCK.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CLOCKINT.c</PathName>
@@ -62,16 +60,13 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\DATA.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\EE241.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\GI2C1.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\I2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\IntI2cLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\JACK_RETRIGGER.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\KSDK1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\LATCH.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PE_LDD.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PTA.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PTB.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\RETRIGGERINT.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SCL1.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SDA1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SM1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SW_MODE.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SW_SPEED.c</PathName>
@@ -82,7 +77,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\Vectors.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Project_Settings\Startup_Code\startup.c</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutter.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutter2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\exit.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\main.c</PathName>
@@ -90,8 +85,6 @@
     <GeneratedHs>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\AD1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\AdcLdd1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\BitIoLdd1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\BitIoLdd2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CI2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CLOCK.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\CLOCKINT.h</PathName>
@@ -100,9 +93,9 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\DATA.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\EE241.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\GI2C1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\I2C1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\IO_Map.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\IntI2cLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\JACK_RETRIGGER.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\KSDK1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\LATCH.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PE_Const.h</PathName>
@@ -111,9 +104,6 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PE_Types.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PTA.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\PTB.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\RETRIGGERINT.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SCL1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SDA1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SM1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SW_MODE.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\SW_SPEED.h</PathName>
@@ -122,30 +112,11 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\TU1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\TimerIntLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Generated_Code\WAIT1.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutter.h</PathName>
-      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutterBoard.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutter2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\EdgeCutter2Board.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\EdgeCutterV2\Sources\main.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</PathName>
-      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
-      <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
@@ -156,6 +127,7 @@
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>

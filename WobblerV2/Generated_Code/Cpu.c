@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-17, 02:52, # CodeGen: 5
+**     Date/Time   : 2017-10-01, 21:49, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
@@ -243,6 +243,9 @@
 #include "GI2C1.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "CLOCK2.h"
+#include "DATA2.h"
+#include "SYNCINT.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -272,6 +275,21 @@ volatile uint8_t SR_lock = 0x00U;      /* Lock */
 PE_ISR(Cpu_ivINT_PORTA)
 {
   RETRIGGERINT_Interrupt();            /* Call the service routine */
+}
+
+/*
+** ===================================================================
+**     Method      :  Cpu_Cpu_ivINT_PORTB (component MKL02Z32FM4)
+**
+**     Description :
+**         This ISR services the ivINT_PORTB interrupt shared by several 
+**         components.
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+PE_ISR(Cpu_ivINT_PORTB)
+{
+  SYNCINT_Interrupt();                 /* Call the service routine */
 }
 
 /*
@@ -455,6 +473,8 @@ void PE_low_level_init(void)
                 )) | (uint32_t)(
                  PORT_PCR_PE_MASK
                 ));
+  /* GPIOB_PDDR: PDD&=~2 */
+  GPIOB_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x02));
   /* PORTA_PCR1: ISF=0,MUX=3 */
   PORTA_PCR1 = (uint32_t)((PORTA_PCR1 & (uint32_t)~(uint32_t)(
                 PORT_PCR_ISF_MASK |
@@ -497,6 +517,12 @@ void PE_low_level_init(void)
   GI2C1_Init();
   /* ### 24AA_EEPROM "EE241" init code ... */
   /* Write code here ... */
+  /* ### BitIO_LDD "CLOCK2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)CLOCK2_Init(NULL);
+  /* ### BitIO_LDD "DATA2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)DATA2_Init(NULL);
+  /* ### ExtInt_LDD "SYNCINT" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)SYNCINT_Init(NULL);
   __EI();
 }
   /* Flash configuration field */

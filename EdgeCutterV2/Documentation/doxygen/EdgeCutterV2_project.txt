@@ -35,11 +35,9 @@
 - \subpage CLOCK
 - \subpage SW_TRIGGER
 - \subpage SW_SPEED
-- \subpage RETRIGGERINT
 - \subpage PTB
 - \subpage IntI2cLdd1
-- \subpage BitIoLdd1
-- \subpage BitIoLdd2
+- \subpage JACK_RETRIGGER
 
 */
 

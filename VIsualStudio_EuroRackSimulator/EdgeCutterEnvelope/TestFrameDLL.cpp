@@ -1,4 +1,5 @@
-#include "..\..\EdgeCutter\Sources\EdgeCutter.h"
+//#include "..\..\EdgeCutter\Sources\EdgeCutter.h"
+#include "..\..\EdgeCutterV2\Sources\EdgeCutter2.h"
 #include "..\..\Wobbler\Sources\Wobbler.h"
 #include "..\..\WobblerV2\Sources\Wobbler2.h"
 #include "..\..\Tuesday\Sources\Tuesday.h"
@@ -18,10 +19,10 @@ struct Tuesday_Settings TuesdaySettings;
 struct Tuesday_Params TuesdayParams;
 
 
-struct  EdgeCutter_Envelope EnvRunning;
-struct  EdgeCutter_Envelope EnvStatic;
-struct  EdgeCutter_Settings EnvSettings;
-struct  EdgeCutter_Params EnvParams;
+struct  EdgeCutter2_Envelope EnvRunning;
+struct  EdgeCutter2_Envelope EnvStatic;
+struct  EdgeCutter2_Settings EnvSettings;
+struct  EdgeCutter2_Params EnvParams;
 
 
 struct  Wobbler_LFO LFORunning;
@@ -53,9 +54,9 @@ extern "C"
 		Wobbler2_InitPendulum(&LFO2Running.Pendulum, &LFO2Running);
 		Wobbler2_InitIntPendulum(&PendulumInt);
 
-		EdgeCutter_LoadSettings(&EnvSettings, &EnvParams);
-		EdgeCutter_Init(&EnvRunning);
-		EdgeCutter_Init(&EnvStatic);
+		EdgeCutter2_LoadSettings(&EnvSettings, &EnvParams);
+		EdgeCutter2_Init(&EnvRunning);
+		EdgeCutter2_Init(&EnvStatic);
 		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
 		Wobbler_Init(&LFORunning);
 		Wobbler_Init(&LFOStatic);
@@ -69,7 +70,7 @@ extern "C"
 
 	__declspec(dllexport) void __stdcall  ResetStatic()
 	{
-		EdgeCutter_Init(&EnvStatic);
+		EdgeCutter2_Init(&EnvStatic);
 		Wobbler_Init(&LFOStatic);
 	}
 
@@ -83,8 +84,8 @@ extern "C"
 		EnvStatic.R = EnvRunning.R = release;
 		EnvStatic.Curvature = EnvRunning.Curvature = curvature;
 
-		if (staticenv == 0) return EdgeCutter_GetEnv(&EnvRunning, &EnvParams);
-		return	EdgeCutter_GetEnv(&EnvStatic, &EnvParams);
+		if (staticenv == 0) return EdgeCutter2_GetEnv(&EnvRunning, &EnvParams);
+		return	EdgeCutter2_GetEnv(&EnvStatic, &EnvParams);
 	}
 
 	__declspec(dllexport) int __stdcall GetEnvCurve(int staticenv)
@@ -106,8 +107,8 @@ extern "C"
 	__declspec(dllexport) void __stdcall Trigger(int val, int staticenv, int mode)
 	{
 		EnvParams.mode = mode;
-		if (staticenv == 0) EdgeCutter_Trigger(&EnvRunning, val, &EnvParams);
-		EdgeCutter_Trigger(&EnvStatic, val, &EnvParams);
+		if (staticenv == 0) EdgeCutter2_Trigger(&EnvRunning, val, &EnvParams);
+		EdgeCutter2_Trigger(&EnvStatic, val, &EnvParams);
 	}
 
 	__declspec(dllexport) int __stdcall GetLFOLed(int led)
@@ -225,7 +226,6 @@ extern "C"
 	__declspec(dllexport) int __stdcall Tuesday_GetVel()
 	{
 		return Tuesday.VelocityOut;
-
 	}
 
 	__declspec(dllexport) int __stdcall Tuesday_GetCV()

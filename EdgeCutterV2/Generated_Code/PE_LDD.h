@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-09-26, 18:12, # CodeGen: 3
 **     Abstract    :
 **
 **     Settings    :
@@ -76,19 +76,14 @@
 #include "CLOCK.h"
 #include "SW_TRIGGER.h"
 #include "SW_SPEED.h"
-#include "RETRIGGERINT.h"
 #include "WAIT1.h"
 #include "PTB.h"
 #include "KSDK1.h"
 #include "EE241.h"
 #include "GI2C1.h"
-#include "I2C1.h"
-#include "SDA1.h"
-#include "BitIoLdd1.h"
-#include "SCL1.h"
-#include "BitIoLdd2.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "JACK_RETRIGGER.h"
 
 
 /*

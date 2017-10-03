@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-09-07, 02:25, # CodeGen: 7
+**     Date/Time   : 2017-10-01, 21:49, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
@@ -74,6 +74,9 @@
   #include "GI2C1.h"
   #include "CI2C1.h"
   #include "IntI2cLdd1.h"
+  #include "CLOCK2.h"
+  #include "DATA2.h"
+  #include "SYNCINT.h"
   #include "Events.h"
 
 
@@ -140,7 +143,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2C  0x000000B0   -   ivINT_LPTimer                 unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x2D  0x000000B4   -   ivINT_Reserved45              unused by PE */
     (tIsrFunc)&Cpu_ivINT_PORTA,        /* 0x2E  0x000000B8   2   ivINT_PORTA                   used by PE */
-    (tIsrFunc)&Cpu_Interrupt           /* 0x2F  0x000000BC   -   ivINT_PORTB                   unused by PE */
+    (tIsrFunc)&Cpu_ivINT_PORTB         /* 0x2F  0x000000BC   2   ivINT_PORTB                   used by PE */
     }
   };
   /*lint -restore Enable MISRA rule (11.4) checking. */

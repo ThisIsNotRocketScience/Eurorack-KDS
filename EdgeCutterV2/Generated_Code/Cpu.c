@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-09-26, 18:12, # CodeGen: 3
 **     Abstract    :
 **
 **     Settings    :
@@ -239,19 +239,14 @@
 #include "CLOCK.h"
 #include "SW_TRIGGER.h"
 #include "SW_SPEED.h"
-#include "RETRIGGERINT.h"
 #include "WAIT1.h"
 #include "PTB.h"
 #include "KSDK1.h"
 #include "EE241.h"
 #include "GI2C1.h"
-#include "I2C1.h"
-#include "SDA1.h"
-#include "BitIoLdd1.h"
-#include "SCL1.h"
-#include "BitIoLdd2.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "JACK_RETRIGGER.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -267,21 +262,6 @@ extern "C" {
 volatile uint8_t SR_reg;               /* Current value of the FAULTMASK register */
 volatile uint8_t SR_lock = 0x00U;      /* Lock */
 
-
-/*
-** ===================================================================
-**     Method      :  Cpu_Cpu_ivINT_PORTA (component MKL02Z32FM4)
-**
-**     Description :
-**         This ISR services the ivINT_PORTA interrupt shared by several 
-**         components.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-PE_ISR(Cpu_ivINT_PORTA)
-{
-  RETRIGGERINT_Interrupt();            /* Call the service routine */
-}
 
 /*
 ** ===================================================================
@@ -473,8 +453,6 @@ void PE_low_level_init(void)
                );
   /* GPIOB_PDDR: PDD&=~2 */
   GPIOB_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x02));
-  /* GPIOA_PDDR: PDD&=~0x1000 */
-  GPIOA_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x1000));
   /* PORTB_PCR10: ISF=0,PE=1 */
   PORTB_PCR10 = (uint32_t)((PORTB_PCR10 & (uint32_t)~(uint32_t)(
                  PORT_PCR_ISF_MASK
@@ -517,8 +495,6 @@ void PE_low_level_init(void)
   (void)SW_TRIGGER_Init(NULL);
   /* ### BitIO_LDD "SW_SPEED" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)SW_SPEED_Init(NULL);
-  /* ### ExtInt_LDD "RETRIGGERINT" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)RETRIGGERINT_Init(NULL);
   /* ### Init_GPIO "PTB" init code ... */
   PTB_Init();
 
@@ -531,12 +507,8 @@ void PE_low_level_init(void)
   GI2C1_Init();
   /* ### 24AA_EEPROM "EE241" init code ... */
   /* Write code here ... */
-  /* ### BitIO_LDD "BitIoLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)BitIoLdd1_Init(NULL);
-  /* ### BitIO_LDD "BitIoLdd2" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)BitIoLdd2_Init(NULL);
-  /* ### GenericSWI2C "I2C1" init code ... */
-  I2C1_Init();
+  /* ### BitIO_LDD "JACK_RETRIGGER" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)JACK_RETRIGGER_Init(NULL);
   __EI();
 }
   /* Flash configuration field */

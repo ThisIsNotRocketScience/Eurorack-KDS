@@ -34,6 +34,9 @@
 - \subpage RETRIGGERINT
 - \subpage PTB
 - \subpage IntI2cLdd1
+- \subpage CLOCK2
+- \subpage DATA2
+- \subpage SYNCINT
 
 */
 

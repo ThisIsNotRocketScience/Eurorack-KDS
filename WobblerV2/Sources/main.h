@@ -4,7 +4,7 @@
 
 extern void DoClock(int state);
 extern volatile int measured;
-
+extern void SyncIn(int sw);
 enum
 {
 	ADC_MODULATION,

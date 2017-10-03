@@ -1,204 +1,59 @@
 /*!
-  \page PTB PTB (Init_GPIO)
-**          This file implements the GPIO (PTB) module initialization
-**          according to the Peripheral Initialization settings, and
-**          defines interrupt service routines prototypes.
+  \page SYNCINT SYNCINT (ExtInt_LDD)
+**         This component, "ExtInt_LDD", provide a low level API 
+**         for unified access of external interrupts handling
+**         across various device designs.
+**         The component uses one pin which generates interrupt on 
+**         selected edge.
 **
 
-- \subpage PTB_settings
-- \subpage PTB_regs_overview  
-- \subpage PTB_regs_details
-- \ref PTB_module "Component documentation" 
-\page PTB_regs_overview Registers Initialization Overview
+- \subpage SYNCINT_settings
+- \subpage SYNCINT_regs_overview  
+- \subpage SYNCINT_regs_details
+- \ref SYNCINT_module "Component documentation" 
+\page SYNCINT_regs_overview Registers Initialization Overview
 This page contains the initialization values for the registers of the peripheral(s) configured
 by the component. 
 <table>
-<tr><td colspan="4" class="ttitle1">PTB Initialization</td></tr>
+<tr><td colspan="4" class="ttitle1">SYNCINT Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
-<tr><td>0x4004A004</td><td>PORTB_PCR1</td>
-<td class="regNotResetVal">0x010B0100</td>
- <td>PORTB_PCR1 register, peripheral PTB.</td></tr>
-<tr><td>0xE000E41C</td><td>NVIC_IPR7</td>
-<td class="regNotResetVal">0x80000000</td>
- <td>NVIC_IPR7 register, peripheral PTB.</td></tr>
-<tr><td>0xE000E100</td><td>NVIC_ISER</td>
-<td class="regNotResetVal">0x80028400</td>
- <td>NVIC_ISER register, peripheral PTB.</td></tr>
 <tr><td>0x400FF054</td><td>GPIOB_PDDR</td>
 <td class="regNotResetVal">0x000000E0</td>
- <td>GPIOB_PDDR register, peripheral PTB.</td></tr>
-<tr><td>0x4004A028</td><td>PORTB_PCR10</td>
-<td class="regNotResetVal">0x00000100</td>
- <td>PORTB_PCR10 register, peripheral PTB.</td></tr>
+ <td>GPIOB_PDDR register, peripheral SYNCINT.</td></tr>
 <tr><td>0x400FF040</td><td>GPIOB_PDOR</td>
 <td class="regResetVal">0x00000000</td>
- <td>GPIOB_PDOR register, peripheral PTB.</td></tr>
+ <td>GPIOB_PDOR register, peripheral SYNCINT.</td></tr>
 <tr><td>0x4004A014</td><td>PORTB_PCR5</td>
 <td class="regNotResetVal">0x00000102</td>
- <td>PORTB_PCR5 register, peripheral PTB.</td></tr>
+ <td>PORTB_PCR5 register, peripheral SYNCINT.</td></tr>
 <tr><td>0x4004A01C</td><td>PORTB_PCR7</td>
 <td class="regNotResetVal">0x00000100</td>
- <td>PORTB_PCR7 register, peripheral PTB.</td></tr>
+ <td>PORTB_PCR7 register, peripheral SYNCINT.</td></tr>
 <tr><td>0x4004A018</td><td>PORTB_PCR6</td>
 <td class="regNotResetVal">0x00000100</td>
- <td>PORTB_PCR6 register, peripheral PTB.</td></tr>
+ <td>PORTB_PCR6 register, peripheral SYNCINT.</td></tr>
 <tr><td>0x400FF044</td><td>GPIOB_PSOR</td>
 <td class="regNotResetVal">0x00000400</td>
- <td>GPIOB_PSOR register, peripheral PTB.</td></tr>
+ <td>GPIOB_PSOR register, peripheral SYNCINT.</td></tr>
 <tr><td>0x400FF048</td><td>GPIOB_PCOR</td>
 <td class="regResetVal">0x00000000</td>
- <td>GPIOB_PCOR register, peripheral PTB.</td></tr>
+ <td>GPIOB_PCOR register, peripheral SYNCINT.</td></tr>
+<tr><td>0x4004A004</td><td>PORTB_PCR1</td>
+<td class="regNotResetVal">0x010A0100</td>
+ <td>PORTB_PCR1 register, peripheral SYNCINT.</td></tr>
+<tr><td>0xE000E41C</td><td>NVIC_IPR7</td>
+<td class="regNotResetVal">0x80800000</td>
+ <td>NVIC_IPR7 register, peripheral SYNCINT.</td></tr>
+<tr><td>0xE000E100</td><td>NVIC_ISER</td>
+<td class="regNotResetVal">0xC0028500</td>
+ <td>NVIC_ISER register, peripheral SYNCINT.</td></tr>
 </table>
 Color Denotes Reset Value
 <br/>
-\page PTB_regs_details Register Initialization Details
+\page SYNCINT_regs_details Register Initialization Details
 This page contains detailed description of initialization values for the 
 registers of the peripheral(s) configured by the component. 
 
-<div class="reghdr1">PORTB_PCR1</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ISF</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="4" rowspan="2">IRQC</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="3" rowspan="2">MUX</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">DSE</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">PFE</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">SRE</td>
-<td colspan="1" rowspan="2">PE</td><td colspan="1" rowspan="2">PS</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>?</td><td>?</td><td>?</td><td>0</td><td>?</td>
-<td>0</td><td>?</td><td>0</td><td>?</td><td>?</td><td>?</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004A004</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x010B0100</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>24</td><td>ISF</td><td>0x01</td><td>Interrupt Status Flag</td>
-<tr><td>16 - 19</td><td>IRQC</td><td>0x08</td><td>Interrupt Configuration</td>
-<tr><td>8 - 10</td><td>MUX</td><td>0x00</td><td>Pin Mux Control</td>
-<tr><td>6</td><td>DSE</td><td>0x00</td><td>Drive Strength Enable</td>
-<tr><td>4</td><td>PFE</td><td>0x00</td><td>Passive Filter Enable</td>
-<tr><td>2</td><td>SRE</td><td>0x00</td><td>Slew Rate Enable</td>
-<tr><td>1</td><td>PE</td><td>0x00</td><td>Pull Enable</td>
-<tr><td>0</td><td>PS</td><td>0x00</td><td>Pull Select</td>
-</tr></table>
-<div class="reghdr1">NVIC_IPR7</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_31</td><td colspan="8" rowspan="2">PRI_30</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_29</td><td colspan="8" rowspan="2">PRI_28</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E41C</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x80000000</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>24 - 31</td><td>PRI_31</td><td>0x80</td><td>Priority of interrupt 31</td>
-<tr><td>16 - 23</td><td>PRI_30</td><td>0x00</td><td>Priority of interrupt 30</td>
-<tr><td>8 - 15</td><td>PRI_29</td><td>0x00</td><td>Priority of interrupt 29</td>
-<tr><td>0 - 7</td><td>PRI_28</td><td>0x00</td><td>Priority of interrupt 28</td>
-</tr></table>
-<div class="reghdr1">NVIC_ISER</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E100</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x80028400</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>0 - 31</td><td>SETENA</td><td>0x80000000</td><td>Interrupt set enable bits</td>
-</tr></table>
 <div class="reghdr1">GPIOB_PDDR</div>
 <div class="regdiag">
 <table class="regtbl">
@@ -240,63 +95,6 @@ registers of the peripheral(s) configured by the component.
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 31</td><td>PDD</td><td>0x00</td><td>Port Data Direction</td>
-</tr></table>
-<div class="reghdr1">PORTB_PCR10</div>
-<div class="regdiag">
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
-<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ISF</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="4" rowspan="2">IRQC</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
-</tr>
-</table>
-<table class="regtbl">
-<tr class="trd1r">
-<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
-<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
-</tr>
-<tr>
-<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="3" rowspan="2">MUX</td>
-<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">DSE</td><td colspan="1" rowspan="2">-</td>
-<td colspan="1" rowspan="2">PFE</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">SRE</td>
-<td colspan="1" rowspan="2">PE</td><td colspan="1" rowspan="2">PS</td>
-</tr>
-<tr>
-<td class="trd1c">W</td>
-</tr>
-<tr class="trd1r">
-<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>?</td><td>?</td><td>?</td><td>0</td><td>?</td>
-<td>0</td><td>?</td><td>0</td><td>?</td><td>?</td><td>?</td>
-</tr>
-</table>
-        
-</div>
-<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004A028</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000100</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
-<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>24</td><td>ISF</td><td>0x00</td><td>Interrupt Status Flag</td>
-<tr><td>16 - 19</td><td>IRQC</td><td>0x00</td><td>Interrupt Configuration</td>
-<tr><td>8 - 10</td><td>MUX</td><td>0x00</td><td>Pin Mux Control</td>
-<tr><td>6</td><td>DSE</td><td>0x00</td><td>Drive Strength Enable</td>
-<tr><td>4</td><td>PFE</td><td>0x00</td><td>Passive Filter Enable</td>
-<tr><td>2</td><td>SRE</td><td>0x00</td><td>Slew Rate Enable</td>
-<tr><td>1</td><td>PE</td><td>0x00</td><td>Pull Enable</td>
-<tr><td>0</td><td>PS</td><td>0x00</td><td>Pull Select</td>
 </tr></table>
 <div class="reghdr1">GPIOB_PDOR</div>
 <div class="regdiag">
@@ -599,63 +397,163 @@ registers of the peripheral(s) configured by the component.
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 31</td><td>PTCO</td><td>0x00</td><td>Port Clear Output</td>
 </tr></table>
+<div class="reghdr1">PORTB_PCR1</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">ISF</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="4" rowspan="2">IRQC</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">-</td><td colspan="3" rowspan="2">MUX</td>
+<td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">DSE</td><td colspan="1" rowspan="2">-</td>
+<td colspan="1" rowspan="2">PFE</td><td colspan="1" rowspan="2">-</td><td colspan="1" rowspan="2">SRE</td>
+<td colspan="1" rowspan="2">PE</td><td colspan="1" rowspan="2">PS</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>?</td><td>?</td><td>?</td><td>0</td><td>?</td>
+<td>0</td><td>?</td><td>0</td><td>?</td><td>?</td><td>?</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4004A004</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x010A0100</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>24</td><td>ISF</td><td>0x01</td><td>Interrupt Status Flag</td>
+<tr><td>16 - 19</td><td>IRQC</td><td>0x08</td><td>Interrupt Configuration</td>
+<tr><td>8 - 10</td><td>MUX</td><td>0x00</td><td>Pin Mux Control</td>
+<tr><td>6</td><td>DSE</td><td>0x00</td><td>Drive Strength Enable</td>
+<tr><td>4</td><td>PFE</td><td>0x00</td><td>Passive Filter Enable</td>
+<tr><td>2</td><td>SRE</td><td>0x00</td><td>Slew Rate Enable</td>
+<tr><td>1</td><td>PE</td><td>0x00</td><td>Pull Enable</td>
+<tr><td>0</td><td>PS</td><td>0x00</td><td>Pull Select</td>
+</tr></table>
+<div class="reghdr1">NVIC_IPR7</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_31</td><td colspan="8" rowspan="2">PRI_30</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="8" rowspan="2">PRI_29</td><td colspan="8" rowspan="2">PRI_28</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E41C</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x80800000</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>24 - 31</td><td>PRI_31</td><td>0x80</td><td>Priority of interrupt 31</td>
+<tr><td>16 - 23</td><td>PRI_30</td><td>0x80</td><td>Priority of interrupt 30</td>
+<tr><td>8 - 15</td><td>PRI_29</td><td>0x00</td><td>Priority of interrupt 29</td>
+<tr><td>0 - 7</td><td>PRI_28</td><td>0x00</td><td>Priority of interrupt 28</td>
+</tr></table>
+<div class="reghdr1">NVIC_ISER</div>
+<div class="regdiag">
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><td>25</td><td>24</td><td>23</td>
+<td>22</td><td>21</td><td>20</td><td>19</td><td>18</td><td>17</td><td>16</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="16" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+<table class="regtbl">
+<tr class="trd1r">
+<td class="trd1c">Bit</td><td>15</td><td>14</td><td>13</td><td>12</td><td>11</td><td>10</td><td>9</td><td>8</td><td>7</td>
+<td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td>
+</tr>
+<tr>
+<td class="trd1c">R</td><td colspan="32" rowspan="2">SETENA</td>
+</tr>
+<tr>
+<td class="trd1c">W</td>
+</tr>
+<tr class="trd1r">
+<td class="trd1c">Reset</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+<td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td>
+</tr>
+</table>
+        
+</div>
+<table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E100</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0xC0028500</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
+<tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
+<tr><td>0 - 31</td><td>SETENA</td><td>0x80000000</td><td>Interrupt set enable bits</td>
+</tr></table>
 */
 /*!
-\page PTB_settings Component Settings
+\page SYNCINT_settings Component Settings
 \code
-**          Component name                                 : PTB
-**          Device                                         : PTB
-**          Settings                                       : 
-**            Pin 0                                        : Do not initialize
-**            Pin 1                                        : Do not initialize
-**            Pin 2                                        : Initialize
-**              Pin direction                              : Input
-**              Output value                               : No initialization
-**              Pull resistor                              : No initialization
-**              Interrupt/DMA request                      : No initialization
-**            Pin 3                                        : Do not initialize
-**            Pin 4                                        : Do not initialize
-**            Pin 5                                        : Do not initialize
-**            Pin 6                                        : Do not initialize
-**            Pin 7                                        : Do not initialize
-**            Pin 8                                        : Do not initialize
-**            Pin 9                                        : Do not initialize
-**            Pin 10                                       : Initialize
-**              Pin direction                              : Input
-**              Output value                               : 1
-**              Pull resistor                              : Enabled
-**            Pin 11                                       : Initialize
-**              Pin direction                              : Input
-**              Output value                               : No initialization
-**              Pull resistor                              : No initialization
-**            Pin 12                                       : Do not initialize
-**            Pin 13                                       : Initialize
-**              Pin direction                              : Input
-**              Output value                               : No initialization
-**              Pull resistor                              : No initialization
-**          Pin selection/routing                          : 
-**            Pin 0                                        : Disabled
-**            Pin 1                                        : Disabled
-**            Pin 2                                        : Disabled
-**            Pin 3                                        : Disabled
-**            Pin 4                                        : Disabled
-**            Pin 5                                        : Disabled
-**            Pin 6                                        : Disabled
-**            Pin 7                                        : Disabled
-**            Pin 8                                        : Disabled
-**            Pin 9                                        : Disabled
-**            Pin 10                                       : Disabled
-**            Pin 11                                       : Disabled
-**            Pin 12                                       : Disabled
-**            Pin 13                                       : Disabled
-**          Interrupts                                     : 
-**            Port interrupt                               : Enabled
-**              Interrupt                                  : INT_PORTB
-**              Interrupt request                          : Disabled
-**              Interrupt priority                         : 0 (Highest)
-**              ISR Name                                   : 
+**          Component name                                 : SYNCINT
+**          Pin                                            : ADC0_SE5/CMP0_IN3/PTB1/IRQ_6/UART0_TX/UART0_RX
+**          Pin signal                                     : 
+**          Generate interrupt on                          : falling edge
+**          Interrupt                                      : INT_PORTB
+**          Interrupt priority                             : medium priority
 **          Initialization                                 : 
-**            Call Init method                             : yes
+**            Enabled in init. code                        : yes
+**            Auto initialization                          : yes
 <h1>
 \endcode
 */

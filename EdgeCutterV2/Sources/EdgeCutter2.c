@@ -49,6 +49,7 @@ extern "C"
 		switch (Env->State)
 		{
 		case ENVSTATE_IDLE:
+
 			Env->AttackProgress = 0;
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
@@ -191,7 +192,14 @@ extern "C"
 					}
 					else
 					{
+						if (Env->Current == 0)
+						{
+							SwitchToState(Env, ENVSTATE_IDLE);
+						}
+						else
+						{
 						SwitchToState(Env, ENVSTATE_SUSTAIN);
+						}
 					}
 				}
 			}
@@ -216,7 +224,7 @@ extern "C"
 				Env->Current += Delta;
 				Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * FIXED(1)) / (Env->ReleaseStart);
 
-				if (Env->Current <= 0)
+				if (Env->Current <= 0 || Delta == 0)
 				{
 					Env->Current = 0;
 
@@ -270,31 +278,49 @@ extern "C"
 
 		if (Env->State != ENVSTATE_IDLE)
 		{
-			int32_t L1 = (Env->AttackProgress * 7 + Env->DecayProgress * 7) / 2 ;
-			int idx = L1 >> FIXEDBITS;
-			uint8_t frac = (uint8_t)((L1 & FRACMASK) >> (FIXEDBITS-8));
+			// 12 leds, 8 and 9 are sustain.
+			int Led = 0;
 			
-			if (idx >= 0)
-			{
-				if (idx <= 7) Env->StateLeds[(idx + 1)] = frac;
-				if (idx < 7)  Env->StateLeds[(idx)] = ~frac;
-			}
+			Led += (1<<8) + (Env->AttackProgress * 3 ) >> (FIXEDBITS - 8);
+			Led += (Env->DecayProgress * 3 )>> (FIXEDBITS - 8);
 
 			if (Env->State == ENVSTATE_SUSTAIN)
 			{
-				Env->StateLeds[7] = 255;
-				Env->StateLeds[8] = 255;
+				Led = (8 << 8) + 0xff;
 			}
-
-			if (Env->State == ENVSTATE_RELEASE)
+			else
 			{
-				L1 = (Env->ReleaseProgress) * (4) + (0);
-				idx = (L1 >> FIXEDBITS) + 9;
-				frac = (uint8_t)((L1 & FRACMASK) >> (FIXEDBITS - 8));
-
-				if (idx < 12) Env->StateLeds[(idx + 1)] = frac;
-				if (idx < 13) Env->StateLeds[(idx)] = ~frac;
+				if (Env->State == ENVSTATE_RELEASE)
+				{
+					Led = (9 << 8) + ((Env->ReleaseProgress * 4) >> (FIXEDBITS - 8)) + 0xff;
+				}
 			}
+
+			if (Led < Env->LastLed)
+			{
+				// dont slide back, since the release phase has not actually been performed in this case.
+				Env->LastLed = 0;
+			}
+		//	printf("%4x %4x %d %d\n", Led, Env->LastLed, Led>>8, Env->LastLed>>8);
+
+//			if (Led >= Env->LastLed) this is always true now, so just make the led segment light up.
+			{
+				int idx1 = (Env->LastLed >> 8);
+				int idx2 = Led >> 8;
+				for (int i = idx1; i < idx2; i++)
+				{
+					Env->StateLeds[i] = 255;
+				}
+				Env->StateLeds[idx1] = (Env->LastLed & 0xff);
+				Env->StateLeds[idx2] = (Led & 0xff);
+			}
+			Env->StateLeds[6] = Env->StateLeds[8];
+			Env->StateLeds[7] = Env->StateLeds[8];
+			Env->LastLed = Led;
+		}
+		else
+		{
+			Env->LastLed = 0;
 		}
 
 		Env->LinearOutput = (Env->Current * 4095) / (FIXED(1));

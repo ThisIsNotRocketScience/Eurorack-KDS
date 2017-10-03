@@ -35,10 +35,11 @@ int32_t imul(int32_t a, int32_t b)
 	void Wobbler2_SyncPulse( Wobbler2_LFO_t *LFO)
 	{
 		int Delta = LFO->timesincesync;
+		if (Delta < 10) return;
+
 		if (Delta > 3000)
 		{
 			LFO->syncindex = 0;
-
 		}
 		else
 		{

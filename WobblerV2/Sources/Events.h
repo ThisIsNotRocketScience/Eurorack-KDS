@@ -44,6 +44,9 @@
 #include "RETRIGGERINT.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
+#include "CLOCK2.h"
+#include "DATA2.h"
+#include "SYNCINT.h"
 #include "PTB.h"
 #include "KSDK1.h"
 #include "EE241.h"
@@ -265,6 +268,23 @@ void CI2C1_OnReceiveData(void);
 ** ===================================================================
 */
 void CI2C1_OnTransmitData(void);
+
+/*
+** ===================================================================
+**     Event       :  SYNCINT_OnInterrupt (module Events)
+**
+**     Component   :  SYNCINT [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void SYNCINT_OnInterrupt(LDD_TUserData *UserDataPtr);
 
 /* END Events */
 

@@ -8,9 +8,11 @@ C_SRCS += \
 ../Generated_Code/AdcLdd1.c \
 ../Generated_Code/CI2C1.c \
 ../Generated_Code/CLOCK.c \
+../Generated_Code/CLOCK2.c \
 ../Generated_Code/Cpu.c \
 ../Generated_Code/DACSEL.c \
 ../Generated_Code/DATA.c \
+../Generated_Code/DATA2.c \
 ../Generated_Code/EE241.c \
 ../Generated_Code/GI2C1.c \
 ../Generated_Code/IntI2cLdd1.c \
@@ -21,6 +23,7 @@ C_SRCS += \
 ../Generated_Code/PTB.c \
 ../Generated_Code/RETRIGGERINT.c \
 ../Generated_Code/SM1.c \
+../Generated_Code/SYNCINT.c \
 ../Generated_Code/TI1.c \
 ../Generated_Code/TU1.c \
 ../Generated_Code/TimerIntLdd1.c \
@@ -32,9 +35,11 @@ OBJS += \
 ./Generated_Code/AdcLdd1.o \
 ./Generated_Code/CI2C1.o \
 ./Generated_Code/CLOCK.o \
+./Generated_Code/CLOCK2.o \
 ./Generated_Code/Cpu.o \
 ./Generated_Code/DACSEL.o \
 ./Generated_Code/DATA.o \
+./Generated_Code/DATA2.o \
 ./Generated_Code/EE241.o \
 ./Generated_Code/GI2C1.o \
 ./Generated_Code/IntI2cLdd1.o \
@@ -45,6 +50,7 @@ OBJS += \
 ./Generated_Code/PTB.o \
 ./Generated_Code/RETRIGGERINT.o \
 ./Generated_Code/SM1.o \
+./Generated_Code/SYNCINT.o \
 ./Generated_Code/TI1.o \
 ./Generated_Code/TU1.o \
 ./Generated_Code/TimerIntLdd1.o \
@@ -56,9 +62,11 @@ C_DEPS += \
 ./Generated_Code/AdcLdd1.d \
 ./Generated_Code/CI2C1.d \
 ./Generated_Code/CLOCK.d \
+./Generated_Code/CLOCK2.d \
 ./Generated_Code/Cpu.d \
 ./Generated_Code/DACSEL.d \
 ./Generated_Code/DATA.d \
+./Generated_Code/DATA2.d \
 ./Generated_Code/EE241.d \
 ./Generated_Code/GI2C1.d \
 ./Generated_Code/IntI2cLdd1.d \
@@ -69,6 +77,7 @@ C_DEPS += \
 ./Generated_Code/PTB.d \
 ./Generated_Code/RETRIGGERINT.d \
 ./Generated_Code/SM1.d \
+./Generated_Code/SYNCINT.d \
 ./Generated_Code/TI1.d \
 ./Generated_Code/TU1.d \
 ./Generated_Code/TimerIntLdd1.d \

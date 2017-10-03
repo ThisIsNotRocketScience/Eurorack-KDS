@@ -138,6 +138,7 @@ void TI1_OnInterrupt(void)
  */
 void AD1_OnEnd(void)
 {
+	if (measured ==2) return;
 	word value;
 	for (int i =0 ;i<ADC_Count;i++)
 	{
@@ -275,6 +276,26 @@ void CI2C1_OnReceiveData(void)
 void CI2C1_OnTransmitData(void)
 {
   /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  SYNCINT_OnInterrupt (module Events)
+**
+**     Component   :  SYNCINT [ExtInt_LDD]
+*/
+/*!
+**     @brief
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     @param
+**         UserDataPtr     - Pointer to RTOS device
+**                           data structure pointer.
+*/
+/* ===================================================================*/
+void SYNCINT_OnInterrupt(LDD_TUserData *UserDataPtr)
+{
+	SyncIn(1);
 }
 
 /* END Events */

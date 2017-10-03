@@ -7,7 +7,7 @@
 **     Version     : Component 01.111, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-10-01, 20:19, # CodeGen: 4
 **     Abstract    :
 **         This component "SPIMaster_LDD" implements MASTER part of synchronous
 **         serial master-slave communication.
@@ -37,7 +37,7 @@
 **                Parity                                   : None
 **                Chip select toggling                     : yes
 **                Clock rate index                         : 0
-**            Clock rate                                   : 0.083381 µs
+**            Clock rate                                   : 0.333525 µs
 **            HW input buffer size                         : 1
 **            HW input watermark                           : 1
 **            HW output buffer size                        : Max buffer size
@@ -223,8 +223,8 @@ LDD_TDeviceData* SM1_Init(LDD_TUserData *UserDataPtr)
             SPI_C1_SSOE_MASK;          /* Set configuration register */
   /* SPI0_C2: SPMIE=0,??=0,??=0,MODFEN=1,BIDIROE=0,??=0,SPISWAI=0,SPC0=0 */
   SPI0_C2 = SPI_C2_MODFEN_MASK;        /* Set configuration register */
-  /* SPI0_BR: ??=0,SPPR=0,SPR=0 */
-  SPI0_BR = (SPI_BR_SPPR(0x00) | SPI_BR_SPR(0x00)); /* Set baud rate register */
+  /* SPI0_BR: ??=0,SPPR=0,SPR=2 */
+  SPI0_BR = (SPI_BR_SPPR(0x00) | SPI_BR_SPR(0x02)); /* Set baud rate register */
   /* SPI0_C1: SPE=1 */
   SPI0_C1 |= SPI_C1_SPE_MASK;          /* Enable SPI module */
   /* Registration of the device structure */

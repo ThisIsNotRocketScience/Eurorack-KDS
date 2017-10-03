@@ -7,7 +7,7 @@
 **     Version     : Component 01.697, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-08, 23:01, # CodeGen: 0
+**     Date/Time   : 2017-09-26, 18:12, # CodeGen: 3
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -19,7 +19,7 @@
 **          Interrupt service/event                        : Enabled
 **            A/D interrupt                                : INT_ADC0
 **            A/D interrupt priority                       : medium priority
-**          A/D channels                                   : 5
+**          A/D channels                                   : 6
 **            Channel0                                     : 
 **              A/D channel (pin)                          : ADC0_SE13/PTB13/TPM1_CH1
 **              A/D channel (pin) signal                   : 
@@ -34,6 +34,9 @@
 **              A/D channel (pin) signal                   : 
 **            Channel4                                     : 
 **              A/D channel (pin)                          : ADC0_SE8/PTB11/TPM0_CH0
+**              A/D channel (pin) signal                   : 
+**            Channel5                                     : 
+**              A/D channel (pin)                          : ADC0_SE0/CMP0_IN0/PTA12/IRQ_13/LPTMR0_ALT2/TPM1_CH0/TPM_CLKIN0
 **              A/D channel (pin) signal                   : 
 **          A/D resolution                                 : Autoselect
 **          Conversion time                                : 30.769231 µs
@@ -120,7 +123,7 @@ static volatile byte ModeFlg;          /* Current state of device */
 LDD_TDeviceData *AdcLdd1_DeviceDataPtr; /* Device data pointer */
 /* Sample group configuration */
 static LDD_ADC_TSample SampleGroup[AD1_SAMPLE_GROUP_SIZE];
-static const  byte Table[5] = {0x01U,0x02U,0x04U,0x08U,0x10U};  /* Table of mask constants */
+static const  byte Table[6] = {0x01U,0x02U,0x04U,0x08U,0x10U,0x20U};  /* Table of mask constants */
 /* Measure multiple channels flags  */
 /* Temporary buffer for converting results */
 volatile word AD1_OutV[AD1_SAMPLE_GROUP_SIZE]; /* Sum of measured values */
@@ -144,6 +147,7 @@ static void ClrSumV(void)
   AD1_OutV[2] = 0U;                    /* Set variable for storing measured values to 0 */
   AD1_OutV[3] = 0U;                    /* Set variable for storing measured values to 0 */
   AD1_OutV[4] = 0U;                    /* Set variable for storing measured values to 0 */
+  AD1_OutV[5] = 0U;                    /* Set variable for storing measured values to 0 */
 }
 
 /*
@@ -261,7 +265,7 @@ in the AD1.h to maintain API compatibility.
 */
 byte AD1_MeasureChan(bool WaitForResult,byte Channel)
 {
-  if (Channel >= 5U) {                 /* Is channel number greater than or equal to 5 */
+  if (Channel >= 6U) {                 /* Is channel number greater than or equal to 6 */
     return ERR_RANGE;                  /* If yes then error */
   }
   if (ModeFlg != STOP) {               /* Is the device in different mode than "stop"? */
@@ -320,7 +324,7 @@ in the AD1.h to maintain API compatibility.
 */
 byte AD1_GetChanValue(byte Channel, void* Value)
 {
-  if (Channel >= 5U) {                 /* Is channel number greater than or equal to 5 */
+  if (Channel >= 6U) {                 /* Is channel number greater than or equal to 6 */
     return ERR_RANGE;                  /* If yes then error */
   }
   if ((OutFlg & Table[Channel]) == 0U) { /* Is output flag set? */
@@ -361,7 +365,7 @@ byte AD1_GetChanValue(byte Channel, void* Value)
 /* ===================================================================*/
 byte AD1_GetValue16(word *Values)
 {
-  if (OutFlg != 0x1FU) {               /* Is output flag set? */
+  if (OutFlg != 0x3FU) {               /* Is output flag set? */
     return ERR_NOTAVAIL;               /* If no then error */
   }
   Values[0] = (word)((AD1_OutV[0]) << 4U); /* Save measured values to the output buffer */
@@ -369,6 +373,7 @@ byte AD1_GetValue16(word *Values)
   Values[2] = (word)((AD1_OutV[2]) << 4U); /* Save measured values to the output buffer */
   Values[3] = (word)((AD1_OutV[3]) << 4U); /* Save measured values to the output buffer */
   Values[4] = (word)((AD1_OutV[4]) << 4U); /* Save measured values to the output buffer */
+  Values[5] = (word)((AD1_OutV[5]) << 4U); /* Save measured values to the output buffer */
   return ERR_OK;                       /* OK */
 }
 
@@ -408,7 +413,7 @@ byte AD1_GetValue16(word *Values)
 /* ===================================================================*/
 byte AD1_GetChanValue16(byte Channel, word *Value)
 {
-  if (Channel >= 5U) {                 /* Is channel number greater than or equal to 5 */
+  if (Channel >= 6U) {                 /* Is channel number greater than or equal to 6 */
     return ERR_RANGE;                  /* If yes then error */
   }
   if ((OutFlg & Table[Channel]) == 0U) { /* Is output flag set? */
@@ -485,9 +490,9 @@ void AdcLdd1_OnMeasurementComplete(LDD_TUserData *UserDataPtr)
   if (ModeFlg != SINGLE) {
     AdcLdd1_GetMeasuredValues(AdcLdd1_DeviceDataPtr, (LDD_TData *)&AD1_OutV[SumChan]);
     SumChan++;                         /* Increase counter of measured channels*/
-    if (SumChan == 5U) {               /* Is number of measured channels equal to the number of channels used in the component? */
+    if (SumChan == 6U) {               /* Is number of measured channels equal to the number of channels used in the component? */
       SumChan = 0U;                    /* If yes then set the counter of measured channels to 0 */
-      OutFlg = 0x1FU;                  /* Measured values are available */
+      OutFlg = 0x3FU;                  /* Measured values are available */
       AD1_OnEnd();                     /* If yes then invoke user event */
       ModeFlg = STOP;                  /* Set the device to the stop mode */
       return;                          /* Return from interrupt */
