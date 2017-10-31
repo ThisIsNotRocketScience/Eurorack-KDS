@@ -138,8 +138,8 @@ void ShiftOut()
 
 	SetIfdat2(0);
 	SetIfdat2(0);
-	SetIfdat2(0);
-	SetIfdat2(0);
+	SetIfdat2(LFO.ModeLed[4] > pwm);
+	SetIfdat2(LFO.ModeLed[3] > pwm);
 	SetIfdat2(LFO.ModeLed[2] > pwm);
 	SetIfdat2(LFO.ModeLed[1] > pwm);
 	SetIfdat2(LFO.ModeLed[0] > pwm);
@@ -255,12 +255,84 @@ int main(void)
 
 	LoadEeprom();
 
-	TI1_Enable();
 	AD1_Calibrate(TRUE);
 	AD1_Start();
 	AD1_Measure(FALSE);
 
+	for(int i = 0;i<9;i++)
+		{
+			for(int j =0 ;j<9;j++)
+			{
+				if (i == j) LFO.Led[0][j] = 255;
+				else LFO.Led[0][j] = 0;
+			}
+
+			ShiftOut();
+			WAIT1_Waitms(60);
+		}
+	for(int i = 8;i>=0;i--)
+		{
+			for(int j =0 ;j<9;j++)
+			{
+				if (i == j) LFO.Led[0][j] = 255;
+				else LFO.Led[0][j] = 0;
+			}
+
+			ShiftOut();
+			WAIT1_Waitms(60);
+		}
+
+	for(int i = 0;i<9;i++)
+			{
+				for(int j =0 ;j<9;j++)
+				{
+					if (i == j) LFO.Led[1][j] = 255;
+					else LFO.Led[1][j] = 0;
+				}
+
+				ShiftOut();
+				WAIT1_Waitms(60);
+			}
+
+	for(int i = 8;i>=0;i--)
+			{
+				for(int j =0 ;j<9;j++)
+				{
+					if (i == j) LFO.Led[1][j] = 255;
+					else LFO.Led[1][j] = 0;
+				}
+
+				ShiftOut();
+				WAIT1_Waitms(60);
+			}
+
+	for(int i = 0;i<5;i++)
+			{
+				for(int j =0 ;j<5;j++)
+				{
+					if (i == j) LFO.ModeLed[j] = 255;
+					else LFO.ModeLed[j] = 0;
+				}
+
+				ShiftOut();
+				WAIT1_Waitms(60);
+			}
+
+	for(int i = 4;i>=0;i--)
+				{
+					for(int j =0 ;j<5;j++)
+					{
+						if (i == j) LFO.ModeLed[j] = 255;
+						else LFO.ModeLed[j] = 0;
+					}
+
+					ShiftOut();
+					WAIT1_Waitms(60);
+				}
+
 	ShiftOut();
+	TI1_Enable();
+
 	int switchmode = 1;
 
 

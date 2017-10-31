@@ -711,8 +711,8 @@ int32_t imul(int32_t a, int32_t b)
 		LFO->OldPhase1 = LFO->Phase1;
 	//	LFO->OldPhase2 = LFO->Phase2;
 
-		int32_t O[4];
-		int32_t P[4];
+		int32_t O[6] = {0};
+		int32_t P[6] = {0};
 #ifdef INTPENDULUM
 		Wobbler2_DoublePendulumInt(&LFO->Pendulum);
 #else
@@ -737,7 +737,7 @@ int32_t imul(int32_t a, int32_t b)
 
 		LFO->OldPhase2 = P[0];
 
-		Wobbler2_GetSteppedResult(LFO->Shape, 2, &LFO->ShapeStepped);
+		Wobbler2_GetSteppedResult(LFO->Shape, 4, &LFO->ShapeStepped);
 
 		LFO->Output = GetInterpolatedResultInt(O, &LFO->ShapeStepped) /(0xffff*4);
 		LFO->OutputPhased = GetInterpolatedResultInt(P, &LFO->ShapeStepped) /(0xffff*4);
@@ -777,12 +777,12 @@ int32_t imul(int32_t a, int32_t b)
 
 		LFO->Led[1][(iLedIdxA + 9) % 9] = 255 - IdxA;
 		LFO->Led[1][(iLedIdxA + 10) % 9] = IdxA;
-		for (int i = 0; i < 3; i++) 
+		for (int i = 0; i < 5; i++)
 		{ 
 			LFO->ModeLed[i] = 0; 
 		};
 		LFO->ModeLed[LFO->ShapeStepped.index] = 255 - LFO->ShapeStepped.fractional;
-		if (LFO->ShapeStepped.index < 2)
+		if (LFO->ShapeStepped.index < 4)
 		{
 			LFO->ModeLed[LFO->ShapeStepped.index + 1] = LFO->ShapeStepped.fractional;
 		}

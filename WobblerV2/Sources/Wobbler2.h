@@ -181,7 +181,7 @@ typedef struct Wobbler2_LFO_t
 
 	unsigned char Gate[2];
 	 int Led[2][9];
-	unsigned char ModeLed[3];
+	unsigned char ModeLed[5];
 	unsigned char TriggerLed;
 
 	uint32_t PhasedCountdown;

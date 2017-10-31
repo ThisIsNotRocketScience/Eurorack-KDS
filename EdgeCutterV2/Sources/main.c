@@ -308,7 +308,7 @@ int main(void)
 
 	EdgeCutter2_LoadSettings(&Settings, &Params);
 	LoadEeprom();
-
+	for(int j =0 ;j<18;j++) targetleds[j] = 255;
 	TI1_Enable();
 	AD1_Calibrate(TRUE);
 	AD1_Measure(FALSE);
@@ -316,13 +316,15 @@ int main(void)
 	{
 		for(int j =0 ;j<13;j++)
 		{
-			if (i == j) outleds[j] = 255;
-			else outleds[j] = 0;
+			if (i == j) outleds[j] = 255; else outleds[j] = 0;
 		}
 
-		ShiftOut();
-		WAIT1_Waitms(4);
+	//	ShiftOut();
+		WAIT1_Waitms(40);
 	}
+	for(int j =0 ;j<18;j++) targetleds[j] = 0;
+	WAIT1_Waitms(140);
+
 	ShiftOut();
 	int switchmode = 1;
 	SetupLeds();
