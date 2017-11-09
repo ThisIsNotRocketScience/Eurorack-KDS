@@ -71,7 +71,7 @@ namespace Sim1
 
                 double D = 0;
                 
-                values2[i] = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value, Mod.Value, Phase.Value) / 4096.0f;
+                values2[i] = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
                 D = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
                 linvalues2[i] = D;
             }
@@ -171,7 +171,7 @@ namespace Sim1
                 pos = (pos + 1) % 4000;
                 double D = 0;
                 
-                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value, Shape.Value, Mod.Value, Phase.Value) / 4096.0f;
+                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
                 D = TestFrameLoader.GetLFOPhased(0)/ 4096.0f;
 
                 linvalues[pos] = D;

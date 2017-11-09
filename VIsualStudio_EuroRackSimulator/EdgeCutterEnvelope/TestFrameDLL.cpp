@@ -1,6 +1,6 @@
 //#include "..\..\EdgeCutter\Sources\EdgeCutter.h"
 #include "..\..\EdgeCutterV2\Sources\EdgeCutter2.h"
-#include "..\..\Wobbler\Sources\Wobbler.h"
+//#include "..\..\Wobbler\Sources\Wobbler.h"
 #include "..\..\WobblerV2\Sources\Wobbler2.h"
 #include "..\..\Tuesday\Sources\Tuesday.h"
 #include "..\..\Tuesday\Sources\Algo.h"
@@ -25,12 +25,17 @@ struct  EdgeCutter2_Settings EnvSettings;
 struct  EdgeCutter2_Params EnvParams;
 
 
-struct  Wobbler_LFO LFORunning;
-struct  Wobbler2_LFO_t LFO2Running;
-struct  Wobbler2_Params LFO2Params;
+/*struct  Wobbler_LFO LFORunning;
 struct  Wobbler_LFO LFOStatic;
 struct  Wobbler_Settings LFOSettings;
 struct  Wobbler_Params LFOParams;
+*/
+
+struct  Wobbler2_LFO_t LFO2Static;
+struct  Wobbler2_Settings LFO2Settings;
+struct  Wobbler2_LFO_t LFO2Running;
+struct  Wobbler2_Params LFO2Params;
+
 //Wobbler2_Pendulum_t Pendulum;
 Wobbler2_PendulumInt_t PendulumInt;
 
@@ -52,14 +57,14 @@ extern "C"
 	{
 		Wobbler2_Init(&LFO2Running);
 		Wobbler2_InitPendulum(&LFO2Running.Pendulum, &LFO2Running);
-		Wobbler2_InitIntPendulum(&PendulumInt);
+//		Wobbler2_InitIntPendulum(&PendulumInt);
 
 		EdgeCutter2_LoadSettings(&EnvSettings, &EnvParams);
 		EdgeCutter2_Init(&EnvRunning);
 		EdgeCutter2_Init(&EnvStatic);
-		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
-		Wobbler_Init(&LFORunning);
-		Wobbler_Init(&LFOStatic);
+//		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
+		//Wobbler_Init(&LFORunning);
+		Wobbler2_Init(&LFO2Static);
 
 		EuroRack_InitCalibration();
 		Tuesday_LoadSettings(&TuesdaySettings, &TuesdayParams);
@@ -71,7 +76,7 @@ extern "C"
 	__declspec(dllexport) void __stdcall  ResetStatic()
 	{
 		EdgeCutter2_Init(&EnvStatic);
-		Wobbler_Init(&LFOStatic);
+		Wobbler2_Init(&LFO2Static);
 	}
 
 	__declspec(dllexport) int __stdcall GetEnv(int staticenv, int attack, int decay, int sustain, int release, int curvature, int speed, int mode)
@@ -113,39 +118,39 @@ extern "C"
 
 	__declspec(dllexport) int __stdcall GetLFOLed(int led)
 	{
-		return LFORunning.Led[led];
+		return LFO2Running.Led[0][led];
 	}
 
 	__declspec(dllexport)  int __stdcall GetLFO(int staticlfo, int speed, int shape, int mod, int phaseing)
 	{
-		struct Wobbler_LFO *L = &LFORunning;
-		if (staticlfo) L = &LFOStatic;
+		struct Wobbler2_LFO_t *L = &LFO2Running;
+		if (staticlfo) L = &LFO2Static;
 
-		L->Speed = speed;
-		L->Shape = shape;
-		L->Mod = mod;
-		L->Phasing = phaseing;
+		L->Speed = speed ;
+		L->Shape = shape ;
+		L->Mod = mod ;
+		L->Phasing = phaseing ;
 
-		return Wobbler_Get(L, &LFOParams);
+		return Wobbler2_Get(L, &LFO2Params);
 	}
 
 	__declspec(dllexport) int __stdcall GetLFOGate(int gate)
 	{
-		return LFORunning.Gate[gate];
+		return LFO2Running.Gate[gate];
 	}
 
 	__declspec(dllexport) int __stdcall GetLFOPhased(int staticlfo)
 	{
-		if (staticlfo) return (int)(LFOStatic.OutputPhased);
-		return (int)(LFORunning.OutputPhased);
+		if (staticlfo) return (int)(LFO2Static.OutputPhased);
+		return (int)(LFO2Running.OutputPhased);
 	}
 
 	__declspec(dllexport) void __stdcall LFOTrigger(int value, int staticlfo)
 	{
-		struct Wobbler_LFO *L = &LFORunning;
-		if (staticlfo) L = &LFOStatic;
+		struct Wobbler2_LFO_t *L = &LFO2Running;
+		if (staticlfo) L = &LFO2Static;
 
-		Wobbler_Trigger(L, value, &LFOParams);
+		Wobbler2_Trigger(L, value, &LFO2Params);
 	}
 
 	__declspec(dllexport) int __stdcall Tuesday_GetTickVel(int tick)
@@ -272,7 +277,7 @@ extern "C"
 
 	__declspec(dllexport) int32_t RunPendulumInt()
 	{
-		Wobbler2_DoublePendulumInt(&PendulumInt);
+//		Wobbler2_DoublePendulumInt(&PendulumInt);
 		return PendulumInt.A;
 		
 	}
@@ -627,13 +632,13 @@ BOOL WINAPI DllMain(
 	{
 		int32_t V[4] = { 0,65536,0,65536 };
 		//CalTest();
-		Wobbler_LoadSettings(&LFOSettings, &LFOParams);
-		Wobbler_Init(&LFORunning);
-		Wobbler_Init(&LFOStatic);
+		Wobbler2_LoadSettings(&LFO2Settings, &LFO2Params);
+		Wobbler2_Init(&LFO2Running);
+		Wobbler2_Init(&LFO2Static);
 		BigFish_Init(&Fish, 44100);
 //		ExpTest();
 	//	RunFishTest();
-		LFOStatic.Speed = 0x80;
+		LFO2Static.Speed = 0x80;
 		Init();
 
 	/*	RunTest("Tests", ALGO_TESTS);
@@ -657,9 +662,9 @@ BOOL WINAPI DllMain(
 		{
 			for (int i = 0; i < 256; i++)
 			{
-				LFOStatic.Phasing = 80 + ((i / 80) % 2);
+				LFO2Static.Phasing = 80 + ((i / 80) % 2);
 
-				Wobbler_Get(&LFOStatic, &LFOParams);
+				Wobbler2_Get(&LFO2Static, &LFO2Params);
 
 			//	printf("%x %x %x\n", LFOStatic.OldPhase2, LFOStatic.Phase2, LFOStatic.Gate[1]);
 

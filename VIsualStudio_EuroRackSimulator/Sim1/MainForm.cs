@@ -46,10 +46,12 @@ namespace Sim1
 
             //            tf.Focus();
 
-
-            //   WobblerTestFrame wf = new WobblerTestFrame();
-            //   wf.Show(this.dockPanel, DockState.Document);
-            //  wf.Text = "Wobbler";
+            if (true)
+            {
+                WobblerTestFrame wf = new WobblerTestFrame();
+                wf.Show(this.dockPanel, DockState.Document);
+                wf.Text = "Wobbler";
+            }
            // WobblerSetup ws = new WobblerSetup();
            // ws.Show(this.dockPanel, DockState.Document);
             //ws.Text = "Wobbler Setup";
