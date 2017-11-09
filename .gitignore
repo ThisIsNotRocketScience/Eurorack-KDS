@@ -1,3 +1,7 @@
+WobblerV2/Generated_Code/
+WobblerV2/Debug/
+WobblerV2/Release/
+WobblerV2/Documentation/
 .metadata
 *.d
 Build
@@ -46,3 +50,4 @@ BigFishLib/Debug/BigFishLib.idb
 *.obj
 *.log
 *.log
+*.o

@@ -174,7 +174,7 @@ typedef struct Wobbler2_LFO_t
 	uint32_t OldPhase1;
 	uint32_t Phase2;
 	int32_t OldPhase2;
-
+	uint32_t PhasedShift;
 
 	int32_t OutputPhased;
 	int32_t Output;
@@ -196,6 +196,8 @@ typedef struct Wobbler2_LFO_t
 
 #endif
 	int synctime[3];
+	uint32_t SyncedPeriodTime;
+	uint32_t SyncDP;
 	int timesincesync;
 	int extsync;
 	int syncindex;
@@ -216,9 +218,7 @@ extern "C"
 	extern int Wobbler2_Get(Wobbler2_LFO_t *LFO,  Wobbler2_Params *Params);
 	extern void Wobbler2_Init( Wobbler2_LFO_t *LFO);
 	extern void Wobbler2_InitPendulum( Wobbler2_Pendulum_t *Pendulum,Wobbler2_LFO_t *LFO);
-	extern void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float DT);
-	extern void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *Pendulum);
-	extern void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P);
+	extern void Wobbler2_DoublePendulum( Wobbler2_Pendulum_t *P, float const DT);
 	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, Wobbler2_Params *Params);
 	extern void Wobbler2_LoadSettings( Wobbler2_Settings *settings, Wobbler2_Params *params);
 	extern void Wobbler2_ValidateParams(Wobbler2_Params *params);
