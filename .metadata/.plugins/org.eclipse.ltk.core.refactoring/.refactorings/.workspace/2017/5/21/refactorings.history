@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;BigFish/Sources/Events.cpp&apos;" deleteContents="false" description="Delete resource &apos;BigFish/Sources/Events.cpp&apos;" element1="/BigFish/Sources/Events.cpp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1495592204624"/>
+</session>

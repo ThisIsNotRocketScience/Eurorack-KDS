@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/Wobbler/Sources/DAC.c" element2="/Wobbler/Sources/DAC.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1484015061544"/>&#x0A;<refactoring comment="Delete 2 resources" deleteContents="false" description="Delete 2 resources" element1="/EdgeCutter/Sources/DAC.c" element2="/EdgeCutter/Sources/DAC.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="2" stamp="1484016172828"/>
+</session>

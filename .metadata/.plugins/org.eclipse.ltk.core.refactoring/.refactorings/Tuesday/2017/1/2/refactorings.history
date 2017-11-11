@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Tuesday/Sources/Eeprom&apos; to &apos;Eeprom.c&apos;" description="Rename resource &apos;Eeprom&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Sources/Eeprom" name="Eeprom.c" stamp="1483929193771" updateReferences="true"/>
+</session>

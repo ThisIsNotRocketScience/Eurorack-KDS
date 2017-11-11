@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright : 2012 Freescale, Inc. All Rights Reserved.
+
+  This configuration file is a standard interchange file that's format is maintained
+  by Freescale, Inc. The configuration file is a derivative work
+  of the Processor Expert Software technology licensed for use by customers
+  as defined as SOFTWARE in the product's End User License Agreement. This file
+  and format are free to use and distribute for read-only purposes. You do not have
+  the right to create these files or modify this format or use for any purposes other
+  than interchange with the Processor Expert Software technology.
+
+  THIS SOFTWARE IS PROVIDED "AS IS".
+
+  NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT
+  LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE APPLY TO THIS SOFTWARE. IN NO EVENT WILL FREESCALE BE LIABLE, WHETHER
+  IN CONTRACT, TORT, OR OTHERWISE, FOR ANY INCIDENTAL, SPECIAL, INDIRECT,
+  CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR
+  ANY LOSS OF USE, LOSS OF TIME, INCONVENIENCE, COMMERCIAL LOSS, OR LOST PROFITS,
+  SAVINGS, OR REVENUES TO THE FULL EXTENT SUCH MAY BE DISCLAIMED BY LAW.
+
+-->
+<export xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ProjectInfoDescription.xsd">
+  <PROCESSOR>
+    <DeviceID>MK22FN512xxx12</DeviceID>
+    <CoreNum>1</CoreNum>
+    <Cores>
+      <Core>
+        <CoreSet>Cortex-M4</CoreSet>
+      </Core>
+    </Cores>
+    <SRAMsize>128k</SRAMsize>
+    <FLASHsize>512k</FLASHsize>
+  </PROCESSOR>
+  <PATHS>
+    <LinkerCommandFile>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
+    <IncludePaths>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\PDD\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\IO_Map\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\</Path>
+      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\</Path>
+    </IncludePaths>
+    <SourceCodePaths>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Project_Settings\Startup_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\</Path>
+    </SourceCodePaths>
+  </PATHS>
+  <FILES>
+    <GeneratedCs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AD2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd2.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd3.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd4.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd5.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\CODEC_PDN.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\DA1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\DS1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\I2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\LEDS.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE1A.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE1B.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE2A.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE2B.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PE_LDD.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Pins1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SCL1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SDA1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SHCP1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\STCP1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\TESTLED.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\WAIT1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Project_Settings\Startup_Code\startup.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\cv_adc.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\main.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\I2S0_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\PTB_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\PTC_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\VREF_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\CPU_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\Peripherals_Init.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\Vectors.c</PathName>
+    </GeneratedCs>
+    <GeneratedHs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AD2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd2.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd3.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd4.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\BitIoLdd5.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\CODEC_PDN.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\CPU_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\DA1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\DS1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\I2C1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\I2S0.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\I2S0_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Init_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\LEDS.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE1A.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE1B.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE2A.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\MODE2B.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PE_Const.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PE_Error.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PE_LDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PE_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PTB.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PTB_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PTC.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\PTC_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Pins1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SCL1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SDA1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\SHCP1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\STCP1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\TESTLED.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\VREF.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\VREF_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\Vectors_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Generated_Code\WAIT1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\ak4558.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\cv_adc.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\core_cm4_simd.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\cvsmooth.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\dpw_osc.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\dpw_pitchtables.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\intrinsic.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Sources\dsplib\svf_tables.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\IO_Map\MK22F51212.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\PDD\GPIO_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\PDD\PDD_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\PDD\SAI_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\PDD\VREF_PDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\I2S0_Init.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\PTB_Init.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\PTC_Init.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\Peripherals\VREF_Init.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\CPU_Init.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\PDD_Includes.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\multifilter\Static_Code\System\Peripherals_Init.h</PathName>
+    </GeneratedHs>
+  </FILES>
+  <OPTIONS>
+  </OPTIONS>
+</export>

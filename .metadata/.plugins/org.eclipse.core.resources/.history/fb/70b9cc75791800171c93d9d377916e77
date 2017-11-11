@@ -1,0 +1,37 @@
+#include "Algo.h"
+
+#pragma GCC push_options
+#pragma GCC optimize ("Os")
+
+#include "Algo_ChipArps.h"
+#include "Algo_Markov.h"
+#include "Algo_SaikoSet.h"
+#include "Algo_Stomper.h"
+#include "Algo_Test.h"
+#include "Algo_TriTrance.h"
+#include "Algo_Wobble.h"
+#include "Algo_SNH.h"
+#include "Algo_ScaleWalker.h"
+#include "Algo_TooEasy.h"
+
+void Algo_Init_Generic_FourBool(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+{
+	Output->GENERIC.b1 = Tuesday_BoolChance(R);
+	Output->GENERIC.b2 = Tuesday_BoolChance(R);
+	Output->GENERIC.b3 = Tuesday_BoolChance(R);
+	Output->GENERIC.b4 = Tuesday_BoolChance(R);
+}
+
+void NoInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output) 
+{
+}
+
+void NoPattern(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output) 
+{
+}
+
+void NoPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT) 
+{
+}
+
+#pragma GCC pop_options

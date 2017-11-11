@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="com.crt.lpcxpresso.feature.product:10.0.0.201703211831"/>
+		<item value="com.crt.lpcxpresso.feature:10.0.0.201703211831"/>
+		<item value="org.eclipse.cdt.debug.gdbjtag:9.1.0.201609121658"/>
+		<item value="org.eclipse.cdt.gdb:9.1.0.201609121658"/>
+		<item value="org.eclipse.cdt:9.1.0.201609121658"/>
+		<item value="org.eclipse.cvs:1.4.301.v20161124-1400"/>
+		<item value="org.eclipse.draw2d:3.10.100.201606061308"/>
+		<item value="org.eclipse.egit:4.4.1.201607150455-r"/>
+		<item value="org.eclipse.emf.common:2.12.0.v20160420-0247"/>
+		<item value="org.eclipse.emf.ecore:2.12.0.v20160420-0247"/>
+		<item value="org.eclipse.gef:3.11.0.201606061308"/>
+		<item value="org.eclipse.help:2.2.1.v20161124-1400"/>
+		<item value="org.eclipse.jgit:4.4.1.201607150455-r"/>
+		<item value="org.eclipse.platform:4.6.2.v20161124-1529"/>
+		<item value="org.eclipse.rcp:4.6.2.v20161124-1400"/>
+	</list>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_NESTED_PROJECTS"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Projects\Code\Kinetis2\Eurorack-KDS"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+	</section>
+	<section name="CleanDialogSettings">
+		<item value="662" key="DIALOG_WIDTH"/>
+		<item value="493" key="DIALOG_Y_ORIGIN"/>
+		<item value="423" key="DIALOG_HEIGHT"/>
+		<item value="949" key="DIALOG_X_ORIGIN"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+	</section>
+	<section name="NewWizardAction">
+		<item value="com.processorexpert.ui.kds.newprojectwizard.wizard1" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+		</list>
+	</section>
+</section>

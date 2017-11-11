@@ -1,0 +1,159 @@
+#pragma once
+#include <stdint.h>
+
+#define TUESDAY_MAXTICK 160
+#define TUESDAY_GATES 6
+
+#define GATE_TICK 4
+#define GATE_CLOCK 5
+#define GATE_BEAT 3
+#define GATE_LOOP 2
+#define GATE_ACCENT 1
+#define GATE_GATE 0
+
+#define TUESDAY_LEDS 16
+
+struct Tuesday_Tick
+{
+	unsigned char vel;
+	signed char note;
+	unsigned char accent;
+};
+
+struct Tuesday_PatternContainer
+{
+	struct Tuesday_Tick Ticks[TUESDAY_MAXTICK];
+	unsigned char TPB;
+	unsigned char Length;
+};
+
+struct Tuesday_RandomGen
+{
+	long RandomMemory;
+};
+
+struct Tuesday_PatternFuncSpecific
+{
+	int16_t b1;
+	int16_t b2;
+	int16_t b3;
+	int16_t b4;
+	uint8_t matrix[8][8][2];
+	struct Tuesday_RandomGen ExtraRandom;
+};
+
+//4096 = 2.048v
+/*2.5 * (2.048 * INP)/4096
+		(x * 4096)
+		/ 2.5 * 2.048
+		 = inp*/
+
+
+#define DAC_VOLT(x) ((int)((4096.0 * (x)) / (2.5 * 2.048)))
+#define DAC_NOTE(x) DAC_VOLT((x) / 12.0)
+
+
+struct Tuesday_PatternGen
+{
+
+	uint8_t T;
+
+	uint8_t Tempo;
+	uint8_t ClockConnected;
+
+
+	uint8_t Gates[TUESDAY_GATES+1];
+	uint8_t StateLeds[TUESDAY_LEDS];
+
+	uint16_t NoteOut;
+	uint16_t VelocityOut;
+
+
+	int lastnote;
+	int CoolDown;
+	uint16_t TickOut;
+	int32_t CVOut;
+	int Tick;
+	int Measure;
+
+	int countdownTick ;
+	int countdownNote ;
+	int msecpertick ;
+
+	int clockup;
+	int clockshad;
+	int clockssincereset;
+
+	int timesincelastclocktick;
+	int clocktick;
+
+	int directtick ;
+	int extclockssincereset[6] ;
+	uint8_t extclockssinceresetcounter[6];
+	int extclocksupsincereset ;
+	int extclocksdowsincereset ;
+
+
+	struct Tuesday_PatternContainer CurrentPattern;
+};
+
+
+#define TUESDAY_MAXALGO 4
+#define TUESDAY_MAXSCALE 4
+#define TUESDAY_MAXBEAT 4
+#define TUESDAY_MAXTPB 4
+
+struct Tuesday_Settings
+{
+	uint8_t tpboptions[TUESDAY_MAXTPB];
+	uint8_t beatoptions[TUESDAY_MAXBEAT];
+	uint8_t scale[TUESDAY_MAXSCALE][12];
+	uint8_t scalecount[TUESDAY_MAXSCALE];
+	uint8_t algooptions[TUESDAY_MAXALGO];
+};
+
+
+struct Tuesday_Params
+{
+	// buttons
+	uint8_t tpbopt;
+	uint8_t beatopt;
+	uint8_t scale;
+	uint8_t algo;
+
+	// knobs
+	uint8_t seed1;
+	uint8_t seed2;
+	uint8_t intensity;
+	uint8_t tempo;
+};
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+	extern void Tuesday_Init(struct Tuesday_PatternGen *T);
+	extern void Tuesday_Clock(struct Tuesday_PatternGen *T, int ClockVal);
+	extern void Tuesday_Reset(struct Tuesday_PatternGen *T);
+	extern void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
+	extern void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
+		extern void Tuesday_ValidateParams(struct Tuesday_Params *P);
+
+
+	extern void Tuesday_ValidateSettings(struct Tuesday_Settings *S);
+	extern void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P);
+	extern void Tuesday_Generate(struct Tuesday_PatternContainer *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
+	extern void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed);
+
+	extern void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Psych(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles);
+
+
+
+#ifdef __cplusplus
+}
+#endif

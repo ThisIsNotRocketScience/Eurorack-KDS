@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;EdgeCutter/Sources/TuesdayBoard.h&apos; to &apos;EdgeCutterBoard.h&apos;" description="Rename resource &apos;TuesdayBoard.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Sources/TuesdayBoard.h" name="EdgeCutterBoard.h" stamp="1482537989599" updateReferences="true"/>
+</session>

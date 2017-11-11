@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Copyright : 2012 Freescale, Inc. All Rights Reserved.
+
+  This configuration file is a standard interchange file that's format is maintained
+  by Freescale, Inc. The configuration file is a derivative work
+  of the Processor Expert Software technology licensed for use by customers
+  as defined as SOFTWARE in the product's End User License Agreement. This file
+  and format are free to use and distribute for read-only purposes. You do not have
+  the right to create these files or modify this format or use for any purposes other
+  than interchange with the Processor Expert Software technology.
+
+  THIS SOFTWARE IS PROVIDED "AS IS".
+
+  NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT NOT
+  LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE APPLY TO THIS SOFTWARE. IN NO EVENT WILL FREESCALE BE LIABLE, WHETHER
+  IN CONTRACT, TORT, OR OTHERWISE, FOR ANY INCIDENTAL, SPECIAL, INDIRECT,
+  CONSEQUENTIAL OR PUNITIVE DAMAGES, INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR
+  ANY LOSS OF USE, LOSS OF TIME, INCONVENIENCE, COMMERCIAL LOSS, OR LOST PROFITS,
+  SAVINGS, OR REVENUES TO THE FULL EXTENT SUCH MAY BE DISCLAIMED BY LAW.
+
+-->
+<export xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ProjectInfoDescription.xsd">
+  <PROCESSOR>
+    <DeviceID>MKL02Z32xxx4</DeviceID>
+    <CoreNum>1</CoreNum>
+    <Cores>
+      <Core>
+        <CoreSet>Cortex-M0+</CoreSet>
+      </Core>
+    </Cores>
+    <SRAMsize>4096</SRAMsize>
+    <FLASHsize>32k</FLASHsize>
+  </PROCESSOR>
+  <PATHS>
+    <LinkerCommandFile>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Project_Settings\Linker_Files\ProcessorExpert.ld</LinkerCommandFile>
+    <IncludePaths>
+      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\</Path>
+      <Path>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\</Path>
+    </IncludePaths>
+    <SourceCodePaths>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Project_Settings\Startup_Code\</Path>
+      <Path>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\</Path>
+    </SourceCodePaths>
+  </PATHS>
+  <FILES>
+    <GeneratedCs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CI2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Cpu.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DATA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\KSDK1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\LATCH.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTA.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTB.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SM1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_BEATS.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_SCALE.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_TPB.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TI1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TU1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TimerIntLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Vectors.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\WAIT1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Project_Settings\Startup_Code\startup.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\DAC.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\PatternGen.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\exit.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\main.c</PathName>
+    </GeneratedCs>
+    <GeneratedHs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CI2C1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CLOCK.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\CLOCKINT.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\Cpu.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DACSEL.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\DATA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\IO_Map.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\KSDK1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\LATCH.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_Const.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_Error.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_LDD.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PE_Types.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTA.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\PTB.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\RESETINT.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SM1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_ALGO.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_BEATS.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_SCALE.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\SW_TPB.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TI1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TU1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\TimerIntLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Generated_Code\WAIT1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\DAC.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\PatternGen.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\TuesdayBoard.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\Tuesday\Sources\main.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\ADC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\CMP_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\COP_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\FTFA_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\GPIO_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\I2C_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\LPTMR_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCG_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\MCM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\OSC_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PDD_Types.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\PORT_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SIM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SPI_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\SysTick_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\TPM_PDD.h</PathName>
+      <PathName>C:\Freescale\KDS_3.0.0\eclipse\ProcessorExpert\lib\Kinetis\pdd\inc\UART0_PDD.h</PathName>
+    </GeneratedHs>
+  </FILES>
+  <OPTIONS>
+  </OPTIONS>
+</export>
