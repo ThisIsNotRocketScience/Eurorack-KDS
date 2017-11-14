@@ -49,7 +49,7 @@ uint8_t Boot_EraseAll(void)
 
 uint8_t GetButton()
 {
-	return  (GPIOB_PDIR & (1<<10))>0?1:0;
+	return  (GPIOA_PDIR & (1<<12))>0?1:0;
 }
 
 
@@ -70,8 +70,8 @@ void Boot_Check(void)
 
 
 	SIM_SCGC5   |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTB_MASK ;
-	GPIOB_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD(0x0400));
-	PORTB_PCR10 = PORT_PCR_MUX(0x01) | 3;
+	GPIOA_PDDR &= (uint32_t)~(uint32_t)(GPIO_PDDR_PDD((1<<12)));
+	PORTA_PCR12 = PORT_PCR_MUX(0x01) | 3;
 	startup = ((uint32_t*)APP_FLASH_VECTOR_START)[1];
 	uint8_t checkb = Boot_CheckButtons();
 	if (startup!=-1 && startup!=0 && checkb == 1)

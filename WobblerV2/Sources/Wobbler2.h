@@ -169,6 +169,8 @@ typedef struct Wobbler2_LFO_t
 	uint16_t Shape;
 	uint16_t Mod;
 	uint16_t Phasing;
+	int16_t Amount1;
+	int16_t Amount2;
 
 	uint32_t Phase1;
 	uint32_t OldPhase1;

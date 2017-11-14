@@ -349,6 +349,10 @@ int main(void)
 			LFO.Shape = ~adcchannels[ADC_SHAPE] ;
 			LFO.Phasing = (adcchannels[ADC_PHASING])>>4 ;
 			LFO.Speed = ((0xffff-adcchannels[ADC_SPEED]) >> 7);
+			LFO.Amount1 = ((adcchannels[ADC_AMTNORMAL])>>1 ) -(1<<14);
+			LFO.Amount2 = ((adcchannels[ADC_AMTPHASED])>>1 )-(1<<14) ;
+
+
 			measured = 0;
 
 			Wobbler2_UpdateSettings(&LFO.Pendulum, &LFO);

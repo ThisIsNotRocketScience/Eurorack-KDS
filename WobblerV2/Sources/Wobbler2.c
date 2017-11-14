@@ -320,7 +320,14 @@ int32_t imul(int32_t a, int32_t b)
 		uint32_t DP = 0;
 		if (LFO->extsync)
 		{
-			DP = LFO->SyncDP;
+			SteppedResult_t SpeedGrade;
+			Wobbler2_GetSteppedResult(LFO->Speed, 11, &SpeedGrade);
+		#define S(x,y) ((x*65536)/y)
+			int32_t Speeds[11] = { S(1,8),S(1,6),S(1,4),S(1,3), S(1,2),
+									S(1,1), 
+								    S(2,1),S(3,1),S(4,1),S(6,1),S(8,1) };
+			
+			DP = (LFO->SyncDP * GetInterpolatedResultInt(Speeds, &SpeedGrade))>>16;
 		}
 		else
 		{
@@ -387,6 +394,9 @@ int32_t imul(int32_t a, int32_t b)
 
 		LFO->Output = GetInterpolatedResultInt(O, &LFO->ShapeStepped) /(0xffff*4);
 		LFO->OutputPhased = GetInterpolatedResultInt(P, &LFO->ShapeStepped) /(0xffff*4);
+
+		LFO->Output = (LFO->Output *LFO->Amount1) / (int)(1<<14);
+		LFO->OutputPhased = (LFO->OutputPhased *LFO->Amount2) / (int)(1<<14);
 
 
 		LFO->Output += 2048;// + (2540 - 2048);

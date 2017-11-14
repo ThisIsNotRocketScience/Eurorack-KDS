@@ -1,6 +1,9 @@
 #include "PE_Types.h"
 extern volatile uint8_t SR_lock;
 extern volatile uint8_t SR_reg;
+void EnterCritical(){};
+void ExitCritical(){};
+
 #ifdef AAAA
 extern void EnterCritical();
 extern void ExitCritical();
