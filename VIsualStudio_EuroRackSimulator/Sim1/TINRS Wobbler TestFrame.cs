@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TINRS_ArtWorkGenerator;
 
 namespace Sim1
 {
@@ -15,7 +16,7 @@ namespace Sim1
     {
         public WobblerTestFrame()
         {
-            for (int i = 0; i < 4000; i++)
+            for (int i = 0; i < 5000; i++)
             {
                 values.Add(0);
                 linvalues.Add(0);
@@ -27,6 +28,61 @@ namespace Sim1
             InitializeComponent();
             
             RebuildLFO();
+
+
+            BuildPoster();
+        }
+
+        void BuildPoster()
+        {
+            List<Polygon> Lines = new List<Polygon>();
+            SVGWriter S = new SVGWriter();
+
+            int C = 0;
+            int R1 = 1;
+            int G1 = 58;
+            int B1 = 66;
+
+            int R2 = 255;
+            int G2 = 234;
+            int B2 = 0;
+            int qmax = 8;
+            int width = 128;
+            for (int q = 0; q < qmax; q ++)
+            {
+                for (float i = 0; i < 256; i += 2)
+                {
+
+                    Shape.Value = (int)i ;
+                    Phase.Value = 64;
+                    Speed.Value = 255;
+                    Mod.Value = 10+ (q*240)/(qmax-1);
+                    float Ybase = i * 10;
+                    float H = 40;
+
+                    RebuildLFO(true);
+                    Polygon P = new Polygon();
+                    Polygon P2 = new Polygon() { depth = 2 };
+                    float targetmix = q / (float)(qmax-1);
+                    float br = (i / 512.0f) + 0.5f;
+
+                    P.r = (byte)((R1 + (R2 - R1) * targetmix) * br);
+                    P.g = (byte)((G1 + (G2 - G1) * targetmix) * br);
+                    P.b = (byte)((B1 + (B2 - B1) * targetmix) * br);
+
+
+                    for (int j = 0; j < width; j++)
+                    {
+                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[j * 4*4] * H));
+                        //   P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
+                    }
+                    Lines.Add(P);
+                    // Lines.Add(P2);
+                    C++;
+
+                }
+            }
+            SVGWriter.Write("poster-"+DateTime.Now.ToLongDateString()+".svg", 300*4, 256*10, Lines, 2, false);
         }
 
 
@@ -55,25 +111,26 @@ namespace Sim1
             pictureBox1.Invalidate();
         }
 
-        private void RebuildLFO()
+        private void RebuildLFO(bool force = false)
         {
+           int count = 5000;
+            if (force == false) Math.Min(count, pictureBox1.Width);
             TestFrameLoader.ResetStatic();
-            for (int i = 0; i < Math.Min(4000, pictureBox1.Width); i++)
+            for (int i = 0; i < count; i++)
             {
-                if (i == 10)
+                if (i == 0)
                 {
                     TestFrameLoader.LFOTrigger(1, 1);
                 }
-                if (i == 210)
+                if (i == 1)
                 {
                     TestFrameLoader.LFOTrigger(0, 1);
                 }
 
                 double D = 0;
                 
-                values2[i] = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
-                D = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
-                linvalues2[i] = D;
+                values2[i] = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;               
+                linvalues2[i] = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
             }
         }
 

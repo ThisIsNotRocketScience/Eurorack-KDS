@@ -12,7 +12,7 @@
 #include "Algo_ScaleWalker.h"
 #include "Algo_TooEasy.h"
 
-void Algo_Init_Generic_FourBool(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_Init_Generic_FourBool( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Output->GENERIC.b1 = Tuesday_BoolChance(R);
 	Output->GENERIC.b2 = Tuesday_BoolChance(R);
@@ -20,15 +20,15 @@ void Algo_Init_Generic_FourBool(struct Tuesday_PatternGen *T, struct Tuesday_Par
 	Output->GENERIC.b4 = Tuesday_BoolChance(R);
 }
 
-void NoInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output) 
+void NoInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 }
 
-void NoPattern(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output) 
+void NoPattern( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 }
 
-void NoPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT) 
+void NoPatternInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_PatternContainer *PT)
 {
 }
 

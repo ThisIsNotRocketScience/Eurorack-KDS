@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sim1", "Sim1\Sim1.csproj", "{BD9094B0-D835-45D5-B452-BD01B0DFEC24}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -68,7 +68,6 @@ Global
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Debug|x64.ActiveCfg = Debug|x64
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Debug|x64.Build.0 = Debug|x64
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Debug|x86.ActiveCfg = Debug|Win32
-		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Debug|x86.Build.0 = Debug|Win32
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Release|Any CPU.ActiveCfg = Release|Win32
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Release|x64.ActiveCfg = Release|x64
 		{8679D3D1-4CB0-45A8-A4F1-F37A58FCCAE3}.Release|x64.Build.0 = Release|x64
@@ -78,7 +77,6 @@ Global
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Debug|x64.ActiveCfg = Debug|x64
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Debug|x64.Build.0 = Debug|x64
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Debug|x86.ActiveCfg = Debug|Win32
-		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Debug|x86.Build.0 = Debug|Win32
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Release|Any CPU.ActiveCfg = Release|Win32
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Release|x64.ActiveCfg = Release|x64
 		{CDB54C67-B17C-459E-8BBA-D6D1822A830C}.Release|x64.Build.0 = Release|x64
@@ -98,7 +96,6 @@ Global
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Debug|x64.ActiveCfg = Debug|x64
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Debug|x64.Build.0 = Debug|x64
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Debug|x86.ActiveCfg = Debug|Win32
-		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Debug|x86.Build.0 = Debug|Win32
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Release|Any CPU.ActiveCfg = Release|Win32
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Release|x64.ActiveCfg = Release|x64
 		{9B435CA8-5794-4EC5-A0C9-A4883269AD90}.Release|x64.Build.0 = Release|x64

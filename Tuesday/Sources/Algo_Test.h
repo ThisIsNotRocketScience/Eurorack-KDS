@@ -1,4 +1,4 @@
-void Algo_Test_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_Test_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Output->Test.Mode = T->seed1 >> 7;
 	Output->Test.Accent = T->seed2 >> 7;
@@ -7,7 +7,7 @@ void Algo_Test_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, stru
 	Output->Test.SweepSpeed = (T->seed1 & (3<<1))>>1;
 }
 
-void Algo_Test_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Test_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);
@@ -28,11 +28,11 @@ void Algo_Test_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 	Output->vel = PS->Test.Velocity;
 }
 
-void Algo_Random_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_Random_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 }
 
-void Algo_Random_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Random_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);

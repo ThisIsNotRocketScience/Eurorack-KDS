@@ -35,10 +35,10 @@ by the component.
 <td class="regResetVal">0x00000000</td>
  <td>TPM0_C1SC register, peripheral TimerIntLdd1.</td></tr>
 <tr><td>0x40038008</td><td>TPM0_MOD</td>
-<td class="regNotResetVal">0x00005DB1</td>
+<td class="regNotResetVal">0x000012BC</td>
  <td>TPM0_MOD register, peripheral TimerIntLdd1.</td></tr>
 <tr><td>0xE000E410</td><td>NVIC_IPR4</td>
-<td class="regNotResetVal">0x00008000</td>
+<td class="regResetVal">0x00000000</td>
  <td>NVIC_IPR4 register, peripheral TimerIntLdd1.</td></tr>
 <tr><td>0xE000E100</td><td>NVIC_ISER</td>
 <td class="regNotResetVal">0x00020400</td>
@@ -366,7 +366,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40038008</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00005DB1</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x000012BC</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x0000FFFF</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>0 - 15</td><td>MOD</td><td>0x00</td><td>Modulo value</td>
@@ -408,12 +408,12 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0xE000E410</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00008000</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000000</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>24 - 31</td><td>PRI_19</td><td>0x00</td><td>Priority of interrupt 20</td>
 <tr><td>16 - 23</td><td>PRI_18</td><td>0x00</td><td>Priority of interrupt 19</td>
-<tr><td>8 - 15</td><td>PRI_17</td><td>0x80</td><td>Priority of interrupt 18</td>
+<tr><td>8 - 15</td><td>PRI_17</td><td>0x00</td><td>Priority of interrupt 18</td>
 <tr><td>0 - 7</td><td>PRI_16</td><td>0x00</td><td>Priority of interrupt 17</td>
 </tr></table>
 <div class="reghdr1">NVIC_ISER</div>
@@ -467,8 +467,8 @@ registers of the peripheral(s) configured by the component.
 **          Counter                                        : TPM0_CNT
 **          Interrupt service/event                        : Enabled
 **            Interrupt                                    : INT_TPM0
-**            Interrupt priority                           : medium priority
-**          Interrupt period                               : 0.5 ms
+**            Interrupt priority                           : maximal priority
+**          Interrupt period                               : 0.1 ms
 **          Initialization                                 : 
 **            Enabled in init. code                        : no
 **            Auto initialization                          : yes

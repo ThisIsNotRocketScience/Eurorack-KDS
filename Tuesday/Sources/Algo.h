@@ -8,11 +8,11 @@
 #define __max(a,b) (((a)>(b))?(a):(b))
 #endif
 
-struct ScaledNote
+typedef struct ScaledNote
 {
 	int32_t oct;
 	int32_t note;
-};
+} ScaledNote;
 
 #define NOTE(aoct, anote) { SN.note = anote;SN.oct = aoct;};
 #define NOTEOFF() { SN.note = TUESDAY_NOTEOFF;SN.oct = 0;};
@@ -176,7 +176,7 @@ typedef struct PatternStruct_Algo_TooEasy
 	unsigned char Pattern[16];
 } PatternStruct_Algo_TooEasy; 
 
-struct Tuesday_PatternFuncSpecific
+typedef struct Tuesday_PatternFuncSpecific
 {
 	union
 	{
@@ -192,40 +192,40 @@ struct Tuesday_PatternFuncSpecific
 		struct PatternStruct_Algo_TooEasy TooEasy;
 	};
 	struct Tuesday_RandomGen ExtraRandom;
-};
+} Tuesday_PatternFuncSpecific;
 
-int ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
+int ScaleToNote( ScaledNote *SN,  Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
 
-typedef void(*GenFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output);
-typedef void(*InitFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output);
-typedef void(*PatternInitFuncPtr)(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT);
+typedef void(*GenFuncPtr)( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output);
+typedef void(*InitFuncPtr)( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output);
+typedef void(*PatternInitFuncPtr)( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_PatternContainer *PT);
 
-void NoInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output);
-void NoPattern(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output);
-void NoPatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT);
+void NoInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output);
+void NoPattern( Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S, Tuesday_RandomGen *R, Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output);
+void NoPatternInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_PatternContainer *PT);
 
-void Pattern_Rotate(struct Tuesday_PatternContainer *T, int first, int length, int rotate);
-void Pattern_Reverse(struct Tuesday_PatternContainer *T, int first, int length);
-void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length, int transpose);
+void Pattern_Rotate( Tuesday_PatternContainer *T, int first, int length, int rotate);
+void Pattern_Reverse( Tuesday_PatternContainer *T, int first, int length);
+void Pattern_Transpose( Tuesday_PatternContainer *T, int first, int length, int transpose);
 
-void DefaultTick(struct Tuesday_Tick *Out);
-void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R);
+void DefaultTick(Tuesday_Tick_t *Out);
+void RandomSlideAndLength(Tuesday_Tick_t *Out,  Tuesday_RandomGen *R);
 
 int Tuesday_Rand(struct Tuesday_RandomGen *R);
-uint8_t Tuesday_BoolChance(struct Tuesday_RandomGen *R);
-uint8_t Tuesday_RandByte(struct Tuesday_RandomGen *R);
+uint8_t Tuesday_BoolChance( Tuesday_RandomGen *R);
+uint8_t Tuesday_RandByte( Tuesday_RandomGen *R);
 
-struct PatternFunctions
+typedef struct PatternFunctions
 {
 	GenFuncPtr Gen;
 	InitFuncPtr Init;
 	PatternInitFuncPtr PatternInit;
 	uint8_t Dither;
-};
+} PatternFunctions;
 
 uint8_t Tuesday_PercChance(struct Tuesday_RandomGen *R, uint8_t perc);
 
-void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output);
+void Algo_Saiko_Lead_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output);
 
 
 

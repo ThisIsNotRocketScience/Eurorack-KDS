@@ -44,6 +44,14 @@ struct EURORACK_SVF
 	int32_t hi;
 };
 
+typedef struct Shapes_t
+{
+	int32_t Sine;
+	int32_t Saw;
+	int32_t Tri;
+	int32_t Pulse;
+} Shapes_t;
+
 
 #ifdef __cplusplus
 extern "C"
@@ -73,6 +81,7 @@ extern "C"
 	int32_t Pulse(uint32_t phase);
 	int32_t Triangle(uint32_t phase);
 	int32_t BasicShapes(uint32_t phase, int mod);
+	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes);
 
 	void ResetSVF(struct EURORACK_SVF *filt);
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);

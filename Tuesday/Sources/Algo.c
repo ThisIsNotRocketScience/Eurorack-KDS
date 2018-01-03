@@ -1,24 +1,24 @@
 #include "Algo.h"
 
-uint8_t Tuesday_RandByte(struct Tuesday_RandomGen *R)
+uint8_t Tuesday_RandByte( Tuesday_RandomGen *R)
 {
 	return (Tuesday_Rand(R) >> 7) & 0xff;
 }
 
-uint8_t NOINLINE Tuesday_BoolChance(struct Tuesday_RandomGen *R)
+uint8_t NOINLINE Tuesday_BoolChance( Tuesday_RandomGen *R)
 {
 	int r = Tuesday_Rand(R);
 	return ((((r >> 13)) & 1) == 1) ? 1 : 0;
 }
 
-uint8_t NOINLINE Tuesday_PercChance(struct Tuesday_RandomGen *R, uint8_t perc)
+uint8_t NOINLINE Tuesday_PercChance( Tuesday_RandomGen *R, uint8_t perc)
 {
 	int Res = (Tuesday_Rand(R) >> 6);
 	if ((Res & 0xff) >= perc) return 1;
 	return 0;
 }
 
-void Pattern_Reverse(struct Tuesday_PatternContainer *T, int first, int length)
+void Pattern_Reverse( Tuesday_PatternContainer *T, int first, int length)
 {
 	int last = first + length;
 	if (last > T->Length) last = T->Length;
@@ -28,7 +28,7 @@ void Pattern_Reverse(struct Tuesday_PatternContainer *T, int first, int length)
 	}
 }
 
-void Pattern_Rotate(struct Tuesday_PatternContainer *T, int first, int length, int rotate)
+void Pattern_Rotate( Tuesday_PatternContainer *T, int first, int length, int rotate)
 {
 	int last = first + length;
 	if (last > T->Length) last = T->Length;
@@ -60,17 +60,17 @@ void Pattern_Transpose(struct Tuesday_PatternContainer *T, int first, int length
 	}
 }
 
-void NOINLINE Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed)
+void NOINLINE Tuesday_RandomSeed( Tuesday_RandomGen *R, unsigned int seed)
 {
 	R->RandomMemory = (long)seed;
 }
 
-int NOINLINE Tuesday_Rand(struct Tuesday_RandomGen *R)
+int NOINLINE Tuesday_Rand(Tuesday_RandomGen *R)
 {
 	return (((R->RandomMemory = R->RandomMemory * 214013L + 2531011L) >> 16) & 0x7fff);
 }
 
-int NOINLINE ScaleToNote(struct ScaledNote *SN, struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S)
+int NOINLINE ScaleToNote( ScaledNote *SN,  Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S)
 {
 	if (SN->note == TUESDAY_NOTEOFF)
 	{

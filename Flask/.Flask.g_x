@@ -1,0 +1,163 @@
+<CodeGenerationInfo>
+  <ToolchainSettings>
+    <option>
+      <name>PE_G_4PEx_ToolChain_CompilerCpp_SearchUserPaths</name>
+      <values lines_count="7">
+        <Line>"${ProjDirPath}/Static_Code/System"</Line>
+        <Line>"${ProjDirPath}/Static_Code/PDD"</Line>
+        <Line>"${ProjDirPath}/Static_Code/IO_Map"</Line>
+        <Line>"${ProjDirPath}/Static_Code/Peripherals"</Line>
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/pdd/inc"</Line>
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+    <option>
+      <name>PE_G_4PEx_ToolChain_Compiler_SearchUserPaths</name>
+      <values lines_count="7">
+        <Line>"${ProjDirPath}/Static_Code/System"</Line>
+        <Line>"${ProjDirPath}/Static_Code/PDD"</Line>
+        <Line>"${ProjDirPath}/Static_Code/IO_Map"</Line>
+        <Line>"${ProjDirPath}/Static_Code/Peripherals"</Line>
+        <Line>"${ProcessorExpertPath}/lib/Kinetis/pdd/inc"</Line>
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+  </ToolchainSettings>
+  <GeneratedFilesList>
+    <GeneratedByPE>
+      <File Name="Generated_Code/PE_Error.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024318" FileType="45637" />
+      <File Name="Generated_Code/ADMAIN.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024323" FileType="45637" CompNumb="61" />
+      <File Name="Generated_Code/WAIT1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024401" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/SCL1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024382" FileType="45637" CompNumb="50" />
+      <File Name="Generated_Code/AdcLdd2.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024330" FileType="45637" CompNumb="62" />
+      <File Name="Generated_Code/IO_Map.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024314" FileType="45637" />
+      <File Name="Static_Code/System/Vectors.c" FileDate="2017-05-24, 02:36:16" FileAge="1495586176890" FileType="1048576" CompNumb="6" />
+      <File Name="Static_Code/IO_Map/MK22F25612.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046975" FileType="1048576" CompNumb="6" />
+      <File Name="Generated_Code/WAIT1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024399" FileType="45637" CompNumb="24" />
+      <File Name="Generated_Code/OLED_DAT.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033091" FileType="45637" CompNumb="67" />
+      <File Name="Generated_Code/AdcLdd2.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024328" FileType="45637" CompNumb="62" />
+      <File Name="Documentation/doxygen/BitIoLdd1_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352902" FileType="45637" CompNumb="51" />
+      <File Name="Documentation/doxygen/OLED_CS_component.txt" FileDate="2017-11-18, 00:11:31" FileAge="1510960291879" FileType="45637" CompNumb="66" />
+      <File Name="Static_Code/PDD/LLWU_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047013" FileType="1048576" />
+      <File Name="Generated_Code/OLED_DAT.c" FileDate="2017-11-18, 04:33:53" FileAge="1510976033086" FileType="45637" CompNumb="67" />
+      <File Name="Static_Code/PDD/LPTMR_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047015" FileType="1048576" />
+      <File Name="Sources/main.c" FileDate="2017-11-18, 16:08:36" FileAge="1511017716304" FileType="128" />
+      <File Name="Generated_Code/GI2C1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024375" FileType="45637" CompNumb="38" />
+      <File Name="Static_Code/PDD/DMAMUX_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046993" FileType="1048576" />
+      <File Name="Static_Code/PDD/SAI_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047047" FileType="1048576" CompNumb="58" />
+      <File Name="Static_Code/PDD/DMA_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046996" FileType="1048576" />
+      <File Name="Static_Code/System/PDD_Includes.h" FileDate="2017-05-24, 02:36:16" FileAge="1495586176881" FileType="1048576" CompNumb="6" />
+      <File Name="Generated_Code/GI2C1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024373" FileType="45637" CompNumb="38" />
+      <File Name="Documentation/doxygen/RoutingReport_component.txt" FileDate="2017-11-18, 04:33:53" FileAge="1510976033345" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/SPI_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047072" FileType="1048576" />
+      <File Name="Generated_Code/OLED_RESET.h" FileDate="2017-11-17, 01:02:23" FileAge="1510876943759" FileType="45637" CompNumb="63" />
+      <File Name="Static_Code/PDD/EWM_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046999" FileType="1048576" />
+      <File Name="Static_Code/PDD/SIM_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047067" FileType="1048576" />
+      <File Name="Static_Code/PDD/ADC_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046983" FileType="1048576" />
+      <File Name="Generated_Code/OLED_RESET.c" FileDate="2017-11-17, 01:02:23" FileAge="1510876943762" FileType="45637" CompNumb="63" />
+      <File Name="Documentation/doxygen/pex.doxyfile" FileDate="2017-11-17, 00:47:04" FileAge="1510876024292" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/DAC_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046990" FileType="1048576" />
+      <File Name="Static_Code/PDD/FTM_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047006" FileType="1048576" />
+      <File Name="Generated_Code/OLED_DC.h" FileDate="2017-11-17, 01:02:23" FileAge="1510876943770" FileType="45637" CompNumb="64" />
+      <File Name="Documentation/doxygen/ACCENT_TRIGGER_component.txt" FileDate="2017-05-25, 23:13:44" FileAge="1495746824299" FileType="45637" CompNumb="56" />
+      <File Name="Generated_Code/OLED_DC.c" FileDate="2017-11-17, 01:02:23" FileAge="1510876943774" FileType="45637" CompNumb="64" />
+      <File Name="Static_Code/PDD/SysTick_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047074" FileType="1048576" />
+      <File Name="Generated_Code/Init_Config.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024297" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/RNGA_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047038" FileType="1048576" />
+      <File Name="Static_Code/PDD/FTFA_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047004" FileType="1048576" />
+      <File Name="Static_Code/PDD/SCB_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047063" FileType="1048576" />
+      <File Name="Static_Code/System/CPU_Init.h" FileDate="2017-05-24, 02:36:16" FileAge="1495586176877" FileType="1048576" CompNumb="6" />
+      <File Name="Documentation/Flask_Settings.xml" FileDate="2017-11-18, 16:08:37" FileAge="1511017717448" FileType="3072" />
+      <File Name="Static_Code/System/CPU_Init.c" FileDate="2017-05-24, 02:36:16" FileAge="1495586176875" FileType="1048576" CompNumb="6" />
+      <File Name="Documentation/doxygen/GATE_TRIGGER_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352906" FileType="45637" CompNumb="53" />
+      <File Name="Generated_Code/GATE_BUTTON.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024348" FileType="45637" CompNumb="54" />
+      <File Name="Generated_Code/GATE_BUTTON.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024345" FileType="45637" CompNumb="54" />
+      <File Name="Static_Code/PDD/PMC_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047032" FileType="1048576" />
+      <File Name="Static_Code/PDD/PDB_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047027" FileType="1048576" />
+      <File Name="Static_Code/PDD/LPUART_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047017" FileType="1048576" />
+      <File Name="Documentation/doxygen/OLED_CLK_component.txt" FileDate="2017-11-18, 04:33:53" FileAge="1510976033067" FileType="45637" CompNumb="68" />
+      <File Name="Static_Code/PDD/PORT_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047034" FileType="1048576" />
+      <File Name="Generated_Code/ACCENT_TRIGGER.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024339" FileType="45637" CompNumb="56" />
+      <File Name="Static_Code/PDD/PIT_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047029" FileType="1048576" />
+      <File Name="Generated_Code/I2C1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024379" FileType="45637" CompNumb="48" />
+      <File Name="Generated_Code/BitIoLdd2.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024389" FileType="45637" CompNumb="52" />
+      <File Name="Static_Code/PDD/MCM_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047022" FileType="1048576" />
+      <File Name="Generated_Code/ACCENT_TRIGGER.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024337" FileType="45637" CompNumb="56" />
+      <File Name="Generated_Code/I2C1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024377" FileType="45637" CompNumb="48" />
+      <File Name="Project_Settings/Linker_Files/ProcessorExpert.ld" FileDate="2017-11-17, 00:47:04" FileAge="1510876024304" FileType="8" CompNumb="6" />
+      <File Name="Generated_Code/BitIoLdd2.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024386" FileType="45637" CompNumb="52" />
+      <File Name="Generated_Code/BitIoLdd1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024397" FileType="45637" CompNumb="51" />
+      <File Name="Static_Code/PDD/VREF_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047083" FileType="1048576" />
+      <File Name="Documentation/doxygen/OLED_RESET_component.txt" FileDate="2017-11-17, 01:02:23" FileAge="1510876943767" FileType="45637" CompNumb="63" />
+      <File Name="Generated_Code/BitIoLdd1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024395" FileType="45637" CompNumb="51" />
+      <File Name="Static_Code/PDD/UART_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047077" FileType="1048576" />
+      <File Name="ProjectInfo.xml" FileDate="2017-11-18, 04:33:55" FileAge="1510976035344" FileType="45637" />
+      <File Name="Static_Code/PDD/PDD_Types.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046981" FileType="1048576" CompNumb="6" />
+      <File Name="Generated_Code/SDA1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024393" FileType="45637" CompNumb="49" />
+      <File Name="Documentation/doxygen/FILTER_BUTTON_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352911" FileType="45637" CompNumb="55" />
+      <File Name="Sources/Events.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033350" FileType="131328" />
+      <File Name="Static_Code/PDD/I2C_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047010" FileType="1048576" />
+      <File Name="Generated_Code/GATE_TRIGGER.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024352" FileType="45637" CompNumb="53" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033313" FileType="45637" />
+      <File Name="Generated_Code/SDA1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024391" FileType="45637" CompNumb="49" />
+      <File Name="Static_Code/Peripherals/I2S0_Init.h" FileDate="2017-05-26, 01:29:12" FileAge="1495754952761" FileType="1048576" CompNumb="58" />
+      <File Name="Sources/Events.c" FileDate="2017-11-18, 04:33:53" FileAge="1510976033354" FileType="131328" />
+      <File Name="Static_Code/PDD/RTC_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047041" FileType="1048576" />
+      <File Name="Generated_Code/GATE_TRIGGER.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024350" FileType="45637" CompNumb="53" />
+      <File Name="Static_Code/PDD/MCG_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047020" FileType="1048576" />
+      <File Name="Generated_Code/Pins1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024438" FileType="45637" CompNumb="5" />
+      <File Name="Generated_Code/CODEC_PDN.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024406" FileType="45637" CompNumb="17" />
+      <File Name="Static_Code/Peripherals/I2S0_Init.c" FileDate="2017-05-26, 01:29:12" FileAge="1495754952761" FileType="1048576" CompNumb="58" />
+      <File Name="Generated_Code/TI1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024366" FileType="45637" CompNumb="42" />
+      <File Name="Static_Code/PDD/CRC_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046988" FileType="1048576" />
+      <File Name="Documentation/doxygen/OLED_DAT_component.txt" FileDate="2017-11-18, 04:33:53" FileAge="1510976033081" FileType="45637" CompNumb="67" />
+      <File Name="Generated_Code/Pins1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024437" FileType="45637" CompNumb="5" />
+      <File Name="Generated_Code/CODEC_PDN.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024404" FileType="45637" CompNumb="17" />
+      <File Name="Generated_Code/TI1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024364" FileType="45637" CompNumb="42" />
+      <File Name="Documentation/doxygen/Flask_project.txt" FileDate="2017-11-18, 04:33:53" FileAge="1510976033340" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/OLED_CS.h" FileDate="2017-11-18, 00:11:31" FileAge="1510960291886" FileType="45637" CompNumb="66" />
+      <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047024" FileType="1048576" />
+      <File Name="Documentation/doxygen/BitIoLdd2_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352904" FileType="45637" CompNumb="52" />
+      <File Name="Generated_Code/OLED_CS.c" FileDate="2017-11-18, 00:11:31" FileAge="1510960291883" FileType="45637" CompNumb="66" />
+      <File Name="Documentation/doxygen/OLED_DC_component.txt" FileDate="2017-11-17, 01:02:23" FileAge="1510876943778" FileType="45637" CompNumb="64" />
+      <File Name="Generated_Code/PE_LDD.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033331" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/USB_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047080" FileType="1048576" />
+      <File Name="Generated_Code/PE_LDD.c" FileDate="2017-11-18, 04:33:53" FileAge="1510976033328" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/CPU_Config.h" FileDate="2017-11-19, 03:13:23" FileAge="1511057603722" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/FMC_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047001" FileType="1048576" />
+      <File Name="Generated_Code/PE_Const.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024316" FileType="45637" />
+      <File Name="Static_Code/System/Peripherals_Init.h" FileDate="2017-05-24, 02:36:16" FileAge="1495586176886" FileType="1048576" CompNumb="6" />
+      <File Name="Static_Code/PDD/GPIO_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047008" FileType="1048576" />
+      <File Name="Static_Code/System/Peripherals_Init.c" FileDate="2017-05-24, 02:36:16" FileAge="1495586176883" FileType="1048576" CompNumb="6" />
+      <File Name="Documentation/doxygen/TI1_component.txt" FileDate="2017-05-26, 03:59:31" FileAge="1495763971573" FileType="45637" CompNumb="42" />
+      <File Name="Documentation/doxygen/GATE_BUTTON_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352909" FileType="45637" CompNumb="54" />
+      <File Name="Documentation/doxygen/TU1_component.txt" FileDate="2017-05-26, 03:59:31" FileAge="1495763971570" FileType="45637" CompNumb="43" />
+      <File Name="Generated_Code/OLED_CLK.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033077" FileType="45637" CompNumb="68" />
+      <File Name="Generated_Code/FILTER_BUTTON.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024343" FileType="45637" CompNumb="55" />
+      <File Name="Static_Code/PDD/SMC_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047069" FileType="1048576" />
+      <File Name="Documentation/doxygen/pex.css" FileDate="2017-05-24, 01:44:05" FileAge="1495583045267" FileType="16384" CompNumb="6" />
+      <File Name="Generated_Code/OLED_CLK.c" FileDate="2017-11-18, 04:33:53" FileAge="1510976033071" FileType="45637" CompNumb="68" />
+      <File Name="Generated_Code/Cpu.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024311" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/FILTER_BUTTON.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024341" FileType="45637" CompNumb="55" />
+      <File Name="Static_Code/PDD/WDOG_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047085" FileType="1048576" />
+      <File Name="Generated_Code/Cpu.c" FileDate="2017-11-18, 16:08:36" FileAge="1511017716308" FileType="45637" CompNumb="6" />
+      <File Name="Static_Code/PDD/RCM_PDD.h" FileDate="2017-05-24, 01:44:07" FileAge="1495583047036" FileType="1048576" />
+      <File Name="Generated_Code/I2S0.h" FileDate="2017-11-18, 16:08:36" FileAge="1511017716167" FileType="45637" CompNumb="58" />
+      <File Name="Generated_Code/I2S0_Config.h" FileDate="2017-11-18, 16:08:36" FileAge="1511017716301" FileType="45637" CompNumb="58" />
+      <File Name="Generated_Code/TU1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024371" FileType="45637" CompNumb="43" />
+      <File Name="Documentation/doxygen/AdcLdd2_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352913" FileType="45637" CompNumb="62" />
+      <File Name="Generated_Code/Vectors_Config.h" FileDate="2017-11-18, 04:33:53" FileAge="1510976033336" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/TU1.c" FileDate="2017-11-17, 00:47:04" FileAge="1510876024369" FileType="45637" CompNumb="43" />
+      <File Name="Project_Settings/Startup_Code/startup.c" FileDate="2017-05-24, 01:44:06" FileAge="1495583046623" FileType="16384" CompNumb="6" />
+      <File Name="Documentation/doxygen/CODEC_PDN_component.txt" FileDate="2017-11-17, 00:52:32" FileAge="1510876352899" FileType="45637" CompNumb="17" />
+      <File Name="Documentation/doxygen/I2S0_component.txt" FileDate="2017-11-18, 16:08:36" FileAge="1511017716298" FileType="45637" CompNumb="58" />
+      <File Name="Static_Code/PDD/CMP_PDD.h" FileDate="2017-05-24, 01:44:06" FileAge="1495583046986" FileType="1048576" />
+      <File Name="Documentation/Flask.txt" FileDate="2017-11-18, 04:33:55" FileAge="1510976035351" FileType="3072" />
+      <File Name="Generated_Code/ADMAIN.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024325" FileType="45637" CompNumb="61" />
+      <File Name="Generated_Code/SCL1.h" FileDate="2017-11-17, 00:47:04" FileAge="1510876024384" FileType="45637" CompNumb="50" />
+    </GeneratedByPE>
+  </GeneratedFilesList>
+  <CodeGenReference>11</CodeGenReference>
+</CodeGenerationInfo>

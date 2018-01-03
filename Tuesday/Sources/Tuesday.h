@@ -27,31 +27,31 @@
 #define TUESDAY_DEFAULTGATELENGTH ((TUESDAY_SUBTICKRES * 3) / 4)
 
 
-#define VERSIONBYTE 0x14
+#define VERSIONBYTE 0x15
 #define CALIBRATIONVERSIONBYTE 0x13
 
 
 
-struct Tuesday_Tick
+typedef struct Tuesday_Tick_t
 {
 	unsigned char vel;
 	signed char note;
 	unsigned char accent :1;
 	unsigned char slide : 2;	
 	unsigned char maxsubticklength : 4;
-};
+} Tuesday_Tick_t;
 
-struct Tuesday_PatternContainer
+typedef struct Tuesday_PatternContainer
 {
-	struct Tuesday_Tick Ticks[TUESDAY_MAXTICK];
+	Tuesday_Tick_t Ticks[TUESDAY_MAXTICK];
 	unsigned char TPB;
 	unsigned char Length;
-};
+} Tuesday_PatternContainer;
 
-struct Tuesday_RandomGen
+typedef struct Tuesday_RandomGen
 {
 	long RandomMemory;
-};
+} Tuesday_RandomGen;
 
 
 //4096 = 2.048v
@@ -67,7 +67,7 @@ struct Tuesday_RandomGen
 #define DAC_NOTE(x, chan) (DAC_VOLT((x*64)/12, chan))
 
 
-struct Tuesday_PatternGen
+typedef struct Tuesday_PatternGen
 {
 
 	uint8_t T;
@@ -129,8 +129,7 @@ struct Tuesday_PatternGen
 	uint8_t switchmode;
 	uint8_t commitchange;
 	uint8_t TicksPerMeasure;
-
-};
+} Tuesday_PatternGen;
 
 #define TUESDAY_MAXALGO 4
 #define TUESDAY_MAXSCALE 4
@@ -158,13 +157,27 @@ typedef enum
 	__SCALE_COUNT
 } TUESDAY_SCALES;
 
-struct Tuesday_Scale
+typedef enum
+{
+	CLOCK_UPSLOPE,
+	CLOCK_DOWNSLOPE
+} TUESDAY_CLOCKPOLARITY;
+
+typedef enum
+{
+	OCTAVELIMIT_OFF,
+	OCTAVELIMIT_1,
+	OCTAVELIMIT_2,
+	OCTAVELIMIT_3,
+} TUESDAY_OCTAVELIMIT;
+
+typedef struct Tuesday_Scale
 {
 	uint8_t notes[12];
 	uint8_t count;
-};
+} Tuesday_Scale;
 
-struct Tuesday_Settings
+typedef struct Tuesday_Settings
 {
 	uint32_t RandomSeed;
 
@@ -176,16 +189,18 @@ struct Tuesday_Settings
 	struct Tuesday_Scale scales[__SCALE_COUNT];
 
 	uint8_t ClockSubDivMode;
-};
+	uint8_t OctaveLimiter;
+	uint8_t ClockPolarityMode;
+} Tuesday_Settings;
 
-struct Tuesday_Params
+typedef struct Tuesday_Params
 {
 	// buttons
 	uint8_t tpbopt;
 	uint8_t beatopt;
 	uint8_t scale;
 	uint8_t algo;
-};
+} Tuesday_Params;
 
 typedef enum{
 	UI_STARTUP,
@@ -229,25 +244,25 @@ extern "C"
 {
 #endif
 	extern int CalibrateAdjust(int input);
-	extern void Tuesday_Init(struct Tuesday_PatternGen *T);
-	extern void Tuesday_Clock(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par, int ClockVal);
-	extern void Tuesday_ExtClock(struct Tuesday_PatternGen *P,struct Tuesday_Params *Params, struct Tuesday_Settings *S, int state);
-	extern void Tuesday_Reset(struct Tuesday_PatternGen *T);
-	extern void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
-	extern void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P);
-	extern void Tuesday_ValidateParams(struct Tuesday_Params *P);
+	extern void Tuesday_Init(Tuesday_PatternGen *T);
+	extern void Tuesday_Clock(Tuesday_PatternGen *P, Tuesday_Settings *S, Tuesday_Params *Par, int ClockVal);
+	extern void Tuesday_ExtClock(Tuesday_PatternGen *P,Tuesday_Params *Params, Tuesday_Settings *S, int state);
+	extern void Tuesday_Reset(Tuesday_PatternGen *T);
+	extern void Tuesday_Tick(Tuesday_PatternGen *T, Tuesday_Params *P);
+	extern void Tuesday_TimerTick(Tuesday_PatternGen *T, Tuesday_Params *P);
+	extern void Tuesday_ValidateParams(Tuesday_Params *P);
 
-	extern void Tuesday_ValidateSettings(struct Tuesday_Settings *S);
-	extern void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P);
-	extern void Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P);
-	extern void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S);
-	extern void Tuesday_RandomSeed(struct Tuesday_RandomGen *R, unsigned int seed);
-	extern void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par);
+	extern void Tuesday_ValidateSettings(Tuesday_Settings *S);
+	extern void Tuesday_LoadSettings(Tuesday_Settings *S, Tuesday_Params *P);
+	extern void Tuesday_LoadDefaults(Tuesday_Settings *S, Tuesday_Params *P);
+	extern void Tuesday_Generate(Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S);
+	extern void Tuesday_RandomSeed(Tuesday_RandomGen *R, unsigned int seed);
+	extern void Tuesday_SetupClockSubdivision(Tuesday_PatternGen *P, Tuesday_Settings *S, Tuesday_Params *Par);
 
-	extern void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
-	extern void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
-	extern void Tuesday_Psych(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length);
-	extern void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles);
+	extern void Tuesday_Goa(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Flat(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Psych(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int Length);
+	extern void Tuesday_Zeph(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles);
 
 	extern void DoClock(int state);
 	extern void doTick();

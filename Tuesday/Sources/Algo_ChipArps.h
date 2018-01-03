@@ -1,6 +1,6 @@
 #include "Algo.h"
 
-void Algo_ChipArp_1_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_ChipArp_1_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Output->Chip1.ChordSeed = Tuesday_Rand(R);
 	Tuesday_RandomSeed(&Output->Chip1.R, Output->Chip1.ChordSeed);
@@ -9,13 +9,13 @@ void Algo_ChipArp_1_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 
 }
 
-void Algo_ChipArp_1_PatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
+void Algo_ChipArp_1_PatternInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_PatternContainer *PT)
 {
 	// this turned out to be not such a good idea.. just feed it faster tempo or use the TPB at a higher setting.
 	//T->CurrentPattern.TPB *= 2;
 }
 
-void Algo_ChipArp_1_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_ChipArp_1_Gen(Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S, Tuesday_RandomGen *R, Tuesday_PatternFuncSpecific *PS, int I, Tuesday_Tick_t *Output)
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);
@@ -82,12 +82,12 @@ void Algo_ChipArp_2_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 	Output->Chip2.ChordLen = 3 + (T->seed1>>6);
 }
 
-void Algo_ChipArp_2_PatternInit(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_PatternContainer *PT)
+void Algo_ChipArp_2_PatternInit( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_PatternContainer *PT)
 {
 	//T->CurrentPattern.TPB *= 2;
 }
 
-void Algo_ChipArp_2_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_ChipArp_2_Gen(Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S, Tuesday_RandomGen *R, Tuesday_PatternFuncSpecific *PS, int I, Tuesday_Tick_t *Output)
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);

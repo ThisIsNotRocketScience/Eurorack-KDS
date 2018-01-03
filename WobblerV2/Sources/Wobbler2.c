@@ -77,6 +77,11 @@ int32_t imul(int32_t a, int32_t b)
 		LFO->EnvelopeState = Wobbler2_IDLE;
 		LFO->Speed = 10;
 		Wobbler2_InitPendulum(&LFO->Pendulum, LFO);
+		Wobbler2_RandomSeed(&LFO->SNH.random, 0);
+		for (int i = 0; i < 32; i++)
+		{
+			LFO->SNH.segbuffer[i] = 0;
+		}
 		//Wobbler2_InitIntPendulum(&LFO->Pendulum);
 	}
 
@@ -230,22 +235,38 @@ int32_t imul(int32_t a, int32_t b)
 		LFO->EnvelopeState = Wobbler2_ATTACK;
 	}
 
-	int Wobbler2_SampleHold( Wobbler2_LFO_SNH_t *sh,  Wobbler2_LFO_t *lfo, uint32_t phase, uint16_t mod)
+	void Wobbler2_SampleHold( Wobbler2_LFO_SNH_t *sh,  Wobbler2_LFO_t *lfo, uint32_t phase, uint16_t modin, uint32_t phase2)
 	{
-		int newseg = (phase >> 29);
-		SetSVF(&sh->filt, 0x10 + mod / 4, 0x150);
+		int newseg = ((phase >> 29))&7;
+		//SetSVF(&sh->filt, 0x10 + (mod / (256)), 0x150+(mod/1024));
+		modin = ((modin)/16);
+		modin = ~modin;
+		
+		uint16_t mod = (modin*modin)/(1<<14);
+		mod = (~mod)*2;
+		//mod = (mod * mod)/65536;
+		//mod = mod / 2 ;
 
 		if (newseg != sh->lastseg)
 		{
-			if (newseg == 0)
-			{
-				Wobbler2_RandomSeed(&sh->random, lfo->Phasing);
-			}
 			sh->lastseg = newseg;
-			sh->lastval = (Wobbler2_Rand(&sh->random) << 14) - (1 << 28);
+			sh->segbuffer[newseg] =( (Wobbler2_Rand(&sh->random))>>1);
+			sh->lastval1 = sh->segbuffer[newseg];
 		}
-		ProcessSVF(&sh->filt, sh->lastval >> 16);
-		return sh->filt.lo;
+
+		int newseg2 = ((((  phase2) >> 29)) ) &7  ;
+		sh->lastval2 = sh->segbuffer[newseg2];
+
+		uint32_t r1 = sh->store1 * mod;
+		uint16_t m2 = (~mod);
+		uint32_t r2 = (sh->lastval1) * m2;
+		sh->store1 = (r1/65536)  + (r2 / 65536);
+
+		uint32_t r1a = sh->store2 * mod;
+		uint32_t r2a = (sh->lastval2) * m2;
+		sh->store2 = (r1a/65536) + (r2a/ 65536);
+
+
 	}
 
 	int Wobbler2_Twang( Wobbler2_LFO_t *LFO, uint32_t phase)
@@ -370,25 +391,28 @@ int32_t imul(int32_t a, int32_t b)
 #else
 		Wobbler2_DoublePendulum(&LFO->Pendulum,0.05f);
 #endif
-		O[0] = BasicShapes(LFO->Phase1, LFO->Mod>>8);
+		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, LFO->Mod, LFO->Phase1 - DP2);
+
+		Shapes_t BSO, BSP;
+		O[0] = FillBasicShapes(LFO->Phase1, LFO->Mod>>8,&BSO);
 		O[1] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod>>8) + O[0])/2;
 		O[2] = Wobbler2_Twang(LFO, LFO->Phase1);
 		O[3] = LFO->Pendulum.As;// + 0x80000000;
-		O[4] = Wobbler2_SampleHold(&LFO->SNH[0], LFO, LFO->Phase1, LFO->Mod);
+		O[4] = (int32_t)(LFO->SNH.store1<<16) - (1<<29);
 
-		P[0] = BasicShapes(LFO->Phase2, LFO->Mod>>8);
+		P[0] = FillBasicShapes(LFO->Phase2, LFO->Mod>>8, &BSP);
 		P[1] = (BasicShapes(LFO->Phase2 +LFO->PhasedShift, LFO->Mod>>8) + P[0])/2;
 		P[2] = Wobbler2_Twang(LFO, LFO->Phase2);
 		P[3] = LFO->Pendulum.Bs;// + 0x80000000;
-		P[4] = Wobbler2_SampleHold(&LFO->SNH[1], LFO, LFO->Phase2, LFO->Mod);
+		P[4] = (int32_t)(LFO->SNH.store2<<16) - (1<<29);
 
 
-		if ((P[0] > 0) && (LFO->OldPhase2 <0))
+		if ((BSP.Sine > 0) && (LFO->OldPhase2 <0))
 		{
 			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
 		}
 
-		LFO->OldPhase2 = P[0];
+		LFO->OldPhase2 = BSP.Sine;
 
 		Wobbler2_GetSteppedResult(LFO->Shape, 4, &LFO->ShapeStepped);
 

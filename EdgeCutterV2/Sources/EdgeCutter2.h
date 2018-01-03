@@ -19,6 +19,7 @@ typedef struct EdgeCutter2_Params
 typedef struct EdgeCutter2_Settings
 {
 	unsigned char SlowSpeedMult;
+	unsigned char GatedMode;
 } EdgeCutter2_Settings;
 
 #define ENVSTATE_IDLE 0
@@ -70,6 +71,8 @@ typedef struct EdgeCutter2_Envelope
 
 	int32_t Current;
 	int32_t CurrentTarget;
+
+	EdgeCutter2_Settings Settings;
 
 } EdgeCutter2_Envelope;
 

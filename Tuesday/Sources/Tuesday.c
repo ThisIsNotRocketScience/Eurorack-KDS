@@ -4,18 +4,18 @@
 #include "Algo.h"
 #include "AlgoImpl.h"
 
-struct PatternFunctions PatternTypes[ALGO_COUNT];
+ PatternFunctions PatternTypes[ALGO_COUNT];
 
 void NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
-	struct PatternFunctions *PF = &PatternTypes[i];
+	 PatternFunctions *PF = &PatternTypes[i];
 	PF->Gen = Gen;
 	PF->Init = Init;
 	PF->PatternInit = PatternInit;
 	PF->Dither = dither;
 }
 
-void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par)
+void Tuesday_SetupClockSubdivision( Tuesday_PatternGen *P,  Tuesday_Settings *S,  Tuesday_Params *Par)
 {
 	switch (S->ClockSubDivMode % 4)
 	{
@@ -26,7 +26,7 @@ void Tuesday_SetupClockSubdivision(struct Tuesday_PatternGen *P, struct Tuesday_
 	}
 }
 
-void Tuesday_Init(struct Tuesday_PatternGen *P)
+void Tuesday_Init( Tuesday_PatternGen *P)
 {
 	for (int i = 0; i < ALGO_COUNT; i++)
 	{
@@ -111,7 +111,7 @@ void Tuesday_Init(struct Tuesday_PatternGen *P)
 	P->UIMode = UI_STARTUP;
 }
 
-void Tuesday_Reset(struct Tuesday_PatternGen *T)
+void Tuesday_Reset( Tuesday_PatternGen *T)
 {
 	T->TickOut = 0;
 	//T->Tick = -1;
@@ -130,7 +130,7 @@ void Tuesday_Reset(struct Tuesday_PatternGen *T)
 	T->extclocksdowsincereset = 0;
 }
 
-void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
+void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 {
 	T->msecpertick = __max(1, T->msecsincelasttick);
 	T->msecsincelasttick = 0;
@@ -142,7 +142,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 		if (T->CoolDown < 0) T->CoolDown = 0;
 	}
 
-	struct Tuesday_Tick *Tick = &T->CurrentPattern.Ticks[T->Tick];
+	 Tuesday_Tick_t *Tick = &T->CurrentPattern.Ticks[T->Tick];
 
 	if (Tick->vel >= T->CoolDown)
 	{
@@ -196,6 +196,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 	{
 		T->Gates[GATE_LOOP] = GATE_MINGATETIME;
 	}
+
 	if (T->Tick % T->CurrentPattern.TPB == 0)
 	{
 		T->Gates[GATE_BEAT] = GATE_MINGATETIME;
@@ -203,7 +204,7 @@ void Tuesday_Tick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 	T->Gates[GATE_TICK] = GATE_MINGATETIME;
 }
 
-void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
+void Tuesday_TimerTick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 {
 	T->timesincelastclocktick++;
 	T->msecsincelasttick++;
@@ -255,7 +256,7 @@ void Tuesday_TimerTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P)
 	}
 }
 
-void Tuesday_Clock(struct Tuesday_PatternGen *P, struct Tuesday_Settings *S, struct Tuesday_Params *Par, int ClockVal)
+void Tuesday_Clock( Tuesday_PatternGen *P,  Tuesday_Settings *S,  Tuesday_Params *Par, int ClockVal)
 {
 	if (ClockVal == 1)
 	{
@@ -317,7 +318,7 @@ uint32_t KnobOpt(uint32_t val)
 	return 1 + 4 - r;
 }
 
-void Tuesday_ExtClock(struct Tuesday_PatternGen *P, struct Tuesday_Params *Params, struct Tuesday_Settings *Settings, int state)
+void Tuesday_ExtClock( Tuesday_PatternGen *P,  Tuesday_Params *Params,  Tuesday_Settings *Settings, int state)
 {
 	P->clockup = state;
 
@@ -329,7 +330,7 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P, struct Tuesday_Params *Param
 		P->lastclocksubdiv = clocksubdiv;
 	}
 
-	if (state == 1)
+	if (state == Settings->ClockPolarityMode)
 	{
 		if ((P->extclocksupsincereset % clocksubdiv) == 0)
 		{
@@ -346,7 +347,7 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P, struct Tuesday_Params *Param
 		P->extclocksdowsincereset = (P->extclocksdowsincereset + 1) % clocksubdiv;
 	}
 
-	if (state == 1)
+	if (state == Settings->ClockPolarityMode)
 	{
 		for (int i = 1; i < 6; i++)
 		{
@@ -363,7 +364,7 @@ void Tuesday_ExtClock(struct Tuesday_PatternGen *P, struct Tuesday_Params *Param
 
 }
 
-void Tuesday_ValidateParams(struct Tuesday_Params *P)
+void Tuesday_ValidateParams( Tuesday_Params *P)
 {
 	P->algo = P->algo % TUESDAY_MAXALGO;
 	P->beatopt = P->beatopt % TUESDAY_MAXBEAT;
@@ -371,7 +372,7 @@ void Tuesday_ValidateParams(struct Tuesday_Params *P)
 	P->scale = P->scale % TUESDAY_MAXSCALE;
 }
 
-void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Params *P)
+void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 {
 	P->algo = 2;
 	P->beatopt = 0;
@@ -394,6 +395,9 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->beatoptions[3] = 32;
 
 	S->ClockSubDivMode = CLOCKSUBDIV_24PPQN;
+	S->ClockPolarityMode = CLOCK_DOWNSLOPE;
+	S->OctaveLimiter = OCTAVELIMIT_OFF;
+
 	for (int j = 0; j < __SCALE_COUNT; j++)
 	{
 		for (int i = 0; i < 12; i++)
@@ -480,7 +484,7 @@ void NOINLINE Tuesday_LoadDefaults(struct Tuesday_Settings *S, struct Tuesday_Pa
 	S->scales[SCALE_12TONE].count = 12; // 12tone
 }
 
-void Tuesday_LoadSettings(struct Tuesday_Settings *S, struct Tuesday_Params *P)
+void Tuesday_LoadSettings( Tuesday_Settings *S,  Tuesday_Params *P)
 {
 	Tuesday_LoadDefaults(S, P);
 }
@@ -515,16 +519,16 @@ const unsigned char dither[24 * 3] =
 		0b1000, 0b1100, 0b1110
 };
 
-struct Tuesday_PatternFuncSpecific FuncSpecific[4];
-struct Tuesday_Tick Ticks[4];
-struct Tuesday_Tick Top;
-struct Tuesday_Tick Bot;
-struct Tuesday_RandomGen Randoms[4];
+ Tuesday_PatternFuncSpecific FuncSpecific[4];
+ Tuesday_Tick_t Ticks[4];
+ Tuesday_Tick_t Top;
+ Tuesday_Tick_t Bot;
+ Tuesday_RandomGen Randoms[4];
 
 #pragma GCC push_options
 #pragma GCC optimize ("Os")
 
-void DefaultTick(struct Tuesday_Tick *Out)
+void DefaultTick( Tuesday_Tick_t *Out)
 {
 	Out->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
 	Out->slide = 0;
@@ -533,7 +537,7 @@ void DefaultTick(struct Tuesday_Tick *Out)
 	Out->vel = 255;
 }
 
-void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R)
+void RandomSlideAndLength( Tuesday_Tick_t *Out,  Tuesday_RandomGen *R)
 {
 	if (Tuesday_PercChance(R, 50))
 	{
@@ -554,7 +558,7 @@ void RandomSlideAndLength(struct Tuesday_Tick *Out, struct Tuesday_RandomGen *R)
 	}
 }
 
-void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
+void CopyTick( Tuesday_Tick_t *A,  Tuesday_Tick_t *Out)
 {
 	Out->accent = A->accent;
 	Out->note = A->note;
@@ -564,7 +568,7 @@ void CopyTick(struct Tuesday_Tick *A, struct Tuesday_Tick *Out)
 
 }
 
-void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struct Tuesday_Tick *B, struct Tuesday_Tick *Out)
+void ApplyDither(int tick, uint32_t ditherpattern,  Tuesday_Tick_t *A,  Tuesday_Tick_t *B,  Tuesday_Tick_t *Out)
 {
 	if (((ditherpattern >> (tick & 0b11)) & 1) == 1)
 	{
@@ -576,13 +580,23 @@ void ApplyDither(int tick, uint32_t ditherpattern, struct Tuesday_Tick *A, struc
 	}
 }
 
-void ApplySlideLength(struct Tuesday_Tick *T, int SlideMode, int LengthMode)
+void ApplySlideLength( Tuesday_Tick_t *T, int SlideMode, int LengthMode)
 {
 	if (SlideMode == 0) T->slide = 0;
 	if (LengthMode == 0) T->maxsubticklength = TUESDAY_DEFAULTGATELENGTH;
 }
 
-void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S)
+void ApplyOctaveLimit( Tuesday_Settings *S,  Tuesday_Tick_t *T)
+{
+	if (S->OctaveLimiter == OCTAVELIMIT_OFF) return;
+	ScaledNote SN;
+	SN.note = T->note%12;
+	SN.oct = (T->note/12) % S->OctaveLimiter;
+	T->note = SN.note + (SN.oct * 12);
+
+}
+
+void Tuesday_Generate( Tuesday_PatternGen *T, Tuesday_Params *P,  Tuesday_Settings *S)
 {
 
 	int len = S->tpboptions[P->tpbopt] * S->beatoptions[P->beatopt];
@@ -612,7 +626,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	int SlideMode = (S->algooptions[P->algo] >> 4) & 1;
 	int LengthMode = (S->algooptions[P->algo] >> 5) & 1;
 
-	struct PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
+	 PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
 	for (int j = 0; j < 4; j++)
 	{
@@ -635,6 +649,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 			ApplyDither(i, dithery, &Top, &Bot, &T->CurrentPattern.Ticks[i]);
 
 			ApplySlideLength(&T->CurrentPattern.Ticks[i], SlideMode, LengthMode);
+			ApplyOctaveLimit(S, &T->CurrentPattern.Ticks[i]);
 		}
 	}
 	else
@@ -643,7 +658,7 @@ void Tuesday_Generate(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 		{
 			Algo->Gen(T, P, S, &Randoms[0], &FuncSpecific[0], i, &T->CurrentPattern.Ticks[i]);
 			ApplySlideLength(&T->CurrentPattern.Ticks[i], SlideMode, LengthMode);
-
+			ApplyOctaveLimit(S, &T->CurrentPattern.Ticks[i]);
 		}
 	}
 }

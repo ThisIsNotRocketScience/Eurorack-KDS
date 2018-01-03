@@ -1,5 +1,5 @@
 
-void Algo_Stomper_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_Stomper_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Tuesday_RandomSeed(R, T->seed2 >> 2);
 	Tuesday_RandomSeed(&Output->ExtraRandom, T->seed1 >> 2);
@@ -13,7 +13,7 @@ void Algo_Stomper_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, s
 	Output->Stomper.HighNote[1] = Tuesday_Rand(R) % 5;
 }
 
-void Algo_Stomper_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Stomper_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 
 

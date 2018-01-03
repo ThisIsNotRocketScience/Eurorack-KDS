@@ -60,10 +60,10 @@ Common symbol       size              file
 
 Params              0x2               ./Sources/main.o
 coms                0x2               ./Sources/main.o
-Envelope            0x50              ./Sources/main.o
+Envelope            0x54              ./Sources/main.o
 errno               0x4               c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/../../../../arm-none-eabi/lib/armv6-m\libc_s.a(lib_a-reent.o)
 adcchannels         0x18              ./Sources/main.o
-Settings            0x1               ./Sources/main.o
+Settings            0x2               ./Sources/main.o
 AD1_OutV            0xc               ./Generated_Code/AD1.o
 AdcLdd1_DeviceDataPtr
                     0x4               ./Generated_Code/AD1.o
@@ -1787,7 +1787,7 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x00000400                _cfm
                 0x00000410                . = ALIGN (0x4)
 
-.text           0x00000410     0x4b84
+.text           0x00000410     0x4bcc
                 0x00000410                . = ALIGN (0x4)
  *(.text)
  .text          0x00000410       0x60 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
@@ -1822,446 +1822,446 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x000013c0       0x64 ./Sources/EdgeCutter2.o
                 0x000013c0                EdgeCutter2_Trigger
  .text.EdgeCutter2_LoadSettings
-                0x00001424       0x10 ./Sources/EdgeCutter2.o
+                0x00001424       0x18 ./Sources/EdgeCutter2.o
                 0x00001424                EdgeCutter2_LoadSettings
  .text.EdgeCutter2_ValidateParams
-                0x00001434       0x10 ./Sources/EdgeCutter2.o
-                0x00001434                EdgeCutter2_ValidateParams
+                0x0000143c       0x10 ./Sources/EdgeCutter2.o
+                0x0000143c                EdgeCutter2_ValidateParams
  .text.EnvelopeLength
-                0x00001444       0x28 ./Sources/EdgeCutter2.o
+                0x0000144c       0x28 ./Sources/EdgeCutter2.o
  .text.SustainLevel
-                0x0000146c       0x18 ./Sources/EdgeCutter2.o
- *fill*         0x00001484        0x4 
+                0x00001474       0x18 ./Sources/EdgeCutter2.o
+ *fill*         0x0000148c        0x4 
  .text.EdgeCutter2_GetEnv
-                0x00001488      0x570 ./Sources/EdgeCutter2.o
-                0x00001488                EdgeCutter2_GetEnv
+                0x00001490      0x5b0 ./Sources/EdgeCutter2.o
+                0x00001490                EdgeCutter2_GetEnv
  .text.Cpu_OnNMIINT
-                0x000019f8        0x8 ./Sources/Events.o
-                0x000019f8                Cpu_OnNMIINT
+                0x00001a40        0x8 ./Sources/Events.o
+                0x00001a40                Cpu_OnNMIINT
  .text.SM1_OnBlockSent
-                0x00001a00       0x14 ./Sources/Events.o
-                0x00001a00                SM1_OnBlockSent
+                0x00001a48       0x14 ./Sources/Events.o
+                0x00001a48                SM1_OnBlockSent
  .text.SM1_OnBlockReceived
-                0x00001a14       0x10 ./Sources/Events.o
-                0x00001a14                SM1_OnBlockReceived
+                0x00001a5c       0x10 ./Sources/Events.o
+                0x00001a5c                SM1_OnBlockReceived
  .text.TI1_OnInterrupt
-                0x00001a24        0xc ./Sources/Events.o
-                0x00001a24                TI1_OnInterrupt
+                0x00001a6c        0xc ./Sources/Events.o
+                0x00001a6c                TI1_OnInterrupt
  .text.AD1_OnEnd
-                0x00001a30       0x48 ./Sources/Events.o
-                0x00001a30                AD1_OnEnd
+                0x00001a78       0x48 ./Sources/Events.o
+                0x00001a78                AD1_OnEnd
  .text.AD1_OnCalibrationEnd
-                0x00001a78        0x8 ./Sources/Events.o
-                0x00001a78                AD1_OnCalibrationEnd
+                0x00001ac0        0x8 ./Sources/Events.o
+                0x00001ac0                AD1_OnCalibrationEnd
  .text.CLOCKINT_OnInterrupt
-                0x00001a80       0x24 ./Sources/Events.o
-                0x00001a80                CLOCKINT_OnInterrupt
+                0x00001ac8       0x24 ./Sources/Events.o
+                0x00001ac8                CLOCKINT_OnInterrupt
  .text.DAC_Done
-                0x00001aa4       0x18 ./Sources/main.o
-                0x00001aa4                DAC_Done
+                0x00001aec       0x18 ./Sources/main.o
+                0x00001aec                DAC_Done
  .text.DAC_Write
-                0x00001abc       0xf8 ./Sources/main.o
-                0x00001abc                DAC_Write
+                0x00001b04       0xf8 ./Sources/main.o
+                0x00001b04                DAC_Write
  .text.EE24_ReadByte
-                0x00001bb4       0x30 ./Sources/main.o
-                0x00001bb4                EE24_ReadByte
+                0x00001bfc       0x30 ./Sources/main.o
+                0x00001bfc                EE24_ReadByte
  .text.EE24_WriteByte
-                0x00001be4       0x28 ./Sources/main.o
-                0x00001be4                EE24_WriteByte
+                0x00001c2c       0x28 ./Sources/main.o
+                0x00001c2c                EE24_WriteByte
  .text.EE24_ReadBlock
-                0x00001c0c       0x4c ./Sources/main.o
-                0x00001c0c                EE24_ReadBlock
+                0x00001c54       0x4c ./Sources/main.o
+                0x00001c54                EE24_ReadBlock
  .text.EE24_WriteBlock
-                0x00001c58       0x4c ./Sources/main.o
-                0x00001c58                EE24_WriteBlock
- .text.pressed  0x00001ca4       0x30 ./Sources/main.o
-                0x00001ca4                pressed
+                0x00001ca0       0x4c ./Sources/main.o
+                0x00001ca0                EE24_WriteBlock
+ .text.pressed  0x00001cec       0x30 ./Sources/main.o
+                0x00001cec                pressed
  .text.released
-                0x00001cd4       0x30 ./Sources/main.o
-                0x00001cd4                released
- .text.denoise  0x00001d04       0xbc ./Sources/main.o
-                0x00001d04                denoise
+                0x00001d1c       0x30 ./Sources/main.o
+                0x00001d1c                released
+ .text.denoise  0x00001d4c       0xbc ./Sources/main.o
+                0x00001d4c                denoise
  .text.UpdateButtons
-                0x00001dc0       0x68 ./Sources/main.o
-                0x00001dc0                UpdateButtons
+                0x00001e08       0x68 ./Sources/main.o
+                0x00001e08                UpdateButtons
  .text.ShiftOut
-                0x00001e28      0x514 ./Sources/main.o
-                0x00001e28                ShiftOut
- .text.doTimer  0x0000233c      0x140 ./Sources/main.o
-                0x0000233c                doTimer
+                0x00001e70      0x514 ./Sources/main.o
+                0x00001e70                ShiftOut
+ .text.doTimer  0x00002384      0x140 ./Sources/main.o
+                0x00002384                doTimer
  .text.SetModeLeds
-                0x0000247c       0x5c ./Sources/main.o
-                0x0000247c                SetModeLeds
+                0x000024c4       0x5c ./Sources/main.o
+                0x000024c4                SetModeLeds
  .text.SetSpeedLeds
-                0x000024d8       0x38 ./Sources/main.o
-                0x000024d8                SetSpeedLeds
+                0x00002520       0x38 ./Sources/main.o
+                0x00002520                SetSpeedLeds
  .text.SaveEeprom
-                0x00002510       0x2c ./Sources/main.o
-                0x00002510                SaveEeprom
+                0x00002558       0x2c ./Sources/main.o
+                0x00002558                SaveEeprom
  .text.LoadEeprom
-                0x0000253c       0x44 ./Sources/main.o
-                0x0000253c                LoadEeprom
+                0x00002584       0x44 ./Sources/main.o
+                0x00002584                LoadEeprom
  .text.SetupLeds
-                0x00002580       0x20 ./Sources/main.o
-                0x00002580                SetupLeds
+                0x000025c8       0x20 ./Sources/main.o
+                0x000025c8                SetupLeds
  .text.EnvelopeTrigger
-                0x000025a0       0x50 ./Sources/main.o
-                0x000025a0                EnvelopeTrigger
- .text.main     0x000025f0      0x268 ./Sources/main.o
-                0x000025f0                main
+                0x000025e8       0x50 ./Sources/main.o
+                0x000025e8                EnvelopeTrigger
+ .text.main     0x00002638      0x268 ./Sources/main.o
+                0x00002638                main
  .text.__flush_cache
-                0x00002858       0x10 ./Project_Settings/Startup_Code/startup.o
-                0x00002858                __flush_cache
+                0x000028a0       0x10 ./Project_Settings/Startup_Code/startup.o
+                0x000028a0                __flush_cache
  .text.__copy_rom_section
-                0x00002868       0xd8 ./Project_Settings/Startup_Code/startup.o
-                0x00002868                __copy_rom_section
+                0x000028b0       0xd8 ./Project_Settings/Startup_Code/startup.o
+                0x000028b0                __copy_rom_section
  .text.__copy_rom_sections_to_ram
-                0x00002940       0xc0 ./Project_Settings/Startup_Code/startup.o
-                0x00002940                __copy_rom_sections_to_ram
+                0x00002988       0xc0 ./Project_Settings/Startup_Code/startup.o
+                0x00002988                __copy_rom_sections_to_ram
  .text.zero_fill_bss
-                0x00002a00       0xac ./Project_Settings/Startup_Code/startup.o
+                0x00002a48       0xac ./Project_Settings/Startup_Code/startup.o
  .text.__init_registers
-                0x00002aac        0x8 ./Project_Settings/Startup_Code/startup.o
-                0x00002aac                __init_registers
+                0x00002af4        0x8 ./Project_Settings/Startup_Code/startup.o
+                0x00002af4                __init_registers
  .text.__init_user
-                0x00002ab4        0x8 ./Project_Settings/Startup_Code/startup.o
-                0x00002ab4                __init_user
+                0x00002afc        0x8 ./Project_Settings/Startup_Code/startup.o
+                0x00002afc                __init_user
  .text.__thumb_startup
-                0x00002abc       0x48 ./Project_Settings/Startup_Code/startup.o
-                0x00002abc                __thumb_startup
- .text.ClrSumV  0x00002b04       0x30 ./Generated_Code/AD1.o
+                0x00002b04       0x48 ./Project_Settings/Startup_Code/startup.o
+                0x00002b04                __thumb_startup
+ .text.ClrSumV  0x00002b4c       0x30 ./Generated_Code/AD1.o
  .text.AD1_HWEnDi
-                0x00002b34       0xa0 ./Generated_Code/AD1.o
-                0x00002b34                AD1_HWEnDi
+                0x00002b7c       0xa0 ./Generated_Code/AD1.o
+                0x00002b7c                AD1_HWEnDi
  .text.AD1_Measure
-                0x00002bd4       0x48 ./Generated_Code/AD1.o
-                0x00002bd4                AD1_Measure
+                0x00002c1c       0x48 ./Generated_Code/AD1.o
+                0x00002c1c                AD1_Measure
  .text.AD1_GetChanValue16
-                0x00002c1c       0x60 ./Generated_Code/AD1.o
-                0x00002c1c                AD1_GetChanValue16
+                0x00002c64       0x60 ./Generated_Code/AD1.o
+                0x00002c64                AD1_GetChanValue16
  .text.AD1_Calibrate
-                0x00002c7c       0x80 ./Generated_Code/AD1.o
-                0x00002c7c                AD1_Calibrate
+                0x00002cc4       0x80 ./Generated_Code/AD1.o
+                0x00002cc4                AD1_Calibrate
  .text.AdcLdd1_OnMeasurementComplete
-                0x00002cfc       0xfc ./Generated_Code/AD1.o
-                0x00002cfc                AdcLdd1_OnMeasurementComplete
+                0x00002d44       0xfc ./Generated_Code/AD1.o
+                0x00002d44                AdcLdd1_OnMeasurementComplete
  .text.AD1_Init
-                0x00002df8       0x2c ./Generated_Code/AD1.o
-                0x00002df8                AD1_Init
+                0x00002e40       0x2c ./Generated_Code/AD1.o
+                0x00002e40                AD1_Init
  .text.AdcLdd1_Init
-                0x00002e24       0xfc ./Generated_Code/AdcLdd1.o
-                0x00002e24                AdcLdd1_Init
+                0x00002e6c       0xfc ./Generated_Code/AdcLdd1.o
+                0x00002e6c                AdcLdd1_Init
  .text.AdcLdd1_StartSingleMeasurement
-                0x00002f20       0x44 ./Generated_Code/AdcLdd1.o
-                0x00002f20                AdcLdd1_StartSingleMeasurement
+                0x00002f68       0x44 ./Generated_Code/AdcLdd1.o
+                0x00002f68                AdcLdd1_StartSingleMeasurement
  .text.AdcLdd1_CreateSampleGroup
-                0x00002f64       0x6c ./Generated_Code/AdcLdd1.o
-                0x00002f64                AdcLdd1_CreateSampleGroup
+                0x00002fac       0x6c ./Generated_Code/AdcLdd1.o
+                0x00002fac                AdcLdd1_CreateSampleGroup
  .text.AdcLdd1_GetMeasuredValues
-                0x00002fd0       0x60 ./Generated_Code/AdcLdd1.o
-                0x00002fd0                AdcLdd1_GetMeasuredValues
+                0x00003018       0x60 ./Generated_Code/AdcLdd1.o
+                0x00003018                AdcLdd1_GetMeasuredValues
  .text.AdcLdd1_GetMeasurementCompleteStatus
-                0x00003030       0x84 ./Generated_Code/AdcLdd1.o
-                0x00003030                AdcLdd1_GetMeasurementCompleteStatus
+                0x00003078       0x84 ./Generated_Code/AdcLdd1.o
+                0x00003078                AdcLdd1_GetMeasurementCompleteStatus
  .text.AdcLdd1_StartCalibration
-                0x000030b4       0x48 ./Generated_Code/AdcLdd1.o
-                0x000030b4                AdcLdd1_StartCalibration
+                0x000030fc       0x48 ./Generated_Code/AdcLdd1.o
+                0x000030fc                AdcLdd1_StartCalibration
  .text.AdcLdd1_GetCalibrationResultStatus
-                0x000030fc       0x70 ./Generated_Code/AdcLdd1.o
-                0x000030fc                AdcLdd1_GetCalibrationResultStatus
+                0x00003144       0x70 ./Generated_Code/AdcLdd1.o
+                0x00003144                AdcLdd1_GetCalibrationResultStatus
  .text.AdcLdd1_MeasurementCompleteInterrupt
-                0x0000316c       0x30 ./Generated_Code/AdcLdd1.o
-                0x0000316c                AdcLdd1_MeasurementCompleteInterrupt
+                0x000031b4       0x30 ./Generated_Code/AdcLdd1.o
+                0x000031b4                AdcLdd1_MeasurementCompleteInterrupt
  .text.CI2C1_SendBlock
-                0x0000319c      0x144 ./Generated_Code/CI2C1.o
-                0x0000319c                CI2C1_SendBlock
+                0x000031e4      0x144 ./Generated_Code/CI2C1.o
+                0x000031e4                CI2C1_SendBlock
  .text.CI2C1_RecvBlock
-                0x000032e0      0x184 ./Generated_Code/CI2C1.o
-                0x000032e0                CI2C1_RecvBlock
+                0x00003328      0x184 ./Generated_Code/CI2C1.o
+                0x00003328                CI2C1_RecvBlock
  .text.CI2C1_SendStop
-                0x00003464       0x70 ./Generated_Code/CI2C1.o
-                0x00003464                CI2C1_SendStop
+                0x000034ac       0x70 ./Generated_Code/CI2C1.o
+                0x000034ac                CI2C1_SendStop
  .text.CI2C1_SelectSlave
-                0x000034d4       0x38 ./Generated_Code/CI2C1.o
-                0x000034d4                CI2C1_SelectSlave
+                0x0000351c       0x38 ./Generated_Code/CI2C1.o
+                0x0000351c                CI2C1_SelectSlave
  .text.CI2C1_Init
-                0x0000350c       0x18 ./Generated_Code/CI2C1.o
-                0x0000350c                CI2C1_Init
+                0x00003554       0x18 ./Generated_Code/CI2C1.o
+                0x00003554                CI2C1_Init
  .text.CLOCK_Init
-                0x00003524       0x60 ./Generated_Code/CLOCK.o
-                0x00003524                CLOCK_Init
+                0x0000356c       0x60 ./Generated_Code/CLOCK.o
+                0x0000356c                CLOCK_Init
  .text.CLOCK_ClrVal
-                0x00003584       0x18 ./Generated_Code/CLOCK.o
-                0x00003584                CLOCK_ClrVal
+                0x000035cc       0x18 ./Generated_Code/CLOCK.o
+                0x000035cc                CLOCK_ClrVal
  .text.CLOCK_SetVal
-                0x0000359c       0x18 ./Generated_Code/CLOCK.o
-                0x0000359c                CLOCK_SetVal
+                0x000035e4       0x18 ./Generated_Code/CLOCK.o
+                0x000035e4                CLOCK_SetVal
  .text.CLOCKINT_Init
-                0x000035b4       0x94 ./Generated_Code/CLOCKINT.o
-                0x000035b4                CLOCKINT_Init
+                0x000035fc       0x94 ./Generated_Code/CLOCKINT.o
+                0x000035fc                CLOCKINT_Init
  .text.CLOCKINT_Interrupt
-                0x00003648       0x40 ./Generated_Code/CLOCKINT.o
-                0x00003648                CLOCKINT_Interrupt
+                0x00003690       0x40 ./Generated_Code/CLOCKINT.o
+                0x00003690                CLOCKINT_Interrupt
  .text.CLOCKINT_GetVal
-                0x00003688       0x24 ./Generated_Code/CLOCKINT.o
-                0x00003688                CLOCKINT_GetVal
+                0x000036d0       0x24 ./Generated_Code/CLOCKINT.o
+                0x000036d0                CLOCKINT_GetVal
  .text.Cpu_ivINT_PORTB
-                0x000036ac        0xc ./Generated_Code/Cpu.o
-                0x000036ac                Cpu_ivINT_PORTB
+                0x000036f4        0xc ./Generated_Code/Cpu.o
+                0x000036f4                Cpu_ivINT_PORTB
  .text.Cpu_INT_NMIInterrupt
-                0x000036b8        0xc ./Generated_Code/Cpu.o
-                0x000036b8                Cpu_INT_NMIInterrupt
+                0x00003700        0xc ./Generated_Code/Cpu.o
+                0x00003700                Cpu_INT_NMIInterrupt
  .text.Cpu_Interrupt
-                0x000036c4        0xc ./Generated_Code/Cpu.o
-                0x000036c4                Cpu_Interrupt
+                0x0000370c        0xc ./Generated_Code/Cpu.o
+                0x0000370c                Cpu_Interrupt
  .text.__init_hardware
-                0x000036d0       0xfc ./Generated_Code/Cpu.o
-                0x000036d0                __init_hardware
+                0x00003718       0xfc ./Generated_Code/Cpu.o
+                0x00003718                __init_hardware
  .text.PE_low_level_init
-                0x000037cc      0x178 ./Generated_Code/Cpu.o
-                0x000037cc                PE_low_level_init
+                0x00003814      0x178 ./Generated_Code/Cpu.o
+                0x00003814                PE_low_level_init
  .text.DACSEL_Init
-                0x00003944       0x60 ./Generated_Code/DACSEL.o
-                0x00003944                DACSEL_Init
+                0x0000398c       0x60 ./Generated_Code/DACSEL.o
+                0x0000398c                DACSEL_Init
  .text.DACSEL_ClrVal
-                0x000039a4       0x18 ./Generated_Code/DACSEL.o
-                0x000039a4                DACSEL_ClrVal
+                0x000039ec       0x18 ./Generated_Code/DACSEL.o
+                0x000039ec                DACSEL_ClrVal
  .text.DACSEL_SetVal
-                0x000039bc       0x18 ./Generated_Code/DACSEL.o
-                0x000039bc                DACSEL_SetVal
+                0x00003a04       0x18 ./Generated_Code/DACSEL.o
+                0x00003a04                DACSEL_SetVal
  .text.DATA_Init
-                0x000039d4       0x60 ./Generated_Code/DATA.o
-                0x000039d4                DATA_Init
+                0x00003a1c       0x60 ./Generated_Code/DATA.o
+                0x00003a1c                DATA_Init
  .text.DATA_ClrVal
-                0x00003a34       0x18 ./Generated_Code/DATA.o
-                0x00003a34                DATA_ClrVal
+                0x00003a7c       0x18 ./Generated_Code/DATA.o
+                0x00003a7c                DATA_ClrVal
  .text.DATA_SetVal
-                0x00003a4c       0x18 ./Generated_Code/DATA.o
-                0x00003a4c                DATA_SetVal
+                0x00003a94       0x18 ./Generated_Code/DATA.o
+                0x00003a94                DATA_SetVal
  .text.EE241_WriteByte
-                0x00003a64       0xe8 ./Generated_Code/EE241.o
-                0x00003a64                EE241_WriteByte
+                0x00003aac       0xe8 ./Generated_Code/EE241.o
+                0x00003aac                EE241_WriteByte
  .text.EE241_ReadByte
-                0x00003b4c       0xbc ./Generated_Code/EE241.o
-                0x00003b4c                EE241_ReadByte
+                0x00003b94       0xbc ./Generated_Code/EE241.o
+                0x00003b94                EE241_ReadByte
  .text.GI2C1_SelectSlave
-                0x00003c08       0x2c ./Generated_Code/GI2C1.o
-                0x00003c08                GI2C1_SelectSlave
+                0x00003c50       0x2c ./Generated_Code/GI2C1.o
+                0x00003c50                GI2C1_SelectSlave
  .text.GI2C1_UnselectSlave
-                0x00003c34        0xc ./Generated_Code/GI2C1.o
-                0x00003c34                GI2C1_UnselectSlave
+                0x00003c7c        0xc ./Generated_Code/GI2C1.o
+                0x00003c7c                GI2C1_UnselectSlave
  .text.GI2C1_ReadBlock
-                0x00003c40       0x70 ./Generated_Code/GI2C1.o
-                0x00003c40                GI2C1_ReadBlock
+                0x00003c88       0x70 ./Generated_Code/GI2C1.o
+                0x00003c88                GI2C1_ReadBlock
  .text.GI2C1_WriteBlock
-                0x00003cb0       0x7c ./Generated_Code/GI2C1.o
-                0x00003cb0                GI2C1_WriteBlock
+                0x00003cf8       0x7c ./Generated_Code/GI2C1.o
+                0x00003cf8                GI2C1_WriteBlock
  .text.GI2C1_Init
-                0x00003d2c        0x8 ./Generated_Code/GI2C1.o
-                0x00003d2c                GI2C1_Init
+                0x00003d74        0x8 ./Generated_Code/GI2C1.o
+                0x00003d74                GI2C1_Init
  .text.GI2C1_ProbeACK
-                0x00003d34       0x88 ./Generated_Code/GI2C1.o
-                0x00003d34                GI2C1_ProbeACK
+                0x00003d7c       0x88 ./Generated_Code/GI2C1.o
+                0x00003d7c                GI2C1_ProbeACK
  .text.IntI2cLdd1_Main
-                0x00003dbc      0x2e8 ./Generated_Code/IntI2cLdd1.o
-                0x00003dbc                IntI2cLdd1_Main
+                0x00003e04      0x2e8 ./Generated_Code/IntI2cLdd1.o
+                0x00003e04                IntI2cLdd1_Main
  .text.IntI2cLdd1_Init
-                0x000040a4       0xe4 ./Generated_Code/IntI2cLdd1.o
-                0x000040a4                IntI2cLdd1_Init
+                0x000040ec       0xe4 ./Generated_Code/IntI2cLdd1.o
+                0x000040ec                IntI2cLdd1_Init
  .text.IntI2cLdd1_MasterSendBlock
-                0x00004188      0x154 ./Generated_Code/IntI2cLdd1.o
-                0x00004188                IntI2cLdd1_MasterSendBlock
+                0x000041d0      0x154 ./Generated_Code/IntI2cLdd1.o
+                0x000041d0                IntI2cLdd1_MasterSendBlock
  .text.IntI2cLdd1_MasterGetBlockSentStatus
-                0x000042dc       0x34 ./Generated_Code/IntI2cLdd1.o
-                0x000042dc                IntI2cLdd1_MasterGetBlockSentStatus
+                0x00004324       0x34 ./Generated_Code/IntI2cLdd1.o
+                0x00004324                IntI2cLdd1_MasterGetBlockSentStatus
  .text.IntI2cLdd1_MasterGetSentDataNum
-                0x00004310       0x14 ./Generated_Code/IntI2cLdd1.o
-                0x00004310                IntI2cLdd1_MasterGetSentDataNum
+                0x00004358       0x14 ./Generated_Code/IntI2cLdd1.o
+                0x00004358                IntI2cLdd1_MasterGetSentDataNum
  .text.IntI2cLdd1_MasterReceiveBlock
-                0x00004324      0x154 ./Generated_Code/IntI2cLdd1.o
-                0x00004324                IntI2cLdd1_MasterReceiveBlock
+                0x0000436c      0x154 ./Generated_Code/IntI2cLdd1.o
+                0x0000436c                IntI2cLdd1_MasterReceiveBlock
  .text.IntI2cLdd1_MasterGetBlockReceivedStatus
-                0x00004478       0x3c ./Generated_Code/IntI2cLdd1.o
-                0x00004478                IntI2cLdd1_MasterGetBlockReceivedStatus
+                0x000044c0       0x3c ./Generated_Code/IntI2cLdd1.o
+                0x000044c0                IntI2cLdd1_MasterGetBlockReceivedStatus
  .text.IntI2cLdd1_MasterGetReceivedDataNum
-                0x000044b4       0x14 ./Generated_Code/IntI2cLdd1.o
-                0x000044b4                IntI2cLdd1_MasterGetReceivedDataNum
+                0x000044fc       0x14 ./Generated_Code/IntI2cLdd1.o
+                0x000044fc                IntI2cLdd1_MasterGetReceivedDataNum
  .text.IntI2cLdd1_SelectSlaveDevice
-                0x000044c8      0x100 ./Generated_Code/IntI2cLdd1.o
-                0x000044c8                IntI2cLdd1_SelectSlaveDevice
+                0x00004510      0x100 ./Generated_Code/IntI2cLdd1.o
+                0x00004510                IntI2cLdd1_SelectSlaveDevice
  .text.IntI2cLdd1_GetError
-                0x000045c8       0x28 ./Generated_Code/IntI2cLdd1.o
-                0x000045c8                IntI2cLdd1_GetError
+                0x00004610       0x28 ./Generated_Code/IntI2cLdd1.o
+                0x00004610                IntI2cLdd1_GetError
  .text.IntI2cLdd1_CheckBus
-                0x000045f0       0x34 ./Generated_Code/IntI2cLdd1.o
-                0x000045f0                IntI2cLdd1_CheckBus
+                0x00004638       0x34 ./Generated_Code/IntI2cLdd1.o
+                0x00004638                IntI2cLdd1_CheckBus
  .text.JACK_RETRIGGER_Init
-                0x00004624       0x54 ./Generated_Code/JACK_RETRIGGER.o
-                0x00004624                JACK_RETRIGGER_Init
+                0x0000466c       0x54 ./Generated_Code/JACK_RETRIGGER.o
+                0x0000466c                JACK_RETRIGGER_Init
  .text.JACK_RETRIGGER_GetVal
-                0x00004678       0x28 ./Generated_Code/JACK_RETRIGGER.o
-                0x00004678                JACK_RETRIGGER_GetVal
+                0x000046c0       0x28 ./Generated_Code/JACK_RETRIGGER.o
+                0x000046c0                JACK_RETRIGGER_GetVal
  .text.LATCH_Init
-                0x000046a0       0x60 ./Generated_Code/LATCH.o
-                0x000046a0                LATCH_Init
+                0x000046e8       0x60 ./Generated_Code/LATCH.o
+                0x000046e8                LATCH_Init
  .text.LATCH_ClrVal
-                0x00004700       0x18 ./Generated_Code/LATCH.o
-                0x00004700                LATCH_ClrVal
+                0x00004748       0x18 ./Generated_Code/LATCH.o
+                0x00004748                LATCH_ClrVal
  .text.LATCH_SetVal
-                0x00004718       0x18 ./Generated_Code/LATCH.o
-                0x00004718                LATCH_SetVal
+                0x00004760       0x18 ./Generated_Code/LATCH.o
+                0x00004760                LATCH_SetVal
  .text.PTA_Init
-                0x00004730       0x34 ./Generated_Code/PTA.o
-                0x00004730                PTA_Init
+                0x00004778       0x34 ./Generated_Code/PTA.o
+                0x00004778                PTA_Init
  .text.PTB_Init
-                0x00004764       0x3c ./Generated_Code/PTB.o
-                0x00004764                PTB_Init
+                0x000047ac       0x3c ./Generated_Code/PTB.o
+                0x000047ac                PTB_Init
  .text.SM1_Init
-                0x000047a0      0x104 ./Generated_Code/SM1.o
-                0x000047a0                SM1_Init
+                0x000047e8      0x104 ./Generated_Code/SM1.o
+                0x000047e8                SM1_Init
  .text.SM1_SendBlock
-                0x000048a4       0xa8 ./Generated_Code/SM1.o
-                0x000048a4                SM1_SendBlock
+                0x000048ec       0xa8 ./Generated_Code/SM1.o
+                0x000048ec                SM1_SendBlock
  .text.SM1_Interrupt
-                0x0000494c       0xec ./Generated_Code/SM1.o
-                0x0000494c                SM1_Interrupt
+                0x00004994       0xec ./Generated_Code/SM1.o
+                0x00004994                SM1_Interrupt
  .text.SW_MODE_Init
-                0x00004a38       0x58 ./Generated_Code/SW_MODE.o
-                0x00004a38                SW_MODE_Init
+                0x00004a80       0x58 ./Generated_Code/SW_MODE.o
+                0x00004a80                SW_MODE_Init
  .text.SW_MODE_GetVal
-                0x00004a90       0x28 ./Generated_Code/SW_MODE.o
-                0x00004a90                SW_MODE_GetVal
+                0x00004ad8       0x28 ./Generated_Code/SW_MODE.o
+                0x00004ad8                SW_MODE_GetVal
  .text.SW_SPEED_Init
-                0x00004ab8       0x54 ./Generated_Code/SW_SPEED.o
-                0x00004ab8                SW_SPEED_Init
+                0x00004b00       0x54 ./Generated_Code/SW_SPEED.o
+                0x00004b00                SW_SPEED_Init
  .text.SW_SPEED_GetVal
-                0x00004b0c       0x28 ./Generated_Code/SW_SPEED.o
-                0x00004b0c                SW_SPEED_GetVal
+                0x00004b54       0x28 ./Generated_Code/SW_SPEED.o
+                0x00004b54                SW_SPEED_GetVal
  .text.SW_TRIGGER_Init
-                0x00004b34       0x54 ./Generated_Code/SW_TRIGGER.o
-                0x00004b34                SW_TRIGGER_Init
+                0x00004b7c       0x54 ./Generated_Code/SW_TRIGGER.o
+                0x00004b7c                SW_TRIGGER_Init
  .text.SW_TRIGGER_GetVal
-                0x00004b88       0x28 ./Generated_Code/SW_TRIGGER.o
-                0x00004b88                SW_TRIGGER_GetVal
+                0x00004bd0       0x28 ./Generated_Code/SW_TRIGGER.o
+                0x00004bd0                SW_TRIGGER_GetVal
  .text.TimerIntLdd1_OnInterrupt
-                0x00004bb0       0x14 ./Generated_Code/TI1.o
-                0x00004bb0                TimerIntLdd1_OnInterrupt
+                0x00004bf8       0x14 ./Generated_Code/TI1.o
+                0x00004bf8                TimerIntLdd1_OnInterrupt
  .text.TU1_Init
-                0x00004bc4       0xe4 ./Generated_Code/TU1.o
-                0x00004bc4                TU1_Init
+                0x00004c0c       0xe4 ./Generated_Code/TU1.o
+                0x00004c0c                TU1_Init
  .text.TU1_Enable
-                0x00004ca8       0x30 ./Generated_Code/TU1.o
-                0x00004ca8                TU1_Enable
+                0x00004cf0       0x30 ./Generated_Code/TU1.o
+                0x00004cf0                TU1_Enable
  .text.TU1_Interrupt
-                0x00004cd8       0x5c ./Generated_Code/TU1.o
-                0x00004cd8                TU1_Interrupt
+                0x00004d20       0x5c ./Generated_Code/TU1.o
+                0x00004d20                TU1_Interrupt
  .text.TimerIntLdd1_Init
-                0x00004d34       0x50 ./Generated_Code/TimerIntLdd1.o
-                0x00004d34                TimerIntLdd1_Init
+                0x00004d7c       0x50 ./Generated_Code/TimerIntLdd1.o
+                0x00004d7c                TimerIntLdd1_Init
  .text.TimerIntLdd1_Enable
-                0x00004d84       0x30 ./Generated_Code/TimerIntLdd1.o
-                0x00004d84                TimerIntLdd1_Enable
+                0x00004dcc       0x30 ./Generated_Code/TimerIntLdd1.o
+                0x00004dcc                TimerIntLdd1_Enable
  .text.TU1_OnCounterRestart
-                0x00004db4       0x24 ./Generated_Code/TimerIntLdd1.o
-                0x00004db4                TU1_OnCounterRestart
+                0x00004dfc       0x24 ./Generated_Code/TimerIntLdd1.o
+                0x00004dfc                TU1_OnCounterRestart
  .text.WAIT1_Wait10Cycles
-                0x00004dd8        0x8 ./Generated_Code/WAIT1.o
-                0x00004dd8                WAIT1_Wait10Cycles
+                0x00004e20        0x8 ./Generated_Code/WAIT1.o
+                0x00004e20                WAIT1_Wait10Cycles
  .text.WAIT1_Wait100Cycles
-                0x00004de0       0x18 ./Generated_Code/WAIT1.o
-                0x00004de0                WAIT1_Wait100Cycles
+                0x00004e28       0x18 ./Generated_Code/WAIT1.o
+                0x00004e28                WAIT1_Wait100Cycles
  .text.WAIT1_WaitCycles
-                0x00004df8       0x44 ./Generated_Code/WAIT1.o
-                0x00004df8                WAIT1_WaitCycles
+                0x00004e40       0x44 ./Generated_Code/WAIT1.o
+                0x00004e40                WAIT1_WaitCycles
  .text.WAIT1_WaitLongCycles
-                0x00004e3c       0x3c ./Generated_Code/WAIT1.o
-                0x00004e3c                WAIT1_WaitLongCycles
+                0x00004e84       0x3c ./Generated_Code/WAIT1.o
+                0x00004e84                WAIT1_WaitLongCycles
  .text.WAIT1_Waitms
-                0x00004e78       0x38 ./Generated_Code/WAIT1.o
-                0x00004e78                WAIT1_Waitms
+                0x00004ec0       0x38 ./Generated_Code/WAIT1.o
+                0x00004ec0                WAIT1_Waitms
  *(.rodata)
- .rodata        0x00004eb0       0x40 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(divdf3.o)
- .rodata        0x00004ef0       0x40 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(muldf3.o)
+ .rodata        0x00004ef8       0x40 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(divdf3.o)
+ .rodata        0x00004f38       0x40 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m\libgcc.a(muldf3.o)
  *(.rodata*)
  .rodata.SwitchToState
-                0x00004f30       0x14 ./Sources/EdgeCutter2.o
+                0x00004f78       0x14 ./Sources/EdgeCutter2.o
  .rodata.EdgeCutter2_GetEnv
-                0x00004f44       0x28 ./Sources/EdgeCutter2.o
- .rodata.Table  0x00004f6c        0x8 ./Generated_Code/AD1.o
+                0x00004f8c       0x28 ./Sources/EdgeCutter2.o
+ .rodata.Table  0x00004fb4        0x8 ./Generated_Code/AD1.o
  .rodata.ChannelToPin
-                0x00004f74        0x8 ./Generated_Code/AdcLdd1.o
+                0x00004fbc        0x8 ./Generated_Code/AdcLdd1.o
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x00004f7c        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
+ .eh_frame      0x00004fc4        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
  *(.init)
- .init          0x00004f7c        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crti.o
-                0x00004f7c                _init
- .init          0x00004f80        0x8 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
+ .init          0x00004fc4        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crti.o
+                0x00004fc4                _init
+ .init          0x00004fc8        0x8 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
  *(.fini)
- .fini          0x00004f88        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crti.o
-                0x00004f88                _fini
- .fini          0x00004f8c        0x8 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
-                0x00004f94                . = ALIGN (0x4)
-                0x00004f94                _etext = .
+ .fini          0x00004fd0        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crti.o
+                0x00004fd0                _fini
+ .fini          0x00004fd4        0x8 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
+                0x00004fdc                . = ALIGN (0x4)
+                0x00004fdc                _etext = .
 
-.vfp11_veneer   0x00004f94        0x0
+.vfp11_veneer   0x00004fdc        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x00004f94        0x0
+.v4_bx          0x00004fdc        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00004f94        0x0
+.iplt           0x00004fdc        0x0
  .iplt          0x00000000        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
 
-.rel.dyn        0x00004f94        0x0
+.rel.dyn        0x00004fdc        0x0
  .rel.iplt      0x00000000        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x00004f94        0x0
-                0x00004f94                __exidx_start = .
+.ARM            0x00004fdc        0x0
+                0x00004fdc                __exidx_start = .
  *(.ARM.exidx*)
-                0x00004f94                __exidx_end = .
+                0x00004fdc                __exidx_end = .
 
-.ctors          0x00004f94        0x0
-                0x00004f94                __CTOR_LIST__ = .
+.ctors          0x00004fdc        0x0
+                0x00004fdc                __CTOR_LIST__ = .
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *(.ctors)
-                0x00004f94                __CTOR_END__ = .
+                0x00004fdc                __CTOR_END__ = .
 
-.dtors          0x00004f94        0x0
-                0x00004f94                __DTOR_LIST__ = .
+.dtors          0x00004fdc        0x0
+                0x00004fdc                __DTOR_LIST__ = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *(.dtors)
-                0x00004f94                __DTOR_END__ = .
+                0x00004fdc                __DTOR_END__ = .
 
-.preinit_array  0x00004f94        0x0
-                0x00004f94                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x00004fdc        0x0
+                0x00004fdc                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x00004f94                PROVIDE (__preinit_array_end, .)
+                0x00004fdc                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x00004f94        0x4
-                0x00004f94                PROVIDE (__init_array_start, .)
+.init_array     0x00004fdc        0x4
+                0x00004fdc                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  *(.init_array*)
- .init_array    0x00004f94        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
-                0x00004f98                PROVIDE (__init_array_end, .)
+ .init_array    0x00004fdc        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
+                0x00004fe0                PROVIDE (__init_array_end, .)
 
-.fini_array     0x00004f98        0x4
-                0x00004f98                PROVIDE (__fini_array_start, .)
+.fini_array     0x00004fe0        0x4
+                0x00004fe0                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x00004f98        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
-                0x00004f9c                PROVIDE (__fini_array_end, .)
-                0x00004f9c                ___ROM_AT = .
+ .fini_array    0x00004fe0        0x4 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
+                0x00004fe4                PROVIDE (__fini_array_end, .)
+                0x00004fe4                ___ROM_AT = .
 
 .mtb            0x1ffffc00        0x0
                 0x1ffffc00                . = ALIGN (0x8)
@@ -2270,7 +2270,7 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x1ffffc00                . = ALIGN (0x8)
                 0x1ffffc00                _mtb_end = .
 
-.data           0x1ffffc00        0x4 load address 0x00004f9c
+.data           0x1ffffc00        0x4 load address 0x00004fe4
                 0x1ffffc00                . = ALIGN (0x4)
                 0x1ffffc00                _sdata = .
  *(.data)
@@ -2285,14 +2285,14 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x1ffffc04                _edata = .
                 0x00000004                ___data_size = (_edata - _sdata)
 
-.jcr            0x1ffffc04        0x0 load address 0x00004fa0
+.jcr            0x1ffffc04        0x0 load address 0x00004fe8
  .jcr           0x1ffffc04        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
 
-.igot.plt       0x1ffffc04        0x0 load address 0x00004fa0
+.igot.plt       0x1ffffc04        0x0 load address 0x00004fe8
  .igot.plt      0x00000000        0x0 c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtbegin.o
                 0x1ffffc04                . = ALIGN (0x4)
 
-.bss            0x1ffffc04      0x25c load address 0x00004fa0
+.bss            0x1ffffc04      0x260 load address 0x00004fe8
                 0x1ffffc04                __START_BSS = .
                 0x1ffffc04                PROVIDE (__bss_start__, __START_BSS)
  *(.bss)
@@ -2378,53 +2378,53 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
  .bss.DeviceDataPrv__DEFAULT_RTOS_ALLOC
                 0x1ffffda8        0xc ./Generated_Code/TimerIntLdd1.o
  *(COMMON)
- COMMON         0x1ffffdb4       0x94 ./Sources/main.o
+ COMMON         0x1ffffdb4       0x98 ./Sources/main.o
                 0x1ffffdb4                Params
                 0x1ffffdb8                coms
                 0x1ffffdbc                Envelope
-                0x1ffffe0c                adcchannels
-                0x1ffffe24                Settings
-                0x1ffffe28                MasterCalibration
- COMMON         0x1ffffe48       0x10 ./Generated_Code/AD1.o
-                0x1ffffe48                AD1_OutV
-                0x1ffffe54                AdcLdd1_DeviceDataPtr
- COMMON         0x1ffffe58        0x6 ./Generated_Code/CI2C1.o
-                0x1ffffe58                IntI2cLdd1_DeviceDataPtr
-                0x1ffffe5c                CI2C1_SndRcvTemp
- COMMON         0x1ffffe5e        0x1 ./Generated_Code/Cpu.o
-                0x1ffffe5e                SR_reg
-                0x1ffffe60                . = ALIGN (0x4)
- *fill*         0x1ffffe5f        0x1 
-                0x1ffffe60                __END_BSS = .
-                0x1ffffe60                PROVIDE (__bss_end__, __END_BSS)
-                0x00004fa0                _romp_at = (___ROM_AT + SIZEOF (.data))
+                0x1ffffe10                adcchannels
+                0x1ffffe28                Settings
+                0x1ffffe2c                MasterCalibration
+ COMMON         0x1ffffe4c       0x10 ./Generated_Code/AD1.o
+                0x1ffffe4c                AD1_OutV
+                0x1ffffe58                AdcLdd1_DeviceDataPtr
+ COMMON         0x1ffffe5c        0x6 ./Generated_Code/CI2C1.o
+                0x1ffffe5c                IntI2cLdd1_DeviceDataPtr
+                0x1ffffe60                CI2C1_SndRcvTemp
+ COMMON         0x1ffffe62        0x1 ./Generated_Code/Cpu.o
+                0x1ffffe62                SR_reg
+                0x1ffffe64                . = ALIGN (0x4)
+ *fill*         0x1ffffe63        0x1 
+                0x1ffffe64                __END_BSS = .
+                0x1ffffe64                PROVIDE (__bss_end__, __END_BSS)
+                0x00004fe8                _romp_at = (___ROM_AT + SIZEOF (.data))
 
-.romp           0x1ffffe60       0x18 load address 0x00004fa0
-                0x00004fa0                __S_romp = _romp_at
-                0x1ffffe60        0x4 LONG 0x4f9c ___ROM_AT
-                0x1ffffe64        0x4 LONG 0x1ffffc00 _sdata
-                0x1ffffe68        0x4 LONG 0x4 ___data_size
-                0x1ffffe6c        0x4 LONG 0x0
+.romp           0x1ffffe64       0x18 load address 0x00004fe8
+                0x00004fe8                __S_romp = _romp_at
+                0x1ffffe64        0x4 LONG 0x4fe4 ___ROM_AT
+                0x1ffffe68        0x4 LONG 0x1ffffc00 _sdata
+                0x1ffffe6c        0x4 LONG 0x4 ___data_size
                 0x1ffffe70        0x4 LONG 0x0
                 0x1ffffe74        0x4 LONG 0x0
+                0x1ffffe78        0x4 LONG 0x0
                 0x00008000                text_end = (ORIGIN (m_text) + 0x7bf0)
-                0x00004fb8                data_init_end = ((___ROM_AT + SIZEOF (.data)) + SIZEOF (.romp))
+                0x00005000                data_init_end = ((___ROM_AT + SIZEOF (.data)) + SIZEOF (.romp))
                 0x00000001                ASSERT ((data_init_end <= text_end), region m_text overflowed with text and data)
 
 ._user_heap_stack
-                0x1ffffe78      0x200 load address 0x00004fb8
-                0x1ffffe78                . = ALIGN (0x4)
-                0x1ffffe78                PROVIDE (end, .)
-                0x1ffffe78                PROVIDE (_end, .)
-                0x1ffffe78                PROVIDE (__end__, .)
-                0x1ffffe78                __heap_addr = .
-                0x1ffffe78                __HeapBase = .
-                0x1fffff78                . = (. + __heap_size)
- *fill*         0x1ffffe78      0x100 
-                0x1fffff78                __HeapLimit = .
-                0x20000078                . = (. + __stack_size)
- *fill*         0x1fffff78      0x100 
-                0x20000078                . = ALIGN (0x4)
+                0x1ffffe7c      0x200 load address 0x00005000
+                0x1ffffe7c                . = ALIGN (0x4)
+                0x1ffffe7c                PROVIDE (end, .)
+                0x1ffffe7c                PROVIDE (_end, .)
+                0x1ffffe7c                PROVIDE (__end__, .)
+                0x1ffffe7c                __heap_addr = .
+                0x1ffffe7c                __HeapBase = .
+                0x1fffff7c                . = (. + __heap_size)
+ *fill*         0x1ffffe7c      0x100 
+                0x1fffff7c                __HeapLimit = .
+                0x2000007c                . = (. + __stack_size)
+ *fill*         0x1fffff7c      0x100 
+                0x2000007c                . = ALIGN (0x4)
 
 .ARM.attributes
                 0x00000000       0x28
@@ -2511,67 +2511,67 @@ LOAD c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/cr
                 0x0000071c       0x1e c:/freescale/kds_v3/toolchain/bin/../lib/gcc/arm-none-eabi/4.8.4/armv6-m/crtn.o
 OUTPUT(EdgeCutterV2.elf elf32-littlearm)
 
-.debug_info     0x00000000     0x760f
- .debug_info    0x00000000      0x590 ./Sources/EdgeCutter2.o
- .debug_info    0x00000590      0x27b ./Sources/Events.o
- .debug_info    0x0000080b      0xe8e ./Sources/main.o
- .debug_info    0x00001699      0x308 ./Project_Settings/Startup_Code/startup.o
- .debug_info    0x000019a1      0x360 ./Generated_Code/AD1.o
- .debug_info    0x00001d01      0x860 ./Generated_Code/AdcLdd1.o
- .debug_info    0x00002561      0x3de ./Generated_Code/CI2C1.o
- .debug_info    0x0000293f      0x380 ./Generated_Code/CLOCK.o
- .debug_info    0x00002cbf      0x390 ./Generated_Code/CLOCKINT.o
- .debug_info    0x0000304f      0x87d ./Generated_Code/Cpu.o
- .debug_info    0x000038cc      0x380 ./Generated_Code/DACSEL.o
- .debug_info    0x00003c4c      0x380 ./Generated_Code/DATA.o
- .debug_info    0x00003fcc      0x345 ./Generated_Code/EE241.o
- .debug_info    0x00004311      0x4ba ./Generated_Code/GI2C1.o
- .debug_info    0x000047cb      0x86a ./Generated_Code/IntI2cLdd1.o
- .debug_info    0x00005035      0x306 ./Generated_Code/JACK_RETRIGGER.o
- .debug_info    0x0000533b      0x380 ./Generated_Code/LATCH.o
- .debug_info    0x000056bb      0x251 ./Generated_Code/PE_LDD.o
- .debug_info    0x0000590c      0x11f ./Generated_Code/PTA.o
- .debug_info    0x00005a2b      0x11f ./Generated_Code/PTB.o
- .debug_info    0x00005b4a      0x737 ./Generated_Code/SM1.o
- .debug_info    0x00006281      0x306 ./Generated_Code/SW_MODE.o
- .debug_info    0x00006587      0x306 ./Generated_Code/SW_SPEED.o
- .debug_info    0x0000688d      0x306 ./Generated_Code/SW_TRIGGER.o
- .debug_info    0x00006b93       0xb2 ./Generated_Code/TI1.o
- .debug_info    0x00006c45      0x5a6 ./Generated_Code/TU1.o
- .debug_info    0x000071eb      0x1ce ./Generated_Code/TimerIntLdd1.o
- .debug_info    0x000073b9      0x10e ./Generated_Code/Vectors.o
- .debug_info    0x000074c7      0x148 ./Generated_Code/WAIT1.o
+.debug_info     0x00000000     0x7671
+ .debug_info    0x00000000      0x5da ./Sources/EdgeCutter2.o
+ .debug_info    0x000005da      0x27b ./Sources/Events.o
+ .debug_info    0x00000855      0xea6 ./Sources/main.o
+ .debug_info    0x000016fb      0x308 ./Project_Settings/Startup_Code/startup.o
+ .debug_info    0x00001a03      0x360 ./Generated_Code/AD1.o
+ .debug_info    0x00001d63      0x860 ./Generated_Code/AdcLdd1.o
+ .debug_info    0x000025c3      0x3de ./Generated_Code/CI2C1.o
+ .debug_info    0x000029a1      0x380 ./Generated_Code/CLOCK.o
+ .debug_info    0x00002d21      0x390 ./Generated_Code/CLOCKINT.o
+ .debug_info    0x000030b1      0x87d ./Generated_Code/Cpu.o
+ .debug_info    0x0000392e      0x380 ./Generated_Code/DACSEL.o
+ .debug_info    0x00003cae      0x380 ./Generated_Code/DATA.o
+ .debug_info    0x0000402e      0x345 ./Generated_Code/EE241.o
+ .debug_info    0x00004373      0x4ba ./Generated_Code/GI2C1.o
+ .debug_info    0x0000482d      0x86a ./Generated_Code/IntI2cLdd1.o
+ .debug_info    0x00005097      0x306 ./Generated_Code/JACK_RETRIGGER.o
+ .debug_info    0x0000539d      0x380 ./Generated_Code/LATCH.o
+ .debug_info    0x0000571d      0x251 ./Generated_Code/PE_LDD.o
+ .debug_info    0x0000596e      0x11f ./Generated_Code/PTA.o
+ .debug_info    0x00005a8d      0x11f ./Generated_Code/PTB.o
+ .debug_info    0x00005bac      0x737 ./Generated_Code/SM1.o
+ .debug_info    0x000062e3      0x306 ./Generated_Code/SW_MODE.o
+ .debug_info    0x000065e9      0x306 ./Generated_Code/SW_SPEED.o
+ .debug_info    0x000068ef      0x306 ./Generated_Code/SW_TRIGGER.o
+ .debug_info    0x00006bf5       0xb2 ./Generated_Code/TI1.o
+ .debug_info    0x00006ca7      0x5a6 ./Generated_Code/TU1.o
+ .debug_info    0x0000724d      0x1ce ./Generated_Code/TimerIntLdd1.o
+ .debug_info    0x0000741b      0x10e ./Generated_Code/Vectors.o
+ .debug_info    0x00007529      0x148 ./Generated_Code/WAIT1.o
 
-.debug_abbrev   0x00000000     0x2361
- .debug_abbrev  0x00000000      0x170 ./Sources/EdgeCutter2.o
- .debug_abbrev  0x00000170      0x156 ./Sources/Events.o
- .debug_abbrev  0x000002c6      0x30c ./Sources/main.o
- .debug_abbrev  0x000005d2      0x148 ./Project_Settings/Startup_Code/startup.o
- .debug_abbrev  0x0000071a      0x190 ./Generated_Code/AD1.o
- .debug_abbrev  0x000008aa      0x1d2 ./Generated_Code/AdcLdd1.o
- .debug_abbrev  0x00000a7c      0x149 ./Generated_Code/CI2C1.o
- .debug_abbrev  0x00000bc5      0x136 ./Generated_Code/CLOCK.o
- .debug_abbrev  0x00000cfb      0x15d ./Generated_Code/CLOCKINT.o
- .debug_abbrev  0x00000e58      0x14f ./Generated_Code/Cpu.o
- .debug_abbrev  0x00000fa7      0x136 ./Generated_Code/DACSEL.o
- .debug_abbrev  0x000010dd      0x136 ./Generated_Code/DATA.o
- .debug_abbrev  0x00001213      0x122 ./Generated_Code/EE241.o
- .debug_abbrev  0x00001335      0x175 ./Generated_Code/GI2C1.o
- .debug_abbrev  0x000014aa      0x182 ./Generated_Code/IntI2cLdd1.o
- .debug_abbrev  0x0000162c      0x10d ./Generated_Code/JACK_RETRIGGER.o
- .debug_abbrev  0x00001739      0x136 ./Generated_Code/LATCH.o
- .debug_abbrev  0x0000186f      0x10d ./Generated_Code/PE_LDD.o
- .debug_abbrev  0x0000197c       0x8d ./Generated_Code/PTA.o
- .debug_abbrev  0x00001a09       0x8d ./Generated_Code/PTB.o
- .debug_abbrev  0x00001a96      0x1a0 ./Generated_Code/SM1.o
- .debug_abbrev  0x00001c36      0x10d ./Generated_Code/SW_MODE.o
- .debug_abbrev  0x00001d43      0x10d ./Generated_Code/SW_SPEED.o
- .debug_abbrev  0x00001e50      0x10d ./Generated_Code/SW_TRIGGER.o
- .debug_abbrev  0x00001f5d       0x68 ./Generated_Code/TI1.o
- .debug_abbrev  0x00001fc5      0x16a ./Generated_Code/TU1.o
- .debug_abbrev  0x0000212f       0xdd ./Generated_Code/TimerIntLdd1.o
- .debug_abbrev  0x0000220c       0xa4 ./Generated_Code/Vectors.o
- .debug_abbrev  0x000022b0       0xb1 ./Generated_Code/WAIT1.o
+.debug_abbrev   0x00000000     0x2363
+ .debug_abbrev  0x00000000      0x172 ./Sources/EdgeCutter2.o
+ .debug_abbrev  0x00000172      0x156 ./Sources/Events.o
+ .debug_abbrev  0x000002c8      0x30c ./Sources/main.o
+ .debug_abbrev  0x000005d4      0x148 ./Project_Settings/Startup_Code/startup.o
+ .debug_abbrev  0x0000071c      0x190 ./Generated_Code/AD1.o
+ .debug_abbrev  0x000008ac      0x1d2 ./Generated_Code/AdcLdd1.o
+ .debug_abbrev  0x00000a7e      0x149 ./Generated_Code/CI2C1.o
+ .debug_abbrev  0x00000bc7      0x136 ./Generated_Code/CLOCK.o
+ .debug_abbrev  0x00000cfd      0x15d ./Generated_Code/CLOCKINT.o
+ .debug_abbrev  0x00000e5a      0x14f ./Generated_Code/Cpu.o
+ .debug_abbrev  0x00000fa9      0x136 ./Generated_Code/DACSEL.o
+ .debug_abbrev  0x000010df      0x136 ./Generated_Code/DATA.o
+ .debug_abbrev  0x00001215      0x122 ./Generated_Code/EE241.o
+ .debug_abbrev  0x00001337      0x175 ./Generated_Code/GI2C1.o
+ .debug_abbrev  0x000014ac      0x182 ./Generated_Code/IntI2cLdd1.o
+ .debug_abbrev  0x0000162e      0x10d ./Generated_Code/JACK_RETRIGGER.o
+ .debug_abbrev  0x0000173b      0x136 ./Generated_Code/LATCH.o
+ .debug_abbrev  0x00001871      0x10d ./Generated_Code/PE_LDD.o
+ .debug_abbrev  0x0000197e       0x8d ./Generated_Code/PTA.o
+ .debug_abbrev  0x00001a0b       0x8d ./Generated_Code/PTB.o
+ .debug_abbrev  0x00001a98      0x1a0 ./Generated_Code/SM1.o
+ .debug_abbrev  0x00001c38      0x10d ./Generated_Code/SW_MODE.o
+ .debug_abbrev  0x00001d45      0x10d ./Generated_Code/SW_SPEED.o
+ .debug_abbrev  0x00001e52      0x10d ./Generated_Code/SW_TRIGGER.o
+ .debug_abbrev  0x00001f5f       0x68 ./Generated_Code/TI1.o
+ .debug_abbrev  0x00001fc7      0x16a ./Generated_Code/TU1.o
+ .debug_abbrev  0x00002131       0xdd ./Generated_Code/TimerIntLdd1.o
+ .debug_abbrev  0x0000220e       0xa4 ./Generated_Code/Vectors.o
+ .debug_abbrev  0x000022b2       0xb1 ./Generated_Code/WAIT1.o
 
 .debug_aranges  0x00000000      0x868
  .debug_aranges
@@ -2776,95 +2776,95 @@ OUTPUT(EdgeCutterV2.elf elf32-littlearm)
  .debug_macro   0x0000c2c1      0x24f ./Generated_Code/Vectors.o
  .debug_macro   0x0000c510       0x8e ./Generated_Code/WAIT1.o
 
-.debug_line     0x00000000     0x6c04
- .debug_line    0x00000000      0x394 ./Sources/EdgeCutter2.o
- .debug_line    0x00000394      0x4d4 ./Sources/Events.o
- .debug_line    0x00000868      0xbd7 ./Sources/main.o
- .debug_line    0x0000143f      0x36d ./Project_Settings/Startup_Code/startup.o
- .debug_line    0x000017ac      0x53c ./Generated_Code/AD1.o
- .debug_line    0x00001ce8      0x372 ./Generated_Code/AdcLdd1.o
- .debug_line    0x0000205a      0x32e ./Generated_Code/CI2C1.o
- .debug_line    0x00002388      0x2b5 ./Generated_Code/CLOCK.o
- .debug_line    0x0000263d      0x470 ./Generated_Code/CLOCKINT.o
- .debug_line    0x00002aad      0x5fa ./Generated_Code/Cpu.o
- .debug_line    0x000030a7      0x2b7 ./Generated_Code/DACSEL.o
- .debug_line    0x0000335e      0x2b3 ./Generated_Code/DATA.o
- .debug_line    0x00003611      0x326 ./Generated_Code/EE241.o
- .debug_line    0x00003937      0x398 ./Generated_Code/GI2C1.o
- .debug_line    0x00003ccf      0x416 ./Generated_Code/IntI2cLdd1.o
- .debug_line    0x000040e5      0x28e ./Generated_Code/JACK_RETRIGGER.o
- .debug_line    0x00004373      0x2b5 ./Generated_Code/LATCH.o
- .debug_line    0x00004628      0x3e8 ./Generated_Code/PE_LDD.o
- .debug_line    0x00004a10      0x205 ./Generated_Code/PTA.o
- .debug_line    0x00004c15      0x205 ./Generated_Code/PTB.o
- .debug_line    0x00004e1a      0x4e6 ./Generated_Code/SM1.o
- .debug_line    0x00005300      0x280 ./Generated_Code/SW_MODE.o
- .debug_line    0x00005580      0x282 ./Generated_Code/SW_SPEED.o
- .debug_line    0x00005802      0x286 ./Generated_Code/SW_TRIGGER.o
- .debug_line    0x00005a88      0x435 ./Generated_Code/TI1.o
- .debug_line    0x00005ebd      0x2b9 ./Generated_Code/TU1.o
- .debug_line    0x00006176      0x2b4 ./Generated_Code/TimerIntLdd1.o
- .debug_line    0x0000642a      0x569 ./Generated_Code/Vectors.o
- .debug_line    0x00006993      0x271 ./Generated_Code/WAIT1.o
+.debug_line     0x00000000     0x6c0b
+ .debug_line    0x00000000      0x39b ./Sources/EdgeCutter2.o
+ .debug_line    0x0000039b      0x4d4 ./Sources/Events.o
+ .debug_line    0x0000086f      0xbd7 ./Sources/main.o
+ .debug_line    0x00001446      0x36d ./Project_Settings/Startup_Code/startup.o
+ .debug_line    0x000017b3      0x53c ./Generated_Code/AD1.o
+ .debug_line    0x00001cef      0x372 ./Generated_Code/AdcLdd1.o
+ .debug_line    0x00002061      0x32e ./Generated_Code/CI2C1.o
+ .debug_line    0x0000238f      0x2b5 ./Generated_Code/CLOCK.o
+ .debug_line    0x00002644      0x470 ./Generated_Code/CLOCKINT.o
+ .debug_line    0x00002ab4      0x5fa ./Generated_Code/Cpu.o
+ .debug_line    0x000030ae      0x2b7 ./Generated_Code/DACSEL.o
+ .debug_line    0x00003365      0x2b3 ./Generated_Code/DATA.o
+ .debug_line    0x00003618      0x326 ./Generated_Code/EE241.o
+ .debug_line    0x0000393e      0x398 ./Generated_Code/GI2C1.o
+ .debug_line    0x00003cd6      0x416 ./Generated_Code/IntI2cLdd1.o
+ .debug_line    0x000040ec      0x28e ./Generated_Code/JACK_RETRIGGER.o
+ .debug_line    0x0000437a      0x2b5 ./Generated_Code/LATCH.o
+ .debug_line    0x0000462f      0x3e8 ./Generated_Code/PE_LDD.o
+ .debug_line    0x00004a17      0x205 ./Generated_Code/PTA.o
+ .debug_line    0x00004c1c      0x205 ./Generated_Code/PTB.o
+ .debug_line    0x00004e21      0x4e6 ./Generated_Code/SM1.o
+ .debug_line    0x00005307      0x280 ./Generated_Code/SW_MODE.o
+ .debug_line    0x00005587      0x282 ./Generated_Code/SW_SPEED.o
+ .debug_line    0x00005809      0x286 ./Generated_Code/SW_TRIGGER.o
+ .debug_line    0x00005a8f      0x435 ./Generated_Code/TI1.o
+ .debug_line    0x00005ec4      0x2b9 ./Generated_Code/TU1.o
+ .debug_line    0x0000617d      0x2b4 ./Generated_Code/TimerIntLdd1.o
+ .debug_line    0x00006431      0x569 ./Generated_Code/Vectors.o
+ .debug_line    0x0000699a      0x271 ./Generated_Code/WAIT1.o
 
-.debug_str      0x00000000    0x38feb
- .debug_str     0x00000000     0x4b56 ./Sources/EdgeCutter2.o
-                               0x4d5c (size before relaxing)
- .debug_str     0x00004b56    0x2d4bf ./Sources/Events.o
+.debug_str      0x00000000    0x38ff5
+ .debug_str     0x00000000     0x4b60 ./Sources/EdgeCutter2.o
+                               0x4d6f (size before relaxing)
+ .debug_str     0x00004b60    0x2d4bf ./Sources/Events.o
                               0x30517 (size before relaxing)
- .debug_str     0x00032015     0x12bc ./Sources/main.o
-                              0x335f8 (size before relaxing)
- .debug_str     0x000332d1     0x1125 ./Project_Settings/Startup_Code/startup.o
+ .debug_str     0x0003201f     0x12bc ./Sources/main.o
+                              0x33602 (size before relaxing)
+ .debug_str     0x000332db     0x1125 ./Project_Settings/Startup_Code/startup.o
                                0x4bb4 (size before relaxing)
- .debug_str     0x000343f6      0x182 ./Generated_Code/AD1.o
+ .debug_str     0x00034400      0x182 ./Generated_Code/AD1.o
                               0x30578 (size before relaxing)
- .debug_str     0x00034578      0x4b3 ./Generated_Code/AdcLdd1.o
+ .debug_str     0x00034582      0x4b3 ./Generated_Code/AdcLdd1.o
                               0x24597 (size before relaxing)
- .debug_str     0x00034a2b     0x3334 ./Generated_Code/CI2C1.o
+ .debug_str     0x00034a35     0x3334 ./Generated_Code/CI2C1.o
                               0x228da (size before relaxing)
- .debug_str     0x00037d5f       0xa6 ./Generated_Code/CLOCK.o
+ .debug_str     0x00037d69       0xa6 ./Generated_Code/CLOCK.o
                               0x1fe08 (size before relaxing)
- .debug_str     0x00037e05       0x9c ./Generated_Code/CLOCKINT.o
+ .debug_str     0x00037e0f       0x9c ./Generated_Code/CLOCKINT.o
                               0x3058b (size before relaxing)
- .debug_str     0x00037ea1      0x1ac ./Generated_Code/Cpu.o
+ .debug_str     0x00037eab      0x1ac ./Generated_Code/Cpu.o
                               0x306de (size before relaxing)
- .debug_str     0x0003804d       0x88 ./Generated_Code/DACSEL.o
+ .debug_str     0x00038057       0x88 ./Generated_Code/DACSEL.o
                               0x1fe1c (size before relaxing)
- .debug_str     0x000380d5       0x78 ./Generated_Code/DATA.o
+ .debug_str     0x000380df       0x78 ./Generated_Code/DATA.o
                               0x1fdf4 (size before relaxing)
- .debug_str     0x0003814d      0x1da ./Generated_Code/EE241.o
+ .debug_str     0x00038157      0x1da ./Generated_Code/EE241.o
                               0x1f762 (size before relaxing)
- .debug_str     0x00038327      0x172 ./Generated_Code/GI2C1.o
+ .debug_str     0x00038331      0x172 ./Generated_Code/GI2C1.o
                               0x1f567 (size before relaxing)
- .debug_str     0x00038499      0x2bc ./Generated_Code/IntI2cLdd1.o
+ .debug_str     0x000384a3      0x2bc ./Generated_Code/IntI2cLdd1.o
                               0x260aa (size before relaxing)
- .debug_str     0x00038755       0x86 ./Generated_Code/JACK_RETRIGGER.o
+ .debug_str     0x0003875f       0x86 ./Generated_Code/JACK_RETRIGGER.o
                               0x1fe08 (size before relaxing)
- .debug_str     0x000387db       0x80 ./Generated_Code/LATCH.o
+ .debug_str     0x000387e5       0x80 ./Generated_Code/LATCH.o
                               0x1fe08 (size before relaxing)
- .debug_str     0x0003885b      0x17e ./Generated_Code/PE_LDD.o
+ .debug_str     0x00038865      0x17e ./Generated_Code/PE_LDD.o
                               0x30553 (size before relaxing)
- .debug_str     0x000389d9       0x21 ./Generated_Code/PTA.o
+ .debug_str     0x000389e3       0x21 ./Generated_Code/PTA.o
                               0x1ee4e (size before relaxing)
- .debug_str     0x000389fa       0x21 ./Generated_Code/PTB.o
+ .debug_str     0x00038a04       0x21 ./Generated_Code/PTB.o
                               0x1ee4e (size before relaxing)
- .debug_str     0x00038a1b      0x1d6 ./Generated_Code/SM1.o
+ .debug_str     0x00038a25      0x1d6 ./Generated_Code/SM1.o
                               0x307c5 (size before relaxing)
- .debug_str     0x00038bf1       0x63 ./Generated_Code/SW_MODE.o
+ .debug_str     0x00038bfb       0x63 ./Generated_Code/SW_MODE.o
                               0x1fda8 (size before relaxing)
- .debug_str     0x00038c54       0x68 ./Generated_Code/SW_SPEED.o
+ .debug_str     0x00038c5e       0x68 ./Generated_Code/SW_SPEED.o
                               0x1fdb4 (size before relaxing)
- .debug_str     0x00038cbc       0x72 ./Generated_Code/SW_TRIGGER.o
+ .debug_str     0x00038cc6       0x72 ./Generated_Code/SW_TRIGGER.o
                               0x1fdd0 (size before relaxing)
- .debug_str     0x00038d2e       0x31 ./Generated_Code/TI1.o
+ .debug_str     0x00038d38       0x31 ./Generated_Code/TI1.o
                               0x303c8 (size before relaxing)
- .debug_str     0x00038d5f      0x11a ./Generated_Code/TU1.o
+ .debug_str     0x00038d69      0x11a ./Generated_Code/TU1.o
                               0x210f6 (size before relaxing)
- .debug_str     0x00038e79       0xd2 ./Generated_Code/TimerIntLdd1.o
+ .debug_str     0x00038e83       0xd2 ./Generated_Code/TimerIntLdd1.o
                               0x20fba (size before relaxing)
- .debug_str     0x00038f4b       0x1c ./Generated_Code/Vectors.o
+ .debug_str     0x00038f55       0x1c ./Generated_Code/Vectors.o
                               0x303e6 (size before relaxing)
- .debug_str     0x00038f67       0x84 ./Generated_Code/WAIT1.o
+ .debug_str     0x00038f71       0x84 ./Generated_Code/WAIT1.o
                               0x1f17e (size before relaxing)
 
 .comment        0x00000000       0x70

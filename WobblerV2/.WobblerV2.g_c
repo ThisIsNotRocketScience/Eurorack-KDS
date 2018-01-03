@@ -62,7 +62,7 @@
       <XtraAge19>1262595631</XtraAge19>
       <XtraAge20>1262595631</XtraAge20>
       <XtraAge22>1228700989</XtraAge22>
-      <XtraAge23>1264142131</XtraAge23>
+      <XtraAge23>1265506900</XtraAge23>
       <GenExtraFileType23>4</GenExtraFileType23>
       <GenExtraFileType22>5</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
@@ -180,7 +180,7 @@
     </GenFiles>
     <SignalListFile>Documentation\WobblerV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>98</ProjectModificationStamp>
+    <ProjectModificationStamp>100</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -400,8 +400,8 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256473564</HeaderAge>
-    <CodeAge>1256473564</CodeAge>
+    <HeaderAge>1265506900</HeaderAge>
+    <CodeAge>1265506900</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
     <Enable>true</Enable>
@@ -467,8 +467,8 @@
       <GenComponentVersion>01.018</GenComponentVersion>
       <GenDriverVersion>01.02</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1256473564</HeaderAge>
-      <CodeAge>1256473564</CodeAge>
+      <HeaderAge>1265506900</HeaderAge>
+      <CodeAge>1265506900</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>17</GenNumMethods>
       <Init>true</Init>
@@ -548,8 +548,8 @@
     <GenComponentVersion>01.164</GenComponentVersion>
     <GenDriverVersion>01.11</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256473564</HeaderAge>
-    <CodeAge>1256473564</CodeAge>
+    <HeaderAge>1265506900</HeaderAge>
+    <CodeAge>1265506900</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Init>true</Init>
@@ -634,21 +634,21 @@
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
       <LineBeg>123</LineBeg>
-      <LineEnd>200</LineEnd>
+      <LineEnd>196</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos4>Enable</MethodPos4>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>201</LineBeg>
-      <LineEnd>227</LineEnd>
+      <LineBeg>197</LineBeg>
+      <LineEnd>223</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos5>Interrupt</MethodPos5>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>228</LineBeg>
-      <LineEnd>254</LineEnd>
+      <LineBeg>224</LineBeg>
+      <LineEnd>250</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\TU1_component.txt</ExtraFile0>

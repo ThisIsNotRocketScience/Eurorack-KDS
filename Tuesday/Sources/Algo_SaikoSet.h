@@ -1,6 +1,6 @@
 #include "Algo.h"
 
-void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Saiko_Lead_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	int note = 0;
 	struct ScaledNote SN ;
@@ -48,7 +48,7 @@ void Algo_Saiko_Lead_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P,
 	Output->note = ScaleToNote(&SN, T, P, S);
 }
 
-void Tuesday_Psych(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
+void Tuesday_Psych( Tuesday_PatternContainer *T,  Tuesday_RandomGen *R, int Length)
 {
 	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
 
@@ -95,7 +95,7 @@ void Tuesday_Psych(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen 
 	}
 }
 
-void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
+void Tuesday_Flat( Tuesday_PatternContainer *T,  Tuesday_RandomGen *R, int Length)
 {
 	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
 
@@ -134,7 +134,7 @@ void Tuesday_Flat(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *
 
 };
 
-void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int Length)
+void Tuesday_Goa( Tuesday_PatternContainer *T,  Tuesday_RandomGen *R, int Length)
 {
 	if (Length > TUESDAY_MAXTICK) Length = TUESDAY_MAXTICK;
 	T->TPB = 4;
@@ -186,7 +186,7 @@ void Tuesday_Goa(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R
 	}
 }
 
-void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles)
+void Tuesday_Zeph( Tuesday_PatternContainer *T, struct Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles)
 {
 	int totalticks = stepsperbeat * beats * fullcycles;
 	int subpattern = stepsperbeat * beats;
@@ -221,7 +221,7 @@ void Tuesday_Zeph(struct Tuesday_PatternContainer *T, struct Tuesday_RandomGen *
 
 
 
-void Saiko_PsychTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Saiko_PsychTick( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	Output->vel = Tuesday_RandByte(R);
 
@@ -261,7 +261,7 @@ void Saiko_PsychTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, str
 	
 }
 
-void Saiko_FlatTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Saiko_FlatTick( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 
 		Output->vel = Tuesday_RandByte(R);
@@ -292,7 +292,7 @@ void Saiko_FlatTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, stru
 
 };
 
-void Saiko_GoaTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Saiko_GoaTick( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 		Output->vel = Tuesday_RandByte(R);
 		Output->accent = (Tuesday_BoolChance(R)) ? 1 : 0;
@@ -340,7 +340,7 @@ void Saiko_GoaTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 
 }
 
-void Saiko_ZephTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Saiko_ZephTick( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	Output->vel = Tuesday_RandByte(R);
 	Output->accent = (Tuesday_BoolChance(R)) ? 1 : 0;
@@ -390,7 +390,7 @@ void Saiko_ZephTick(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, stru
 
 
 
-void Algo_Saiko_Classic(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Saiko_Classic( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	DefaultTick(Output);
 

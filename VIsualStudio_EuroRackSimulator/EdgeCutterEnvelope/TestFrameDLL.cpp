@@ -523,7 +523,7 @@ void RunTest(const char * name, int i)
 				Tuesday_UpdatePattern(i, 0, 1, 2, 0, x, y, bang);
 				for (int j = 0; j < patlen; j++)
 				{
-					struct Tuesday_Tick &T = Tuesday.CurrentPattern.Ticks[j];
+					Tuesday_Tick_t &T = Tuesday.CurrentPattern.Ticks[j];
 					if (T.note != TUESDAY_NOTEOFF)
 					{
 						c++;
@@ -635,6 +635,13 @@ BOOL WINAPI DllMain(
 		Wobbler2_LoadSettings(&LFO2Settings, &LFO2Params);
 		Wobbler2_Init(&LFO2Running);
 		Wobbler2_Init(&LFO2Static);
+
+		LFO2Running.Amount1 = 1 << 14;
+		LFO2Running.Amount2 = 1 << 14;
+
+		LFO2Static.Amount1 = 1 << 14;
+		LFO2Static.Amount2 = 1 << 14;
+
 		BigFish_Init(&Fish, 44100);
 //		ExpTest();
 	//	RunFishTest();

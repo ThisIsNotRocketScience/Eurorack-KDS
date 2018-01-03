@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-10-25, 08:57, # CodeGen: 11
+**     Date/Time   : 2017-11-14, 03:18, # CodeGen: 15
 **     Abstract    :
 **
 **     Settings    :
@@ -129,7 +129,7 @@
     (tIsrFunc)&Cpu_Interrupt,          /* 0x1E  0x00000078   -   ivINT_Reserved30              unused by PE */
     (tIsrFunc)&AdcLdd1_MeasurementCompleteInterrupt, /* 0x1F  0x0000007C   2   ivINT_ADC0                    used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x20  0x00000080   -   ivINT_CMP0                    unused by PE */
-    (tIsrFunc)&TU1_Interrupt,          /* 0x21  0x00000084   2   ivINT_TPM0                    used by PE */
+    (tIsrFunc)&TU1_Interrupt,          /* 0x21  0x00000084   0   ivINT_TPM0                    used by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x22  0x00000088   -   ivINT_TPM1                    unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x23  0x0000008C   -   ivINT_Reserved35              unused by PE */
     (tIsrFunc)&Cpu_Interrupt,          /* 0x24  0x00000090   -   ivINT_Reserved36              unused by PE */

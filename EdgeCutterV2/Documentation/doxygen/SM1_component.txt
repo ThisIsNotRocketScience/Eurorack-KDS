@@ -36,7 +36,7 @@ by the component.
 <td class="regNotResetVal">0x00000010</td>
  <td>SPI0_C2 register, peripheral SM1.</td></tr>
 <tr><td>0x40076002</td><td>SPI0_BR</td>
-<td class="regNotResetVal">0x00000002</td>
+<td class="regNotResetVal">0x00000027</td>
  <td>SPI0_BR register, peripheral SM1.</td></tr>
 </table>
 Color Denotes Reset Value
@@ -385,7 +385,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40076002</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000002</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000027</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>4 - 6</td><td>SPPR</td><td>0x00</td><td>SPI baud rate prescale divisor</td>
@@ -420,7 +420,7 @@ registers of the peripheral(s) configured by the component.
 **                Parity                                   : None
 **                Chip select toggling                     : yes
 **                Clock rate index                         : 0
-**            Clock rate                                   : 0.333525 µs
+**            Clock rate                                   : 32.018443 µs
 **            HW input buffer size                         : 1
 **            HW input watermark                           : 1
 **            HW output buffer size                        : Max buffer size

@@ -1,4 +1,15 @@
-﻿  BigFish.cpp
+﻿  VocalSynth.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\vocalsynth.cpp(153): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\vocalsynth.cpp(158): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Test.cpp
+  OrganOsc.cpp
+  MinBlepGen.cpp
+  FMOsc.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\fmosc.cpp(15): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\fmosc.cpp(15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  BleppyOscs.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bleppyoscs.cpp(536): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  BigFish.cpp
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(256): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(257): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(302): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
@@ -22,4 +33,7 @@ c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(723): warning C424
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(734): warning C4244: 'argument': conversion from 'int32_t' to 'float', possible loss of data
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(871): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
 c:\projects\code\kinetis2\eurorack-kds\bigfishlib\bigfish.cpp(872): warning C4244: 'argument': conversion from 'float' to 'int32_t', possible loss of data
+  ADSREnvelope.cpp
+c:\projects\code\kinetis2\eurorack-kds\bigfishlib\adsrenvelope.cpp(290): warning C4018: '>': signed/unsigned mismatch
+  Generating Code...
   BigFishLib.vcxproj -> C:\Projects\Code\Kinetis2\Eurorack-KDS\VIsualStudio_EuroRackSimulator\Debug\BigFishLib.lib

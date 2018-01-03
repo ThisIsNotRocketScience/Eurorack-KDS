@@ -117,6 +117,7 @@ extern "C"
 
 	void EdgeCutter2_LoadSettings(struct EdgeCutter2_Settings *settings, struct EdgeCutter2_Params *params)
 	{
+		settings->GatedMode = 0;
 
 	}
 
@@ -140,11 +141,21 @@ extern "C"
 		return (sus * FIXED(1)) >> 8;
 	}
 
-	int EdgeCutter2_GetEnv(struct EdgeCutter2_Envelope *Env, struct EdgeCutter2_Params *Params)
+	int EdgeCutter2_GetEnv( EdgeCutter2_Envelope *Env,  EdgeCutter2_Params *Params)
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			if (Env->Gates[i]) Env->Gates[i]--;
+		}
+		if (Env->Settings.GatedMode >0)
+		{
+			switch (Env->State)
+			{
+				case ENVSTATE_ATTACK: Env->Gates[GATE_ATTACKEND] = GATE_COUNTDOWN; break;
+				case ENVSTATE_DECAY:  Env->Gates[GATE_DECAYEND] = GATE_COUNTDOWN; break;
+				case ENVSTATE_SUSTAIN: Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN; break;
+				case ENVSTATE_RELEASE: Env->Gates[GATE_RELEASEEND] = GATE_COUNTDOWN; break;
+			}
 		}
 
 		switch (Env->State)
@@ -209,10 +220,8 @@ extern "C"
 			{
 				int32_t SusLev = SustainLevel(Env->S);
 				Env->CurrentTarget = SusLev;
-
 				int32_t Delta = (SustainLevel(Env->S) - Env->Current)/5;
 				Env->Current += Delta;
-
 			}
 			break;
 

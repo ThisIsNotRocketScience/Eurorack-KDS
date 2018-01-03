@@ -7,7 +7,7 @@
 **     Version     : Component 01.164, Driver 01.11, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2017-11-14, 03:18, # CodeGen: 15
 **     Abstract    :
 **          This TimerUnit component provides a low level API for unified hardware access across
 **          various timer devices using the Prescaler-Counter-Compare-Capture timer structure.
@@ -22,10 +22,10 @@
 **            Counter frequency                            : Auto select
 **          Counter restart                                : On-match
 **            Period device                                : TPM0_MOD
-**            Period                                       : 0.5 ms
+**            Period                                       : 0.1 ms
 **            Interrupt                                    : Enabled
 **              Interrupt                                  : INT_TPM0
-**              Interrupt priority                         : medium priority
+**              Interrupt priority                         : maximal priority
 **          Channel list                                   : 0
 **          Initialization                                 : 
 **            Enabled in init. code                        : no
@@ -180,16 +180,12 @@ LDD_TDeviceData* TU1_Init(LDD_TUserData *UserDataPtr)
   TPM0_C0SC = 0x00U;                   /* Clear channel status and control register */
   /* TPM0_C1SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,CHF=0,CHIE=0,MSB=0,MSA=0,ELSB=0,ELSA=0,??=0,DMA=0 */
   TPM0_C1SC = 0x00U;                   /* Clear channel status and control register */
-  /* TPM0_MOD: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,MOD=0x5DB1 */
-  TPM0_MOD = TPM_MOD_MOD(0x5DB1);      /* Set up modulo register */
+  /* TPM0_MOD: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,MOD=0x12BC */
+  TPM0_MOD = TPM_MOD_MOD(0x12BC);      /* Set up modulo register */
   DeviceDataPrv->EnEvents = 0x0100U;   /* Enable selected events */
   DeviceDataPrv->Source = TPM_PDD_SYSTEM; /* Store clock source */
-  /* NVIC_IPR4: PRI_17=0x80 */
-  NVIC_IPR4 = (uint32_t)((NVIC_IPR4 & (uint32_t)~(uint32_t)(
-               NVIC_IP_PRI_17(0x7F)
-              )) | (uint32_t)(
-               NVIC_IP_PRI_17(0x80)
-              ));
+  /* NVIC_IPR4: PRI_17=0 */
+  NVIC_IPR4 &= (uint32_t)~(uint32_t)(NVIC_IP_PRI_17(0xFF));
   /* NVIC_ISER: SETENA|=0x00020000 */
   NVIC_ISER |= NVIC_ISER_SETENA(0x00020000);
   /* TPM0_SC: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,DMA=0,TOF=0,TOIE=1,CPWMS=0,CMOD=0,PS=0 */

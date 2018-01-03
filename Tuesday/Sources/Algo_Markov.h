@@ -1,6 +1,6 @@
 #include "Algo.h"
 
-void Algo_Markov_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_Markov_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Output->Markov.NoteHistory1 = (Tuesday_Rand(R) & 0x7);
 	Output->Markov.NoteHistory3 = (Tuesday_Rand(R) & 0x7);
@@ -16,7 +16,7 @@ void Algo_Markov_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, st
 	}
 }
 
-void Algo_Markov_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_Markov_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 
 	struct ScaledNote SN;

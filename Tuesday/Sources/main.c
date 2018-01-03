@@ -493,7 +493,7 @@ void NOINLINE _SetupLeds()
 		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
 
 		int S = Settings.ClockSubDivMode;
-		ShowSets(-1, -1, S, -1);
+		ShowSets(Settings.ClockPolarityMode, Settings.OctaveLimiter, S, -1);
 		Tuesday.StateLedTargets[4] = 255;
 		Tuesday.StateLedTargets[5] = 255;
 		Tuesday.StateLedTargets[6] = 255;
@@ -707,6 +707,16 @@ void UI_GlobalSettings()
 		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1) % 4;
 		Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
 
+	}
+
+	if (pressed(&algosw_state))
+	{
+		Settings.ClockPolarityMode = (Settings.ClockPolarityMode + 1) % 2;
+	}
+
+	if (pressed(&scalesw_state))
+	{
+		Settings.OctaveLimiter = (Settings.OctaveLimiter + 1) % 4;
 	}
 }
 

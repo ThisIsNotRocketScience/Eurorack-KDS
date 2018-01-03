@@ -101,7 +101,7 @@ void ShiftOut()
 {
 	//return;
 	counter++;
-	pwm = (pwm + 7)&255;
+	pwm = (pwm + 8)&255;
 
 	LATCH_ClrVal(LATCH_DeviceData);
 
@@ -167,9 +167,13 @@ int tickssincecommit = 0;
 // half-millisecond timer -> update each dacchannel in turn
 int LinearOut = 0;
 int CurvedOut = 0;
-
+int timermult =0 ;
 void doTimer()
 {
+timermult++;
+	ShiftOut();
+if (timermult < 5) return;
+timermult = 0;
 	tickssincecommit++;
 	t++;
 	switch(t%2)
@@ -189,7 +193,7 @@ void doTimer()
 
 	break;
 	}
-	ShiftOut();
+
 }
 
 

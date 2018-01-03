@@ -28,12 +28,17 @@ typedef struct Wobbler2_LFO_SNH_t
 {
 	uint32_t countdown;
 	
-	uint32_t lastval;
-	
+	uint32_t lastval1;
+	uint32_t lastval2;
+	uint32_t store1;
+	uint32_t store2;
+
 	
 	uint8_t lastseg;
+	
+	uint16_t segbuffer[32];
 	struct Wobbler2_RandomGen random;	
-	struct EURORACK_SVF filt;
+
 } Wobbler2_LFO_SNH_t;
 typedef struct Wobbler2_Pendulum_t
 {
@@ -190,7 +195,7 @@ typedef struct Wobbler2_LFO_t
 	int32_t EnvelopeVal;
 	uint8_t EnvelopeState;
 
-	Wobbler2_LFO_SNH_t SNH[2];
+	Wobbler2_LFO_SNH_t SNH;
 #ifdef INTPENDULUM
 	Wobbler2_PendulumInt_t Pendulum;
 #else

@@ -52,7 +52,7 @@ int fact(int i)
 	return i * fact(i - 1);
 }
 
-void Algo_TooEasy_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_TooEasy_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Output->TooEasy.WalkLen = T->CurrentPattern.TPB;
 	if (Output->TooEasy.WalkLen > 5) Output->TooEasy.WalkLen = 5;
@@ -73,7 +73,7 @@ void Algo_TooEasy_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, s
 #pragma GCC pop_options
 #pragma GCC optimize ("O3")
 
-void Algo_TooEasy_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_TooEasy_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
 	struct ScaledNote SN;
 	DefaultTick(Output);

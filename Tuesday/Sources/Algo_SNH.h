@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-void Algo_SNH_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *Output)
+void Algo_SNH_Init(Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S, Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *Output)
 {
 	Tuesday_RandomSeed(R, T->seed2 >> 2);
 	Tuesday_RandomSeed(&Output->ExtraRandom, T->seed1 >> 4);
@@ -14,7 +14,7 @@ void Algo_SNH_Init(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struc
 	Output->SNH.PhaseSpeed = 0xffffffff/(T->CurrentPattern.TPB* S->beatoptions[P->beatopt]);	
 }
 
-void Algo_SNH_Gen(struct Tuesday_PatternGen *T, struct Tuesday_Params *P, struct Tuesday_Settings *S, struct Tuesday_RandomGen *R, struct Tuesday_PatternFuncSpecific *PS, int I, struct Tuesday_Tick *Output)
+void Algo_SNH_Gen(Tuesday_PatternGen *T, Tuesday_Params *P, Tuesday_Settings *S, Tuesday_RandomGen *R, Tuesday_PatternFuncSpecific *PS, int I, Tuesday_Tick_t *Output)
 {
 	unsigned char accentoffs = 0;
 	unsigned char veloffset = 0;

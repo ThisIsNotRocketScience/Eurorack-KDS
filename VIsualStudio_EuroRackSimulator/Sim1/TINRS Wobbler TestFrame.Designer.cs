@@ -202,7 +202,7 @@
             // DispUpdate
             // 
             this.DispUpdate.Enabled = true;
-            this.DispUpdate.Interval = 20;
+            this.DispUpdate.Interval = 30;
             this.DispUpdate.Tick += new System.EventHandler(this.DispUpdate_Tick);
             // 
             // EnvUpdate
