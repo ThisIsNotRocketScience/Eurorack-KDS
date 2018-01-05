@@ -51,7 +51,10 @@ extern "C"
 		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
 	}
 
-
+	__declspec(dllexport) long __stdcall GetLFOPhaseInc(int p)
+	{
+		return Wobbler2_LFORange3(p<<8, 2000);
+	}
 
 	__declspec(dllexport) void __stdcall Init()
 	{
@@ -130,9 +133,17 @@ extern "C"
 		L->Shape = shape ;
 		L->Mod = mod ;
 		L->Phasing = phaseing ;
-
+		 
 		return Wobbler2_Get(L, &LFO2Params);
 	}
+
+	__declspec(dllexport)  int __stdcall GetLFOBasicShape(int staticlfo)
+	{
+		struct Wobbler2_LFO_t *L = &LFO2Running;
+		if (staticlfo) L = &LFO2Static;
+		return L->OutputsNormal[0];
+	}
+
 
 	__declspec(dllexport) int __stdcall GetLFOGate(int gate)
 	{
@@ -621,6 +632,43 @@ void ExpTest()
 //	printf("done!\n");
 }
 
+void FindDoublePendulumFreqs()
+{
+	
+	LFO2Static.Shape = ((255 / 5) * 4) << 8;
+	for (int i = 0; i < 256; i++)
+	{
+		int timesincezcross = 0;
+		Wobbler2_Init(&LFO2Static);
+		LFO2Static.Speed = i << 8;
+		LFO2Static.Mod = 128 << 8;
+		LFO2Static.Phasing = 0;
+		LFO2Static.Shape = 0;
+
+		Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
+		int zerocrosstimes = 0;
+		int totaltime = 0;
+		int last = 0;
+		for (int j = 0; j < 100; j++)
+		{
+			Wobbler2_Get(&LFO2Static, &LFO2Params);
+			int newv = LFO2Static.OutputsNormal[4];
+			if (last < 0 && newv > 0)
+			{
+				totaltime += timesincezcross;
+				zerocrosstimes++;
+				timesincezcross = 0;
+			}		
+			else
+			{
+				timesincezcross++;
+			}
+			last = newv;
+		}
+		printf("%d -> %d crossings at %f samples per cross average\n", i, zerocrosstimes, totaltime / (float)zerocrosstimes);
+	};
+}
+
 BOOL WINAPI DllMain(
 	_In_ HINSTANCE hinstDLL,
 	_In_ DWORD     fdwReason,
@@ -643,6 +691,9 @@ BOOL WINAPI DllMain(
 		LFO2Static.Amount2 = 1 << 14;
 
 		BigFish_Init(&Fish, 44100);
+
+		FindDoublePendulumFreqs();
+
 //		ExpTest();
 	//	RunFishTest();
 		LFO2Static.Speed = 0x80;

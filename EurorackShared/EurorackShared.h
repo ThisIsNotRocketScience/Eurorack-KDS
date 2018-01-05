@@ -52,6 +52,14 @@ typedef struct Shapes_t
 	int32_t Pulse;
 } Shapes_t;
 
+typedef struct ShapeCompensationVals_t
+{
+	int32_t min;
+	int32_t mul;
+} ShapeCompensationVals_t;
+
+#define COMPENSATION_NOMIN 0
+	#define COMPENSATION_NOMUL 0xffffffff;
 
 #ifdef __cplusplus
 extern "C"
@@ -80,8 +88,9 @@ extern "C"
 	int32_t SawTooth(uint32_t phase);
 	int32_t Pulse(uint32_t phase);
 	int32_t Triangle(uint32_t phase);
-	int32_t BasicShapes(uint32_t phase, int mod);
-	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes);
+	void CalculateCompensation(int mod, ShapeCompensationVals_t *Comp);
+	int32_t BasicShapes(uint32_t phase, int mod, ShapeCompensationVals_t *Comp);
+	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes, ShapeCompensationVals_t *Comp);
 
 	void ResetSVF(struct EURORACK_SVF *filt);
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);

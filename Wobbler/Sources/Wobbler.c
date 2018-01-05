@@ -184,15 +184,15 @@ extern "C"
 		int32_t P[4];
 
 
-		O[0] = BasicShapes(LFO->Phase1, LFO->Mod);
+		O[0] = BasicShapes(LFO->Phase1, LFO->Mod, &LFO->CompensationVals);
 		O[1] = Twang(LFO, LFO->Phase1);
 		O[2] = SampleHold(&LFO->SNH[0],LFO, LFO->Phase1, LFO->Mod);
-		O[3] = -BasicShapes(LFO->Phase1, LFO->Mod);
+		O[3] = -BasicShapes(LFO->Phase1, LFO->Mod, &LFO->CompensationVals);
 
-		P[0] = BasicShapes(LFO->Phase2, LFO->Mod);
+		P[0] = BasicShapes(LFO->Phase2, LFO->Mod, &LFO->CompensationVals);
 		P[1] = Twang(LFO, LFO->Phase2);
 		P[2] = SampleHold(&LFO->SNH[1], LFO, LFO->Phase2, LFO->Mod);
-		P[3] = -BasicShapes(LFO->Phase2, LFO->Mod);
+		P[3] = -BasicShapes(LFO->Phase2, LFO->Mod, &LFO->CompensationVals);
 
 
 

@@ -12,7 +12,7 @@ using TINRS_ArtWorkGenerator;
 
 namespace Sim1
 {
-    public partial class WobblerTestFrame :  WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class WobblerTestFrame : WeifenLuo.WinFormsUI.Docking.DockContent
     {
         public WobblerTestFrame()
         {
@@ -21,16 +21,88 @@ namespace Sim1
                 values.Add(0);
                 linvalues.Add(0);
                 values2.Add(0);
+                values64.Add(0);
                 linvalues2.Add(0);
             }
 
             TestFrameLoader.Init();
             InitializeComponent();
-            
+
             RebuildLFO();
+            //BuildCalibrationTable();
+
+            //BuildPoster();
+        }
+
+        void BuildCalibrationTable()
+        {
+            List<String> HeaderLines = new List<string>();
+            List<String> HeaderLinesA = new List<string>();
+            List<String> HeaderLinesB = new List<string>();
+            int skip = 4;
+            int total = 256 / skip;
+            HeaderLines.Add(String.Format("#define SHAPECOMPENSATIONCOUNT {0}", total));
+            HeaderLines.Add("");
+            HeaderLinesB.Add(String.Format("int const BasicShapeMult[SHAPECOMPENSATIONCOUNT] = {{"));
+            HeaderLinesA.Add(String.Format("int const BasicShapeLow[SHAPECOMPENSATIONCOUNT] = {{"));
+
+            string L = "";
+            string L2 = "";
+
+            for (int i = 0; i < 256; i += skip)
+            {
+                Shape.Value = 0;
+                Phase.Value = 64;
+                Speed.Value = 255;
+                Mod.Value = i;
+
+                RebuildLFO(true);
+                Int64 vmin = values64[0];
+                Int64 vmax = values64[0];
+                for (int j = i; j < 5000; j++)
+                {
+                    if (values64[j] < vmin) vmin = values64[j];
+                    else
+                    {
+                        if (values64[j] > vmax) vmax = values64[j];
+                    }
+                }
+                if (L.Length == 0) L += "\t";
+                if (L2.Length == 0) L2 += "\t";
+                L += String.Format("{0}", (vmin + vmax) / 2);
+                Int64 range = vmax - vmin;
+
+                L2 += String.Format("{0}", (vmax - vmin));
+                if (i < 256 - skip) { L += ", "; L2 += ", "; };
+                if ((i / skip) % 8 == 7)
+                {
+
+                    HeaderLinesB.Add(L2);
+                    HeaderLinesA.Add(L);
+                    L = "";
+                    L2 = "";
+
+                }
+                Console.WriteLine("{0} : {1} -> {2}", i, vmin, vmax);
+            }
+            if (L2.Length > 0) HeaderLinesB.Add(L2);
+            if (L.Length > 0) HeaderLinesA.Add(L);
+
+            HeaderLinesA.Add("};");
+            HeaderLinesA.Add("");
+            HeaderLinesB.Add("};");
+            HeaderLines.AddRange(HeaderLinesA);
+            HeaderLines.AddRange(HeaderLinesB);
+
+            System.IO.File.WriteAllLines("BasicShapeCompensation.h", HeaderLines.ToArray());
 
 
-            BuildPoster();
+            for (int i = 0; i < 256; i++)
+            {
+                long P = TestFrameLoader.GetLFOPhaseInc(i);
+                float F = (0xffffffff / P) / 2000.0f; ;
+                Console.WriteLine("{0:X} -> {1}", P, F);
+            }
         }
 
         void BuildPoster()
@@ -48,22 +120,22 @@ namespace Sim1
             int B2 = 0;
             int qmax = 8;
             int width = 128;
-            for (int q = 0; q < qmax; q ++)
+            for (int q = 0; q < qmax; q++)
             {
                 for (float i = 0; i < 256; i += 2)
                 {
 
-                    Shape.Value = (int)i ;
+                    Shape.Value = (int)i;
                     Phase.Value = 64;
                     Speed.Value = 255;
-                    Mod.Value = 10+ (q*240)/(qmax-1);
+                    Mod.Value = 10 + (q * 240) / (qmax - 1);
                     float Ybase = i * 10;
                     float H = 40;
 
                     RebuildLFO(true);
                     Polygon P = new Polygon();
                     Polygon P2 = new Polygon() { depth = 2 };
-                    float targetmix = q / (float)(qmax-1);
+                    float targetmix = q / (float)(qmax - 1);
                     float br = (i / 512.0f) + 0.5f;
 
                     P.r = (byte)((R1 + (R2 - R1) * targetmix) * br);
@@ -73,7 +145,7 @@ namespace Sim1
 
                     for (int j = 0; j < width; j++)
                     {
-                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[j * 4*4] * H));
+                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[j * 4 * 4] * H));
                         //   P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
                     }
                     Lines.Add(P);
@@ -82,7 +154,7 @@ namespace Sim1
 
                 }
             }
-            SVGWriter.Write("poster-"+DateTime.Now.ToLongDateString()+".svg", 300*4, 256*10, Lines, 2, false);
+            SVGWriter.Write("poster-" + DateTime.Now.ToLongDateString() + ".svg", 300 * 4, 256 * 10, Lines, 2, false);
         }
 
 
@@ -107,14 +179,14 @@ namespace Sim1
 
         private void Release_Scroll(object sender, EventArgs e)
         {
-            RebuildLFO();        
+            RebuildLFO();
             pictureBox1.Invalidate();
         }
 
         private void RebuildLFO(bool force = false)
         {
-           int count = 5000;
-            if (force == false) Math.Min(count, pictureBox1.Width);
+            int count = 5000;
+            if (force == false) count = Math.Min(count, pictureBox1.Width);
             TestFrameLoader.ResetStatic();
             for (int i = 0; i < count; i++)
             {
@@ -122,14 +194,17 @@ namespace Sim1
                 {
                     TestFrameLoader.LFOTrigger(1, 1);
                 }
+
                 if (i == 1)
                 {
                     TestFrameLoader.LFOTrigger(0, 1);
                 }
 
-                double D = 0;
-                
-                values2[i] = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;               
+                var V = TestFrameLoader.GetLFO(1, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4);
+                var V2 = TestFrameLoader.GetLFOBasicShape(1);
+
+                values64[i] = V2;
+                values2[i] = V / 4096.0f;
                 linvalues2[i] = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
             }
         }
@@ -152,6 +227,7 @@ namespace Sim1
             List<PointF> P2 = new List<PointF>(pictureBox1.Width);
             List<PointF> P3 = new List<PointF>(pictureBox1.Width);
             List<PointF> P4 = new List<PointF>(pictureBox1.Width);
+
             for (int i = 0; i < pictureBox1.Width; i++)
             {
                 int p1 = (i + pos + 4000 - pictureBox1.Width) % 4000;
@@ -161,11 +237,17 @@ namespace Sim1
                 P4.Add(new PointF(i, (pictureBox1.Height / 2) + ScaleVal(linvalues2[i])));
             }
 
-            g.DrawLines(new Pen(Color.Green, 2.0f), P2.ToArray());
-            g.DrawLines(new Pen(Color.Yellow, 2.0f), P.ToArray());
-            g.DrawLines(new Pen(Color.Green, 2.0f), P4.ToArray());
-            g.DrawLines(new Pen(Color.Yellow, 2.0f), P3.ToArray());
+            g.DrawLines(new Pen(Color.Green, 1.0f), P2.ToArray());
+            g.DrawLines(new Pen(Color.Yellow, 1.0f), P.ToArray());
+            g.DrawLines(new Pen(Color.Green, 1.0f), P4.ToArray());
+            g.DrawLines(new Pen(Color.Yellow, 1.0f), P3.ToArray());
 
+            g.DrawLine(new Pen(Color.BlueViolet), new PointF(0, ScaleVal(0.5)), new PointF(pictureBox1.Width - 1, ScaleVal(0.5)));
+            g.DrawLine(new Pen(Color.Lime), new PointF(0, ScaleVal(0.95)), new PointF(pictureBox1.Width - 1, ScaleVal(0.95)));
+            g.DrawLine(new Pen(Color.Lime), new PointF(0, ScaleVal(0.05)), new PointF(pictureBox1.Width - 1, ScaleVal(0.05)));
+
+            g.DrawLine(new Pen(Color.BlueViolet), new PointF(0, (pictureBox1.Height / 2) + ScaleVal(0.5)), new PointF(pictureBox1.Width - 1, (pictureBox1.Height / 2) + ScaleVal(0.5)));
+            
             for (int i = 0; i < 2; i++)
             {
                 int B = TestFrameLoader.GetLFOGate(i);
@@ -178,7 +260,6 @@ namespace Sim1
                 R.Y = 2;
                 g.FillRectangle(new SolidBrush(C), R);
                 g.DrawRectangle(new Pen(Color.White, 1), R);
-
             }
 
             for (int i = 0; i < 12; i++)
@@ -193,7 +274,6 @@ namespace Sim1
                 g.FillRectangle(new SolidBrush(C), R);
                 g.DrawRectangle(new Pen(Color.White, 1), R);
             }
-            
         }
 
         float ScaleVal(double inp)
@@ -205,6 +285,7 @@ namespace Sim1
         List<double> linvalues = new List<double>(4000);
 
         List<double> values2 = new List<double>(4000);
+        List<Int64> values64 = new List<Int64>(4000);
         List<double> linvalues2 = new List<double>(4000);
         int pos = 0;
 
@@ -218,23 +299,19 @@ namespace Sim1
         {
 
         }
-
-
-
+        
         private void EnvUpdate_Tick(object sender, EventArgs e)
         {
+            pos = (pos + 1) % 4000;
+
             for (int i = 0; i < 10; i++)
             {
-                pos = (pos + 1) % 4000;
                 double D = 0;
-                
                 values[pos] = TestFrameLoader.GetLFO(0, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
-                D = TestFrameLoader.GetLFOPhased(0)/ 4096.0f;
-
+                D = TestFrameLoader.GetLFOPhased(0) / 4096.0f;
                 linvalues[pos] = D;
             }
         }
-
 
         private void DispUpdate_Tick(object sender, EventArgs e)
         {
@@ -249,7 +326,6 @@ namespace Sim1
         private void button1_MouseUp(object sender, MouseEventArgs e)
         {
             TestFrameLoader.LFOTrigger(0, 0);
-
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -257,6 +333,4 @@ namespace Sim1
 
         }
     }
-
-
 }

@@ -56,7 +56,6 @@ int32_t imul(int32_t a, int32_t b)
 			LFO->SyncDP = 0xffffffff/ LFO->SyncedPeriodTime;
 		}
 		LFO->synctime[LFO->syncindex] = Delta;
-
 	}
 
 	int Wobbler2_Rand( Wobbler2_RandomGen *R)
@@ -135,26 +134,28 @@ int32_t imul(int32_t a, int32_t b)
 	{
 		P->A = 0;
 		P->B = 0;
-		P->Theta1 = -3.1415 / 2.0f;
-		P->Theta2 = 3.1415 / 2.0f;
+		P->Theta1 = -3.1415 / 4.0f;
+		P->Theta2 = -3.1415 / 4.0f + W->Phasing / (float)4096;
 		P->d2Theta1 = 0;
 		P->d2Theta2 = 0;
-		P->dTheta1 = 1;
+		P->dTheta1 = -W->Speed / (float)0x1fff;;
 		P->dTheta2 = 0;
-		P->l1 = 1;
-		P->l2 = 1;
-		P->g = .2981;
-		Wobbler2_UpdateSettings(P, W);
+		
+		//Wobbler2_UpdatePendulumSettings(P, W);
 		
 	}
 
-	void Wobbler2_UpdateSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W)
+	void Wobbler2_UpdatePendulumSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W)
 	{
-		P->Damping = 0.999 + (W->Speed / (float)512)*0.00099999999;
-		float p1 = W->Phasing / (float)0xffff;
-		float M = 1.0f + 2.0f * (W->Mod / (float)0xffff);
-		P->m1 = 2.1f + p1 * M;
-		P->m2 = 2.1f + (1-p1) * M;
+		P->Damping = 0.999 + (W->Mod/ (float)(512*0xffff))*0.00099999999;
+		
+		float spe = W->Speed / (float)0x1ff;
+	//	spe *= spe;
+		P->g = .2981 *  (0.01 + spe );
+		P->l1 = 1;
+		P->l2 = 1;
+		P->m1 = 1; 
+		P->m2 = 1;
 		P->mu = 1.0f + P->m1 / P->m2;
 	}
 
@@ -277,7 +278,7 @@ int32_t imul(int32_t a, int32_t b)
 	int Wobbler2_Get( Wobbler2_LFO_t *LFO,  Wobbler2_Params *Params)
 	{
 		LFO->timesincesync++;
-		
+		Wobbler2_UpdatePendulumSettings(&LFO->Pendulum, LFO);
 		if (LFO->timesincesync > 30000 || LFO->syncindex == 0)
 		{
 			LFO->extsync = 0;
@@ -384,8 +385,7 @@ int32_t imul(int32_t a, int32_t b)
 		LFO->OldPhase1 = LFO->Phase1;
 	//	LFO->OldPhase2 = LFO->Phase2;
 
-		int32_t O[6] = {0};
-		int32_t P[6] = {0};
+		
 #ifdef INTPENDULUM
 		Wobbler2_DoublePendulumInt(&LFO->Pendulum);
 #else
@@ -393,31 +393,33 @@ int32_t imul(int32_t a, int32_t b)
 #endif
 		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, LFO->Mod, LFO->Phase1 - DP2);
 
-		Shapes_t BSO, BSP;
-		O[0] = FillBasicShapes(LFO->Phase1, LFO->Mod>>8,&BSO);
-		O[1] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod>>8) + O[0])/2;
-		O[2] = Wobbler2_Twang(LFO, LFO->Phase1);
-		O[3] = LFO->Pendulum.As;// + 0x80000000;
-		O[4] = (int32_t)(LFO->SNH.store1<<16) - (1<<29);
+		CalculateCompensation(&LFO->CompensationVals, LFO->Mod >> 8);
+		//Shapes_t BSO, &LFO->BasicShapesB;
+		LFO->OutputsNormal[0] = FillBasicShapes(LFO->Phase1, LFO->Mod>>8,&LFO->BasicShapesA, &LFO->CompensationVals);
+		LFO->OutputsNormal[1] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod>>8, &LFO->CompensationVals) + LFO->OutputsNormal[0])/2;
+		LFO->OutputsNormal[2] = Wobbler2_Twang(LFO, LFO->Phase1);
+		LFO->OutputsNormal[3] = LFO->Pendulum.As;// + 0x80000000;
+		LFO->OutputsNormal[4] = (int32_t)(LFO->SNH.store1<<16) - (1<<29);
 
-		P[0] = FillBasicShapes(LFO->Phase2, LFO->Mod>>8, &BSP);
-		P[1] = (BasicShapes(LFO->Phase2 +LFO->PhasedShift, LFO->Mod>>8) + P[0])/2;
-		P[2] = Wobbler2_Twang(LFO, LFO->Phase2);
-		P[3] = LFO->Pendulum.Bs;// + 0x80000000;
-		P[4] = (int32_t)(LFO->SNH.store2<<16) - (1<<29);
+		LFO->OutputsPhased[0] = FillBasicShapes(LFO->Phase2, LFO->Mod>>8, &LFO->BasicShapesB, &LFO->CompensationVals);
+		LFO->OutputsPhased[1] = (BasicShapes(LFO->Phase2 +LFO->PhasedShift, LFO->Mod>>8, &LFO->CompensationVals) + LFO->OutputsPhased[0])/2;
+		LFO->OutputsPhased[2] = Wobbler2_Twang(LFO, LFO->Phase2);
+		LFO->OutputsPhased[3] = LFO->Pendulum.Bs;// + 0x80000000;
+		LFO->OutputsPhased[4] = (int32_t)(LFO->SNH.store2<<16) - (1<<29);
 
 
-		if ((BSP.Sine > 0) && (LFO->OldPhase2 <0))
+		if ((&LFO->BasicShapesB.Sine > 0) && (LFO->OldPhase2 <0))
 		{
 			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
 		}
 
-		LFO->OldPhase2 = BSP.Sine;
+
+		LFO->OldPhase2 = &LFO->BasicShapesB.Sine;
 
 		Wobbler2_GetSteppedResult(LFO->Shape, 4, &LFO->ShapeStepped);
 
-		LFO->Output = GetInterpolatedResultInt(O, &LFO->ShapeStepped) /(0xffff*4);
-		LFO->OutputPhased = GetInterpolatedResultInt(P, &LFO->ShapeStepped) /(0xffff*4);
+		LFO->Output = GetInterpolatedResultInt(LFO->OutputsNormal, &LFO->ShapeStepped) /(0xffff*4);
+		LFO->OutputPhased = GetInterpolatedResultInt(LFO->OutputsPhased, &LFO->ShapeStepped) /(0xffff*4);
 
 		LFO->Output = (LFO->Output *LFO->Amount1) / (int)(1<<14);
 		LFO->OutputPhased = (LFO->OutputPhased *LFO->Amount2) / (int)(1<<14);
@@ -433,6 +435,14 @@ int32_t imul(int32_t a, int32_t b)
 		Wobbler2_DoLeds(LFO);
 
 		return LFO->Output;
+	}
+
+	#include "BasicShapeCompensation.h"
+	
+	void CalculateCompensation(ShapeCompensationVals_t *Comp, int mod)
+	{
+		Comp->min = LERP(BasicShapeLow, SHAPECOMPENSATIONCOUNT-1, mod);
+		Comp->mul = LERP(BasicShapeMult, SHAPECOMPENSATIONCOUNT-1, mod);
 	}
 
 	void Wobbler2_DoLeds(Wobbler2_LFO_t *LFO)

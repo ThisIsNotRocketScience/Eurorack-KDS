@@ -59,6 +59,8 @@ struct Wobbler_LFO
 	uint8_t EnvelopeState;
 
 	struct Wobbler_LFO_SNH SNH[2];
+
+	ShapeCompensationVals_t CompensationVals;
 };
 
 #ifdef __cplusplus

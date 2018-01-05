@@ -114,21 +114,22 @@ extern "C"
 		int I = T >> 8;
 		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
 	}
-
 	
-	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes)
+	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes, ShapeCompensationVals_t *Comp)
 	{		
 		Shapes->Sine = Sine(phase);
 		Shapes->Saw = SawTooth(phase);
 		Shapes->Tri = Triangle(phase);
-		Shapes->Pulse = Pulse(phase);
-		return LERP(&Shapes->Sine, 3, mod);
+		Shapes->Pulse = Pulse(phase);		
+		int32_t PreComp = LERP(&Shapes->Sine, 3, mod);		
+		int32_t PostComp32 = ((PreComp - Comp->min) / (Comp->mul >> 20))<<10;
+		return PostComp32;
 	}
 
-	int32_t BasicShapes(uint32_t phase, int mod)
+	int32_t BasicShapes(uint32_t phase, int mod, ShapeCompensationVals_t *Comp)
 	{
 		Shapes_t Shapes;
-		return FillBasicShapes(phase, mod, &Shapes);		
+		return FillBasicShapes(phase, mod, &Shapes, Comp);		
 	}
 
 #ifdef __cplusplus

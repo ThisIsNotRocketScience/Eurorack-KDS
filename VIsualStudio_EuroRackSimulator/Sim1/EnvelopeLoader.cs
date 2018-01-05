@@ -135,12 +135,17 @@ namespace Sim1
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFOLed(int led);
 
-
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetWobbleLed(int i, int v);
         
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFO(int staticlfo, int speed, int shape, int mod, int phaseing);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern int GetLFOBasicShape(int staticlfo);
+
+        [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern UInt32 GetLFOPhaseInc(int p);
 
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetLFOGate(int gate);

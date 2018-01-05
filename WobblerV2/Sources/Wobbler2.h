@@ -168,6 +168,8 @@ typedef struct SteppedResult_t
 //float GetInterpolatedResultFloat(float *table, SteppedResult_t *inp);
 int32_t GetInterpolatedResultInt(int32_t *table, SteppedResult_t *inp);
 
+
+
 typedef struct Wobbler2_LFO_t
 {
 	uint16_t Speed;
@@ -212,8 +214,17 @@ typedef struct Wobbler2_LFO_t
 	SpringMassSystem_t PendulumSystem;
 
 	SteppedResult_t ShapeStepped;
+	Shapes_t BasicShapesA;
+	Shapes_t BasicShapesB;
+
+	int32_t OutputsNormal[6];
+	int32_t OutputsPhased[6];
+
+	ShapeCompensationVals_t CompensationVals;
 
 } Wobbler2_LFO_t;
+
+
 
 #ifdef __cplusplus
 extern "C"
@@ -230,8 +241,10 @@ extern "C"
 	extern void Wobbler2_LoadSettings( Wobbler2_Settings *settings, Wobbler2_Params *params);
 	extern void Wobbler2_ValidateParams(Wobbler2_Params *params);
 	extern void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO);
-	extern void Wobbler2_UpdateSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W);
+	extern void Wobbler2_UpdatePendulumSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W);
 	extern void Wobbler2_DoLeds(Wobbler2_LFO_t *LFO);
+	extern long Wobbler2_LFORange3(int32_t V, int32_t SR);
+
 
 	extern int32_t LERP(int32_t *V, int total, int fade);
 #ifdef __cplusplus
