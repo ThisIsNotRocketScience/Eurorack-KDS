@@ -176,6 +176,8 @@ typedef struct Wobbler2_LFO_t
 	uint16_t Shape;
 	uint16_t Mod;
 	uint16_t Phasing;
+	uint16_t LastPhasing;
+
 	int16_t Amount1;
 	int16_t Amount2;
 
@@ -243,7 +245,7 @@ extern "C"
 	extern void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO);
 	extern void Wobbler2_UpdatePendulumSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W);
 	extern void Wobbler2_DoLeds(Wobbler2_LFO_t *LFO);
-	extern long Wobbler2_LFORange3(int32_t V, int32_t SR);
+	extern unsigned long Wobbler2_LFORange3(int32_t V, int32_t SR);
 
 
 	extern int32_t LERP(int32_t *V, int total, int fade);

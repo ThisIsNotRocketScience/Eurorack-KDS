@@ -19,6 +19,7 @@ namespace Sim1
             for (int i = 0; i < 5000; i++)
             {
                 values.Add(0);
+                valuesref.Add(0);
                 linvalues.Add(0);
                 values2.Add(0);
                 values64.Add(0);
@@ -227,16 +228,19 @@ namespace Sim1
             List<PointF> P2 = new List<PointF>(pictureBox1.Width);
             List<PointF> P3 = new List<PointF>(pictureBox1.Width);
             List<PointF> P4 = new List<PointF>(pictureBox1.Width);
+            List<PointF> P5 = new List<PointF>(pictureBox1.Width);
 
             for (int i = 0; i < pictureBox1.Width; i++)
             {
                 int p1 = (i + pos + 4000 - pictureBox1.Width) % 4000;
                 P.Add(new PointF(i, ScaleVal(values[p1])));
+                P5.Add(new PointF(i, ScaleVal(valuesref[p1])));
                 P2.Add(new PointF(i, ScaleVal(linvalues[p1])));
                 P3.Add(new PointF(i, (pictureBox1.Height / 2) + ScaleVal(values2[i])));
                 P4.Add(new PointF(i, (pictureBox1.Height / 2) + ScaleVal(linvalues2[i])));
             }
 
+            g.DrawLines(new Pen(Color.Blue, 1.0f), P5.ToArray());
             g.DrawLines(new Pen(Color.Green, 1.0f), P2.ToArray());
             g.DrawLines(new Pen(Color.Yellow, 1.0f), P.ToArray());
             g.DrawLines(new Pen(Color.Green, 1.0f), P4.ToArray());
@@ -264,7 +268,7 @@ namespace Sim1
 
             for (int i = 0; i < 12; i++)
             {
-                int B = TestFrameLoader.GetLFOLed(i);
+                int B = Math.Min(255,TestFrameLoader.GetLFOLed(i));
                 var C = Color.FromArgb(B, B, 0);
                 Rectangle R = new Rectangle();
                 R.Width = 10;
@@ -282,6 +286,7 @@ namespace Sim1
         }
 
         List<double> values = new List<double>(4000);
+        List<double> valuesref = new List<double>(4000);
         List<double> linvalues = new List<double>(4000);
 
         List<double> values2 = new List<double>(4000);
@@ -309,6 +314,7 @@ namespace Sim1
                 double D = 0;
                 values[pos] = TestFrameLoader.GetLFO(0, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
                 D = TestFrameLoader.GetLFOPhased(0) / 4096.0f;
+                valuesref[pos] = (TestFrameLoader.GetLFOBasicShape(0)/65536.0f)/(4096.0f*4)+0.50f;
                 linvalues[pos] = D;
             }
         }

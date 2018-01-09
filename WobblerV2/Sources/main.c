@@ -170,10 +170,10 @@ int CurvedOut = 0;
 int timermult =0 ;
 void doTimer()
 {
-timermult++;
+	timermult++;
 	ShiftOut();
-if (timermult < 5) return;
-timermult = 0;
+	if (timermult < 2) return;
+	timermult = 0;
 	tickssincecommit++;
 	t++;
 	switch(t%2)
@@ -264,75 +264,67 @@ int main(void)
 	AD1_Measure(FALSE);
 
 	for(int i = 0;i<9;i++)
+	{
+		for(int j =0 ;j<9;j++)
 		{
-			for(int j =0 ;j<9;j++)
+			if (i == j)
 			{
-				if (i == j) LFO.Led[0][j] = 255;
-				else LFO.Led[0][j] = 0;
+				LFO.Led[0][j] = 255;
+				LFO.Led[1][j] = 255;
 			}
-
-			ShiftOut();
-			WAIT1_Waitms(60);
-		}
-	for(int i = 8;i>=0;i--)
-		{
-			for(int j =0 ;j<9;j++)
+			else
 			{
-				if (i == j) LFO.Led[0][j] = 255;
-				else LFO.Led[0][j] = 0;
+				LFO.Led[0][j] = 0;
+				LFO.Led[1][j] = 0;
 			}
-
-			ShiftOut();
-			WAIT1_Waitms(60);
 		}
 
-	for(int i = 0;i<9;i++)
-			{
-				for(int j =0 ;j<9;j++)
-				{
-					if (i == j) LFO.Led[1][j] = 255;
-					else LFO.Led[1][j] = 0;
-				}
-
-				ShiftOut();
-				WAIT1_Waitms(60);
-			}
-
+		ShiftOut();
+		WAIT1_Waitms(20);
+	}
 	for(int i = 8;i>=0;i--)
+	{
+		for(int j =0 ;j<9;j++)
+		{
+			if (i == j)
 			{
-				for(int j =0 ;j<9;j++)
-				{
-					if (i == j) LFO.Led[1][j] = 255;
-					else LFO.Led[1][j] = 0;
-				}
-
-				ShiftOut();
-				WAIT1_Waitms(60);
+				LFO.Led[0][j] = 255;
+				LFO.Led[1][j] = 255;
 			}
+			else
+			{
+				LFO.Led[0][j] = 0;
+				LFO.Led[1][j] = 0;
+			}
+		}
+
+		ShiftOut();
+		WAIT1_Waitms(20);
+	}
 
 	for(int i = 0;i<5;i++)
-			{
-				for(int j =0 ;j<5;j++)
-				{
-					if (i == j) LFO.ModeLed[j] = 255;
-					else LFO.ModeLed[j] = 0;
-				}
+	{
+		for(int j =0 ;j<5;j++)
+		{
+			if (i == j) LFO.ModeLed[j] = 255;
+			else LFO.ModeLed[j] = 0;
+		}
 
-				ShiftOut();
-				WAIT1_Waitms(60);
-			}
+		ShiftOut();
+		WAIT1_Waitms(20);
+	}
 
 	for(int i = 4;i>=0;i--)
-				{
-					for(int j =0 ;j<5;j++)
-					{
-						if (i == j) LFO.ModeLed[j] = 255;
-						else LFO.ModeLed[j] = 0;
-					}
+	{
+		for(int j =0 ;j<5;j++)
+		{
+			if (i == j) LFO.ModeLed[j] = 255;
+			else LFO.ModeLed[j] = 0;
+		}
 
-					ShiftOut();
-					WAIT1_Waitms(60);
-				}
+		ShiftOut();
+		WAIT1_Waitms(20);
+	}
 
 	ShiftOut();
 	TI1_Enable();
@@ -359,7 +351,7 @@ int main(void)
 
 			measured = 0;
 
-			Wobbler2_UpdateSettings(&LFO.Pendulum, &LFO);
+			Wobbler2_UpdatePendulumSettings(&LFO.Pendulum, &LFO);
 
 			AD1_Measure(FALSE);
 
@@ -374,14 +366,14 @@ int main(void)
 		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+	/*** End of RTOS startup code.  ***/
+	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for(;;){}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

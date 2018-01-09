@@ -13,6 +13,7 @@ namespace Sim1
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void Init();
 
+
         [DllImport(@"TestFrameDLL.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern void ResetStatic();
 
