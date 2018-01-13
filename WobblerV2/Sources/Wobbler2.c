@@ -5,6 +5,9 @@
 #define __max(a,b) ((a)>(b)?(a):(b))
 #define __min(a,b) ((a)<(b)?(a):(b))
 
+#define PI (float)(3.1415926535897932384626433832795)
+#define TAU (float)(3.1415926535897932384626433832795*2.0000)
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -136,11 +139,11 @@ extern "C"
 	{
 		P->A = 0;
 		P->B = 0;
-		P->Theta1 = -3.1415 / 4.0f;
-		P->Theta2 = -3.1415 / 4.0f + W->Phasing / (float)4096;
+		P->Theta1 = -PI / 4.0f;
+		P->Theta2 = -PI / 4.0f + W->Phasing / (float)4096;
 		P->d2Theta1 = 0;
 		P->d2Theta2 = 0;
-		P->dTheta1 = -W->Speed / (float)0x1fff;;
+		P->dTheta1 = -W->Speed / ((float)0x1fff * 4.0f);;
 		P->dTheta2 = 0;
 
 		//Wobbler2_UpdatePendulumSettings(P, W);
@@ -151,7 +154,7 @@ extern "C"
 	{
 		P->Damping = 0.999 + (W->Mod / (float)(0xffff))*0.00099999999;
 		P->dTheta1 += (W->Phasing - W->LastPhasing)*0.00001;
-		float spe = W->Speed / (float)0xff;
+		float spe = W->Speed / (float)1024;
 		//	spe *= spe;
 		P->g = .2981 *  (0.01 + spe);
 		P->l1 = 1;
@@ -164,7 +167,7 @@ extern "C"
 	float fsin(float P)
 	{
 		//	P *= (float)(1 << 32);
-		P /= (float)6.283f;;
+		P /= (float)TAU;;
 		P *= (float)0xffffffff;
 		int32_t phase = (int)P;
 		int32_t R = Sine(phase);
@@ -177,7 +180,7 @@ extern "C"
 
 	void Wobbler2_DoublePendulum(Wobbler2_Pendulum_t *P, float const DT)
 	{
-		//while (P->Theta1 < 0) { P->Theta1 += 6.283f; P->Theta2 += 6.283f; }
+		//while (P->Theta1 < 0) { P->Theta1 += TAU; P->Theta2 += TAU; }
 		P->_2sub1 = P->Theta2 - P->Theta1;
 		P->_1sub2 = P->Theta1 - P->Theta2;
 		P->st1 = sin(P->Theta1);
@@ -216,12 +219,12 @@ extern "C"
 		P->Theta2 += P->dTheta2*DT;
 		P->A = P->Theta1 * 0xffff;
 		P->B = P->Theta2 * 0xffff;
-		P->As = P->Theta1 * ((float)(0xffff) / 6.283f);
-		P->Bs = P->Theta2 *  ((float)(0xffff) / 6.283f);
-		while (P->Theta1 > 3.1415f) P->Theta1 -= 6.283f;
-		while (P->Theta2 > 3.1415f) P->Theta2 -= 6.283f;
-		while (P->Theta1 < -3.1415f) P->Theta1 += 6.283f;
-		while (P->Theta2 < -3.1415f) P->Theta2 += 6.283f;
+		P->As = P->Theta1 * ((float)(0xffff) / TAU);
+		P->Bs = P->Theta2 *  ((float)(0xffff) / TAU);
+		while (P->Theta1 > PI) P->Theta1 -= TAU;
+		while (P->Theta2 > PI) P->Theta2 -= TAU;
+		while (P->Theta1 < -PI) P->Theta1 += TAU;
+		while (P->Theta2 < -PI) P->Theta2 += TAU;
 
 		P->As *= 0xffff;
 		P->Bs *= 0xffff;
@@ -275,6 +278,25 @@ extern "C"
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
 	{
 		return (Sine(phase) >> 16) * (LFO->EnvelopeVal >> 8);
+	}
+
+#include "FreqLerp.h"
+
+
+	int32_t LERP16(int32_t *V, int total, int fade)
+	{
+		int T = fade * total;
+		T >>= 8;
+		unsigned char frac = T & 0xff;
+		if (frac && (frac < 255)) frac += 1;
+		int I = T >> 8;
+		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
+	}
+
+	int Wobbler2_MakeFreq(int input)
+	{
+		return LERP16(FreqLerp, FREQLERPLEN-1, input);
+		
 	}
 
 	int Wobbler2_Get(Wobbler2_LFO_t *LFO, Wobbler2_Params *Params)
@@ -355,7 +377,7 @@ extern "C"
 		}
 		else
 		{
-			DP = Wobbler2_LFORange2(LFO->Speed << 2, 0);;
+			DP = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
 		}
 		LFO->Phase1 += DP;
 

@@ -640,7 +640,7 @@ void FindDoublePendulumFreqs()
 	{
 		int timesincezcross = 0;
 		Wobbler2_Init(&LFO2Static);
-		LFO2Static.Speed = i << 8;
+		LFO2Static.Speed = i << 10;
 		LFO2Static.Mod = 128 << 8;
 		LFO2Static.Phasing = 0;
 		LFO2Static.Shape = 0;

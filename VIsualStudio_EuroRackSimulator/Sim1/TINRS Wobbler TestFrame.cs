@@ -31,8 +31,38 @@ namespace Sim1
 
             RebuildLFO();
             //BuildCalibrationTable();
-
+            BuildFreqLerp();
             //BuildPoster();
+        }
+
+        private void BuildFreqLerp()
+        {
+            List<string> FreqLerp = new List<string>();
+            int len = 11;
+            FreqLerp.Add(string.Format("#define FREQLERPLEN {0}", len));
+            FreqLerp.Add(string.Format(""));
+            FreqLerp.Add(string.Format("unsigned long FreqLerp[{0}] = {{", len));
+
+
+            for (int i = 0; i < len; i++)
+            {
+                double F = (0.1 * Math.Pow(2.0, (((double)i / (double)(len-1)) * 6.64386)));
+                UInt32 V = (UInt32)(((1.0 / 2000.0) * F) * ((double)(1 << 30)));
+                if (i < len - 1)
+                {
+                    FreqLerp.Add(string.Format("\t{0}, // {1} -> {2}", V, F, V * 2000));
+                }
+                else
+                {
+                    FreqLerp.Add(string.Format("\t{0} // {1} -> {2}", V,F, V*2000));
+                }
+
+            }
+
+            FreqLerp.Add(string.Format("}};"));
+            FreqLerp.Add(string.Format(""));
+
+            System.IO.File.WriteAllLines("FreqLerp.h", FreqLerp);
         }
 
         void BuildCalibrationTable()
@@ -251,7 +281,7 @@ namespace Sim1
             g.DrawLine(new Pen(Color.Lime), new PointF(0, ScaleVal(0.05)), new PointF(pictureBox1.Width - 1, ScaleVal(0.05)));
 
             g.DrawLine(new Pen(Color.BlueViolet), new PointF(0, (pictureBox1.Height / 2) + ScaleVal(0.5)), new PointF(pictureBox1.Width - 1, (pictureBox1.Height / 2) + ScaleVal(0.5)));
-            
+
             for (int i = 0; i < 2; i++)
             {
                 int B = TestFrameLoader.GetLFOGate(i);
@@ -268,7 +298,7 @@ namespace Sim1
 
             for (int i = 0; i < 12; i++)
             {
-                int B = Math.Min(255,TestFrameLoader.GetLFOLed(i));
+                int B = Math.Min(255, TestFrameLoader.GetLFOLed(i));
                 var C = Color.FromArgb(B, B, 0);
                 Rectangle R = new Rectangle();
                 R.Width = 10;
@@ -304,7 +334,7 @@ namespace Sim1
         {
 
         }
-        
+
         private void EnvUpdate_Tick(object sender, EventArgs e)
         {
             pos = (pos + 1) % 4000;
@@ -312,9 +342,9 @@ namespace Sim1
             for (int i = 0; i < 10; i++)
             {
                 double D = 0;
-                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
+                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value << 8, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
                 D = TestFrameLoader.GetLFOPhased(0) / 4096.0f;
-                valuesref[pos] = (TestFrameLoader.GetLFOBasicShape(0)/65536.0f)/(4096.0f*4)+0.50f;
+                valuesref[pos] = (TestFrameLoader.GetLFOBasicShape(0) / 65536.0f) / (4096.0f * 4) + 0.50f;
                 linvalues[pos] = D;
             }
         }
