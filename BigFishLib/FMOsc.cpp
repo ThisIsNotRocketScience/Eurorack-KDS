@@ -12,7 +12,7 @@ void FMOsc_Update(FMOsc_t *osc, float odsr, float centerfreq, int size, int spre
 	
 	BigFish_SteppedResult_t sr;
 	
-	float mul[8] = {1,pow(2.0, 2.0/12.0),pow(2.0, 4.0 / 12.0), pow(2.0, 5.0 / 12.0), pow(2.0, 7.0 / 12.0), pow(2.0, 9.0 / 12.0), pow(2.0, 12 / 12.0), pow(2.0, 12 / 12.0)};
+	float mul[8] = {1,pow(2.0f, 2.0/12.0),pow(2.0, 4.0 / 12.0), pow(2.0, 5.0 / 12.0), pow(2.0, 7.0 / 12.0), pow(2.0, 9.0 / 12.0), pow(2.0, 12 / 12.0), pow(2.0, 12 / 12.0)};
 	
 	BigFish_GetSteppedResult(spread, 7, &sr);
 

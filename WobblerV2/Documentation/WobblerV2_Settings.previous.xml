@@ -202,7 +202,7 @@ PE_DEBUGHALT();
       <Counter v="TPM0_CNT" />
       <boolgroup name="Interrupt service/event" v="Enabled">
         <Interrupt v="INT_TPM0" />
-        <Interrupt_priority v="medium priority" />
+        <Interrupt_priority v="maximal priority" />
       </boolgroup>
       <Interrupt_period v="0.1 ms" />
       <Same_period_in_modes v="yes" />
@@ -225,7 +225,7 @@ PE_DEBUGHALT();
             <Counter v="TPM0_CNT" />
             <boolgroup name="Interrupt service/event" v="Enabled">
               <Interrupt v="INT_TPM0" />
-              <Interrupt_priority v="medium priority" />
+              <Interrupt_priority v="maximal priority" />
             </boolgroup>
             <Interrupt_period v="0.1 ms" />
             <group name="Initialization">
@@ -309,7 +309,7 @@ PE_DEBUGHALT();
         <Period v="0.1 ms" />
         <boolgroup name="Interrupt" v="Enabled">
           <Interrupt v="INT_TPM0" />
-          <Interrupt_priority v="medium priority" />
+          <Interrupt_priority v="maximal priority" />
         </boolgroup>
       </enumgroup>
       <list name="Channel list" v="0">

@@ -70,7 +70,8 @@ int adcchannels[ADC_Count];
 #include "../../EurorackShared/EurorackShared.c"
 
 #include "../../EurorackShared/Math.c"
-
+#include "../../libfixmath/libfixmath/fix16.c"
+#include "../../libfixmath/libfixmath/fix16_trig.c"
 
 Wobbler2_LFO_t LFO;
 Wobbler2_Settings Settings;
@@ -350,8 +351,11 @@ int main(void)
 
 
 			measured = 0;
-
+#ifdef INTPENDULUM
+			Wobbler2_UpdateIntPendulumSettings(&LFO.Pendulum, &LFO);
+#else
 			Wobbler2_UpdatePendulumSettings(&LFO.Pendulum, &LFO);
+#endif
 
 			AD1_Measure(FALSE);
 
@@ -366,14 +370,14 @@ int main(void)
 		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-	/*** End of RTOS startup code.  ***/
-	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for(;;){}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

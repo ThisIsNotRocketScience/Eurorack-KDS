@@ -62,7 +62,7 @@
       <XtraAge19>1262595631</XtraAge19>
       <XtraAge20>1262595631</XtraAge20>
       <XtraAge22>1228700989</XtraAge22>
-      <XtraAge23>1277733741</XtraAge23>
+      <XtraAge23>1278638791</XtraAge23>
       <GenExtraFileType23>4</GenExtraFileType23>
       <GenExtraFileType22>5</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
@@ -180,7 +180,7 @@
     </GenFiles>
     <SignalListFile>Documentation\WobblerV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>100</ProjectModificationStamp>
+    <ProjectModificationStamp>101</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>

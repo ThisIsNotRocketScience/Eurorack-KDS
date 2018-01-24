@@ -59,7 +59,11 @@ extern "C"
 	__declspec(dllexport) void __stdcall Init()
 	{
 		Wobbler2_Init(&LFO2Running);
+#ifdef INTPENDULUM
+		Wobbler2_InitIntPendulum(&LFO2Running.Pendulum, &LFO2Running);
+#else
 		Wobbler2_InitPendulum(&LFO2Running.Pendulum, &LFO2Running);
+#endif
 //		Wobbler2_InitIntPendulum(&PendulumInt);
 
 		EdgeCutter2_LoadSettings(&EnvSettings, &EnvParams);
@@ -261,7 +265,12 @@ extern "C"
 
 	__declspec(dllexport) float RunPendulum()
 	{
+#ifdef INTPENDULUM
+		Wobbler2_DoublePendulumInt(&LFO2Running.Pendulum);
+#else
 		Wobbler2_DoublePendulum(&LFO2Running.Pendulum, 0.05);
+#endif
+
 		LFO2Running.Output = LFO2Running.Pendulum.As;
 		LFO2Running.OutputPhased = LFO2Running.Pendulum.Bs;
 
@@ -278,12 +287,12 @@ extern "C"
 		Wobbler2_DoLeds(&LFO2Running);
 
 
-		return LFO2Running.Pendulum.A;
+		return (float)LFO2Running.Pendulum.A;
 	}
 
 	__declspec(dllexport) float RunPendulum2()
 	{
-		return LFO2Running.Pendulum.B;
+		return (float)LFO2Running.Pendulum.B;
 	}
 
 	__declspec(dllexport) int32_t RunPendulumInt()
@@ -437,13 +446,13 @@ void RunTimingTest()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		printf("**** 4 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		printf("**** 4 PPQN %d tpb\n", (int)TuesdaySettings.tpboptions[i]);
 		DoSubDivTest(CLOCKSUBDIV_4, 4 * 4, i);
-		printf("\n\n**** 8 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		printf("\n\n**** 8 PPQN %d tpb\n", (int)TuesdaySettings.tpboptions[i]);
 		DoSubDivTest(CLOCKSUBDIV_8, 8 * 4,i);
-		printf("\n\n**** 16 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		printf("\n\n**** 16 PPQN %d tpb\n", (int)TuesdaySettings.tpboptions[i]);
 		DoSubDivTest(CLOCKSUBDIV_16, 16 * 4,i);
-		printf("\n\n**** 24 PPQN %d tpb\n", TuesdaySettings.tpboptions[i]);
+		printf("\n\n**** 24 PPQN %d tpb\n", (int)TuesdaySettings.tpboptions[i]);
 		DoSubDivTest(CLOCKSUBDIV_24PPQN, 24 * 4,i);
 	}
 
@@ -692,7 +701,7 @@ BOOL WINAPI DllMain(
 
 		BigFish_Init(&Fish, 44100);
 
-		FindDoublePendulumFreqs();
+//		FindDoublePendulumFreqs();
 
 //		ExpTest();
 	//	RunFishTest();

@@ -148,12 +148,20 @@
     <ClCompile Include="..\..\EdgeCutter\Sources\EdgeCutter.c" />
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
     <ClCompile Include="..\..\EurorackShared\Math.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_exp.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_sqrt.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_str.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fract32.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c" />
     <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
     <ClCompile Include="..\..\Tuesday\Sources\main.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
+    <ClCompile Include="..\..\WobblerV2\Sources\Pendulum.c" />
     <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c" />
     <ClCompile Include="..\..\Wobbler\Sources\Wobbler.c" />
     <ClCompile Include="TestFrameDLL.cpp" />
@@ -161,6 +169,13 @@
   <ItemGroup>
     <ClInclude Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.h" />
     <ClInclude Include="..\..\EurorackShared\EURORACKSHARED.H" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16.h" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16.hpp" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16_trig_sin_lut.h" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\fixmath.h" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\fract32.h" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\int64.h" />
+    <ClInclude Include="..\..\libfixmath\libfixmath\uint32.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo.h" />
     <ClInclude Include="..\..\Tuesday\Sources\AlgoImpl.h" />
     <ClInclude Include="..\..\Tuesday\Sources\Algo_ChipArps.h" />

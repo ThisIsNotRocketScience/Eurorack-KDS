@@ -38,7 +38,7 @@ namespace Sim1
         private void BuildFreqLerp()
         {
             List<string> FreqLerp = new List<string>();
-            int len = 11;
+            int len = 16;
             FreqLerp.Add(string.Format("#define FREQLERPLEN {0}", len));
             FreqLerp.Add(string.Format(""));
             FreqLerp.Add(string.Format("unsigned long FreqLerp[{0}] = {{", len));
@@ -296,7 +296,7 @@ namespace Sim1
                 g.DrawRectangle(new Pen(Color.White, 1), R);
             }
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 18; i++)
             {
                 int B = Math.Min(255, TestFrameLoader.GetLFOLed(i));
                 var C = Color.FromArgb(B, B, 0);
@@ -342,7 +342,7 @@ namespace Sim1
             for (int i = 0; i < 10; i++)
             {
                 double D = 0;
-                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value << 8, Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
+                values[pos] = TestFrameLoader.GetLFO(0, Speed.Value , Shape.Value << 8, Mod.Value << 8, Phase.Value << 4) / 4096.0f;
                 D = TestFrameLoader.GetLFOPhased(0) / 4096.0f;
                 valuesref[pos] = (TestFrameLoader.GetLFOBasicShape(0) / 65536.0f) / (4096.0f * 4) + 0.50f;
                 linvalues[pos] = D;

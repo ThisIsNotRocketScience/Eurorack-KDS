@@ -16,6 +16,9 @@
     <Filter Include="ExcludedFromCompilation">
       <UniqueIdentifier>{f8f3b83c-a2d2-4c35-9d33-322de6b1c06b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libfixmath">
+      <UniqueIdentifier>{c1adfc07-3a70-401c-bb4a-66043fcb0c95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestFrameDLL.cpp">
@@ -47,6 +50,30 @@
     </ClCompile>
     <ClCompile Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WobblerV2\Sources\Pendulum.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fract32.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_exp.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_sqrt.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_str.c">
+      <Filter>libfixmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c">
+      <Filter>libfixmath</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +127,27 @@
     </ClInclude>
     <ClInclude Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16_trig_sin_lut.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\fixmath.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\fract32.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\int64.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\uint32.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16.h">
+      <Filter>libfixmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libfixmath\libfixmath\fix16.hpp">
+      <Filter>libfixmath</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
