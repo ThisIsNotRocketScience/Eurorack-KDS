@@ -126,11 +126,11 @@ extern "C"
 #ifdef INTPENDULUM
 	extern void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W);
 	extern void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W);
-	extern void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P);
+	extern void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed);
 #else
 	extern void Wobbler2_UpdatePendulumSettings(Wobbler2_Pendulum_t *P, Wobbler2_LFO_t *W);
 	extern void Wobbler2_InitPendulum( Wobbler2_Pendulum_t *Pendulum,Wobbler2_LFO_t *LFO);
-	extern void Wobbler2_DoublePendulum(Wobbler2_Pendulum_t *P, float const DT);
+	extern void Wobbler2_DoublePendulum(Wobbler2_Pendulum_t *P, float const DT, int32_t feed);
 #endif
 	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, Wobbler2_Params *Params);
 	extern void Wobbler2_LoadSettings( Wobbler2_Settings *settings, Wobbler2_Params *params);

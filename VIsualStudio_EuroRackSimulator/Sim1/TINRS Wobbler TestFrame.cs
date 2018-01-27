@@ -31,8 +31,8 @@ namespace Sim1
 
             RebuildLFO();
             //BuildCalibrationTable();
-            BuildFreqLerp();
-            //BuildPoster();
+            //BuildFreqLerp();
+            BuildPoster();
         }
 
         private void BuildFreqLerp()

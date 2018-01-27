@@ -36,7 +36,7 @@ void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
 	P->d2Theta2 = 0;
 	P->dTheta1 = fix16_mul(fix16_from_int(W->Speed), fix16_from_float(-1.0f / ((float)0xffff)));
 	P->dTheta2 = 0;
-	P->DecayEnvelopeCount = MAXPENDULUMDECAYVALUE;
+	P->DecayEnvelopeCount = 1<<24;
 };
 
 void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
@@ -53,11 +53,11 @@ void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_
 	P->m2 = fix16_from_int(1);
 	P->mu = fix16_from_int(2);// 1.0f + 1.0;// P->m1 / P->m2;
 
-	P->DecayEnvelopeAmt = W->Mod*20;
+	P->DecayEnvelopeAmt = ((1 << 24) - 1) / (1 + (Wobbler2_LFORange3(W->Mod, WOBBLERSAMPLERATE)));
 };
 
 
-void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P)
+void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 {
 	P->DecayEnvelopeCount -= P->DecayEnvelopeAmt;
 	if (P->DecayEnvelopeCount < 0) P->DecayEnvelopeCount = 0;
@@ -95,6 +95,7 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P)
 	fix16_t const T6 = fix16_mul(P->l2, T6b);
 
 	P->d2Theta1 = fix16_div(fix16_sub(T1 , T2) , T3);
+	P->d2Theta1 += feed>>28;
 	P->d2Theta2 = fix16_div(fix16_add(T4 , T5) , T6);
 	P->dTheta1 = fix16_mul(P->dTheta1, P->Damping);
 	P->dTheta2 = fix16_mul(P->dTheta2, P->Damping);
@@ -117,8 +118,10 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P)
 	
 	P->Bs = fix16_mul(P->Theta2, fix16_from_float(((float)0xffff) / (3.1415f * 2)));// *(P->DecayEnvelopeCount >> 17);
 	
-	int32_t DecayEnvelopeCount = P->DecayEnvelopeCount >> 14;
+	int32_t DecayEnvelopeCount = P->DecayEnvelopeCount>>8;
+
 	if (DecayEnvelopeCount > 0xffff) DecayEnvelopeCount = 0xffff;
+	DecayEnvelopeCount = fix16_mul(DecayEnvelopeCount, DecayEnvelopeCount);
 	P->As = fix16_mul(P->As, DecayEnvelopeCount);
 	P->Bs = fix16_mul(P->Bs, DecayEnvelopeCount);
 

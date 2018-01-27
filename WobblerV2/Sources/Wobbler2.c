@@ -285,10 +285,11 @@ extern "C"
 		LFO->Phase1 += DP;
 
 		uint32_t DP2 = LFO->Phasing * 0x100000;
+		uint32_t DP3 = DP+Wobbler2_MakeFreq((0xffff>>2)-LFO->Phasing) ;
 		//DP2 <<= 24;
 		LFO->Phase2 = LFO->Phase1 + DP2;
 
-		LFO->PhasedShift += DP2 >> 8;
+		LFO->PhasedShift += DP3 >> 8;
 
 
 
@@ -313,16 +314,19 @@ extern "C"
 		//	LFO->OldPhase2 = LFO->Phase2;
 
 
-#ifdef INTPENDULUM
-		Wobbler2_DoublePendulumInt(&LFO->Pendulum);
-#else
-		Wobbler2_DoublePendulum(&LFO->Pendulum, 0.05f);
-#endif
 		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, LFO->Mod, LFO->Phase1 - DP2);
 
 		CalculateCompensation(&LFO->CompensationVals, LFO->Mod >> 8);
 		//Shapes_t BSO, &LFO->BasicShapesB;
 		LFO->OutputsNormal[0] = FillBasicShapes(LFO->Phase1, LFO->Mod >> 8, &LFO->BasicShapesA, &LFO->CompensationVals);
+
+#ifdef INTPENDULUM
+		Wobbler2_DoublePendulumInt(&LFO->Pendulum, LFO->BasicShapesA.Sine);
+#else
+		Wobbler2_DoublePendulum(&LFO->Pendulum, 0.05f, LFO->BasicShapesA.Sine );
+#endif
+
+
 		LFO->OutputsNormal[1] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsNormal[0]) / 2;
 		LFO->OutputsNormal[2] = Wobbler2_Twang(LFO, LFO->Phase1);
 		LFO->OutputsNormal[3] = LFO->Pendulum.As;// + 0x80000000;
