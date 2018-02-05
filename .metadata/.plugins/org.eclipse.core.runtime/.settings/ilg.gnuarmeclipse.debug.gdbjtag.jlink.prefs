@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-flashDeviceName=MK22FN256xxx12
+flashDeviceName=MKL02Z32xxx4
 gdb.client.commands=set mem inaccessible-by-default off
 gdb.client.executable=${cross_prefix}gdb${cross_suffix}
 gdb.client.other=

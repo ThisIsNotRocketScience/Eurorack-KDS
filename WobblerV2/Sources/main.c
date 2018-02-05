@@ -150,7 +150,64 @@ void ShiftOut()
 	LATCH_SetVal(LATCH_DeviceData);
 }
 
+void DAC_DATA_SET() {GPIOA_PDOR |= (1<<7);};
+void DAC_DATA_CLR() {GPIOA_PDOR &= ~(1<<7);};
+void DAC_CLK_SET() {GPIOB_PDOR |= (1<<0);};
+void DAC_CLK_CLR() {GPIOB_PDOR &= ~(1<<0);};
+void DAC_INIT()
+{
+	PORTA_PCR7 = PORT_PCR_MUX(0x01);
+	PORTB_PCR0 = PORT_PCR_MUX(0x01);
 
+	GPIOA_PDDR |= (1 << 7);
+	GPIOB_PDDR |= (1 << 0);
+
+}
+void DAC_Shift(byte b)
+{
+	for(byte i =0x80;i;i>>=1)
+	{
+	if ((b&i) == i) 	DAC_DATA_SET();else DAC_DATA_CLR();
+	DAC_CLK_SET();DAC_CLK_CLR();
+	}
+
+}
+void DACB_Write(int channel, int value)
+{
+	DACSEL_ClrVal(0); // SetVal done in interrupt handler
+	const int shutdown1 = 0;
+	const int gain1 = 0;
+	const int shutdown2 = 0	;
+	const int gain2 = 0;
+	unsigned char coms[2];
+
+	unsigned int command;
+	if(channel == 1)
+	{
+		command = 0x0000;
+		command |= shutdown1 ? 0x0000 : 0x1000;
+		command |= gain1 ? 0x0000 : 0x2000;
+		command |= (value & 0x0FFF);
+		coms[0] =  command >> 8;
+		coms[1] = command &0xff;
+		DACSENDDONE  = 0;
+	}
+	else
+	{
+		command = 0x8000;
+		command |= shutdown2 ? 0x0000 : 0x1000;
+		command |= gain2 ? 0x0000 : 0x2000;
+		command |= (value & 0x0FFF);
+		coms[0] =  command >> 8;
+		coms[1] = command &0xff;
+		DACSENDDONE  = 0;
+
+	}
+	DAC_Shift(coms[0]);
+	DAC_Shift(coms[1]);
+	DACSEL_SetVal(0); // SetVal done in interrupt handler
+
+}
 
 int KnobOpt(int val)
 {
@@ -184,12 +241,12 @@ void doTimer()
 		LinearOut = Wobbler2_Get(&LFO, &Params);
 		LinearOut = (int)(LFO.Output);
 		CurvedOut = (int)(LFO.OutputPhased);
-		DAC_Write(1, CurvedOut);
+		DACB_Write(1, CurvedOut);
 	}
 	break;
 	case 1:
 	{
-		DAC_Write(0, LinearOut);
+		DACB_Write(0, LinearOut);
 	}
 
 	break;
@@ -259,7 +316,7 @@ int main(void)
 	EuroRack_InitCalibration();
 
 	LoadEeprom();
-
+	DAC_INIT();
 	AD1_Calibrate(TRUE);
 	AD1_Start();
 	AD1_Measure(FALSE);
@@ -370,14 +427,14 @@ int main(void)
 		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-  #ifdef PEX_RTOS_START
-    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-  #endif
-  /*** End of RTOS startup code.  ***/
-  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-  for(;;){}
-  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+#ifdef PEX_RTOS_START
+	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+#endif
+	/*** End of RTOS startup code.  ***/
+	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+	for(;;){}
+	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

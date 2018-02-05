@@ -7,7 +7,7 @@
 **     Version     : Component 01.111, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2018-02-05, 02:01, # CodeGen: 21
 **     Abstract    :
 **         This component "SPIMaster_LDD" implements MASTER part of synchronous
 **         serial master-slave communication.
@@ -64,6 +64,7 @@
 **         Init               - LDD_TDeviceData* SM1_Init(LDD_TUserData *UserDataPtr);
 **         SendBlock          - LDD_TError SM1_SendBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData...
 **         ReceiveBlock       - LDD_TError SM1_ReceiveBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData...
+**         GetSentDataNum     - uint16_t SM1_GetSentDataNum(LDD_TDeviceData *DeviceDataPtr);
 **         GetBlockSentStatus - bool SM1_GetBlockSentStatus(LDD_TDeviceData *DeviceDataPtr);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
@@ -337,6 +338,27 @@ LDD_TError SM1_SendBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData *BufferPtr, u
   /* {Default RTOS Adapter} Critical section end, general PE function is used */
   ExitCritical();
   return ERR_OK;                       /* OK */
+}
+
+/*
+** ===================================================================
+**     Method      :  SM1_GetSentDataNum (component SPIMaster_LDD)
+*/
+/*!
+**     @brief
+**         Returns the number of sent characters. This method is
+**         available only if method SendBlock is enabled.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by [Init] method.
+**     @return
+**                         - The number of characters in the output
+**                           buffer.
+*/
+/* ===================================================================*/
+uint16_t SM1_GetSentDataNum(LDD_TDeviceData *DeviceDataPtr)
+{
+  return (((SM1_TDeviceDataPtr)DeviceDataPtr)->OutSentDataNum); /* Return the number of sent characters. */
 }
 
 /*

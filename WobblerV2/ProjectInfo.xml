@@ -77,6 +77,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Pendulum.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Wobbler2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\exit.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\main.c</PathName>
@@ -113,6 +114,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\BasicShapeCompensation.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\FreqLerp.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Pendulum.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\Wobbler2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\WobblerV2\Sources\main.h</PathName>
       <PathName>C:\Freescale\KDS_v3\eclipse\ProcessorExpert\lib\Kinetis\iofiles\MKL02Z4.h</PathName>

@@ -50,4 +50,6 @@ void DAC_Write(int channel, int value)
 		SM1_SendBlock(SM1_DeviceData, coms, 2 );
 
 	}
+	//WAIT1_Wait100Cycles();
+
 }

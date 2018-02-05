@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="doTimer" key="selection"/>
+		<item value="GetSentDataNum" key="selection"/>
 		<list key="findhistory">
+			<item value="GetSentDataNum"/>
+			<item value="sent"/>
+			<item value="eoq"/>
+			<item value="phasing"/>
 			<item value="doTimer"/>
 			<item value="ShiftOut"/>
 			<item value="LEDSORDER"/>
 			<item value="enter"/>
-			<item value="timesincesync"/>
-			<item value="GetInterpolatedResultInt"/>
-			<item value="modeled"/>
-			<item value="KnobOpt"/>
 		</list>
 		<list key="replacehistory">
 		</list>

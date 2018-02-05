@@ -11,10 +11,10 @@
 #define LED_DATA 7
 
 void LED_LATCH_SET() {GPIOB_PDOR |= (1<<LED_LATCH);};
-void  LED_LATCH_CLR() {GPIOB_PDOR &= ~(1<<LED_LATCH);};
-void  LED_CLOCK_SET() {GPIOB_PDOR |= (1<<LED_CLOCK);};
+void LED_LATCH_CLR() {GPIOB_PDOR &= ~(1<<LED_LATCH);};
+void LED_CLOCK_SET() {GPIOB_PDOR |= (1<<LED_CLOCK);};
 void LED_CLOCK_CLR() {GPIOB_PDOR &= ~(1<<LED_CLOCK);};
-void  LED_DATA_SET() {GPIOB_PDOR |= (1<<LED_DATA);};
+void LED_DATA_SET() {GPIOB_PDOR |= (1<<LED_DATA);};
 void LED_DATA_CLR() {GPIOB_PDOR &= ~(1<<LED_DATA);};
 
 void LEDS_InitHardware()

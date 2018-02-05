@@ -22,6 +22,7 @@ Module "SM1"       (component SPIMaster_LDD)
                 event). This method finishes immediately after calling it - it doesn't wait the end of data reception. Use 
                 event <OnBlockReceived> to check the end of data reception or method GetReceivedDataNum to check the state of 
                 receiving.
+   - SM1_GetSentDataNum -Returns the number of sent characters. This method is available only if method SendBlock is enabled.
    - SM1_GetBlockSentStatus -This method returns whether the transmitter is finished transmitting all data block. The status 
                 flag is accumulated, after calling this method the status is returned and cleared (set to "false" state). This 
                 method is available only if method SendBlock is enabled.

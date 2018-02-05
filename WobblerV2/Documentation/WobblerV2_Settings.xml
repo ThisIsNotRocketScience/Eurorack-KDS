@@ -81,7 +81,7 @@ PE_DEBUGHALT();
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_interrupts" />
               <Qualifier v="RX" />
-              <Address v="8192" />
+              <Address v="0" />
               <Size v="192" />
             </boolgroup>
           </group>
@@ -167,7 +167,7 @@ PE_DEBUGHALT();
       <GetEventMask v="don&amp;apos;t generate code" />
       <SendBlock v="generate code" />
       <ReceiveBlock v="generate code" />
-      <GetSentDataNum v="don&amp;apos;t generate code" />
+      <GetSentDataNum v="generate code" />
       <GetReceivedDataNum v="don&amp;apos;t generate code" />
       <GetBlockSentStatus v="generate code" />
       <GetBlockReceivedStatus v="don&amp;apos;t generate code" />

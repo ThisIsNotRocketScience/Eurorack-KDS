@@ -33,7 +33,6 @@ uint16_t  CalibratedDAC(int dacchannel, int32_t Input)
 	//return ((Input + MasterCalibration.DAC[dacchannel].offset) *MasterCalibration.DAC[dacchannel].scale) >> 16;
 }
 
-
 void ChangeDACCalibration(int dacchannel, int low, int high)
 {
 	MasterCalibration.DAC[dacchannel].volt_1 = DAC_VOLT_UNCALIBRATED(1) + ((low - 128)/4);
@@ -70,6 +69,7 @@ int ValidateADC(struct EuroRack_ADC_Calibration *adc)
 {
 	return 0;
 }
+
 int  ValidateDAC(struct EuroRack_DAC_Calibration *dac)
 {
 	if (dac->volt_1 >= dac->volt_3)
@@ -79,6 +79,7 @@ int  ValidateDAC(struct EuroRack_DAC_Calibration *dac)
 	}
 	return 0;
 }
+
 int EuroRack_ValidateCalibration()
 {
 	int invalid = 0;
