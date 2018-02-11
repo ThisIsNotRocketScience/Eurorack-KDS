@@ -158,7 +158,7 @@ namespace Sim1
 
                     Shape.Value = (int)i;
                     Phase.Value = 64;
-                    Speed.Value = 255;
+                    Speed.Value = 255*16;
                     Mod.Value = 10 + (q * 240) / (qmax - 1);
                     float Ybase = i * 10;
                     float H = 40;

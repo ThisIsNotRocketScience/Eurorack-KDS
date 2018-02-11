@@ -5,7 +5,7 @@
 #define __max(a,b) ((a)>(b)?(a):(b))
 #define __min(a,b) ((a)<(b)?(a):(b))
 
-#define PI (float)(3.1415926535897932384626433832795)
+#define PI  (float)(3.1415926535897932384626433832795)
 #define TAU (float)(3.1415926535897932384626433832795*2.0000)
 
 #ifdef __cplusplus
@@ -128,24 +128,24 @@ extern "C"
 	unsigned long Wobbler2_LFORange(int32_t V, int32_t SR)
 	{
 		return  1 + ((V*SR * 64) >> 8);
-		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+	//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
 	unsigned long Wobbler2_LFORange2(int32_t V, int32_t SR)
 	{
 		return  1 + V*V * 8;
-		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+	//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
 	unsigned long Wobbler2_LFORange3(int32_t V, int32_t SR)
 	{
 		return  1 + ((V*SR) >> 13);
-		//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
+	//	return (unsigned long)(64 * pow((int32_t)((SR * 6) / 64.0), pow((int32_t)V, 0.54f)));
 	}
 
 	void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO)
 	{
-		//LFO->EnvelopeVal = 0;
+	//	LFO->EnvelopeVal = 0;
 		LFO->EnvelopeState = Wobbler2_ATTACK;
 	}
 
@@ -158,8 +158,9 @@ extern "C"
 
 		uint16_t mod = (modin*modin) / (1 << 14);
 		mod = (~mod) * 2;
-		//mod = (mod * mod)/65536;
-		//mod = mod / 2 ;
+
+		// mod = (mod * mod)/65536;
+		// mod = mod / 2 ;
 
 		if (newseg != sh->lastseg)
 		{
@@ -179,8 +180,6 @@ extern "C"
 		uint32_t r1a = sh->store2 * mod;
 		uint32_t r2a = (sh->lastval2) * m2;
 		sh->store2 = (r1a / 65536) + (r2a / 65536);
-
-
 	}
 
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
@@ -296,19 +295,19 @@ extern "C"
 		if (LFO->Phase1 < LFO->OldPhase1)
 		{
 			LFO->Gate[1] = Wobbler2_GATECOUNTDOWN;
-			//		if (LFO->PhasedCountdown > 0)
-			//		{
-			//			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
-			//		}
-			//		LFO->PhasedCountdown = LFO->Phasing << 24;
+		//		if (LFO->PhasedCountdown > 0)
+		//		{
+		//			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
+		//		}
+		//		LFO->PhasedCountdown = LFO->Phasing << 24;
 		}
 
-		//uint32_t last = LFO->PhasedCountdown;
-		//LFO->PhasedCountdown -= __min(DP, LFO->PhasedCountdown);
-	//	if (LFO->PhasedCountdown == 0 && last != 0)
-		//{
-			//LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
-	//	}
+		//	uint32_t last = LFO->PhasedCountdown;
+		//	LFO->PhasedCountdown -= __min(DP, LFO->PhasedCountdown);
+		//	if (LFO->PhasedCountdown == 0 && last != 0)
+		//	{
+		//		LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
+		//	}
 
 		LFO->OldPhase1 = LFO->Phase1;
 		//	LFO->OldPhase2 = LFO->Phase2;
@@ -325,7 +324,6 @@ extern "C"
 #else
 		Wobbler2_DoublePendulum(&LFO->Pendulum, 0.05f, LFO->BasicShapesA.Sine );
 #endif
-
 
 		LFO->OutputsNormal[1] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsNormal[0]) / 2;
 		LFO->OutputsNormal[2] = Wobbler2_Twang(LFO, LFO->Phase1);
@@ -344,7 +342,6 @@ extern "C"
 			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
 		}
 
-
 		LFO->OldPhase2 = LFO->BasicShapesB.Sine;
 
 		Wobbler2_GetSteppedResult(LFO->Shape, 4, &LFO->ShapeStepped);
@@ -354,7 +351,6 @@ extern "C"
 
 		LFO->Output = (LFO->Output *LFO->Amount1) / (int)(1 << 14);
 		LFO->OutputPhased = (LFO->OutputPhased *LFO->Amount2) / (int)(1 << 14);
-
 
 		LFO->Output += 2048;// + (2540 - 2048);
 		LFO->OutputPhased += 2048;// +(2540 - 2048);
@@ -398,11 +394,14 @@ extern "C"
 
 		LFO->Led[1][(iLedIdxA + 9) % 9] = 255 - IdxA;
 		LFO->Led[1][(iLedIdxA + 10) % 9] = IdxA;
+
 		for (int i = 0; i < 5; i++)
 		{
 			LFO->ModeLed[i] = 0;
 		};
+
 		LFO->ModeLed[LFO->ShapeStepped.index] = 255 - LFO->ShapeStepped.fractional;
+		
 		if (LFO->ShapeStepped.index < 4)
 		{
 			LFO->ModeLed[LFO->ShapeStepped.index + 1] = LFO->ShapeStepped.fractional;
