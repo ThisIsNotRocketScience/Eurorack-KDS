@@ -64,6 +64,8 @@ typedef struct Wobbler2_LFO_t
 	uint16_t Phasing;
 	uint16_t LastPhasing;
 
+	uint16_t SpeedOrig;
+	
 	int16_t Amount1;
 	int16_t Amount2;
 
@@ -133,6 +135,8 @@ extern "C"
 	extern void Wobbler2_DoublePendulum(Wobbler2_Pendulum_t *P, float const DT, int32_t feed);
 #endif
 	extern void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, Wobbler2_Params *Params);
+	extern void Wobbler2_SyncPulse(Wobbler2_LFO_t *LFO);
+
 	extern void Wobbler2_LoadSettings( Wobbler2_Settings *settings, Wobbler2_Params *params);
 	extern void Wobbler2_ValidateParams(Wobbler2_Params *params);
 	extern void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO);

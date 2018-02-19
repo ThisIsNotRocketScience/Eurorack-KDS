@@ -1,6 +1,6 @@
 /** ###################################################################
 **      Filename    : CPU_Init.c
-**      Processor   : MK22FN256VDC12
+**      Processor   : MK22FN256VLH12
 **      Version     : 1.0
 **      Abstract    :
 **         This file implements the MCU initialization and CPU component runtime methods.
@@ -258,7 +258,7 @@ static const CPU_TClockGenRegs *const CPU_ClockGenModeRegs[CPU_MCG_MODES] = {
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_SetBASEPRI (component MK22FN256DC12)
+**     Method      :  Cpu_SetBASEPRI (component MK22FN256LH12)
 **
 **     Description :
 **         This method sets the BASEPRI core register.
@@ -287,7 +287,7 @@ __asm CPU_SetBASEPRI(uint32_t Level) {
 
 /*
 ** ===================================================================
-**     Method      :  __init_hardware (component MK22FN256DC12)
+**     Method      :  __init_hardware (component MK22FN256LH12)
 **
 **     Description :
 **         This method is called from the __thumb_startup() function and 
@@ -413,7 +413,7 @@ PEX_ENTRYPOINT_FUNCTION_TYPE PEX_ENTRYPOINT_FUNCTION()
 
 /*
 ** ===================================================================
-**     Method      :  PE_low_level_init (component MK22FN256DC12)
+**     Method      :  PE_low_level_init (component MK22FN256LH12)
 **
 **     Description :
 **         Initializes components and provides common register 
@@ -732,7 +732,7 @@ void CPU_SetClockConfigGenMode(LDD_TClockConfiguration ConfigID)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_SetClockConfiguration (component MK22FN256DC12)
+**     Method      :  Cpu_SetClockConfiguration (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -842,7 +842,7 @@ LDD_TError CPU_SetClockConfiguration(LDD_TClockConfiguration ModeID)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_GetClockConfiguration (component MK22FN256DC12)
+**     Method      :  Cpu_GetClockConfiguration (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -866,7 +866,7 @@ LDD_TClockConfiguration CPU_GetClockConfiguration(void)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_SetOperationMode (component MK22FN256DC12)
+**     Method      :  Cpu_SetOperationMode (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1033,7 +1033,7 @@ LDD_TError CPU_SetOperationMode(LDD_TDriverOperationMode OperationMode, LDD_TCal
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_EnableInt (component MK22FN256DC12)
+**     Method      :  Cpu_EnableInt (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1049,7 +1049,7 @@ void CPU_EnableInt(void)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_DisableInt (component MK22FN256DC12)
+**     Method      :  Cpu_DisableInt (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1065,7 +1065,7 @@ void CPU_DisableInt(void)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_MCGAutoTrim (component MK22FN256DC12)
+**     Method      :  Cpu_MCGAutoTrim (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1141,7 +1141,7 @@ LDD_TError CPU_MCGAutoTrim(uint8_t ClockSelect)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_VLPModeEnable (component MK22FN256DC12)
+**     Method      :  Cpu_VLPModeEnable (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1179,7 +1179,7 @@ LDD_TError CPU_VLPModeEnable(void)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_VLPModeDisable (component MK22FN256DC12)
+**     Method      :  Cpu_VLPModeDisable (component MK22FN256LH12)
 */
 /*!
 **     @brief
@@ -1217,7 +1217,7 @@ LDD_TError CPU_VLPModeDisable(void)
 
 /*
 ** ===================================================================
-**     Method      :  Cpu_SystemReset (component MK22FN256DC12)
+**     Method      :  Cpu_SystemReset (component MK22FN256LH12)
 */
 /*!
 **     @brief

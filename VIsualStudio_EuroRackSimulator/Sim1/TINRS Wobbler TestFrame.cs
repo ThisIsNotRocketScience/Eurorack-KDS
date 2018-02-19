@@ -16,7 +16,7 @@ namespace Sim1
     {
         public WobblerTestFrame()
         {
-            for (int i = 0; i < 5000; i++)
+            for (int i = 0; i < 12000; i++)
             {
                 values.Add(0);
                 valuesref.Add(0);
@@ -149,21 +149,22 @@ namespace Sim1
             int R2 = 255;
             int G2 = 234;
             int B2 = 0;
-            int qmax = 8;
+            int qmax = 2;
             int width = 128;
             for (int q = 0; q < qmax; q++)
             {
+                Console.WriteLine("column {0}/{1}", q + 1, qmax);
                 for (float i = 0; i < 256; i += 2)
                 {
 
-                    Shape.Value = (int)i;
-                    Phase.Value = 64;
-                    Speed.Value = 255*16;
+                    Shape.Value = (int)64;
+                    Phase.Value = (int)((i) %256);
+                    Speed.Value = 255;
                     Mod.Value = 10 + (q * 240) / (qmax - 1);
                     float Ybase = i * 10;
                     float H = 40;
 
-                    RebuildLFO(true);
+                    RebuildLFO(true,4*4*4*width);
                     Polygon P = new Polygon();
                     Polygon P2 = new Polygon() { depth = 2 };
                     float targetmix = q / (float)(qmax - 1);
@@ -214,9 +215,9 @@ namespace Sim1
             pictureBox1.Invalidate();
         }
 
-        private void RebuildLFO(bool force = false)
+        private void RebuildLFO(bool force = false, int defcount=5000)
         {
-            int count = 5000;
+            int count = defcount;
             if (force == false) count = Math.Min(count, pictureBox1.Width);
             TestFrameLoader.ResetStatic();
             for (int i = 0; i < count; i++)
@@ -315,13 +316,13 @@ namespace Sim1
             return 20 + (float)((pictureBox1.Height / 2 - 40) * (1.0 - inp));
         }
 
-        List<double> values = new List<double>(4000);
-        List<double> valuesref = new List<double>(4000);
-        List<double> linvalues = new List<double>(4000);
+        List<double> values = new List<double>(12000);
+        List<double> valuesref = new List<double>(12000);
+        List<double> linvalues = new List<double>(12000);
 
-        List<double> values2 = new List<double>(4000);
-        List<Int64> values64 = new List<Int64>(4000);
-        List<double> linvalues2 = new List<double>(4000);
+        List<double> values2 = new List<double>(12000);
+        List<Int64> values64 = new List<Int64>(12000);
+        List<double> linvalues2 = new List<double>(12000);
         int pos = 0;
 
         private void pictureBox1_Resize(object sender, EventArgs e)

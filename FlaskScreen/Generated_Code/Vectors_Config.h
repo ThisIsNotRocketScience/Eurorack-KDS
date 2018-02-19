@@ -1,6 +1,6 @@
 /** ###################################################################
 **      Filename    : Vectors_Config.h
-**      Processor   : MK22FN256VDC12
+**      Processor   : MK22FN256VLH12
 **      Version     : 1.00
 ** 
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
@@ -54,6 +54,13 @@
 #include "OLED_DC.h"
 #include "OLED_RESET.h"
 #include "WAIT1.h"
+#include "GI2C1.h"
+#include "CODEC_PDN.h"
+#include "I2C1.h"
+#include "SDA1.h"
+#include "BitIoLdd1.h"
+#include "SCL1.h"
+#include "BitIoLdd2.h"
 #include "Events.h"
 
 #ifdef __cplusplus
@@ -107,8 +114,8 @@ extern "C" {
 #define VECTOR_41         (tIsrFunc)&UnhandledInterrupt         /* 0x29 -    ivINT_I2C1                    unused by PE */
 #define VECTOR_42         (tIsrFunc)&SM1_Interrupt              /* 0x2A 112  ivINT_SPI0                    used by PE */
 #define VECTOR_43         (tIsrFunc)&UnhandledInterrupt         /* 0x2B -    ivINT_SPI1                    unused by PE */
-#define VECTOR_44         (tIsrFunc)&UnhandledInterrupt         /* 0x2C -    ivINT_I2S0_Tx                 unused by PE */
-#define VECTOR_45         (tIsrFunc)&UnhandledInterrupt         /* 0x2D -    ivINT_I2S0_Rx                 unused by PE */
+#define VECTOR_44         (tIsrFunc)&I2S0_TX                    /* 0x2C 0    ivINT_I2S0_Tx                 used by PE */
+#define VECTOR_45         (tIsrFunc)&I2S0_RX                    /* 0x2D 0    ivINT_I2S0_Rx                 used by PE */
 #define VECTOR_46         (tIsrFunc)&UnhandledInterrupt         /* 0x2E -    ivINT_LPUART0                 unused by PE */
 #define VECTOR_47         (tIsrFunc)&UnhandledInterrupt         /* 0x2F -    ivINT_UART0_RX_TX             unused by PE */
 #define VECTOR_48         (tIsrFunc)&UnhandledInterrupt         /* 0x30 -    ivINT_UART0_ERR               unused by PE */

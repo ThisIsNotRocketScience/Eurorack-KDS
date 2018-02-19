@@ -28,7 +28,7 @@ unsigned long FreqLerpb[17] = {
 
 unsigned long LERP16_t(unsigned long *V, int fade)
 {
-	unsigned char frac = (fade<<3) & 0xff;
+	unsigned char frac = (fade << 3) & 0xff;
 	//if (frac && (frac < 255)) frac += 1;
 	int I = fade >> 5;
 	return ((V[I] >> 8) *(256 - frac) + (V[I + 1] >> 8) * frac);
@@ -38,47 +38,100 @@ unsigned long TestF(int inp)
 	return LERP16_t(FreqLerpb, inp);
 
 }
+
+enum
+{
+	ADC_MODULATION,
+	ADC_PHASING,
+	ADC_SHAPE,
+	ADC_SPEED,
+	ADC_AMTNORMAL,
+	ADC_AMTPHASED,
+	ADC_Count
+};
+
 int main(int argc, char **argv)
 {
 	Wobbler2_LFO_t LFO2Static;
 	Wobbler2_Settings LFO2Settings;
 	Wobbler2_LFO_t LFO2Running;
 	Wobbler2_Params LFO2Params;
-	for (int i = 0; i < 17; i++)
-	{
-		uint32_t V = 0xffffffff;
-		V /= 2500; // 1hZ
-		double F = (0.1 * pow(2.0, (((double)i / (double)(15)) * 6.64386)));
 
-		uint32_t V2 = V * F;
+	Wobbler2_LoadSettings(&LFO2Settings, &LFO2Params);
+	uint16_t adcchannels[ADC_Count];
+	adcchannels[ADC_MODULATION] = 0x8000;
+	adcchannels[ADC_PHASING] = 0;
+	adcchannels[ADC_SHAPE] = 0x8000;
+	adcchannels[ADC_SPEED] = 0x8000;
+	adcchannels[ADC_MODULATION] = 0x8000;
+	adcchannels[ADC_AMTNORMAL] = 0x8000;
+	adcchannels[ADC_AMTPHASED] = 0x8000;
 
-		FreqLerpb[i] = V2;
-	}
+	
 
 	Wobbler2_Init(&LFO2Static);
 
-	for (int i = 0; i < 512; i++ )
+	
+	LFO2Static.Mod = ~adcchannels[ADC_MODULATION];
+	LFO2Static.Shape = ~adcchannels[ADC_SHAPE];
+	LFO2Static.Phasing = (adcchannels[ADC_PHASING]) >> 4;
+	LFO2Static.Speed = ((0xffff - adcchannels[ADC_SPEED]) >> 7);
+	LFO2Static.SpeedOrig = ((0xffff - adcchannels[ADC_SPEED]));
+	LFO2Static.Amount1 = ((adcchannels[ADC_AMTNORMAL]) >> 1) - (1 << 14);
+	LFO2Static.Amount2 = ((adcchannels[ADC_AMTPHASED]) >> 1) - (1 << 14);
+	
+	
+	for (int i = 0; i < 50000; i++)
 	{
-		unsigned long DPold = Wobbler2_LFORange2(i, 0);
-		unsigned long DPnew = Wobbler2_MakeFreq(i);
-		unsigned long DPtest = TestF(i);
-		printf("%d: \told %d \tnew %d\ttest %d\n", i, DPold, DPnew, DPtest);
+		if (i % 1000 == 0)
+		{
+			Wobbler2_SyncPulse(&LFO2Static);
+		}
+		Wobbler2_Get(&LFO2Static, &LFO2Params);
+	}
 
-	};
+	
 
-	FILE *F = fopen("FreqLerp.h", "wb+");
-	int Len = 17;
-	fprintf(F, "#define FREQLERPLEN %d\n\n", Len);
-	fprintf(F, "unsigned long FreqLerp[FREQLERPLEN] = {");
-
-	for (int i = 0; i < Len; i++)
+	if (0)
 	{
-		fprintf(F, "0x%x", FreqLerpb[i]);
-		if (i < Len - 1)fprintf(F, ", ");
-	};
 
-	fprintf(F, "}\n\n");
-	fclose(F);
-	char R [2];
-	gets_s(R,2 );
+		for (int i = 0; i < 17; i++)
+		{
+			uint32_t V = 0xffffffff;
+			V /= 2500; // 1hZ
+			double F = (0.1 * pow(2.0, (((double)i / (double)(15)) * 6.64386)));
+
+			uint32_t V2 = V * F;
+
+			FreqLerpb[i] = V2;
+		}
+
+
+		for (int i = 0; i < 512; i++)
+		{
+			unsigned long DPold = Wobbler2_LFORange2(i, 0);
+			unsigned long DPnew = Wobbler2_MakeFreq(i);
+			unsigned long DPtest = TestF(i);
+			printf("%d: \told %d \tnew %d\ttest %d\n", i, DPold, DPnew, DPtest);
+
+		};
+
+		FILE *F = fopen("FreqLerp.h", "wb+");
+		int Len = 17;
+		fprintf(F, "#define FREQLERPLEN %d\n\n", Len);
+		fprintf(F, "unsigned long FreqLerp[FREQLERPLEN] = {");
+
+		for (int i = 0; i < Len; i++)
+		{
+			fprintf(F, "0x%x", FreqLerpb[i]);
+			if (i < Len - 1)fprintf(F, ", ");
+		};
+
+		fprintf(F, "}\n\n");
+		fclose(F);
+	}
+	printf("done..\n");
+	char R[2];
+	gets_s(R, 2);
+
 }

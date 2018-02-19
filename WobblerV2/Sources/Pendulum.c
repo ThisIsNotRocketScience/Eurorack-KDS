@@ -36,12 +36,14 @@ void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
 	P->d2Theta2 = 0;
 	P->dTheta1 = fix16_mul(fix16_from_int(W->Speed), fix16_from_float(-1.0f / ((float)0xffff)));
 	P->dTheta2 = 0;
-	P->DecayEnvelopeCount = 1<<24;
+	P->dampcount = 0;
+	P->dampmax = 1;
+	P->DecayEnvelopeCount = 1<<30;
 };
 
 void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
 {
-#define DAMPSTART 0.99995f
+#define DAMPSTART 0.9995f
 	P->Damping = fix16_add(fix16_from_float(DAMPSTART), fix16_mul(W->Mod , fix16_from_float((1.0f - DAMPSTART) / (float)(0xffff))));
 	P->dTheta1 = fix16_add(P->dTheta1, fix16_mul(W->Phasing - W->LastPhasing, fix16_from_float(0.00001f)));
 	//float spe = LERP9bit(SpeedAdjust, W->Speed)   * (1.0f / (float)65535);
@@ -53,14 +55,12 @@ void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_
 	P->m2 = fix16_from_int(1);
 	P->mu = fix16_from_int(2);// 1.0f + 1.0;// P->m1 / P->m2;
 
-	P->DecayEnvelopeAmt = ((1 << 24) - 1) / (1 + (Wobbler2_LFORange3(W->Mod, WOBBLERSAMPLERATE)));
+	P->DecayEnvelopeAmt = ((1 << 27) - 1) / (1 + (Wobbler2_LFORange3(W->Mod, WOBBLERSAMPLERATE)));
 };
 
 
 void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 {
-	P->DecayEnvelopeCount -= P->DecayEnvelopeAmt;
-	if (P->DecayEnvelopeCount < 0) P->DecayEnvelopeCount = 0;
 
 	fix16_t const TAU = fix16_mul(fix16_pi, fix16_from_int(2));
 	fix16_t const PI = fix16_pi;
@@ -97,6 +97,18 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 	P->d2Theta1 = fix16_div(fix16_sub(T1 , T2) , T3);
 	P->d2Theta1 += feed>>28;
 	P->d2Theta2 = fix16_div(fix16_add(T4 , T5) , T6);
+	if (P->dampcount <=0)
+	{
+		P->DecayEnvelopeCount -= P->DecayEnvelopeAmt;
+		if (P->DecayEnvelopeCount < 0) P->DecayEnvelopeCount = 0;
+
+		P->dampcount = P->dampmax;
+
+	}
+	else
+	{
+		P->dampcount--;
+	}
 	P->dTheta1 = fix16_mul(P->dTheta1, P->Damping);
 	P->dTheta2 = fix16_mul(P->dTheta2, P->Damping);
 
@@ -121,7 +133,7 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 	int32_t DecayEnvelopeCount = P->DecayEnvelopeCount>>8;
 
 	if (DecayEnvelopeCount > 0xffff) DecayEnvelopeCount = 0xffff;
-	DecayEnvelopeCount = fix16_mul(DecayEnvelopeCount, DecayEnvelopeCount);
+	//DecayEnvelopeCount = fix16_mul(DecayEnvelopeCount, DecayEnvelopeCount);
 	P->As = fix16_mul(P->As, DecayEnvelopeCount);
 	P->Bs = fix16_mul(P->Bs, DecayEnvelopeCount);
 

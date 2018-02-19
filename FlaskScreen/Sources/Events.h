@@ -1,7 +1,7 @@
 /* ###################################################################
 **     Filename    : Events.h
 **     Project     : FlaskScreen
-**     Processor   : MK22FN256VDC12
+**     Processor   : MK22FN256VLH12
 **     Component   : Events
 **     Version     : Driver 01.00
 **     Compiler    : GNU C Compiler
@@ -38,6 +38,13 @@
 #include "OLED_DC.h"
 #include "OLED_RESET.h"
 #include "WAIT1.h"
+#include "GI2C1.h"
+#include "CODEC_PDN.h"
+#include "I2C1.h"
+#include "SDA1.h"
+#include "BitIoLdd1.h"
+#include "SCL1.h"
+#include "BitIoLdd2.h"
 
 #ifdef __cplusplus
 extern "C" {

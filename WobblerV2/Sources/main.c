@@ -401,8 +401,10 @@ int main(void)
 		{
 			LFO.Mod = ~adcchannels[ADC_MODULATION];
 			LFO.Shape = ~adcchannels[ADC_SHAPE] ;
-			LFO.Phasing = (adcchannels[ADC_PHASING])>>4 ;
+			uint16_t phasepre = (~adcchannels[ADC_PHASING]);
+			LFO.Phasing  = phasepre >>4 ;
 			LFO.Speed = ((0xffff-adcchannels[ADC_SPEED]) >> 7);
+			LFO.SpeedOrig = ((0xffff-adcchannels[ADC_SPEED]) );
 			LFO.Amount1 = ((adcchannels[ADC_AMTNORMAL])>>1 ) -(1<<14);
 			LFO.Amount2 = ((adcchannels[ADC_AMTPHASED])>>1 )-(1<<14) ;
 
@@ -427,14 +429,14 @@ int main(void)
 		}
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/
-	/*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
-#ifdef PEX_RTOS_START
-	PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
-#endif
-	/*** End of RTOS startup code.  ***/
-	/*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
-	for(;;){}
-	/*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
+  /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
+  #ifdef PEX_RTOS_START
+    PEX_RTOS_START();                  /* Startup of the selected RTOS. Macro is defined by the RTOS component. */
+  #endif
+  /*** End of RTOS startup code.  ***/
+  /*** Processor Expert end of main routine. DON'T MODIFY THIS CODE!!! ***/
+  for(;;){}
+  /*** Processor Expert end of main routine. DON'T WRITE CODE BELOW!!! ***/
 } /*** End of main routine. DO NOT MODIFY THIS TEXT!!! ***/
 
 /* END main */

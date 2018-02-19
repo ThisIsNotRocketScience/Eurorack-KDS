@@ -85,6 +85,7 @@ extern "C"
 		LFO->EnvelopeState = Wobbler2_IDLE;
 		LFO->Speed = 10;
 		LFO->LastPhasing = 0;
+		LFO->syncindex = 0;
 #ifdef INTPENDULUM
 		Wobbler2_InitIntPendulum(&LFO->Pendulum, LFO);
 #else
@@ -117,7 +118,8 @@ extern "C"
 
 	void Wobbler2_LoadSettings(Wobbler2_Settings *settings, Wobbler2_Params *params)
 	{
-
+		settings->SlowSpeedMult = 0;
+		
 	}
 
 	void Wobbler2_ValidateParams(Wobbler2_Params *params)
@@ -269,13 +271,14 @@ extern "C"
 		if (LFO->extsync)
 		{
 			SteppedResult_t SpeedGrade;
-			Wobbler2_GetSteppedResult(LFO->Speed, 11, &SpeedGrade);
+			Wobbler2_GetSteppedResult(LFO->SpeedOrig, 11, &SpeedGrade);
 #define S(x,y) ((x*65536)/y)
 			int32_t Speeds[11] = { S(1,8),S(1,6),S(1,4),S(1,3), S(1,2),
 									S(1,1),
 									S(2,1),S(3,1),S(4,1),S(6,1),S(8,1) };
-
-			DP = (LFO->SyncDP * GetInterpolatedResultInt(Speeds, &SpeedGrade)) >> 16;
+			uint32_t DPorig = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
+			DP = ((LFO->SyncDP>>16) * GetInterpolatedResultInt(Speeds, &SpeedGrade)) ;
+			uint32_t DPdiff = DPorig - DP;
 		}
 		else
 		{
@@ -284,11 +287,12 @@ extern "C"
 		LFO->Phase1 += DP;
 
 		uint32_t DP2 = LFO->Phasing * 0x100000;
-		uint32_t DP3 = DP+Wobbler2_MakeFreq((0xffff>>2)-LFO->Phasing) ;
+		uint32_t DP3 = Wobbler2_MakeFreq(LFO->Phasing) ;
 		//DP2 <<= 24;
 		LFO->Phase2 = LFO->Phase1 + DP2;
 
-		LFO->PhasedShift += DP3 >> 8;
+		LFO->PhasedShift += DP;
+		LFO->PhasedShift += DP3;
 
 
 

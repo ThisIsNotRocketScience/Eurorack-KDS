@@ -29,6 +29,10 @@
 - \subpage SM1
 - \subpage OLED_DC
 - \subpage OLED_RESET
+- \subpage I2S0
+- \subpage BitIoLdd1
+- \subpage BitIoLdd2
+- \subpage CODEC_PDN
 
 */
 
@@ -64,6 +68,10 @@
 - \subpage SM1
 - \subpage OLED_DC
 - \subpage OLED_RESET
+- \subpage I2S0
+- \subpage BitIoLdd1
+- \subpage BitIoLdd2
+- \subpage CODEC_PDN
 
 */
 

@@ -107,6 +107,8 @@ typedef struct Wobbler2_PendulumInt_t
 	int32_t DecayEnvelopeAmt;
 	int32_t As;
 	int32_t Bs;
+	int32_t dampcount;
+	int32_t dampmax;
 } Wobbler2_PendulumInt_t;
 
 #ifdef SPRINGMASS

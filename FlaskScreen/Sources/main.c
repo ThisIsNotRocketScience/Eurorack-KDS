@@ -40,6 +40,13 @@
 #include "Init_Config.h"
 #include "OLED_RESET.h"
 #include "WAIT1.h"
+#include "GI2C1.h"
+#include "CODEC_PDN.h"
+#include "I2C1.h"
+#include "SDA1.h"
+#include "BitIoLdd1.h"
+#include "SCL1.h"
+#include "BitIoLdd2.h"
 #include "OLED_DC.h"
 #include "SM1.h"
 
@@ -188,6 +195,7 @@ void SetWindow(int x, int y, int w, int h)
 	command(h);
 }
 
+
 void SSD1331_draw_point(int x, int y, unsigned short hwColor) {
 
 	unsigned char buffer[3];
@@ -302,8 +310,49 @@ void OledInit()
 
 
 }
+#include "ak4558.h"
+uint16_t buffer[(44100/5)] = {0};
+
+int delayposleft =0 ;
+int delayposcenter =0 ;
+int delayposright =0 ;
+int delaylenleft = (44100*100)/1000;
+int delaylenright = (44100*95)/1000;
+int delaylen = (44100/5);
+int32_t wet = 0x8000;
+int32_t dry = 0x8000;
+int32_t feedback = 0x8000;
+void NextBlock(int32_t *in, int32_t *out)
+{
+	for (int i =0 ;i<AUDIO_BUFFER_SIZE;i++)
+	{
+		int32_t lin = (*in++);
+		int32_t rin = (*in++);
+		int32_t lout = buffer[(delayposcenter + delaylenleft)% delaylen];
+		int32_t rout = buffer[(delayposcenter + delaylenright)% delaylen];
+
+		buffer[delayposcenter] = (lin + rout * feedback + lout * feedback)>>16;
+
+		delayposcenter = (delayposcenter+1) % delaylen;
+
+		*out++ = lin * dry + lout * wet ;
+		*out++ = rin * dry + rout * wet ;
+	}
+}
+
+void CheckAudio()
+{
+	if (audio_buffers_fresh)
+			{
+				audio_buffers_fresh = 0;
+
+				int32_t* inbuf = audio_in_buffer;
+				int32_t* outbuf = audio_out_buffer;
+				NextBlock(inbuf, outbuf);
 
 
+			}
+}
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -314,7 +363,7 @@ int main(void)
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
-
+	ak4558_init();
 	/* Write your code here */
 	/* For example: for(;;) { } */
 	OledInit();
@@ -334,10 +383,10 @@ int main(void)
 				buffer[c++] = (T & 0xFF00) >> 8;
 				buffer[c++] = T & 0xFF;
 			}
-
+			CheckAudio();
 			sent =0;
 			SM1_SendBlock(SM1_DeviceData, buffer, 2*64);
-			while(sent ==0 ){};
+			while(sent ==0 ){CheckAudio();};
 		}
 
 	}
