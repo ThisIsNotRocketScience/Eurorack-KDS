@@ -86,6 +86,8 @@ extern "C"
 		LFO->Speed = 10;
 		LFO->LastPhasing = 0;
 		LFO->syncindex = 0;
+		LFO->SNH.F1.high = LFO->SNH.F1.mid = LFO->SNH.F1.low = 0;
+		LFO->SNH.F2.high = LFO->SNH.F2.mid = LFO->SNH.F2.low = 0;
 #ifdef INTPENDULUM
 		Wobbler2_InitIntPendulum(&LFO->Pendulum, LFO);
 #else
@@ -151,19 +153,83 @@ extern "C"
 		LFO->EnvelopeState = Wobbler2_ATTACK;
 	}
 
-	void Wobbler2_SampleHold(Wobbler2_LFO_SNH_t *sh, Wobbler2_LFO_t *lfo, uint32_t phase, uint16_t modin, uint32_t phase2)
+#define SNHTABCURVECOUNT 128
+#define VAL(x) (uint32_t)((x*1024))
+	uint32_t SNHTAB[SNHTABCURVECOUNT] = { VAL(0), VAL(0.25), VAL(0.5), VAL(0.75), VAL(1) };
+	const uint32_t Cmapping[] = {
+		0x03F0D370, 0x04113BF3, 0x0432AF01, 0x04553521, 0x0478D733, 0x049D9E4A, 0x04C393DB, 0x04EAC196, 0x05133184, 0x053CEE01, 0x056801B9, 0x059477BD, 0x05C25B5F, 0x05F1B862, 0x06229AEB, 0x06550F7A,
+		0x068922FE, 0x06BEE2C9, 0x06F65C99, 0x072F9E9E, 0x076AB787, 0x07A7B67C, 0x07E6AB09, 0x0827A55A, 0x086AB609, 0x08AFEE3C, 0x08F75FB8, 0x09411CBC, 0x098D3826, 0x09DBC57E, 0x0A2CD8D7, 0x0A8086EF,
+		0x0AD6E539, 0x0B3009CF, 0x0B8C0B83, 0x0BEB01D8, 0x0C4D052E, 0x0CB22E85, 0x0D1A97CD, 0x0D865BD1, 0x0DF595FE, 0x0E6862FF, 0x0EDEE00D, 0x0F592B8A, 0x0FD764CC, 0x1059AC2A, 0x10E022D7, 0x116AEB71,
+		0x11FA2945, 0x128E0135, 0x132698FD, 0x13C417AB, 0x1466A591, 0x150E6C51, 0x15BB96BC, 0x166E5159, 0x1726C9F1, 0x17E52F8A, 0x18A9B2E6, 0x19748653, 0x1A45DDDA, 0x1B1DEEE9, 0x1BFCF0FA, 0x1CE31D14,
+		0x1DD0AE1F, 0x1EC5E0BA, 0x1FC2F404, 0x20C8285F, 0x21D5C0FA, 0x22EC02BB, 0x240B34E4, 0x2533A0E4, 0x266592AA, 0x27A1587E, 0x28E74328, 0x2A37A668, 0x2B92D7DC, 0x2CF93096, 0x2E6B0C74, 0x2FE8C9D7,
+		0x3172CA8D, 0x330973D6, 0x34AD2D72, 0x365E6291, 0x381D82C2, 0x39EAFFC4, 0x3BC75008, 0x3DB2EDBC, 0x3FAE5631, 0x41BA0BB5, 0x43D69409, 0x4604799B, 0x48444B8B, 0x4A969D09, 0x4CFC05F3, 0x4F75237A,
+		0x5202981D, 0x54A50A1A, 0x575D26E2, 0x5A2BA094, 0x5D112EEE, 0x600E8FF1, 0x6324873B, 0x6653DF4B, 0x699D68E2, 0x6D01FA5D, 0x7082737D, 0x741FB99F, 0x77DAB864, 0x7BB4656B, 0x7FADBC91, 0x83C7C1D7,
+		0x8803829B, 0x8C62145D, 0x90E4955A, 0x958C2C93, 0x9A5A0B05, 0x9F4F6C4F, 0xA46D94D1, 0xA9B5D389, 0xAF298355, 0xB4CA09B5, 0xBA98D626, 0xC09765E7, 0xC6C742B7, 0xCD2A0055, 0xD3C142BD, 0xDA8EB7F0
+	};
+
+
+	uint16_t Wobbler2_CalcSampleHoldFilter(uint16_t Mod, uint32_t DP)
+	{
+		uint32_t freq = 0xffffffff / DP;
+		Mod = 255-Mod;
+		Mod = ((Mod*245)/255);
+		//Mod = (Mod * 20) / 33;
+
+		uint32_t m = LERP(Cmapping, SNHTABCURVECOUNT - 1, Mod);
+
+		//m *= freq*freq;
+		//m /= 10000;
+		uint16_t res = ((m >> 16));
+		//res = ~res;
+		return res;
+	}
+#define HI16(x) (x>>16)
+#define LO16(x) (x&65535)
+
+	void Wobbler2_SVF(Wobbler2_SVFstruct *f, int32_t coeff, uint32_t inp)
+	{
+
+		//	cutoff = 0 to 0xffff
+
+		//	f = 2 sin(0 tot kwartpi ) //[approximately]
+
+		signed short const tMid = HI16(f->mid);
+		
+		uint16_t sC = coeff;
+
+
+		unsigned short Max = (0xf200 - sC);
+		unsigned long fR = 0 * Max;
+		//	sR=0xffff-HI16(fR);
+		uint16_t sR = ~HI16(fR);
+
+		uint16_t scaler = 0xffff;
+		//if (coeff > 30000)
+//		{
+			scaler = 0xffff/20 + HI16(coeff * (0xd000));
+	//	}
+
+		f->high = (inp<<10 ) - f->low - sR * tMid;
+		f->mid += (sC * HI16(f->high));
+		f->low += ((HI16(sC * scaler))* tMid);
+
+//uint32_t N = H + L;
+//f->mid = B;
+//if (f->mid < 0) f->mid = 0;
+//if (f->mid > 0xffff) f->mid = 0xffff;
+//f->low = L;
+
+//if (f->low < 0) f->low = 0;
+//if (f->low > 0xffff) f->low = 0xffff;
+
+//f->mid = ((coeff * (inp - f->low))>>16) + f->mid;
+//f->low = f->low + ((coeff * f->mid)>>16);
+	}
+
+	void Wobbler2_SampleHold(Wobbler2_LFO_SNH_t *sh, Wobbler2_LFO_t *lfo, uint32_t phase, uint32_t coeff, uint32_t phase2)
 	{
 		int newseg = ((phase >> 29)) & 7;
-		//SetSVF(&sh->filt, 0x10 + (mod / (256)), 0x150+(mod/1024));
-		modin = ((modin) / 16);
-		modin = ~modin;
-
-		uint16_t mod = (modin*modin) / (1 << 14);
-		mod = (~mod) * 2;
-
-		// mod = (mod * mod)/65536;
-		// mod = mod / 2 ;
-
+		
 		if (newseg != sh->lastseg)
 		{
 			sh->lastseg = newseg;
@@ -174,14 +240,12 @@ extern "C"
 		int newseg2 = ((((phase2) >> 29))) & 7;
 		sh->lastval2 = sh->segbuffer[newseg2];
 
-		uint32_t r1 = sh->store1 * mod;
-		uint16_t m2 = (~mod);
-		uint32_t r2 = (sh->lastval1) * m2;
-		sh->store1 = (r1 / 65536) + (r2 / 65536);
 
-		uint32_t r1a = sh->store2 * mod;
-		uint32_t r2a = (sh->lastval2) * m2;
-		sh->store2 = (r1a / 65536) + (r2a / 65536);
+
+		Wobbler2_SVF(&sh->F1, coeff, sh->lastval1);
+		Wobbler2_SVF(&sh->F2, coeff, sh->lastval2);
+		sh->store1 = sh->F1.low>>10;
+		sh->store2 = sh->F2.low>>10;
 	}
 
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
@@ -198,7 +262,7 @@ extern "C"
 		return LERP9bit(FreqLerp, input)*2;
 		
 	}
-
+	
 	int Wobbler2_Get(Wobbler2_LFO_t *LFO, Wobbler2_Params *Params)
 	{
 		LFO->timesincesync++;
@@ -314,10 +378,10 @@ extern "C"
 		//	}
 
 		LFO->OldPhase1 = LFO->Phase1;
+		
 		//	LFO->OldPhase2 = LFO->Phase2;
 
-
-		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, LFO->Mod, LFO->Phase1 - DP2);
+		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, Wobbler2_CalcSampleHoldFilter(LFO->Mod>>8, DP), LFO->Phase1 - DP2);
 
 		CalculateCompensation(&LFO->CompensationVals, LFO->Mod >> 8);
 		//Shapes_t BSO, &LFO->BasicShapesB;

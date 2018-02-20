@@ -25,6 +25,13 @@ typedef struct Wobbler2_RandomGen
 	long RandomMemory;
 } Wobbler2_RandomGen;
 
+typedef struct Wobbler2_SVFstruct
+{
+	int32_t low;
+	int32_t mid;
+	int32_t high;
+
+} Wobbler2_SVFstruct;
 
 typedef struct Wobbler2_LFO_SNH_t
 {
@@ -39,8 +46,8 @@ typedef struct Wobbler2_LFO_SNH_t
 	uint8_t lastseg;
 	
 	uint16_t segbuffer[32];
-	struct Wobbler2_RandomGen random;	
-
+	Wobbler2_RandomGen random;	
+	Wobbler2_SVFstruct F1, F2;
 } Wobbler2_LFO_SNH_t;
 
 typedef struct SteppedResult_t
@@ -125,6 +132,9 @@ extern "C"
 
 	extern int Wobbler2_Get(Wobbler2_LFO_t *LFO,  Wobbler2_Params *Params);
 	extern void Wobbler2_Init( Wobbler2_LFO_t *LFO);
+	extern unsigned long LERP9bit(unsigned long *V, int fade);
+
+
 #ifdef INTPENDULUM
 	extern void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W);
 	extern void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W);
