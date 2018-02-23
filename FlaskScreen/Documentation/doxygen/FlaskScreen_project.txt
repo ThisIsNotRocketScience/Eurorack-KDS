@@ -33,6 +33,10 @@
 - \subpage BitIoLdd1
 - \subpage BitIoLdd2
 - \subpage CODEC_PDN
+- \subpage AdcLdd1
+- \subpage LED_UP
+- \subpage LED_DOWN
+- \subpage LED_MIDDLE
 
 */
 
@@ -72,6 +76,10 @@
 - \subpage BitIoLdd1
 - \subpage BitIoLdd2
 - \subpage CODEC_PDN
+- \subpage AdcLdd1
+- \subpage LED_UP
+- \subpage LED_DOWN
+- \subpage LED_MIDDLE
 
 */
 

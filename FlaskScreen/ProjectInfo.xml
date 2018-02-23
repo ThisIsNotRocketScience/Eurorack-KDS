@@ -55,12 +55,17 @@
   </PATHS>
   <FILES>
     <GeneratedCs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AD1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AdcLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\CODEC_PDN.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\Cpu.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\GI2C1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\I2C1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_DOWN.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_MIDDLE.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_UP.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\OLED_DC.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\OLED_RESET.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\PE_LDD.c</PathName>
@@ -71,6 +76,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\WAIT1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Events.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\main.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\Peripherals\I2S0_Init.c</PathName>
@@ -79,6 +85,8 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\System\Vectors.c</PathName>
     </GeneratedCs>
     <GeneratedHs>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AD1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AdcLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\CODEC_PDN.h</PathName>
@@ -90,6 +98,9 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\I2S0_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\IO_Map.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\Init_Config.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_DOWN.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_MIDDLE.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\LED_UP.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\OLED_DC.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\OLED_RESET.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\PE_Const.h</PathName>
@@ -103,6 +114,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\Vectors_Config.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Events.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\IO_Map\MK22F25612.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\PDD\ADC_PDD.h</PathName>

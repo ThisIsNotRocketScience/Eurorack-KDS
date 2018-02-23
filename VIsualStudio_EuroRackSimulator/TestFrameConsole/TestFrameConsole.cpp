@@ -130,8 +130,50 @@ int main(int argc, char **argv)
 		fprintf(F, "}\n\n");
 		fclose(F);
 	}
+	
+	{
+		float sintab[2048];
+		float dsintab[2048];
+		int sr = 44100;
+		float mindelay = sr * 0.018f;
+		float chorusdepth = sr * 0.003f;
+		int mindelayafterprocess = (int)((chorusdepth + mindelay) * 2);
+		for (int i = 0; i < 2048; i++)
+		{
+			sintab[i] = mindelay + sin((float)i*6.283f / 2048.f)*chorusdepth;
+		}
+		for (int i = 0; i < 2048; i++)
+		{
+			dsintab[i] = sintab[(i + 1) & 2047] - sintab[i];
+		}
+		FILE *F = fopen("SinTabs.h", "wb+");
+		
+		fprintf(F, "float const sintab[2048] = {");
+		int Len = 2048;
+		for (int i = 0; i < Len; i++)
+		{
+			fprintf(F, "%f", sintab[i]);
+			if (i < Len - 1)fprintf(F, ", ");
+		};
+
+		fprintf(F, "}\n\n");
+		fprintf(F, "float const dsintab[2048] = {");
+		
+		for (int i = 0; i < Len; i++)
+		{
+			fprintf(F, "%f", dsintab[i]);
+			if (i < Len - 1) fprintf(F, ", ");
+		};
+
+		fprintf(F, "}\n\n");
+		fclose(F);
+	}
+	
 	printf("done..\n");
 	char R[2];
 	gets_s(R, 2);
+
+
+
 
 }

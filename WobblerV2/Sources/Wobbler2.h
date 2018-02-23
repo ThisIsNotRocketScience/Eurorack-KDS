@@ -25,6 +25,14 @@ typedef struct Wobbler2_RandomGen
 	long RandomMemory;
 } Wobbler2_RandomGen;
 
+typedef struct Wobbler2_SVF_Coeffs
+{
+	uint16_t cutoff;
+	uint16_t wet;
+	uint16_t dry;
+
+} Wobbler2_SVF_Coeffs;
+
 typedef struct Wobbler2_SVFstruct
 {
 	int32_t low;
@@ -43,7 +51,9 @@ typedef struct Wobbler2_LFO_SNH_t
 	uint32_t store2;
 
 	
-	uint8_t lastseg;
+	uint8_t lastseg1;
+	uint8_t lastseg2;
+	uint8_t segindex;
 	
 	uint16_t segbuffer[32];
 	Wobbler2_RandomGen random;	
@@ -79,6 +89,7 @@ typedef struct Wobbler2_LFO_t
 	uint32_t Phase1;
 	uint32_t OldPhase1;
 	uint32_t Phase2;
+	uint32_t Phase2Rev;
 	int32_t OldPhase2;
 	uint32_t PhasedShift;
 
@@ -93,7 +104,7 @@ typedef struct Wobbler2_LFO_t
 	uint32_t PhasedCountdown;
 	int32_t EnvelopeVal;
 	uint8_t EnvelopeState;
-
+	Wobbler2_SVF_Coeffs SVFCoeffs;
 	Wobbler2_LFO_SNH_t SNH;
 #ifdef INTPENDULUM
 	Wobbler2_PendulumInt_t Pendulum;

@@ -47,6 +47,11 @@
 #include "BitIoLdd1.h"
 #include "SCL1.h"
 #include "BitIoLdd2.h"
+#include "AD1.h"
+#include "AdcLdd1.h"
+#include "LED_UP.h"
+#include "LED_DOWN.h"
+#include "LED_MIDDLE.h"
 #include "OLED_DC.h"
 #include "SM1.h"
 
@@ -311,56 +316,127 @@ void OledInit()
 
 }
 #include "ak4558.h"
-uint16_t buffer[(44100/5)] = {0};
+#define delaylen 8820
 
-int delayposleft =0 ;
-int delayposcenter =0 ;
-int delayposright =0 ;
-int delaylenleft = (44100*100)/1000;
-int delaylenright = (44100*95)/1000;
-int delaylen = (44100/5);
-int32_t wet = 0x8000;
-int32_t dry = 0x8000;
-int32_t feedback = 0x8000;
-void NextBlock(int32_t *in, int32_t *out)
+typedef struct Delay
 {
+	int16_t buffer[delaylen] ;
+
+	int delayposleft ;
+	int delayposcenter ;
+	int delayposright ;
+	int delaylenleft ;
+	int delaylenright;
+	int32_t wet ;
+	int32_t dry ;
+	int32_t feedback;
+	int32_t lin ;
+	int32_t rin ;
+	int mono ;
+} Delay;
+
+void InitDelay(Delay *D)
+{
+	D->delayposleft =0 ;
+	D->delayposcenter =0 ;
+	D->delayposright =0 ;
+	D->delaylenleft = (44100*200)/1000;
+	D->delaylenright = (44100*184)/1000;
+	D->wet = 0x8000;
+	D->dry = 0x8000;
+	D->feedback = 0x4000;
+	D->lin = 0;
+	D->rin =0;
+	D->mono = 1;
+
+	for(int i = 0;i<delaylen;i++) D->buffer[i] = 0;
+
+}
+#include "MasterChorus.h"
+typedef struct EffectsOverlay
+{
+	union
+	{
+		Delay Delay;
+		StereoChorus_t Chorus;
+	};
+} EffectsOverlay;
+
+EffectsOverlay TheSet;
+int32_t Param[4];
+
+int BlockT = 0;
+
+
+void ProcessDelay(Delay* D, int32_t *in, int32_t *out)
+{
+	D->wet = Param[0];
+	D->dry = 0xffff-D->wet;
+	D->feedback = Param[1]>>1;
+	D->mono = Param[2]>0x8000?1:0;
 	for (int i =0 ;i<AUDIO_BUFFER_SIZE;i++)
 	{
-		int32_t lin = (*in++);
-		int32_t rin = (*in++);
-		int32_t lout = buffer[(delayposcenter + delaylenleft)% delaylen];
-		int32_t rout = buffer[(delayposcenter + delaylenright)% delaylen];
+		D->lin = (*in++)>>16;
+		D->rin = (*in++)>>16;
 
-		buffer[delayposcenter] = (lin + rout * feedback + lout * feedback)>>16;
+		if (D->mono) D->rin = D->lin = (D->rin + D->lin)/2;
+		int32_t lout = D->buffer[(D->delayposcenter-D->delaylenleft+delaylen+delaylen)%delaylen];
+		int32_t rout = D->buffer[(D->delayposcenter-D->delaylenright+delaylen+delaylen)%delaylen];
 
-		delayposcenter = (delayposcenter+1) % delaylen;
+		D->buffer[D->delayposcenter] = (D->rin+D->lin)/2 +( ((lout+rout) * D->feedback)>>16);
 
-		*out++ = lin * dry + lout * wet ;
-		*out++ = rin * dry + rout * wet ;
+
+		D->delayposcenter = (D->delayposcenter+1) % delaylen;
+
+		*out++ = (D->lin * D->dry) + (lout * D->wet );
+		*out++ = (D->rin * D->dry) + (rout * D->wet) ;
 	}
 }
 
+
+void NextBlock(int32_t *in, int32_t *out)
+{
+	BlockT++;
+	//ProcessDelay(&TheSet.Delay,in, out);
+	{
+		Chorus_SetMix(&TheSet.Chorus, Param[0]/65535.0);
+		Chorus_SetSpeed(&TheSet.Chorus, Param[1]/65535.0);
+		Chorus_SetShift(&TheSet.Chorus, Param[2]/65535.0);
+	ProcessChorus(&TheSet.Chorus, in, out);
+	}
+}
+int measuring =0 ;
 void CheckAudio()
 {
+	if (measuring == 0)
+	{
+		measuring = 1;
+		AD1_Measure(0);
+
+	}
+
 	if (audio_buffers_fresh)
-			{
-				audio_buffers_fresh = 0;
+	{
+		audio_buffers_fresh = 0;
 
-				int32_t* inbuf = audio_in_buffer;
-				int32_t* outbuf = audio_out_buffer;
-				NextBlock(inbuf, outbuf);
+		int32_t* inbuf = audio_in_buffer;
+		int32_t* outbuf = audio_out_buffer;
+		NextBlock(inbuf, outbuf);
 
 
-			}
+	}
 }
-
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
+
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
 	/* Write your local variable definition here */
 
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
+
+	InitDelay(&TheSet.Delay);
+	InitChorus(&TheSet.Chorus);
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 	ak4558_init();
@@ -370,22 +446,60 @@ int main(void)
 	int t = 0;
 	for(;;) {
 		t++;
+		CheckAudio();
+
 		SetWindow(0,0,95,63);
+		CheckAudio();
+
 		OLED_DC_SetVal(0);
-		uint8_t buffer[2*96];
+		uint16_t buffer2[64];
+
+		int Ap = ((0xffff-Param[0]) * 95)/65535;
+		int Bp = ((0xffff-Param[1]) * 95)/65535;
+		int Cp = ((0xffff-Param[2]) * 95)/65535;
+		int Dp = ((0xffff-Param[3]) * 95)/65535;
+		for(int x =0;x<64;x++){buffer2[x]= 0;};
 		for (int x = 0;x<96;x++)
 		{
+			CheckAudio();
+
 			int c =0 ;
-			for (int y = 0;y<64;y++)
+			int r = ((BlockT + x)%96>48)?255:0;
+			uint16_t base = RGB(r,r,r);
+			uint8_t A1 = x>=Ap?255:0;
+			uint8_t B1 = x>=Bp?255:0;
+			uint8_t C1 = x>=Cp?255:0;
+			uint8_t D1 = x>=Dp?255:0;
+
+			uint16_t T1 = RGB(0,A1/2,A1);
+			uint16_t T2 = RGB(0,B1,B1/2);
+			uint16_t T3 = RGB(0,C1/2,C1);
+			uint16_t T4 = RGB(0,D1,D1/2);
+			for (int y = 1;y<15;y++)
 			{
 
-				uint16_t T = RGB(x,255-x*4,(t%256));
-				buffer[c++] = (T & 0xFF00) >> 8;
-				buffer[c++] = T & 0xFF;
+				if (y%2 == 1)
+				{
+					buffer2[y/2 + 0*8] =T1;
+					buffer2[y/2 + 1*8] =T2;
+					buffer2[y/2 + 2*8] =T3;
+					buffer2[y/2 + 3*8] =T4;
+				}
+				else
+				{
+					buffer2[y/2 + 0*8 + 32] =T1;
+					buffer2[y/2 + 1*8 + 32] =T2;
+					buffer2[y/2 + 2*8 + 32] =T3;
+					buffer2[y/2 + 3*8 + 32] =T4;
+
+				}
+				//	buffer2[y+ 1*16] =T2;
+				//	buffer2[y+ 2*16] =T3;
+				//		buffer2[y+ 3*16] =T4;
 			}
 			CheckAudio();
 			sent =0;
-			SM1_SendBlock(SM1_DeviceData, buffer, 2*64);
+			SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
 			while(sent ==0 ){CheckAudio();};
 		}
 

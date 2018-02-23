@@ -61,6 +61,11 @@
 #include "BitIoLdd1.h"
 #include "SCL1.h"
 #include "BitIoLdd2.h"
+#include "AD1.h"
+#include "AdcLdd1.h"
+#include "LED_UP.h"
+#include "LED_DOWN.h"
+#include "LED_MIDDLE.h"
 #include "Events.h"
 
 #ifdef __cplusplus
@@ -159,7 +164,7 @@ extern "C" {
 #define VECTOR_86         (tIsrFunc)&UnhandledInterrupt         /* 0x56 -    ivINT_Reserved86              unused by PE */
 #define VECTOR_87         (tIsrFunc)&UnhandledInterrupt         /* 0x57 -    ivINT_Reserved87              unused by PE */
 #define VECTOR_88         (tIsrFunc)&UnhandledInterrupt         /* 0x58 -    ivINT_Reserved88              unused by PE */
-#define VECTOR_89         (tIsrFunc)&UnhandledInterrupt         /* 0x59 -    ivINT_ADC1                    unused by PE */
+#define VECTOR_89         (tIsrFunc)&AdcLdd1_MeasurementCompleteInterrupt /* 0x59 112 ivINT_ADC1           used by PE */
 #define VECTOR_90         (tIsrFunc)&UnhandledInterrupt         /* 0x5A -    ivINT_Reserved90              unused by PE */
 #define VECTOR_91         (tIsrFunc)&UnhandledInterrupt         /* 0x5B -    ivINT_Reserved91              unused by PE */
 #define VECTOR_92         (tIsrFunc)&UnhandledInterrupt         /* 0x5C -    ivINT_Reserved92              unused by PE */

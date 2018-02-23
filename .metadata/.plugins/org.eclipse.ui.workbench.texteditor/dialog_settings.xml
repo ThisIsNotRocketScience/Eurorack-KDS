@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="DAC_Wr" key="selection"/>
+		<item value="Chorus" key="selection"/>
 		<list key="findhistory">
+			<item value="chorus"/>
+			<item value="OledInit"/>
+			<item value="Wobbler2_CalcSampleHoldFilter"/>
 			<item value="dac_wr"/>
 			<item value="dacwrite"/>
 			<item value="GetSentDataNum"/>
 			<item value="sent"/>
 			<item value="eoq"/>
-			<item value="phasing"/>
-			<item value="doTimer"/>
-			<item value="ShiftOut"/>
 		</list>
 		<list key="replacehistory">
 		</list>

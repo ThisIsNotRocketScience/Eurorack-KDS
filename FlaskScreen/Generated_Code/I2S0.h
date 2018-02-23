@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-02-19, 01:43, # CodeGen: 9
+**     Date/Time   : 2018-02-23, 22:07, # CodeGen: 15
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -19,8 +19,8 @@
 **            Clock gate                                   : Enabled
 **            Clock setting                                : 
 **              Clock source                               : Core/System clock
-**              Clock multiplier                           : multiply by 1
-**              Clock divider                              : divide by 5
+**              Clock multiplier                           : multiply by 2
+**              Clock divider                              : divide by 10
 **              Clock ratio                                : 5
 **              MCLK clock source/direction                : Internal
 **              MCLK out frequency                         : 24 MHz

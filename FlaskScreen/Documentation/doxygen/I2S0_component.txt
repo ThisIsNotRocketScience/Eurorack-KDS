@@ -19,7 +19,7 @@ by the component.
 <td class="regNotResetVal">0x40000000</td>
  <td>I2S0_MCR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F104</td><td>I2S0_MDR</td>
-<td class="regNotResetVal">0x00000004</td>
+<td class="regNotResetVal">0x00001009</td>
  <td>I2S0_MDR register, peripheral I2S0.</td></tr>
 <tr><td>0x4002F000</td><td>I2S0_TCSR</td>
 <td class="regNotResetVal">0x921FED00</td>
@@ -166,7 +166,7 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x4002F104</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00000004</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0x00001009</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0x00000000</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
 <tr><td>12 - 19</td><td>FRACT</td><td>0x00</td><td>MCLK Fraction</td>
@@ -940,8 +940,8 @@ registers of the peripheral(s) configured by the component.
 **            Clock gate                                   : Enabled
 **            Clock setting                                : 
 **              Clock source                               : Core/System clock
-**              Clock multiplier                           : multiply by 1
-**              Clock divider                              : divide by 5
+**              Clock multiplier                           : multiply by 2
+**              Clock divider                              : divide by 10
 **              Clock ratio                                : 5
 **              MCLK clock source/direction                : Internal
 **              MCLK out frequency                         : 24 MHz

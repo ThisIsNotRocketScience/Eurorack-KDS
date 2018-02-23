@@ -237,7 +237,7 @@ namespace Sim1
 
                 values64[i] = V2;
                 values2[i] = V / 4096.0f;
-                linvalues2[i] = TestFrameLoader.GetLFOPhased(1) / 4096.0f;
+                linvalues2[i] = TestFrameLoader.GetLFOPhased(1)/4096;
             }
         }
 

@@ -7,7 +7,7 @@
 **     Version     : Component 01.002, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-02-19, 01:43, # CodeGen: 9
+**     Date/Time   : 2018-02-23, 22:07, # CodeGen: 15
 **     Abstract    :
 **          This file implements the I2S (I2S0) module initialization
 **          according to the Peripheral Initialization settings, and
@@ -19,8 +19,8 @@
 **            Clock gate                                   : Enabled
 **            Clock setting                                : 
 **              Clock source                               : Core/System clock
-**              Clock multiplier                           : multiply by 1
-**              Clock divider                              : divide by 5
+**              Clock multiplier                           : multiply by 2
+**              Clock divider                              : divide by 10
 **              Clock ratio                                : 5
 **              MCLK clock source/direction                : Internal
 **              MCLK out frequency                         : 24 MHz
@@ -184,8 +184,8 @@
 #define I2S0_WAIT_FOR_MCLK
 /* I2S0_MCR: DUF=0,MOE=0,??=0,??=0,??=0,??=0,MICS=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0 */
 #define I2S0_MCR_VALUE_3     0x00U
-/* I2S0_MDR: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,FRACT=0,DIVIDE=4 */
-#define I2S0_MDR_VALUE       0x04U
+/* I2S0_MDR: ??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,??=0,FRACT=1,DIVIDE=9 */
+#define I2S0_MDR_VALUE       0x1009U
 /* I2S0_MCR: MOE=1 */
 #define I2S0_MCR_VALUE_4     0x40000000U
 #define I2S0_MCR_MASK_4      0x40000000U

@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF8RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-02-19, 01:43, # CodeGen: 9
+**     Date/Time   : 2018-02-23, 22:08, # CodeGen: 16
 **     Abstract    :
 **
 **     Settings    :
@@ -186,6 +186,14 @@ void Components_Init(void)
   GI2C1_Init();
   /* ### BitIO_LDD "CODEC_PDN" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)CODEC_PDN_Init(NULL);
+  /* ### ADC "AD1" init code ... */
+  AD1_Init();
+  /* ### BitIO_LDD "LED_UP" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)LED_UP_Init(NULL);
+  /* ### BitIO_LDD "LED_DOWN" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)LED_DOWN_Init(NULL);
+  /* ### BitIO_LDD "LED_MIDDLE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)LED_MIDDLE_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 

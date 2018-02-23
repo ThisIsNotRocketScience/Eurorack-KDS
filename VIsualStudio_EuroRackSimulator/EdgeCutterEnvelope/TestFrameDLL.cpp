@@ -66,6 +66,11 @@ extern "C"
 #endif
 //		Wobbler2_InitIntPendulum(&PendulumInt);
 
+		LFO2Static.Amount1 = 1 << 14;
+		LFO2Static.Amount2 = 1 << 14;
+		LFO2Running.Amount1 = 1 << 14;
+		LFO2Running.Amount2 = 1 << 14;
+
 		EdgeCutter2_LoadSettings(&EnvSettings, &EnvParams);
 		EdgeCutter2_Init(&EnvRunning);
 		EdgeCutter2_Init(&EnvStatic);
@@ -266,10 +271,11 @@ extern "C"
 	__declspec(dllexport) float RunPendulum()
 	{
 #ifdef INTPENDULUM
-		Wobbler2_DoublePendulumInt(&LFO2Running.Pendulum);
+		Wobbler2_DoublePendulumInt(&LFO2Running.Pendulum,10);
 #else
 		Wobbler2_DoublePendulum(&LFO2Running.Pendulum, 0.05);
 #endif
+
 
 		LFO2Running.Output = LFO2Running.Pendulum.As;
 		LFO2Running.OutputPhased = LFO2Running.Pendulum.Bs;
