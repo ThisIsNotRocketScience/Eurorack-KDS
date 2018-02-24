@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF8RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-02-23, 22:08, # CodeGen: 16
+**     Date/Time   : 2018-02-23, 23:31, # CodeGen: 17
 **     Abstract    :
 **
 **     Settings    :
@@ -96,8 +96,10 @@ void Common_Init(void)
      Optimizations\Utilize after reset values property or enabled processor 
      component Common settings\Utilize after reset values property) */
   /* Enable clock gate of peripherals initialized in Common_Init() */
-  /* SIM_SCGC5: PORTC=1,PORTB=1 */
-  SIM_SCGC5 |= (SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTB_MASK);
+  /* SIM_SCGC5: PORTD=1,PORTC=1,PORTB=1 */
+  SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK |
+               SIM_SCGC5_PORTC_MASK |
+               SIM_SCGC5_PORTB_MASK;
 
   /* SIM_SCGC6: I2S=1 */
   SIM_SCGC6 |= SIM_SCGC6_I2S_MASK;
@@ -135,6 +137,20 @@ void Common_Init(void)
                )) | (uint32_t)(
                 PORT_PCR_MUX(0x04)
                ));
+  /* PORTC_PCR2: ISF=0,PE=1,PS=1 */
+  PORTC_PCR2 = (uint32_t)((PORTC_PCR2 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK
+               )) | (uint32_t)(
+                PORT_PCR_PE_MASK |
+                PORT_PCR_PS_MASK
+               ));
+  /* PORTC_PCR3: ISF=0,PE=1,PS=1 */
+  PORTC_PCR3 = (uint32_t)((PORTC_PCR3 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK
+               )) | (uint32_t)(
+                PORT_PCR_PE_MASK |
+                PORT_PCR_PS_MASK
+               ));
   /* PORTC_PCR6: ISF=0,MUX=6 */
   PORTC_PCR6 = (uint32_t)((PORTC_PCR6 & (uint32_t)~(uint32_t)(
                 PORT_PCR_ISF_MASK |
@@ -142,10 +158,18 @@ void Common_Init(void)
                )) | (uint32_t)(
                 PORT_PCR_MUX(0x06)
                ));
+  /* PORTD_PCR3: ISF=0,PE=1,PS=1 */
+  PORTD_PCR3 = (uint32_t)((PORTD_PCR3 & (uint32_t)~(uint32_t)(
+                PORT_PCR_ISF_MASK
+               )) | (uint32_t)(
+                PORT_PCR_PE_MASK |
+                PORT_PCR_PS_MASK
+               ));
 
   /* Disable clock gate of peripherals initialized in Common_Init() */
-  /* SIM_SCGC5: PORTC=0,PORTB=0 */
+  /* SIM_SCGC5: PORTD=0,PORTC=0,PORTB=0 */
   SIM_SCGC5 &= (uint32_t)~(uint32_t)(
+                SIM_SCGC5_PORTD_MASK |
                 SIM_SCGC5_PORTC_MASK |
                 SIM_SCGC5_PORTB_MASK
                );
@@ -194,6 +218,12 @@ void Components_Init(void)
   (void)LED_DOWN_Init(NULL);
   /* ### BitIO_LDD "LED_MIDDLE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)LED_MIDDLE_Init(NULL);
+  /* ### BitIO_LDD "BUTTON_UP" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BUTTON_UP_Init(NULL);
+  /* ### BitIO_LDD "BUTTON_MIDDLE" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BUTTON_MIDDLE_Init(NULL);
+  /* ### BitIO_LDD "BUTTON_DOWN" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)BUTTON_DOWN_Init(NULL);
 }
 #endif /* CPU_COMPONENTS_INIT */
 

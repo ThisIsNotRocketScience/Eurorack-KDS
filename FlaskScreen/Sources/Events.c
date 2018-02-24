@@ -153,7 +153,8 @@ void AD1_OnEnd(void)
 		for(int i =0 ;i<4;i++)
 		{
 			uint16_t Pp = ~P[i];
-			Param[i] = Pp;
+
+			Param[i] =Pp;
 		}
 		measuring = 0;
 		/* Write your code here ... */

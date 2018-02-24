@@ -57,6 +57,9 @@
     <GeneratedCs>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AD1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AdcLdd1.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_DOWN.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_MIDDLE.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_UP.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd1.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\CODEC_PDN.c</PathName>
@@ -87,6 +90,9 @@
     <GeneratedHs>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AD1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\AdcLdd1.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_DOWN.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_MIDDLE.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BUTTON_UP.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\BitIoLdd2.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\CODEC_PDN.h</PathName>

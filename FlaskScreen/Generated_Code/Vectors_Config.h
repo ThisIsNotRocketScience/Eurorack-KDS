@@ -66,6 +66,9 @@
 #include "LED_UP.h"
 #include "LED_DOWN.h"
 #include "LED_MIDDLE.h"
+#include "BUTTON_UP.h"
+#include "BUTTON_MIDDLE.h"
+#include "BUTTON_DOWN.h"
 #include "Events.h"
 
 #ifdef __cplusplus

@@ -7,7 +7,7 @@
 **     Version     : Component 01.100, Driver 1.1, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-02-19, 01:43, # CodeGen: 9
+**     Date/Time   : 2018-02-23, 23:31, # CodeGen: 17
 **     Abstract    :
 **
 **     Settings    :
@@ -718,16 +718,16 @@
 **                Open drain                               : <Automatic>
 **                Drive strength                           : <Automatic>
 **                Passive filter                           : <Automatic>
-**                Pull select                              : <Automatic>
-**                Pull enable                              : <Automatic>
+**                Pull select                              : Pullup
+**                Pull enable                              : Enabled
 **              Pin 46: CMP1_IN1/PTC3/LLWU_P7/SPI0_PCS1/UART1_RX/FTM0_CH2/CLKOUT/I2S0_TX_BCLK/LPUART0_RX: 
 **                Custom name, Signal name                 : CMP1_IN1/PTC3/LLWU_P7/SPI0_PCS1/UART1_RX/FTM0_CH2/CLKOUT/I2S0_TX_BCLK/LPUART0_RX
 **                Slew rate                                : <Automatic>
 **                Open drain                               : <Automatic>
 **                Drive strength                           : <Automatic>
 **                Passive filter                           : <Automatic>
-**                Pull select                              : <Automatic>
-**                Pull enable                              : <Automatic>
+**                Pull select                              : Pullup
+**                Pull enable                              : Enabled
 **              Pin 47: VSS80                              : 
 **                Custom name, Signal name                 : VSS80
 **              Pin 48: VDD81                              : 
@@ -829,8 +829,8 @@
 **                Open drain                               : <Automatic>
 **                Drive strength                           : <Automatic>
 **                Passive filter                           : <Automatic>
-**                Pull select                              : <Automatic>
-**                Pull enable                              : <Automatic>
+**                Pull select                              : Pullup
+**                Pull enable                              : Enabled
 **                Digital filter                           : <Automatic>
 **              Pin 61: PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/EWM_IN/SPI1_PCS0: 
 **                Custom name, Signal name                 : PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/EWM_IN/SPI1_PCS0

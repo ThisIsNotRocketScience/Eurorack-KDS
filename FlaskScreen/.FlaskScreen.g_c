@@ -19,7 +19,7 @@
         <Line>PE_Const</Line>
         <Line>IO_Map</Line>
       </GenSharedModules>
-      <ShrdHeaderAge0>1280815389</ShrdHeaderAge0>
+      <ShrdHeaderAge0>1280818157</ShrdHeaderAge0>
       <ShrdCodeAge0>-1</ShrdCodeAge0>
       <ShrdAsemblAge0>-1</ShrdAsemblAge0>
       <ShrdHeaderAge1>1280511352</ShrdHeaderAge1>
@@ -31,7 +31,7 @@
       <ShrdHeaderAge3>1280511352</ShrdHeaderAge3>
       <ShrdCodeAge3>-1</ShrdCodeAge3>
       <ShrdAsemblAge3>-1</ShrdAsemblAge3>
-      <GenExtraFiles lines_count="24">
+      <GenExtraFiles lines_count="27">
         <Line>Documentation\doxygen\SM1_component.txt</Line>
         <Line>Documentation\doxygen\OLED_DC_component.txt</Line>
         <Line>Documentation\doxygen\OLED_RESET_component.txt</Line>
@@ -45,6 +45,9 @@
         <Line>Documentation\doxygen\LED_UP_component.txt</Line>
         <Line>Documentation\doxygen\LED_DOWN_component.txt</Line>
         <Line>Documentation\doxygen\LED_MIDDLE_component.txt</Line>
+        <Line>Documentation\doxygen\BUTTON_UP_component.txt</Line>
+        <Line>Documentation\doxygen\BUTTON_MIDDLE_component.txt</Line>
+        <Line>Documentation\doxygen\BUTTON_DOWN_component.txt</Line>
         <Line>Generated_Code\PE_LDD.c</Line>
         <Line>Generated_Code\PE_LDD.h</Line>
         <Line>Project_Settings\Linker_Files\ProcessorExpert.ld</Line>
@@ -57,24 +60,27 @@
         <Line>Documentation\doxygen\pex.doxyfile</Line>
         <Line>Documentation\doxygen\pex.css</Line>
       </GenExtraFiles>
-      <GenExtraFileSrcDir23>Repositories\lib\doxygen\</GenExtraFileSrcDir23>
-      <GenExtraFileSrcDir16>lib\Kinetis\startup\</GenExtraFileSrcDir16>
+      <GenExtraFileSrcDir26>Repositories\lib\doxygen\</GenExtraFileSrcDir26>
+      <GenExtraFileSrcDir19>lib\Kinetis\startup\</GenExtraFileSrcDir19>
       <XtraAge4>1280815338</XtraAge4>
       <XtraAge5>1280815338</XtraAge5>
-      <XtraAge13>1280815389</XtraAge13>
-      <XtraAge14>1280815389</XtraAge14>
-      <XtraAge16>1265834063</XtraAge16>
-      <XtraAge17>1280815389</XtraAge17>
-      <XtraAge18>1280815389</XtraAge18>
-      <XtraAge19>1280511352</XtraAge19>
-      <GenExtraFileType23>5</GenExtraFileType23>
+      <XtraAge16>1280818157</XtraAge16>
+      <XtraAge17>1280818157</XtraAge17>
+      <XtraAge19>1265834063</XtraAge19>
+      <XtraAge20>1280818157</XtraAge20>
+      <XtraAge21>1280818156</XtraAge21>
+      <XtraAge22>1280511352</XtraAge22>
+      <GenExtraFileType26>5</GenExtraFileType26>
+      <GenExtraFileType25>4</GenExtraFileType25>
+      <GenExtraFileType24>4</GenExtraFileType24>
+      <GenExtraFileType23>4</GenExtraFileType23>
       <GenExtraFileType22>4</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
       <GenExtraFileType20>4</GenExtraFileType20>
-      <GenExtraFileType19>4</GenExtraFileType19>
+      <GenExtraFileType19>5</GenExtraFileType19>
       <GenExtraFileType18>4</GenExtraFileType18>
       <GenExtraFileType17>4</GenExtraFileType17>
-      <GenExtraFileType16>5</GenExtraFileType16>
+      <GenExtraFileType16>4</GenExtraFileType16>
       <GenExtraFileType15>4</GenExtraFileType15>
       <GenExtraFileType14>4</GenExtraFileType14>
       <GenExtraFileType13>4</GenExtraFileType13>
@@ -507,11 +513,14 @@
         <Line>SM1_OnBlockReceived</Line>
         <Line>Cpu_OnNMI</Line>
       </GenMethodsInEvents>
-      <GenAllModules lines_count="23">
+      <GenAllModules lines_count="26">
         <Line>AD1</Line>
         <Line>AdcLdd1</Line>
         <Line>BitIoLdd1</Line>
         <Line>BitIoLdd2</Line>
+        <Line>BUTTON_DOWN</Line>
+        <Line>BUTTON_MIDDLE</Line>
+        <Line>BUTTON_UP</Line>
         <Line>CODEC_PDN</Line>
         <Line>Cpu</Line>
         <Line>Events</Line>
@@ -533,7 +542,7 @@
         <Line>WAIT1</Line>
       </GenAllModules>
       <GenExternModules lines_count="0" />
-      <GenBeanModules lines_count="17">
+      <GenBeanModules lines_count="20">
         <Line>Pins1</Line>
         <Line>SM1</Line>
         <Line>OLED_DC</Line>
@@ -551,11 +560,14 @@
         <Line>LED_UP</Line>
         <Line>LED_DOWN</Line>
         <Line>LED_MIDDLE</Line>
+        <Line>BUTTON_UP</Line>
+        <Line>BUTTON_MIDDLE</Line>
+        <Line>BUTTON_DOWN</Line>
       </GenBeanModules>
     </GenFiles>
     <SignalListFile />
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>15</ProjectModificationStamp>
+    <ProjectModificationStamp>16</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>false</Generated>
@@ -630,7 +642,7 @@
     <GenDriverVersion>01.00</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1280511352</HeaderAge>
-    <CodeAge>1280815389</CodeAge>
+    <CodeAge>1280818157</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -714,8 +726,8 @@
     <GenComponentVersion>01.100</GenComponentVersion>
     <GenDriverVersion>1.1</GenDriverVersion>
     <GenEventModule />
-    <HeaderAge>1280511352</HeaderAge>
-    <CodeAge>1280511352</CodeAge>
+    <HeaderAge>1280818157</HeaderAge>
+    <CodeAge>1280818157</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>1</GenNumMethods>
     <Init>false</Init>
@@ -2891,6 +2903,183 @@
     <GenExtraFilesCount>1</GenExtraFilesCount>
     <ExtraFile0>Documentation\doxygen\LED_MIDDLE_component.txt</ExtraFile0>
   </ComponentID_32>
+  <ComponentID_33>
+    <Generated>true</Generated>
+    <GenCompName>BUTTON_UP</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1280818157</HeaderAge>
+    <CodeAge>1280818157</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>116</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>161</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>92</LineBeg>
+      <LineEnd>141</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>142</LineBeg>
+      <LineEnd>170</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\BUTTON_UP_component.txt</ExtraFile0>
+  </ComponentID_33>
+  <ComponentID_34>
+    <Generated>true</Generated>
+    <GenCompName>BUTTON_MIDDLE</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1280818157</HeaderAge>
+    <CodeAge>1280818157</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>116</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>161</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>92</LineBeg>
+      <LineEnd>141</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>142</LineBeg>
+      <LineEnd>170</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\BUTTON_MIDDLE_component.txt</ExtraFile0>
+  </ComponentID_34>
+  <ComponentID_35>
+    <Generated>true</Generated>
+    <GenCompName>BUTTON_DOWN</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1280818157</HeaderAge>
+    <CodeAge>1280818157</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>116</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>161</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>92</LineBeg>
+      <LineEnd>141</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>142</LineBeg>
+      <LineEnd>170</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\BUTTON_DOWN_component.txt</ExtraFile0>
+  </ComponentID_35>
   <UsedSrcFiles>
     <SrcFile0>Drivers\Kinetis\InitClockGate_MK22FN256LH12.prg=1183486058</SrcFile0>
     <SrcFile1>Drivers\Common\ADC_LDDInit.inc=-1</SrcFile1>

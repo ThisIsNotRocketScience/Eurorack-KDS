@@ -37,6 +37,9 @@
 - \subpage LED_UP
 - \subpage LED_DOWN
 - \subpage LED_MIDDLE
+- \subpage BUTTON_UP
+- \subpage BUTTON_MIDDLE
+- \subpage BUTTON_DOWN
 
 */
 
@@ -80,6 +83,9 @@
 - \subpage LED_UP
 - \subpage LED_DOWN
 - \subpage LED_MIDDLE
+- \subpage BUTTON_UP
+- \subpage BUTTON_MIDDLE
+- \subpage BUTTON_DOWN
 
 */
 

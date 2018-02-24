@@ -50,6 +50,9 @@
 #include "LED_UP.h"
 #include "LED_DOWN.h"
 #include "LED_MIDDLE.h"
+#include "BUTTON_UP.h"
+#include "BUTTON_MIDDLE.h"
+#include "BUTTON_DOWN.h"
 
 #ifdef __cplusplus
 extern "C" {

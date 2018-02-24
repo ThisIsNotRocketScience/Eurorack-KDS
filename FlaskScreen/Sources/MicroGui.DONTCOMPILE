@@ -1,0 +1,802 @@
+#include "MicroGui.h"
+
+#ifdef FISHDISPLAY
+
+u16 buf[MGBLOCKSIZE][MGBLOCKSIZE];
+GuiItem GuiItems[MGMAXGUIITEMS];
+u8 ItemMap[(MGHEIGHT/MGBLOCKSIZE)*(MGWIDTH/MGBLOCKSIZE)];
+
+extern u8 GetCharData(int offset);
+
+#if defined(__MK20DX128__) || defined(__MK20DX256__)
+#define USELOGO
+#endif
+
+#ifdef USELOGO
+unsigned short const LogoColors[] = 
+{
+  BGCOLOR,
+  RGB8(   0,   0,   0),
+  RGB8(0xff,0xca,0xbf), 
+  RGB8(0xff,0x84,0x7f),
+  RGB8(0xff,0xf4,0xbf),
+  RGB8(0xff,0xea,0x7f),
+  RGB8(0xbf,0xd3,0xff),
+  RGB8(0x7f,0xa8,0xff),
+  RGB8(0xed,0xff,0xbf),
+  RGB8(0xd9,0xff,0x7f),
+  RGB8(0xff,0xff,0xff), 
+};
+
+u8 const LogoIcon[] = 
+{
+  0 ,0 ,0, 1, 1, 1, 0, 0, 0,
+  0 ,1 ,1, 2, 2, 4, 1, 1, 0,
+  0 ,1 ,2, 3, 3, 5, 4, 1, 0,
+  1 ,2 ,3, 3, 3, 5, 5, 4, 1,
+  1 ,8 ,9, 9,10, 5, 5, 4, 1,
+  1 ,8 ,9, 9, 7, 7, 7, 6, 1,
+  0 ,1 ,8, 9, 7, 7, 6, 1, 0,
+  0 ,1 ,1, 8, 6, 6, 1, 1, 0,
+  0 ,0 ,0, 1, 1, 1, 0, 0, 0,
+};
+
+void RenderLogoBlock(u16 buf[16][16], s16 rx, s16 ry, s16 w, s16 h)
+{
+	for (int y=0 ;y<9;y++)
+	{
+		for (int x=0 ;x<9;x++)
+		{
+			buf[y+4][x+4] = LogoColors[LogoIcon[y*9 + x]];
+		}
+	}
+}
+#endif
+
+MicroGui::MicroGui(PixelInterface *PI, CallbackInterface *SI)
+{
+	LastControlID = 255;
+	TheCallbacks = SI;
+	LastCursorX = 0;
+	LastCursorY = 0;
+	WasPressed = false;
+	CaptureID = -1;	
+	ThePixels = PI;
+	ClearAllItems();	
+}
+
+MicroGui::~MicroGui()
+{
+}
+
+void MicroGui::Update(unsigned short x, unsigned short y, bool pressed)
+{
+	unsigned char ControlID = 255;
+	
+	if (CaptureID < 255)
+	{
+		ControlID = CaptureID;
+	}
+	else
+	{
+		unsigned short cellx = x/MGBLOCKSIZE;
+		unsigned short celly = y/MGBLOCKSIZE;
+		if (cellx < (MGWIDTH/MGBLOCKSIZE) && celly < (MGHEIGHT/MGBLOCKSIZE))
+		{
+			ControlID = ItemMap[cellx + celly * (MGWIDTH/MGBLOCKSIZE)];		
+		}
+	}
+
+	if (ControlID != LastControlID)
+	{
+		if (LastControlID < 255) HandleLeave(LastControlID, GuiItems[LastControlID],x,y);
+		if (ControlID < 255) HandleEnter(ControlID, GuiItems[ControlID],x,y);
+		LastControlID = ControlID;
+	}
+
+	if (LastCursorX != x || LastCursorY != y )
+	{
+		LastCursorX = x; 
+		LastCursorY = y;
+
+		if (ControlID < 255 && GuiItems[ControlID].type != NONE)
+		{
+			HandleMove(ControlID, GuiItems[ControlID], x, y);
+		};
+	}
+
+	if (WasPressed != pressed)
+	{
+		if (pressed)
+		{
+			if (ControlID < 255 && GuiItems[ControlID].type != NONE)
+			{
+				HandlePress(ControlID, GuiItems[ControlID], x, y);
+			};
+		}
+		else
+		{
+			if (ControlID < 255 && GuiItems[ControlID].type != NONE)
+			{
+				HandleRelease(ControlID, GuiItems[ControlID], x, y);
+			};
+		}
+		WasPressed = pressed;
+	}
+}
+
+void MicroGui::Render()
+{
+	unsigned short idx = 0;
+	for (int y = 0;y<MGHEIGHT/MGBLOCKSIZE;y++)
+	{
+		for (int x = 0;x<MGWIDTH/MGBLOCKSIZE;x++)
+		{
+			unsigned char id = ItemMap[idx];
+			if (id < 255)
+			{
+				if (GuiItems[id].state & DIRTY)
+				{
+					//Serial.println("blockrender");
+					RenderBlock(GuiItems[id],x,y);
+				}
+			}
+			idx++;
+		}
+	}
+	for (int i =0 ;i<MGMAXGUIITEMS;i++)
+	{
+		GuiItems[i].state &= ~DIRTY; 
+	}
+}
+
+void MicroGui::FillBlock(u16 color)
+{
+//	u16 *s = &buf[0][0];
+	for (int i =0 ;i<16;i++)
+	{
+		for (int j =0 ;j<16;j++)
+		{
+			buf[i][j] = color;
+		}
+	}
+}
+
+void MicroGui::Border(s16 rx, s16 ry, s16 w, s16 h, u16 color, u8 width)
+{
+	if (rx == 0)
+	{
+		for (u8 j =0;j<width;j++)
+		{
+			for (u8 i= 0;i<16;i++)
+			{
+				writebuf(buf,i,j,color);
+			}
+		}
+		// left border
+	}
+	if (rx == -(w-1))
+	{
+		for (u8 j =0;j<width;j++)
+		{
+			for (u8 i= 0;i<16;i++)
+			{
+				writebuf(buf,i,15-j,color);
+			}
+		}
+		// left border
+	}
+	if (ry == 0)
+	{
+		for (u8 j =0;j<width;j++)
+		{
+			for (u8 i= 0;i<16;i++)
+			{
+				writebuf(buf,j,i,color);
+			}
+		}
+		// left border
+	}
+	if (-ry == h-1)
+	{
+		for (u8 j =0;j<width;j++)
+		{
+			for (u8 i= 0;i<16;i++)
+			{
+				writebuf(buf,15-j,i,color);
+			}
+		}
+		// left border
+	}
+}
+
+void MicroGui::DrawChar( s16 rx, s16 ry, u8 C, u16 col)
+{
+	if (rx < - 5) return;
+	if (rx + 5 > 15) return;
+	int maxx = 16-rx;
+	if (maxx > 5) maxx = 5;
+	if (maxx < 0) return;
+	int minx = 0;
+	if (rx<0) minx = -rx;
+	for (u8 y = 0;y<10;y++)
+	{
+		for (u8 x = minx;x<maxx;x++)
+		{
+			if ((GetCharData((C-32)*10 + y) & (4<<x))==0) writebuf(buf,y,((x)+rx),col); 
+		}
+	}
+}
+
+void MicroGui::DrawString(s16 rx, s16 ry, u8 stringid, u16 col)
+{
+	//return;
+	const char *s = TheCallbacks->GetString(stringid);
+	const char *s2 = s;
+	int strlen  = 0;
+	while (*s2++) strlen++;
+
+	for (int x = 0;x<16;x++)
+	{
+		int strpos = (x-rx)/6;
+		int strx = (x-rx)%6;
+		if (strx<5 && strx>=0)
+		if (strpos >= 0 && strpos < strlen)
+		{
+			u8 C = s[strpos];
+		
+			for (int y =0 ;y<16;y++)
+			{
+				int yy = y-ry;
+				if (yy>=0 && yy <10)
+				{
+					if ((GetCharData((C-32)*10 + yy) & (4<<strx))==0) writebuf(buf,y,x,col); 
+				}
+			}
+		}
+	}	
+}
+
+void MicroGui::DrawStringCentered( s16 rx, s16 ry,s16 w, s16 h, u8 stringid, u16 col)
+{	
+	const char *s = TheCallbacks->GetString(stringid);
+	const char *s2 = s;
+	int strlen  = 0;
+	while (*s2++) strlen++;
+
+	rx+= (w/2) - (strlen*6)/2;
+	ry+= (h/2) - (10)/2;
+
+	for (int x = 0;x<16;x++)
+	{
+		int strpos = (x-rx)/6;
+		int strx = (x-rx)%6;
+		if (strx<5 && strx>=0)
+		if (strpos >= 0 && strpos < strlen)
+		{
+			u8 C = s[strpos];
+		
+			for (int y =0 ;y<16;y++)
+			{
+				int yy = y-ry;
+				if (yy>=0 && yy <10)
+				{
+					u8 D = GetCharData((C-32)*10 + yy);
+					if ((D & (4<<strx))==0) writebuf(buf,y,x,col); 
+				}
+			}
+		}
+	}	
+}
+
+void MicroGui::RenderBlock(GuiItem &Item, unsigned short x, unsigned short y)
+{
+	s16 rx = Item.x-x;
+	s16 ry = Item.y-y;
+//	FillBlock( RGB8(255,0,255));
+//	ThePixels->Pixels(&buf[0][0], 16*16);
+	//Border(buf, rx,ry,Item.w, Item.h, 0, 1);
+//	return;
+	switch(Item.type)
+	{
+	case LOGOICON:
+		FillBlock( Item.bgcolor);
+#ifdef USELOGO
+		RenderLogoBlock(buf, rx, ry, Item.w, Item.h);
+#endif
+		break;
+
+	case NONE:
+		FillBlock( RGB8(0,0,0));
+		break;
+
+	case LABEL:
+		FillBlock( Item.bgcolor);
+		//Border( rx,ry,Item.w, Item.h, Item.button.fgcolor, Item.button.borderwidth);
+		DrawString( 4+ rx*16,4+ry*16,Item.label.stringid, Item.fgcolor);
+		break;
+
+	case BUTTON:
+		if ((Item.state & 7) == HOVER)
+		{
+			FillBlock( Item.button.hoverbgcolor);
+			Border(rx, ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+			DrawStringCentered(rx * 16, ry * 16, Item.w * 16, Item.h * 16, Item.button.stringid, Item.bgcolor);
+		}
+		else
+		{
+			FillBlock( Item.bgcolor);
+			Border(rx, ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+			DrawStringCentered(rx * 16, ry * 16, Item.w * 16, Item.h * 16, Item.button.stringid, Item.fgcolor);
+		}
+		break;
+
+	case RADIO:
+		if ((Item.state & 7) == HOVER || TheCallbacks->GetParameterValue(Item.param.parameterid) == Item.param.myvalue)
+		{
+			FillBlock( Item.button.hoverbgcolor);
+		}
+		else
+		{
+			FillBlock(Item.bgcolor);
+		}
+		Border( rx,ry,Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+	//	DrawStringCentered(buf, rx*16,ry*16, Item.w*16, Item.h*16,Item.button.stringid, Item.button.fgcolor);
+		break;
+
+	case KNOB:
+		FillBlock( Item.bgcolor);
+		Border( rx,ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+		break;
+
+	case VPROGRESS:
+		{
+			FillBlock( Item.bgcolor);
+			
+			s16 H = Item.h * 16;
+			s16 SliderH = (TheCallbacks->GetParameterValue(Item.param.parameterid) * H)/256;
+			DrawHorizontalLine(rx*16, ry*16, 1, Item.w*16 - 1, SliderH, Item.fgcolor);
+			for (int y = SliderH+1;y< H;y++)
+			{
+				DrawHorizontalLine( rx*16, ry*16,1, Item.w*16 -1, y, Item.param.controlbgcolor);
+			}
+			Border( rx,ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+
+		}
+		break;
+
+	case VSLIDER:
+		{
+			FillBlock( Item.bgcolor);
+			
+			s16 H = Item.h * 16;
+			s16 SliderH = (TheCallbacks->GetParameterValue(Item.param.parameterid) * (H-16))/256;
+			DrawHorizontalLine( rx*16, ry*16, 1, Item.w*16 - 1, SliderH, Item.fgcolor);
+			for (int y = SliderH+1;y< SliderH+16;y++)
+			{
+				DrawHorizontalLine( rx*16, ry*16,1, Item.w*16 -1, y, Item.param.controlbgcolor);
+			}
+			DrawHorizontalLine( rx*16, ry*16, 1, Item.w*16 - 1, SliderH+16, Item.fgcolor);
+			Border( rx,ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+
+		}
+		break;
+
+		case HPROGRESS:
+		{
+			FillBlock( Item.bgcolor);
+			
+			s16 W = Item.w * 16;
+			s16 SliderW = (TheCallbacks->GetParameterValue(Item.param.parameterid) * W)/256;
+			DrawVerticalLine( rx*16, ry*16, 1, Item.w*16 - 1, SliderW, Item.fgcolor);
+			for (int y = 1; y< SliderW;y++)
+			{
+				DrawVerticalLine(rx*16, ry*16,1, Item.w*16 -1, y, Item.param.controlbgcolor);
+			}
+			Border( rx,ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+		}
+
+		break;
+	case HSLIDER:
+		{
+			FillBlock( Item.bgcolor);
+			
+			s16 W = Item.w * 16;
+			s16 SliderW = (TheCallbacks->GetParameterValue(Item.param.parameterid) * (W-16))/256;
+			DrawVerticalLine( rx*16, ry*16, 1, Item.w*16 - 1, SliderW, Item.fgcolor);
+			for (int x = SliderW+1;x< SliderW+16;x++)
+			{
+				DrawVerticalLine( rx*16, ry*16,1, Item.w*16 -1, x, Item.param.controlbgcolor);
+			}
+			DrawVerticalLine( rx*16, ry*16, 1, Item.w*16 - 1, SliderW+16, Item.fgcolor);
+			Border( rx,ry, Item.w, Item.h, Item.fgcolor, Item.borderwidth);
+		}
+
+		break;
+	}
+
+	ThePixels->SetupArea(x*MGBLOCKSIZE, y*MGBLOCKSIZE, MGBLOCKSIZE, MGBLOCKSIZE);
+	ThePixels->Pixels8Block(&buf[0][0], 16*16);
+}
+
+void MicroGui::HandleMove(u8 ControlID, GuiItem &Item, unsigned short x, unsigned short y)
+{
+	switch(Item.type)
+	{
+		case VSLIDER:
+			if (CaptureID == ControlID)				
+			{
+				u16 H = (Item.h * 16)-16;
+				s16 ry = y - Item.y*16 - 8 ;
+				s16 val = (ry*256)/H;
+				if (val< 0) val = 0;
+				if (val > 255) val = 255;
+				TheCallbacks->OnParameterValue(ControlID, Item.param.parameterid, (u8)val);
+				MarkDirtyForParameter(Item.param.parameterid);	
+			}
+			break;
+
+		case HSLIDER:
+			if (CaptureID == ControlID)				
+			{
+				u16 W = (Item.w * 16)-16;
+				s16 rx = x - Item.x*16 - 8 ;
+				s16 val = (rx*256)/W;
+				if (val< 0) val = 0;
+				if (val > 255) val = 255;
+				TheCallbacks->OnParameterValue(ControlID, Item.param.parameterid, (u8)val);
+				MarkDirtyForParameter(Item.param.parameterid);				
+			}
+			break;
+
+		case VPROGRESS:
+			if (CaptureID == ControlID)				
+			{
+				u16 H = Item.h * 16;
+				s16 ry = y - Item.y*16;
+				s16 val = (ry*256)/H;
+				if (val< 0) val = 0;
+				if (val > 255) val = 255;
+				TheCallbacks->OnParameterValue(ControlID, Item.param.parameterid, val);
+				MarkDirtyForParameter(Item.param.parameterid);				
+			}
+			break;
+
+		case HPROGRESS:
+			if (CaptureID == ControlID)				
+			{
+				u16 W = Item.w * 16;
+				s16 rx = x - Item.x*16;
+				s16 val = (rx*256)/W;
+				if (val< 0) val = 0;
+				if (val > 255) val = 255;
+				TheCallbacks->OnParameterValue(ControlID, Item.param.parameterid,(u8)val);
+				MarkDirtyForParameter(Item.param.parameterid);
+			}
+			break;
+	}
+}
+
+void MicroGui::HandlePress(u8 ControlID, GuiItem &Item, unsigned short x, unsigned short y)
+{
+	switch(Item.type)
+	{
+	case VSLIDER:
+	case HSLIDER:
+	case VPROGRESS:
+	case HPROGRESS:
+	case KNOB:
+	case BUTTON:
+		Capture(ControlID);
+		Item.state = DIRTY + PRESSED;
+		break;
+
+	case RADIO:
+		Capture(ControlID);
+		Item.state = DIRTY + PRESSED;
+		TheCallbacks->OnParameterValue(ControlID, Item.param.parameterid, Item.param.myvalue);
+		MarkDirtyForParameter(Item.param.parameterid);
+		break;
+
+	}
+}
+
+void MicroGui::HandleRelease(u8 ControlID, GuiItem &Item, unsigned short x, unsigned short y)
+{
+	switch(Item.type)
+	{
+	case BUTTON:
+		TheCallbacks->OnButtonPress(ControlID);
+	case KNOB:
+	case VSLIDER:
+	case HSLIDER:
+	case VPROGRESS:
+	case HPROGRESS:
+	case RADIO:
+		Release(ControlID);
+		Item.state = DIRTY + HOVER;	
+		break;
+	
+	}
+}
+
+void MicroGui::Release(u8 ItemID)
+{
+	if (CaptureID == ItemID)
+	{
+		CaptureID = 255;
+	}
+}
+
+void MicroGui::Capture(u8 ItemID)
+{
+	CaptureCursorX = LastCursorX;
+	CaptureCursorY = LastCursorY;
+	CaptureID = ItemID;
+}
+
+void MicroGui::HandleEnter(u8 ControlID, GuiItem &Item, unsigned short x, unsigned short y)
+{
+	switch(Item.type)
+	{
+		case RADIO:
+	
+	case BUTTON:
+		Item.state = HOVER + DIRTY;
+		break;
+	}
+}
+
+void MicroGui::HandleLeave(u8 ControlID, GuiItem &Item, unsigned short x, unsigned short y)
+{
+	switch(Item.type)
+	{
+	case RADIO:
+	case BUTTON:
+		Item.state = NEUTRAL + DIRTY;
+		break;
+	}
+
+}
+
+u8 MicroGui::MakeButton(u8 x, u8 y, u8 w, u8 h, u8 stringid)
+{
+	u8 ID = GetAvailableItem();
+	if (ID < 255)
+	{
+		GuiItem &GI = GuiItems[ID];
+		GI.type = BUTTON;
+		GI.borderwidth = 1;
+		GI.fgcolor = FGCOLOR;	
+		GI.bgcolor = CONTROLBGCOLOR;
+		GI.button.hoverbgcolor = FGCOLORLIT;
+		GI.button.stringid = stringid;
+		GI.x = x;
+		GI.y = y;
+		GI.w = w;
+		GI.h = h;
+		GI.state = DIRTY;
+		PlaceGUIItem(ID, x,y,w,h);
+	}
+	return ID;
+}
+
+u8 MicroGui::MakeLabel(u8 x, u8 y, u8 w, u8 h, u8 stringid)
+{
+	u8 ID = GetAvailableItem();
+	if (ID < 255)
+	{
+		GuiItem &GI = GuiItems[ID];
+		GI.type = LABEL;
+		GI.borderwidth = 1;
+		GI.fgcolor = FGCOLOR;
+		GI.bgcolor = BGCOLOR;
+		GI.button.stringid = stringid;
+		GI.x = x;
+		GI.y = y;
+		GI.w = w;
+		GI.h = h;
+		GI.state = DIRTY;
+		PlaceGUIItem(ID, x,y,w,h);
+	}
+	return ID;
+}
+
+void MicroGui::PlaceGUIItem(u8 ID, u8 x, u8 y, u8 w, u8 h)
+{
+	for (u8 i = x;i<x + w;i++)
+	{
+		for (u8 j = y;j<y + h;j++)
+		{
+			ItemMap[i + j * (MGWIDTH/MGBLOCKSIZE)] = ID;
+		}
+	}
+	GuiItems[ID].state |= DIRTY;
+}
+
+u8 MicroGui::GetAvailableItem()
+{
+	u8 start = LastAvailableItem;
+	for(u8 i = start+1;i!=start;i++)
+	{
+		if (i>127) i = 0;
+		if (GuiItems[i].type == NONE)
+		{
+			LastAvailableItem = i;
+			return i;
+		}
+	}
+	return 255;
+}
+
+u8 MicroGui::MakeKnob(u8 x, u8 y, u8 w, u8 h, u8 paramid)
+{
+	u8 ID = GetAvailableItem();
+	if (ID < 255)
+	{
+		GuiItem &GI = GuiItems[ID];
+		GI.type = KNOB;
+		GI.borderwidth = 1;
+		GI.fgcolor = FGCOLOR;
+		GI.bgcolor = BGCOLOR;
+		GI.param.controlbgcolor = CONTROLBGCOLOR;
+	
+		GI.param.parameterid = paramid;
+		GI.x = x;
+		GI.y = y;
+		GI.w = w;
+		GI.h = h;
+		GI.state = DIRTY;
+		PlaceGUIItem(ID, x,y,w,h);
+	}
+	return ID;
+}
+
+u8 MicroGui::MakeSlider(u8 x, u8 y, u8 w, u8 h, u8 paramid)
+{
+	u8 ID = MakeKnob(x,y,w,h, paramid);
+	if (ID< 255)
+	{
+		GuiItems[ID].type = (h>w)?VSLIDER:HSLIDER;
+	}
+	return ID;
+}
+
+u8 MicroGui::MakeProgress(u8 x, u8 y, u8 w, u8 h, u8 paramid)
+{
+	u8 ID = MakeKnob(x,y,w,h, paramid);
+	if (ID< 255)
+	{
+		GuiItems[ID].type = (h>w)?VPROGRESS:HPROGRESS;
+	}
+	return ID;
+}
+
+
+u8 MicroGui::MakeRadioButton(u8 x, u8 y, u8 w, u8 h, u8 stringid, u8 paramid, u8 radiovalue)
+{
+	u8 ID = MakeButton(x,y,w,h, stringid);
+	if (ID< 255)
+	{
+		GuiItems[ID].param.parameterid = paramid;
+		GuiItems[ID].type = RADIO;
+		GuiItems[ID].param.myvalue = radiovalue;
+	}
+	return ID;
+}
+
+void MicroGui::DrawHorizontalLine(s16 rx, s16 ry, s16 leftx, s16 rightx, s16 y, u16 col)
+{
+	s16 addedy = ry+ y;
+	if (addedy > 15 || addedy<0) return;
+	if (leftx + rx > 15) return;
+	if (rightx + rx < 0) return;
+
+	int left = leftx + rx;
+	if (left < 0) left = 0;
+	int right = rightx+ rx;
+	if (right > 15) right = 15;
+
+	for (int x = left;x< right;x++)
+	{
+		writebuf(buf,addedy,x,col);
+	}
+}
+	
+void MicroGui::DrawVerticalLine( s16 rx, s16 ry, s16 topY, s16 bottomY, s16 x, u16 col)
+{
+	s16 addedx = rx+ x;
+	if (addedx > 15 || addedx<0) return;
+	if (topY + ry > 15) return;
+	if (bottomY + ry < 0) return;
+
+	int top = topY+ ry;
+	if (top < 0) top= 0;
+	int bottom = bottomY+ ry;
+	if (bottom > 15) bottom = 15;
+
+	for (int y = top;y< bottom;y++)
+	{
+		writebuf(buf,y, addedx,col);
+	}
+}
+
+void MicroGui::MarkAllDirty()
+{
+	for (int i =0 ;i<MGMAXGUIITEMS;i++)
+	{
+		if (GuiItems[i].type != NONE)
+		{
+			GuiItems[i].state |= DIRTY;
+		}
+	}
+}
+
+bool MicroGui::IsParameterControl(GuiItem &i)
+{
+	switch(i.type)
+	{
+	case KNOB:
+	case HSLIDER:
+	case VSLIDER:
+	case VPROGRESS: 
+	case HPROGRESS:
+	case RADIO:
+		return true;
+
+	};
+	return false;
+}
+
+void MicroGui::MarkDirtyForParameter(u8 ParameterID)
+{
+	for (int i =0 ;i<MGMAXGUIITEMS;i++)
+	{
+		if (IsParameterControl(GuiItems[i]))
+		{		
+			if (GuiItems[i].param.parameterid == ParameterID)
+			{
+				switch(GuiItems[i].type)
+				{
+				default:
+					GuiItems[i].state |= DIRTY;
+					break;
+				case RADIO:
+						
+					break;
+				}
+			}
+		}
+	}
+}
+
+
+u8 MicroGui::MakeLogo(u8 x, u8 y, u8 w, u8 h)
+{
+	u8 ID = GetAvailableItem();
+	if (ID < 255)
+	{
+		GuiItems[ID].type = LOGOICON;
+		GuiItems[ID].x = x;
+		GuiItems[ID].y = y;
+		GuiItems[ID].w = w;
+		GuiItems[ID].h = h;
+		GuiItems[ID].bgcolor = BGCOLOR;
+		GuiItems[ID].state = DIRTY;
+		PlaceGUIItem(ID, x,y,w,h);
+	}
+	return ID;
+	
+}
+
+void MicroGui::ClearAllItems()
+{
+	PlaceGUIItem(0,0,0,(MGWIDTH/MGBLOCKSIZE), (MGHEIGHT/MGBLOCKSIZE));
+	LastAvailableItem = 0;
+	for (int i = 0;i<MGMAXGUIITEMS;i++)
+	{
+		GuiItems[i].typestate = 0;
+	}	
+}
+
+#endif
