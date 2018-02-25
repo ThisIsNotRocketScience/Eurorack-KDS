@@ -13,6 +13,9 @@ typedef struct Delay
 	int delayposright ;
 	float delaylenleft ;
 	float delaylenright;
+	float newleft;
+	float newright;
+
 	int32_t wet ;
 	int32_t dry ;
 	int32_t feedback;
@@ -31,6 +34,8 @@ typedef struct XDelay
 	uint16_t Feedback;
 	float delaylenleft ;
 	float delaylenright;
+	float newleft;
+	float newright;
 	float Wet;
 } XDelay;
 

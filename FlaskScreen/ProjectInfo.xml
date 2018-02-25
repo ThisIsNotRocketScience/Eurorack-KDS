@@ -80,8 +80,12 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Project_Settings\Startup_Code\startup.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Events.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MicroGui_CharacterSet.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\OLED.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\delay.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\main.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\waveguide.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\Peripherals\I2S0_Init.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\System\CPU_Init.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\System\Peripherals_Init.c</PathName>
@@ -121,7 +125,10 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Generated_Code\WAIT1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\OLED.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\delay.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\waveguide.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\IO_Map\MK22F25612.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\PDD\ADC_PDD.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Static_Code\PDD\CMP_PDD.h</PathName>
