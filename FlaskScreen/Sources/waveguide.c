@@ -13,7 +13,7 @@ int32_t WaveGuide_GetDirect(WaveGuide_t *wg,float Pos)
 	return wg->buffer[index0]<<16;
 }
 
-__attribute__( ( section(".data") ) )float InterpolateCubic(float x0, float x1, float x2, float x3, float t)
+/*__attribute__( ( section(".data") ) )float InterpolateCubic(float x0, float x1, float x2, float x3, float t)
 {
 	float a0, a1, a2, a3;
 	a0 = x3 - x2 - x0 + x1;
@@ -21,7 +21,7 @@ __attribute__( ( section(".data") ) )float InterpolateCubic(float x0, float x1, 
 	a2 = x2 - x0;
 	a3 = x1;
 	return (a0 * (t * t * t)) + (a1 * (t * t)) + (a2 * t) + (a3);
-}
+}*/
 
 void WaveGuide_Init(WaveGuide_t *wg)
 {
@@ -57,53 +57,6 @@ inline void WaveGuide_Push(WaveGuide_t *wg, int32_t in)
 	if(wg->counter>=MAX_WG_DELAY) wg->counter=0;
 }
 
-void WaveGuideLong_Init(WaveGuideLong_t *wg)
-{
-	wg->counter=0;
-	for(int s=0;s<MAX_WG_DELAY_LONG;s++) wg->buffer[s]=0;
-}
-
-
- float WaveGuideLong_Get(WaveGuideLong_t *wg,float Pos)
-{
-	 int npos =(int)( Pos * 65535.0f);
-	int nback = (wg->counter <<16) - npos;
-
-	while (nback < 0) nback += (MAX_WG_DELAY_LONG<<16);
-	while (nback > (MAX_WG_DELAY_LONG<<16)) nback -= (MAX_WG_DELAY_LONG<<16);
-
-	int const index0=nback>>16;
-	int  index1=index0+1;
-
-	if(index1>=MAX_WG_DELAY_LONG) index1-=MAX_WG_DELAY_LONG;
-	int16_t const y0 = (wg->buffer [index0]);
-	int16_t const y1 = (wg->buffer [index1]);
-
-	uint16_t x= (npos &0xffff);
-	x = ~x;
-	return (y0<<16) + ((y1-y0)*x);
-}
-
-
- int16_t WaveGuideLong_GetI16(WaveGuideLong_t *wg,float Pos)
- {
- 	 int npos =(int)( Pos * 65535.0f);
- 	int nback = (wg->counter <<16) - npos;
-
- 	while (nback < 0) nback += (MAX_WG_DELAY_LONG<<16);
- 	while (nback > (MAX_WG_DELAY_LONG<<16)) nback -= (MAX_WG_DELAY_LONG<<16);
-
- 	int const index0=nback>>16;
- 	int  index1=index0+1;
-
- 	if(index1>=MAX_WG_DELAY_LONG) index1-=MAX_WG_DELAY_LONG;
- 	int16_t const y0 = (wg->buffer [index0]);
- 	int16_t const y1 = (wg->buffer [index1]);
-
- 	uint16_t x= (npos &0xffff);
- 	x = ~x;
- 	return y0 + (((y1-y0)*x)>>16);
- }
 
  int16_t WaveGuide_GetI16(WaveGuide_t *wg,float Pos)
  {
@@ -125,9 +78,113 @@ void WaveGuideLong_Init(WaveGuideLong_t *wg)
  	return y0 + (((y1-y0)*x)>>16);
  }
 
- inline void WaveGuideLong_Push(WaveGuideLong_t *wg, int32_t in)
+ void WaveGuideLong_Init(WaveGuideLong_t *wg)
+ {
+ 	wg->counter=0;
+ 	for(int s=0;s<MAX_WG_DELAY_LONG;s++) wg->buffer[s]=0;
+ }
+
+
+  float WaveGuideLong_Get(WaveGuideLong_t *wg,float Pos)
+ {
+ 	 int npos =(int)( Pos * 65535.0f);
+ 	int nback = (wg->counter <<16) - npos;
+
+ 	while (nback < 0) nback += (MAX_WG_DELAY_LONG<<16);
+ 	while (nback > (MAX_WG_DELAY_LONG<<16)) nback -= (MAX_WG_DELAY_LONG<<16);
+
+ 	int const index0=nback>>16;
+ 	int  index1=index0+1;
+
+ 	if(index1>=MAX_WG_DELAY_LONG) index1-=MAX_WG_DELAY_LONG;
+ 	int16_t const y0 = (wg->buffer [index0]);
+ 	int16_t const y1 = (wg->buffer [index1]);
+
+ 	uint16_t x= (npos &0xffff);
+ 	x = ~x;
+ 	return (y0<<16) + ((y1-y0)*x);
+ }
+
+
+  int16_t WaveGuideLong_GetI16(WaveGuideLong_t *wg,float Pos)
+  {
+  	 int npos =(int)( Pos * 65535.0f);
+  	int nback = (wg->counter <<16) - npos;
+
+  	while (nback < 0) nback += (MAX_WG_DELAY_LONG<<16);
+  	while (nback > (MAX_WG_DELAY_LONG<<16)) nback -= (MAX_WG_DELAY_LONG<<16);
+
+  	int const index0=nback>>16;
+  	int  index1=index0+1;
+
+  	if(index1>=MAX_WG_DELAY_LONG) index1-=MAX_WG_DELAY_LONG;
+  	int16_t const y0 = (wg->buffer [index0]);
+  	int16_t const y1 = (wg->buffer [index1]);
+
+  	uint16_t x= (npos &0xffff);
+  	x = ~x;
+  	return y0 + (((y1-y0)*x)>>16);
+  }
+
+  inline void WaveGuideLong_Push(WaveGuideLong_t *wg, int32_t in)
 {
 	wg->buffer[wg->counter]=in>>16;
 	wg->counter++;
 	if(wg->counter>=MAX_WG_DELAY_LONG) wg->counter=0;
 }
+
+
+  void WaveGuideShort_Init(WaveGuideShort_t *wg)
+   {
+   	wg->counter=0;
+   	for(int s=0;s<MAX_WG_DELAY_SHORT;s++) wg->buffer[s]=0;
+   }
+
+
+    float WaveGuideShort_Get(WaveGuideShort_t *wg,float Pos)
+   {
+   	 int npos =(int)( Pos * 65535.0f);
+   	int nback = (wg->counter <<16) - npos;
+
+   	while (nback < 0) nback += (MAX_WG_DELAY_SHORT<<16);
+   	while (nback > (MAX_WG_DELAY_SHORT<<16)) nback -= (MAX_WG_DELAY_SHORT<<16);
+
+   	int const index0=nback>>16;
+   	int  index1=index0+1;
+
+   	if(index1>=MAX_WG_DELAY_SHORT) index1-=MAX_WG_DELAY_SHORT;
+   	int16_t const y0 = (wg->buffer [index0]);
+   	int16_t const y1 = (wg->buffer [index1]);
+
+   	uint16_t x= (npos &0xffff);
+   	x = ~x;
+   	return (y0<<16) + ((y1-y0)*x);
+   }
+
+
+    int16_t WaveGuideShort_GetI16(WaveGuideShort_t *wg,float Pos)
+    {
+    	 int npos =(int)( Pos * 65535.0f);
+    	int nback = (wg->counter <<16) - npos;
+
+    	while (nback < 0) nback += (MAX_WG_DELAY_SHORT<<16);
+    	while (nback > (MAX_WG_DELAY_SHORT<<16)) nback -= (MAX_WG_DELAY_SHORT<<16);
+
+    	int const index0=nback>>16;
+    	int  index1=index0+1;
+
+    	if(index1>=MAX_WG_DELAY_SHORT) index1-=MAX_WG_DELAY_SHORT;
+    	int16_t const y0 = (wg->buffer [index0]);
+    	int16_t const y1 = (wg->buffer [index1]);
+
+    	uint16_t x= (npos &0xffff);
+    	x = ~x;
+    	return y0 + (((y1-y0)*x)>>16);
+    }
+
+    inline void WaveGuideShort_Push(WaveGuideShort_t *wg, int32_t in)
+  {
+  	wg->buffer[wg->counter]=in>>16;
+  	wg->counter++;
+  	if(wg->counter>=MAX_WG_DELAY_SHORT) wg->counter=0;
+  }

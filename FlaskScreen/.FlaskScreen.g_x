@@ -54,7 +54,7 @@
       <File Name="Static_Code/PDD/RTC_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951223" FileType="1048576" />
       <File Name="Static_Code/PDD/MCG_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951203" FileType="1048576" />
       <File Name="Sources/Events.c" FileDate="2018-02-24, 01:52:32" FileAge="1519433552030" FileType="131328" />
-      <File Name="ProjectInfo.xml" FileDate="2018-02-24, 19:31:39" FileAge="1519497099889" FileType="45637" />
+      <File Name="ProjectInfo.xml" FileDate="2018-02-27, 02:48:45" FileAge="1519696125750" FileType="45637" />
       <File Name="Static_Code/PDD/PDD_Types.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951159" FileType="1048576" CompNumb="22" />
       <File Name="Static_Code/PDD/CRC_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951166" FileType="1048576" />
       <File Name="Static_Code/PDD/PORT_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951215" FileType="1048576" />
@@ -81,7 +81,7 @@
       <File Name="Generated_Code/PE_LDD.c" FileDate="2018-02-23, 23:31:27" FileAge="1519425087828" FileType="45637" CompNumb="22" />
       <File Name="Generated_Code/BUTTON_MIDDLE.c" FileDate="2018-02-23, 23:31:27" FileAge="1519425087686" FileType="45637" CompNumb="34" />
       <File Name="Static_Code/PDD/OSC_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951207" FileType="1048576" />
-      <File Name="Generated_Code/CPU_Config.h" FileDate="2018-02-24, 19:31:37" FileAge="1519497097766" FileType="45637" CompNumb="22" />
+      <File Name="Generated_Code/CPU_Config.h" FileDate="2018-02-27, 02:48:44" FileAge="1519696124013" FileType="45637" CompNumb="22" />
       <File Name="Documentation/doxygen/BUTTON_UP_component.txt" FileDate="2018-02-23, 23:31:27" FileAge="1519425087694" FileType="45637" CompNumb="33" />
       <File Name="Static_Code/PDD/SMC_PDD.h" FileDate="2017-11-19, 03:02:31" FileAge="1511056951234" FileType="1048576" />
       <File Name="Generated_Code/SDA1.h" FileDate="2018-02-19, 01:43:48" FileAge="1519001028212" FileType="45637" CompNumb="18" />
@@ -153,5 +153,5 @@
       <File Name="Generated_Code/SM1.c" FileDate="2018-02-19, 01:43:48" FileAge="1519001028263" FileType="45637" CompNumb="6" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>19</CodeGenReference>
+  <CodeGenReference>21</CodeGenReference>
 </CodeGenerationInfo>

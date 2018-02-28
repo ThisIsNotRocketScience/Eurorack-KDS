@@ -95,7 +95,9 @@ uint8_t LEDS[24]={0};                  // 8, 9 , 19, 11,12,13, 14 , 15
 //uint8_t LEDSORDER[24]={0,1,2,3,4,5,6,7,  255,255,255,8,255,255,255, 9,10,11,12,13,14,15,16,17};
 //uint8_t LEDSORDER[18]={0,1,2,3,4,5,6,7,  11,  15,  16,17,18,19,20,21,22,23};
 
-  uint8_t LEDSORDER[18]={23,22,21,20,19,18,17,16,12,8,7,6,5,4,3,2,1,0};
+const  uint8_t LEDSORDER[18]={23,22,21,20,19,18,17,16,12,8,7,6,5,4,3,2,1,0};
+const  uint8_t LEDSORDER1[9]={8,7,6,5,4,3,2,1,0};
+const  uint8_t LEDSORDER2[9]={23,22,21,20,19,18,17,16,12};
 
   //uint8_t LEDSORDERo[18]={12,16,17,18,19,20,21,22,23,
     //                        0,1,2,3,4,5,6,7,8};
@@ -137,12 +139,21 @@ int main(void)
 		T++;
 
 		for (int i =0;i<24;i++) LEDS[i] = 0;
+		LEDS[9] = ((T/2000)%3)==0?255:0;
+		LEDS[10] =((T/2000)%3)==1?255:0;
+		LEDS[11] = ((T/2000)%3)==2?255:0;
+
 		for(int i = 0;i<64;i++)
 		{
-			SetLed(1 + (((History[i])/4000 )%18),255);
+			int num =(((History[i])/500 )%9);
+			SetLed(num ,255);
+			SetLed(17-  num,255);
 		}
 		if (started==1)
 		{
+			LEDS[9] = ((T/2000)%2)==0?255:0;
+			LEDS[10] =((T/2000)%2)==1?255:0;
+			LEDS[11] = ((T/2000)%2)==1?255:0;
 			{
 				SetLed(0, 255);
 				SetLed(17,255);
@@ -161,7 +172,7 @@ int main(void)
 				{
 					for (int i =0;i<16;i++)
 							{
-								LEDS[LEDSORDER[i+1]] = ((T/200) + i) % 2 == 0 ? 0: LEDS[i];
+								LEDS[LEDSORDER[i+1]] = ((T/200) + i) % 2 == 0 ? 0: LEDS[LEDSORDER[i+1]];
 							}
 				}
 				//show error
@@ -173,6 +184,9 @@ int main(void)
 		}
 		//OLED_Blit(buffer, buffer, 10,10,10,10,10,10);
 		//for (int i =0;i<18;i++) SetLed(i,  ((T/1000)% 18 == i)?255:0);
+
+	//	for (int i =0;i<24;i++) LEDS[i] = 0;
+		//LEDS[LEDSORDER1[(T/1000)%9]] = 255;
 		LEDS_Update(LEDS, 24,0, 0);
 
 	}

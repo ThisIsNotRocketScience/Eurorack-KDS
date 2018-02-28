@@ -5,4 +5,5 @@
 //org.eclipse.debug.core.PREFERRED_DELEGATES/org.eclipse.cdt.launch.remoteApplicationLaunchType=org.eclipse.rse.remotecdt.dsf.debug,debug,;
 eclipse.preferences.version=1
 org.eclipse.debug.core.PREF_DELETE_CONFIGS_ON_PROJECT_DELETE=false
+org.eclipse.debug.core.USE_STEP_FILTERS=true
 prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<watchExpressions>\r\n<expression enabled\="true" text\="switchmode"/>\r\n<expression enabled\="true" text\="adcchannels"/>\r\n</watchExpressions>\r\n

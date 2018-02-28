@@ -21,7 +21,7 @@ void ProcessXDelay(XDelay* D, int32_t *in, int32_t *out)
 	uint16_t  wet= Param[0];
 	uint16_t dry = 0xffff-wet;
 
-	float Dry = 1.0f - D->Wet;
+	//float Dry = 1.0f - D->Wet;
 	for (int i =0 ;i<AUDIO_BUFFER_SIZE;i++)
 	{
 		int32_t lin = (*in++)>>16;

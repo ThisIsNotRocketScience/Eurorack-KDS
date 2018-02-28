@@ -8,6 +8,11 @@
 #define PI  (float)(3.1415926535897932384626433832795)
 #define TAU (float)(3.1415926535897932384626433832795*2.0000)
 
+#define WOBBLER_SPEEDRATIOCOUNT 11
+#define SpeedRatio(x,y) ((x*65536)/y)
+int32_t Wobbler_SpeedRatioSet[WOBBLER_SPEEDRATIOCOUNT] = { SpeedRatio(1,8),SpeedRatio(1,6),SpeedRatio(1,4),SpeedRatio(1,3), SpeedRatio(1,2),SpeedRatio(1,1),SpeedRatio(2,1),SpeedRatio(3,1),SpeedRatio(4,1),SpeedRatio(6,1),SpeedRatio(8,1) };
+
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -353,13 +358,10 @@ extern "C"
 		if (LFO->extsync)
 		{
 			SteppedResult_t SpeedGrade;
-			Wobbler2_GetSteppedResult(LFO->SpeedOrig, 11, &SpeedGrade);
-#define S(x,y) ((x*65536)/y)
-			int32_t Speeds[11] = { S(1,8),S(1,6),S(1,4),S(1,3), S(1,2),
-									S(1,1),
-									S(2,1),S(3,1),S(4,1),S(6,1),S(8,1) };
+			Wobbler2_GetSteppedResult(LFO->SpeedOrig, WOBBLER_SPEEDRATIOCOUNT, &SpeedGrade);
+			
 			uint32_t DPorig = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
-			DP = ((LFO->SyncDP >> 16) * GetInterpolatedResultInt(Speeds, &SpeedGrade));
+			DP = ((LFO->SyncDP >> 16) * GetInterpolatedResultInt(Wobbler_SpeedRatioSet, &SpeedGrade));
 			uint32_t DPdiff = DPorig - DP;
 		}
 		else
@@ -369,7 +371,7 @@ extern "C"
 		LFO->Phase1 += DP;
 
 		uint32_t DP2 = LFO->Phasing * 0x100000;
-		uint32_t DP3 = Wobbler2_MakeFreq(LFO->Phasing);
+		uint32_t DP3 = Wobbler2_MakeFreq(LFO->Phasing>>3);
 		//DP2 <<= 24;
 		LFO->Phase2 = LFO->Phase1 + DP2;
 		LFO->Phase2Rev = LFO->Phase1 - DP2;
@@ -473,15 +475,15 @@ extern "C"
 		int iLedIdxB = LedIdxB >> 12;
 		int IdxB = ((LedIdxB - (iLedIdxB << 12))) >> 4;
 
-		LFO->Led[0][(iLedIdxB + 9) % 9] = 255 - IdxB;
-		LFO->Led[0][(iLedIdxB + 10) % 9] = IdxB;
+		LFO->Led[0][8-((iLedIdxB + 9) % 9)] = 255 - IdxB;
+		LFO->Led[0][8-((iLedIdxB + 10) % 9)] = IdxB;
 
 		int32_t LedIdxA = (LFO->OutputPhased * 8);
 		int iLedIdxA = LedIdxA >> 12;
 		int IdxA = ((LedIdxA - (iLedIdxA << 12))) >> 4;
 
-		LFO->Led[1][(iLedIdxA + 9) % 9] = 255 - IdxA;
-		LFO->Led[1][(iLedIdxA + 10) % 9] = IdxA;
+		LFO->Led[1][8-((iLedIdxA + 9) % 9)] = 255 - IdxA;
+		LFO->Led[1][8-((iLedIdxA + 10) % 9)] = IdxA;
 
 		for (int i = 0; i < 5; i++)
 		{

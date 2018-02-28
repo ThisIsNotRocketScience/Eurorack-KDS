@@ -10,14 +10,14 @@
 #define LED_CLOCK 6
 #define LED_DATA 7
 
-void LED_LATCH_SET() {GPIOB_PDOR |= (1<<LED_LATCH);};
-void LED_LATCH_CLR() {GPIOB_PDOR &= ~(1<<LED_LATCH);};
-void LED_CLOCK_SET() {GPIOB_PDOR |= (1<<LED_CLOCK);};
-void LED_CLOCK_CLR() {GPIOB_PDOR &= ~(1<<LED_CLOCK);};
-void LED_DATA_SET() {GPIOB_PDOR |= (1<<LED_DATA);};
-void LED_DATA_CLR() {GPIOB_PDOR &= ~(1<<LED_DATA);};
+inline void LED_LATCH_SET() {GPIOB_PDOR |= (1<<LED_LATCH);};
+inline void LED_LATCH_CLR() {GPIOB_PDOR &= ~(1<<LED_LATCH);};
+inline void LED_CLOCK_SET() {GPIOB_PDOR |= (1<<LED_CLOCK);};
+inline void LED_CLOCK_CLR() {GPIOB_PDOR &= ~(1<<LED_CLOCK);};
+inline void LED_DATA_SET() {GPIOB_PDOR |= (1<<LED_DATA);};
+inline void LED_DATA_CLR() {GPIOB_PDOR &= ~(1<<LED_DATA);};
 
-void LEDS_InitHardware()
+inline void LEDS_InitHardware()
 {
 	PORTB_PCR5 = PORT_PCR_MUX(0x01);
 	PORTB_PCR6 = PORT_PCR_MUX(0x01);
@@ -28,7 +28,7 @@ void LEDS_InitHardware()
 
 uint8_t PWM = 0;
 
-void LEDS_Update(uint8_t *leds, int count, uint8_t *gates, int gatecount)
+inline void LEDS_Update(uint8_t *leds, int count, uint8_t *gates, int gatecount)
 {
 	PWM+= 16;
 

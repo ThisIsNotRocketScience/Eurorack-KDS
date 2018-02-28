@@ -176,13 +176,14 @@ void denoise(int sw_down,  denoise_state_t *state)
 int32_t Param[4];
 
 int BlockT = 0;
-
+#include "Verb1.h"
 enum
 {
 	MODE_DELAY,
 	MODE_XDELAY,
 	MODE_CHORUS,
 	MODE_FLANGER,
+	MODE_VERB1,
 	__MODE_COUNT,
 	MODE_PLATINUMCLIP
 };
@@ -192,7 +193,8 @@ const char Names[__MODE_COUNT][10]=
 		"  Delay   ",
 		" X-Delay  ",
 		"  Chorus  ",
-		" Flanger  "
+		" Flanger  ",
+		"  Verb 1  "
 };
 
 const char ParamLabel[__MODE_COUNT][4][8] =
@@ -200,7 +202,8 @@ const char ParamLabel[__MODE_COUNT][4][8] =
 		{"Wet/Dry ","Feedback","Length  ","Stereo  "},
 		{"Wet/Dry ","Feedback","Length  ","X-over  "},
 		{"Wet/Dry ","Speed   ","Phasing ","        "},
-		{"Wet/Dry ","Speed   ","Phasing ","Feedback"}
+		{"Wet/Dry ","Speed   ","Phasing ","Feedback"},
+		{"Wet/Dry ","Length  ","Feedback","Damping "}
 
 };
 
@@ -214,6 +217,7 @@ typedef struct EffectsOverlay
 		XDelay XDelay;
 		StereoChorus_t Chorus;
 		Flanger_t Flanger;
+		Verb1 Verb1;
 	};
 } EffectsOverlay;
 
@@ -227,6 +231,10 @@ void SwitchMode(int newmode)
 		CurrentMode = -1;
 		switch(newmode)
 		{
+		case MODE_VERB1:
+			InitVerb1(&TheSet.Verb1);
+			break;
+
 		case MODE_CHORUS:
 
 			InitChorus(&TheSet.Chorus);
@@ -269,6 +277,10 @@ void NextBlock(int32_t *in, int32_t *out)
 	switch(CurrentMode)
 	{
 	//ProcessDelay(&TheSet.Delay,in, out);
+
+	case MODE_VERB1:
+		ProcessVerb1(&TheSet.Verb1, in, out);
+		break;
 	case MODE_FLANGER:
 		Flanger_SetMix(&TheSet.Flanger, Param[0]/65535.0);
 		Flanger_SetSpeed(&TheSet.Flanger, Param[1]/65535.0);
@@ -383,7 +395,7 @@ int main(void)
 
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
 
-	SwitchMode(MODE_XDELAY);
+	SwitchMode(MODE_VERB1);
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 	ak4558_init();

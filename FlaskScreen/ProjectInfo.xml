@@ -82,6 +82,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MicroGui_CharacterSet.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\OLED.c</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Verb2.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\delay.c</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\main.c</PathName>
@@ -126,6 +127,7 @@
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Events.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\MasterChorus.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\OLED.h</PathName>
+      <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\Verb1.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\ak4558.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\delay.h</PathName>
       <PathName>C:\Projects\Code\Kinetis2\Eurorack-KDS\FlaskScreen\Sources\waveguide.h</PathName>

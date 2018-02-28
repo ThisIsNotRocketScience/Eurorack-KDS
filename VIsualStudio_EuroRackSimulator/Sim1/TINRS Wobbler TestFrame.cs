@@ -32,7 +32,10 @@ namespace Sim1
             RebuildLFO();
             //BuildCalibrationTable();
             //BuildFreqLerp();
-            //BuildPoster();
+            BuildPoster();
+
+            Shape.Value = 255 / 5;
+
         }
 
         private void BuildFreqLerp()
@@ -149,7 +152,7 @@ namespace Sim1
             int R2 = 255;
             int G2 = 234;
             int B2 = 0;
-            int qmax = 2;
+            int qmax = 8;
             int width = 128;
             for (int q = 0; q < qmax; q++)
             {

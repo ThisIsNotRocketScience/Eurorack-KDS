@@ -7,7 +7,7 @@
 uint8_t ValidAppAddress(dword addr){ return ((addr>=MIN_APP_FLASH_ADDRESS) && (addr<=MAX_APP_FLASH_ADDRESS)); }
 
 void  __attribute__((optimize("-O0"))) Reboot()
-{
+				{
 	__DI();
 #if KIN1_IS_USING_KINETIS_SDK
 	SCB_AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
@@ -54,14 +54,20 @@ uint8_t GetButton()
 
 
 uint8_t __attribute__ ((weak)) Boot_CheckButtons()
-{
+				{
 	volatile uint32_t b = 0;
-	for(int i=0;i<10000;i++)
+	for(int i=0;i<3000;i++)
 	{
 		b+= GetButton();
+		WAIT1_Waitms(1);
+		if (b>500)
+		{
+			return 1;
+		}
 	}
-	if (b>500) return 1;
+
 	return 0;
+
 }
 
 void Boot_Check(void)
