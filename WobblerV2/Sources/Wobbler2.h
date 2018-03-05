@@ -47,8 +47,12 @@ typedef struct Wobbler2_LFO_SNH_t
 	
 	uint32_t lastval1;
 	uint32_t lastval2;
+	uint32_t lastval3;
+	uint32_t lastval4;
 	uint32_t store1;
 	uint32_t store2;
+	uint32_t store3;
+	uint32_t store4;
 
 	
 	uint8_t lastseg1;
@@ -57,7 +61,7 @@ typedef struct Wobbler2_LFO_SNH_t
 	
 	uint16_t segbuffer[32];
 	Wobbler2_RandomGen random;	
-	Wobbler2_SVFstruct F1, F2;
+	Wobbler2_SVFstruct F1, F2, F3, F4;
 } Wobbler2_LFO_SNH_t;
 
 typedef struct SteppedResult_t
@@ -71,7 +75,20 @@ typedef struct SteppedResult_t
 //float GetInterpolatedResultFloat(float *table, SteppedResult_t *inp);
 int32_t GetInterpolatedResultInt(int32_t *table, SteppedResult_t *inp);
 
+enum
+{
+	WOBBLER2_FANCYENV_ATTACK,
+	WOBBLER2_FANCYENV_DECAY,
+	WOBBLER2_FANCYENV_IDLE
+};
 
+
+typedef struct Wobbler2_FancyEnv_t
+{
+	int32_t current;
+	int32_t currentcurved;
+	int32_t state;
+} Wobbler2_FancyEnv_t;
 
 typedef struct Wobbler2_LFO_t
 {
@@ -87,7 +104,9 @@ typedef struct Wobbler2_LFO_t
 	int16_t Amount2;
 
 	uint32_t Phase1;
+	uint32_t SlomoPhase1;
 	uint32_t OldPhase1;
+	uint32_t SlomoPhase2;
 	uint32_t Phase2;
 	uint32_t Phase2Rev;
 	int32_t OldPhase2;
@@ -100,10 +119,11 @@ typedef struct Wobbler2_LFO_t
 	 int Led[2][9];
 	unsigned char ModeLed[5];
 	unsigned char TriggerLed;
-
+	uint32_t T;
 	uint32_t PhasedCountdown;
-	int32_t EnvelopeVal;
-	uint8_t EnvelopeState;
+	//int32_t EnvelopeVal;
+	//uint8_t EnvelopeState;
+	Wobbler2_FancyEnv_t FancyEnv;
 	Wobbler2_SVF_Coeffs SVFCoeffs;
 	Wobbler2_LFO_SNH_t SNH;
 #ifdef INTPENDULUM
@@ -124,9 +144,11 @@ typedef struct Wobbler2_LFO_t
 	SteppedResult_t ShapeStepped;
 	Shapes_t BasicShapesA;
 	Shapes_t BasicShapesB;
+	Shapes_t SlomoBasicShapesA;
+	Shapes_t SlomoBasicShapesB;
 
-	int32_t OutputsNormal[6];
-	int32_t OutputsPhased[6];
+	int32_t OutputsNormal[7];
+	int32_t OutputsPhased[7];
 
 	ShapeCompensationVals_t CompensationVals;
 
@@ -165,7 +187,9 @@ extern "C"
 	extern unsigned long Wobbler2_MakeFreq(int input);
 	extern unsigned long Wobbler2_LFORange2(int32_t V, int32_t SR);
 	extern unsigned long Wobbler2_LFORange3(int32_t V, int32_t SR);
-
+	extern void Wobbler2_FancyEnv_Init(Wobbler2_FancyEnv_t *env);
+	extern void Wobbler2_FancyEnv_Trigger(Wobbler2_FancyEnv_t *env);
+	extern int32_t Wobbler2_FancyEnv_Update(Wobbler2_FancyEnv_t *env, int32_t param);
 
 	extern int32_t LERP(int32_t *V, int total, int fade);
 #ifdef __cplusplus

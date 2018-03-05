@@ -160,10 +160,10 @@ namespace Sim1
                 for (float i = 0; i < 256; i += 2)
                 {
 
-                    Shape.Value = (int)64;
+                    Shape.Value = (int)(i);
                     Phase.Value = (int)((i) %256);
                     Speed.Value = 255;
-                    Mod.Value = 10 + (q * 240) / (qmax - 1);
+                    Mod.Value = (int)((Math.Sin(i*(1.0f/(256.0/Math.PI*2)))*5 + 5) + ((q * 245) / (qmax - 1)));
                     float Ybase = i * 10;
                     float H = 40;
 
@@ -180,7 +180,7 @@ namespace Sim1
 
                     for (int j = 0; j < width; j++)
                     {
-                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[j * 4 * 4] * H));
+                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[(int)(j * 8 * 8.5)] * H));
                         //   P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
                     }
                     Lines.Add(P);

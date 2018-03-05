@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BigFishQuickTest", "BigFish
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFrameConsole", "TestFrameConsole\TestFrameConsole.vcxproj", "{0499C7F6-D806-402D-856A-2A588F4A6785}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFrameImgUI", "TestFrameImgUI\TestFrameImgUI.vcxproj", "{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,16 @@ Global
 		{0499C7F6-D806-402D-856A-2A588F4A6785}.Release|x64.Build.0 = Release|x64
 		{0499C7F6-D806-402D-856A-2A588F4A6785}.Release|x86.ActiveCfg = Release|Win32
 		{0499C7F6-D806-402D-856A-2A588F4A6785}.Release|x86.Build.0 = Release|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Debug|x64.ActiveCfg = Debug|x64
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Debug|x64.Build.0 = Debug|x64
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Debug|x86.ActiveCfg = Debug|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Debug|x86.Build.0 = Debug|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Release|Any CPU.ActiveCfg = Release|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Release|x64.ActiveCfg = Release|x64
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Release|x64.Build.0 = Release|x64
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Release|x86.ActiveCfg = Release|Win32
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

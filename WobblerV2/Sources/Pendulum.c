@@ -41,14 +41,16 @@ void Wobbler2_InitIntPendulum(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
 	P->DecayEnvelopeCount = 1<<30;
 };
 
+#define FIX(x)((int32_t)((x)*65536.0f))
+
 void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_t *W)
 {
 #define DAMPSTART 0.9995f
-	P->Damping = fix16_add(fix16_from_float(DAMPSTART), fix16_mul(W->Mod , fix16_from_float((1.0f - DAMPSTART) / (float)(0xffff))));
+	P->Damping = fix16_add(FIX(DAMPSTART), fix16_mul(W->Mod , FIX((1.0f - DAMPSTART) / (float)(0xffff))));
 	P->dTheta1 = fix16_add(P->dTheta1, fix16_mul(W->Phasing - W->LastPhasing, fix16_from_float(0.00001f)));
 	//float spe = LERP9bit(SpeedAdjust, W->Speed)   * (1.0f / (float)65535);
 	//	spe *= spe;
-	P->g = fix16_mul(fix16_from_float( .2981f), fix16_add(fix16_from_float(0.001f), LERP9bit(SpeedAdjust, W->Speed)));
+	P->g = fix16_mul(FIX( .2981f), fix16_add(FIX(0.001f), LERP9bit(SpeedAdjust, W->Speed)));
 	P->l1 = fix16_from_int(1);
 	P->l2 = fix16_from_int(1);
 	P->m1 = fix16_from_int(1);
@@ -57,6 +59,7 @@ void Wobbler2_UpdateIntPendulumSettings(Wobbler2_PendulumInt_t *P, Wobbler2_LFO_
 
 	P->DecayEnvelopeAmt = ((1 << 27) - 1) / (1 + (Wobbler2_LFORange3(W->Mod, WOBBLERSAMPLERATE)));
 };
+
 
 
 void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
@@ -112,7 +115,7 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 	P->dTheta1 = fix16_mul(P->dTheta1, P->Damping);
 	P->dTheta2 = fix16_mul(P->dTheta2, P->Damping);
 
-	fix16_t const DT = fix16_from_float(0.5f);
+	fix16_t const DT = FIX(0.5f);
 	P->dTheta1 = fix16_add(P->dTheta1,  fix16_mul(P->d2Theta1,DT));
 	P->dTheta2 = fix16_add(P->dTheta2, fix16_mul(P->d2Theta2,DT));
 	P->Theta1 = fix16_add(P->Theta1, fix16_mul(P->dTheta1,DT));
@@ -122,13 +125,12 @@ void Wobbler2_DoublePendulumInt(Wobbler2_PendulumInt_t *P, int32_t feed)
 	P->B = P->Theta2 * 0xffff;
 	//P->As = P->Theta1 * ((float)(0xffff) / TAU);
 	//P->Bs = P->Theta2 *  ((float)(0xffff) / TAU);
-	while (P->Theta1 > PI) P->Theta1 = fix16_sub(P->Theta1, TAU);
-	while (P->Theta2 > PI) P->Theta2 = fix16_sub(P->Theta2, TAU);
-	while (P->Theta1 < -PI) P->Theta1 = fix16_add(P->Theta1, TAU);
-	while (P->Theta2 < -PI) P->Theta2 = fix16_add(P->Theta2, TAU);
-	P->As = fix16_mul(P->Theta1, fix16_from_float(((float)0xffff) / (3.1415f*2)));// *(P->DecayEnvelopeCount >> 17);
+	P->Theta1 = fix16_mod(P->Theta1, PI);
+	P->Theta2 = fix16_mod(P->Theta2, PI);
+
+	P->As = fix16_mul(P->Theta1, FIX(((float)0xffff) / (3.1415f*2)));// *(P->DecayEnvelopeCount >> 17);
 	
-	P->Bs = fix16_mul(P->Theta2, fix16_from_float(((float)0xffff) / (3.1415f * 2)));// *(P->DecayEnvelopeCount >> 17);
+	P->Bs = fix16_mul(P->Theta2, FIX(((float)0xffff) / (3.1415f * 2)));// *(P->DecayEnvelopeCount >> 17);
 	
 	int32_t DecayEnvelopeCount = P->DecayEnvelopeCount>>8;
 
