@@ -90,6 +90,7 @@ extern "C"
 	int32_t Triangle(uint32_t phase);
 	void CalculateCompensation(ShapeCompensationVals_t *Comp, int mod);
 	int32_t BasicShapes(uint32_t phase, int mod, ShapeCompensationVals_t *Comp);
+	int32_t UncompensatedBasicShapes(uint32_t phase, int mod);
 	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes, ShapeCompensationVals_t *Comp);
 
 	void ResetSVF(struct EURORACK_SVF *filt);

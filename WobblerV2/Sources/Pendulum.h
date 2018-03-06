@@ -103,8 +103,6 @@ typedef struct Wobbler2_PendulumInt_t
 
 	fix16_t	Damping;
 	
-	int32_t DecayEnvelopeCount;
-	int32_t DecayEnvelopeAmt;
 	int32_t As;
 	int32_t Bs;
 	int32_t dampcount;

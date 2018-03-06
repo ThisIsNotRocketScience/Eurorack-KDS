@@ -88,6 +88,7 @@ typedef struct Wobbler2_FancyEnv_t
 	int32_t current;
 	int32_t currentcurved;
 	int32_t state;
+	int32_t endlevel;
 } Wobbler2_FancyEnv_t;
 
 typedef struct Wobbler2_LFO_t

@@ -67,6 +67,7 @@ extern "C"
 
 			LFO->SyncedPeriodTime = (LFO->synctime[0] + LFO->synctime[1] + LFO->synctime[2]) / 3;
 			LFO->SyncDP = 0xffffffff / LFO->SyncedPeriodTime;
+			LFO->extsync = 1;
 		}
 		LFO->synctime[LFO->syncindex] = Delta;
 	}
@@ -305,7 +306,7 @@ extern "C"
 		}
 		else
 		{
-			LFO->extsync = 1;
+		//	LFO->extsync = 1;
 		}
 
 		if (LFO->Gate[0] > 0)
@@ -425,7 +426,7 @@ extern "C"
 
 		LFO->OutputsNormal[2] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsNormal[0]) / 2;
 		LFO->OutputsNormal[3] = Wobbler2_Twang(LFO, LFO->Phase1);
-		LFO->OutputsNormal[4] = LFO->Pendulum.As;// + 0x80000000;
+		LFO->OutputsNormal[4] = (LFO->Pendulum.As >> 16) * (LFO->FancyEnv.currentcurved);// + 0x80000000;
 		LFO->OutputsNormal[5] = (int32_t)(LFO->SNH.store1 << 16) - (1 << 29);
 		LFO->OutputsNormal[6] = (int32_t)(LFO->SNH.store3 << 16) - (1 << 29);
 
@@ -433,7 +434,7 @@ extern "C"
 		LFO->OutputsPhased[1] = FillBasicShapes(LFO->Phase2, LFO->Mod >> 8, &LFO->BasicShapesB, &LFO->CompensationVals);
 		LFO->OutputsPhased[2] = (BasicShapes(LFO->Phase2 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsPhased[0]) / 2;
 		LFO->OutputsPhased[3] = Wobbler2_Twang(LFO, LFO->Phase2);
-		LFO->OutputsPhased[4] = LFO->Pendulum.Bs;// + 0x80000000;
+		LFO->OutputsPhased[4] = (LFO->Pendulum.Bs >> 16) * (LFO->FancyEnv.currentcurved);// + 0x80000000;
 		LFO->OutputsPhased[5] = (int32_t)(LFO->SNH.store2 << 16) - (1 << 29);
 		LFO->OutputsPhased[6] = (int32_t)(LFO->SNH.store4 << 16) - (1 << 29);
 
@@ -560,6 +561,7 @@ extern "C"
 	void Wobbler2_FancyEnv_Init(Wobbler2_FancyEnv_t* env)
 	{
 		env->current = WOBBLER2_FANCYENV_IDLE;
+		env->endlevel = 0;
 		env->state = 0;
 	};
 
@@ -582,22 +584,28 @@ extern "C"
 	{
 		uint32_t A = 0;
 		uint32_t R = Wobbler2_LFORange3(128 << 8, WOBBLERSAMPLERATE);
+		env->endlevel = 0;
 		if ((param>> 8) < 128)
 		{
-			R = 1 + (Wobbler2_LFORange3(param, WOBBLERSAMPLERATE));
+			const int minR = (int)(0.055f * (float)WOBBLERSAMPLERATE);
+			R = minR + (Wobbler2_LFORange3(param, WOBBLERSAMPLERATE))*2;
 		}
 		else
 		{
 			A = 1 + (Wobbler2_LFORange3(param- (128 << 8), WOBBLERSAMPLERATE));
+			if ((param >> 8) > (255-10))
+			{
+				env->endlevel = ((param>>8) - (255-10 ))* ((1<<24) / (10));
+			}		
 		}
 
 
 		switch (env->state)
 		{
-		case WOBBLER2_FANCYENV_IDLE: env->currentcurved = 0; return 0;
+		case WOBBLER2_FANCYENV_IDLE: env->currentcurved = 0; return env->current;
 		case WOBBLER2_FANCYENV_ATTACK:
 		{
-		/*	int32_t attacklowerbound = FIX(0.8);
+			int32_t attacklowerbound = FIX(0.8);
 			int32_t attackupperbound = FIX(0.002);
 
 			int32_t attackhighval = Wobbler2_EnvTransferFunc(attacklowerbound);// ((1 / (attacklowerbound - 1)) + 1 / (attacklowerbound + 1));
@@ -618,15 +626,19 @@ extern "C"
 
 			int32_t scaled =fix16_add(fix16_mul( fix16_ssub(FIX(1.0), env->current>>8) , fix16_ssub(attackupperbound ,attacklowerbound)) , attacklowerbound);
 			env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled) ,attackbaseline),attackrange);
-			*/
-			env->currentcurved = env->current >> 8;
+			
+		//	env->currentcurved = env->current >> 8;
 			return env->current;			
 		}
 		case WOBBLER2_FANCYENV_DECAY:
 		{
 			env->current -= ((1 << 24) - 1) / R;
 
-			/*
+			if (env->current <= env->endlevel) { 
+				env->current = env->endlevel; 
+				if (env->current == 0) env->state = WOBBLER2_FANCYENV_IDLE;
+			};
+
 			int32_t decaylowerbound = FIX(0.9);
 			int32_t decayupperbound = FIX(-0.016);
 
@@ -638,8 +650,8 @@ extern "C"
 			}
 			else
 			{
-				decaylowerbound = FIX((0.9 - 0.89));
-				decayupperbound = fix16_sub(FIX( -0.016), fix16_smul(FIX(0.9) ,(param - 0x8000)*2));
+				decaylowerbound = fix16_sub(FIX(0.9f), fix16_smul(0x8000 * 2, FIX(0.9f - 0.19f)));
+				decayupperbound = fix16_sub(-fix16_smul(0x8000* 2, FIX(0.19)), fix16_smul(FIX(0.9) ,(param - 0x8000)*2));
 			}
 		//	 decaylowerbound = FIX(0.9);
 			// decayupperbound = FIX(-0.016);
@@ -654,10 +666,9 @@ extern "C"
 			int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), env->current >> 8), fix16_ssub(decayupperbound, decaylowerbound)), decaylowerbound);
 			
 			env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled), decaybaseline), decayrange);
-			*/
+			
 
-			if (env->current <= 0) { env->current = 0; env->state = WOBBLER2_FANCYENV_IDLE; };
-			env->currentcurved = env->current >> 8;
+		//	env->currentcurved = env->current >> 8;
 
 			return env->current;
 		}

@@ -13,7 +13,7 @@ void Algo_Wobble_Init( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Setti
 	Output->Wobble.PhaseSpeed2 = 0xcfffffff / (__max(4, T->CurrentPattern.Length)/4);
 }
 
-ShapeCompensationVals_t Comp;
+
 
 void Algo_Wobble_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settings *S,  Tuesday_RandomGen *R,  Tuesday_PatternFuncSpecific *PS, int I,  Tuesday_Tick_t *Output)
 {
@@ -23,9 +23,7 @@ void Algo_Wobble_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settin
 
 	struct ScaledNote SN;
 	DefaultTick(Output);
-	Comp.min = COMPENSATION_NOMIN;
-	Comp.mul = COMPENSATION_NOMUL;
-
+	
 
 	PS->Wobble.Phase += PS->Wobble.PhaseSpeed;
 	PS->Wobble.Phase2 += PS->Wobble.PhaseSpeed2;
@@ -33,7 +31,7 @@ void Algo_Wobble_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settin
 	if (Tuesday_PercChance(R, T->seed2))
 	{
 
-		int32_t pos2 = BasicShapes(PS->Wobble.Phase2, T->seed1, &Comp);
+		int32_t pos2 = UncompensatedBasicShapes(PS->Wobble.Phase2, T->seed1);
 		NOTE(1, (pos2 >> 27));
 		if (PS->Wobble.LastWasHigh == 0) 
 		{
@@ -46,7 +44,7 @@ void Algo_Wobble_Gen( Tuesday_PatternGen *T,  Tuesday_Params *P,  Tuesday_Settin
 	}
 	else
 	{
-		int32_t pos = BasicShapes(PS->Wobble.Phase, T->seed1, &Comp);
+		int32_t pos = UncompensatedBasicShapes(PS->Wobble.Phase, T->seed1);
 		NOTE(0, (pos >> 27));
 		if (PS->Wobble.LastWasHigh == 1)
 		{

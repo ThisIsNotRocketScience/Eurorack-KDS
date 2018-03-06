@@ -15,43 +15,29 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\libs\gl3w-master\src\gl3w.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libs\imgui-master\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libs\imgui-master\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libs\imgui-master\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libs\imgui-master\examples\sdl_opengl3_example\imgui_impl_sdl_gl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\WobblerV2\Sources\Pendulum.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2main.lib" />
+    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="..\..\EurorackShared\Math.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_sqrt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_str.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c">
+    <ClCompile Include="..\libs\gl3w-master\src\gl3w.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libfixmath\libfixmath\fract32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c">
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_str.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_sqrt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\libfixmath\libfixmath\fix16.c">
@@ -60,7 +46,28 @@
     <ClCompile Include="..\..\libfixmath\libfixmath\fix16_exp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WobblerGUI.cpp">
+    <ClCompile Include="..\libs\imgui-master\examples\sdl_opengl3_example\imgui_impl_sdl_gl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui-master\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui-master\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tuesday\Sources\Algo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\EurorackShared\EurorackShared.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TuesdayGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\libs\lodepng-master\lodepng.cpp">
@@ -68,18 +75,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.lib" />
-    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2main.lib" />
+    <Font Include="..\TestFrameImgUI\Fontfabric - Panton ExtraBold.otf" />
+    <Font Include="..\TestFrameImgUI\Fontfabric - Panton.otf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Fontfabric - Panton.otf" />
-    <Font Include="Fontfabric - Panton ExtraBold.otf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\TuesdayImGui\ms-icon-150x150.png">
+    <Image Include="ms-icon-150x150.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

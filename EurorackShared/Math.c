@@ -132,6 +132,20 @@ extern "C"
 		return FillBasicShapes(phase, mod, &Shapes, Comp);		
 	}
 
+	
+	int32_t UncompensatedBasicShapes(uint32_t phase, int mod)
+	{
+		Shapes_t Shapes;
+		Shapes.Sine = Sine(phase);
+		Shapes.Saw = SawTooth(phase);
+		Shapes.Tri = Triangle(phase);
+		Shapes.Pulse = Pulse(phase);
+		int32_t PreComp = LERP(&Shapes.Sine, 3, mod);
+
+		return PreComp;
+	}
+
+
 #ifdef __cplusplus
 }
 #endif

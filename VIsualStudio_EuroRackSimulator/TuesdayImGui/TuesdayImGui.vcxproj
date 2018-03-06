@@ -20,11 +20,11 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE}</ProjectGuid>
+    <ProjectGuid>{37E918C0-58D6-4FBE-B07D-793796E2F87B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>TestFrameImgUI</RootNamespace>
+    <RootNamespace>TuesdayImGui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
-    <ProjectName>WobblerGUI</ProjectName>
+    <ProjectName>TuesdayGUI</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -38,7 +38,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\libs\SDL2-2.0.7\include;..\libs\imgui-master;..\libs\gl3w-master\include</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;..\libs\SDL2-2.0.7\include;..\libs\imgui-master;..\libs\gl3w-master\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -91,7 +91,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,10 +103,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,7 +117,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,15 +133,23 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.lib" />
+    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2main.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
     <ClCompile Include="..\..\EurorackShared\Math.c" />
     <ClCompile Include="..\..\libfixmath\libfixmath\fix16.c" />
     <ClCompile Include="..\..\libfixmath\libfixmath\fix16_exp.c" />
@@ -150,35 +158,25 @@
     <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c" />
     <ClCompile Include="..\..\libfixmath\libfixmath\fract32.c" />
     <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c" />
-    <ClCompile Include="..\..\WobblerV2\Sources\Pendulum.c" />
-    <ClCompile Include="..\..\WobblerV2\Sources\Wobbler2.c" />
+    <ClCompile Include="..\..\Tuesday\Sources\Algo.c" />
+    <ClCompile Include="..\..\Tuesday\Sources\Tuesday.c" />
     <ClCompile Include="..\libs\gl3w-master\src\gl3w.c" />
     <ClCompile Include="..\libs\imgui-master\examples\sdl_opengl3_example\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="..\libs\imgui-master\imgui.cpp" />
-    <ClCompile Include="..\libs\imgui-master\imgui_demo.cpp" />
     <ClCompile Include="..\libs\imgui-master\imgui_draw.cpp" />
     <ClCompile Include="..\libs\lodepng-master\lodepng.cpp" />
-    <ClCompile Include="WobblerGUI.cpp" />
+    <ClCompile Include="TuesdayGUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.lib" />
-    <Library Include="..\libs\SDL2-2.0.7\lib\x86\SDL2main.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\libs\SDL2-2.0.7\lib\x86\SDL2.dll">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Fontfabric - Panton ExtraBold.otf">
+    <Font Include="..\TestFrameImgUI\Fontfabric - Panton ExtraBold.otf">
       <DeploymentContent>true</DeploymentContent>
     </Font>
-    <Font Include="Fontfabric - Panton.otf">
+    <Font Include="..\TestFrameImgUI\Fontfabric - Panton.otf">
       <DeploymentContent>true</DeploymentContent>
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\TuesdayImGui\ms-icon-150x150.png">
+    <Image Include="ms-icon-150x150.png">
       <DeploymentContent>true</DeploymentContent>
     </Image>
   </ItemGroup>

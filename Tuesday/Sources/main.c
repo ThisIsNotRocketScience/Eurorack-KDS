@@ -100,28 +100,6 @@ void UpdateButtons()
 	denoise(SW_TPB_GetVal(0), &tpbsw_state);
 }
 
-void UpdateGates()
-{
-	for (int i = 0; i < 6; i++)
-	{
-		if (Tuesday.Gates[i] > 0)
-		{
-			Tuesday.Gates[i]--;
-			Tuesday.GatesGap[i] = 0;
-		}
-		else
-		{
-			if (Tuesday.GatesGap[i] > 0)
-			{
-				Tuesday.GatesGap[i]--;
-			}
-			else
-			{
-				Tuesday.Gates[i] = -Tuesday.Gates[i];
-			}
-		}
-	}
-}
 
 void __attribute__((noinline)) ShiftOut()
 {
@@ -197,23 +175,14 @@ void doTimer()
 
 		if (Tuesday.T % 2 == 0)
 		{
-			if (Tuesday.CVOutCountDown > 0)
-			{
-				Tuesday.CVOut += Tuesday.CVOutDelta;
-				Tuesday.CVOutCountDown--;
-				if (Tuesday.CVOutCountDown == 0) Tuesday.CVOut = Tuesday.CVOutTarget;
-			}
-			else
-			{
-				Tuesday.CVOut = Tuesday.CVOutTarget;
-			}
+
 			DAC_Write(0, Tuesday.CVOut >> 16);
 		}
 		else
 		{
 			DAC_Write(1, Tuesday.TickOut);
 		}
-		UpdateGates();
+
 	}
 	break;
 	case UI_CALIBRATION:
@@ -871,6 +840,7 @@ int main(void)
 	LoadEepromCalibration();
 
 	Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
+	Tuesday_Generate(&Tuesday, &Params, &Settings);
 
 	TI1_Enable();
 	AD1_Measure(FALSE);

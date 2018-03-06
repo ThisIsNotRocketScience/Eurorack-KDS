@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <GL/gl3w.h>    // This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
 #include <SDL.h>
+#include <vector>
 
 #include "../../WobblerV2/Sources/Wobbler2.h"
 
@@ -39,6 +40,86 @@ ImVec2 Points[1000];
 ImVec2 EnvPoints[1000];
 ImVec2 Points2[1000];
 
+#include "../libs/lodepng-master/lodepng.h"
+
+
+SDL_Surface* load_PNG(const char* filename)
+{
+	std::vector<unsigned char> buffer, image;
+	lodepng::load_file(buffer, filename); //load the image file with given filename
+	unsigned w, h;
+	unsigned error = lodepng::decode(image, w, h, buffer); //decode the png
+
+	if (error)
+	{
+		//std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
+		return 0;
+	}
+
+	Uint32 rmask, gmask, bmask, amask;
+	/* SDL interprets each pixel as a 32-bit number, so our masks must depend
+	on the endianness (byte order) of the machine */
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	rmask = 0xff000000;
+	gmask = 0x00ff0000;
+	bmask = 0x0000ff00;
+	amask = 0x000000ff;
+#else
+	rmask = 0x000000ff;
+	gmask = 0x0000ff00;
+	bmask = 0x00ff0000;
+	amask = 0xff000000;
+#endif
+
+	//avoid too large window size by downscaling large image
+	unsigned jump = 1;
+	//if(w / 1024 >= jump) jump = w / 1024 + 1;
+	//if(h / 1024 >= jump) jump = h / 1024 + 1;
+
+	SDL_Surface *dest = SDL_CreateRGBSurface(0, w, h, 32,
+		rmask, gmask, bmask, amask);
+	if (dest == NULL) {
+		fprintf(stderr, "CreateRGBSurface failed: %s\n", SDL_GetError());
+		return 0;
+	}
+
+	if (SDL_MUSTLOCK(dest)) { SDL_LockSurface(dest); }
+
+	//plot the pixels of the PNG file
+	for (unsigned y = 0; y + jump - 1 < h; y += jump)
+		for (unsigned x = 0; x + jump - 1 < w; x += jump)
+		{
+			//get RGBA components
+			Uint32 r = image[4 * y * w + 4 * x + 0]; //red
+			Uint32 g = image[4 * y * w + 4 * x + 1]; //green
+			Uint32 b = image[4 * y * w + 4 * x + 2]; //blue
+			Uint32 a = image[4 * y * w + 4 * x + 3]; //alpha
+
+													 //make translucency visible by placing checkerboard pattern behind image
+													 //int checkerColor = 191 + 64 * (((x / 16) % 2) == ((y / 16) % 2));
+													 //r = (a * r + (255 - a) * checkerColor) / 255;
+													 //g = (a * g + (255 - a) * checkerColor) / 255;
+													 //b = (a * b + (255 - a) * checkerColor) / 255;
+
+													 //give the color value to the pixel of the screenbuffer
+			Uint32* bufp = (Uint32 *)dest->pixels + (y * dest->pitch / 4) / jump + (x / jump);
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+			*bufp = 0x01000000 * r + 65536 * g + 256 * b + a;
+#else
+			*bufp = 0x01000000 * a + 65536 * b + 256 * g + r;
+#endif
+		}
+
+	if (SDL_MUSTLOCK(dest)) { SDL_UnlockSurface(dest); }
+	return dest;
+}
+
+void SetupIcon(SDL_Window *window)
+{
+
+	SDL_SetWindowIcon(window, load_PNG("favicon-32x32.png"));
+
+}
 
 int main(int, char**)
 {
@@ -60,7 +141,9 @@ int main(int, char**)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
-	SDL_Window *window = SDL_CreateWindow("TiNRS Wobbler2 Inspection GUI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow("TiNRS Wobbler Inspection GUI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	
+	SetupIcon(window);
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1); // Enable vsync
 	gl3wInit();
@@ -103,13 +186,13 @@ int main(int, char**)
 	bool done = false;
 
 	static float fPhase = 1.0f;
-	static float fMod = 0.0f;
-	static float fShape = 0.0f;
+	static float fMod = 0.1f;
+	static float fShape = 0.3f;
 	static float fSpeed = 0.6f;
 	static float f5 = 0.0f;
 	static float f6 = 0.0f;
 	static int counter = 0;
-	static int updaterate = 50;
+	static int updaterate = 1;
 
 	ImFont* pFont = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton.otf", 14.0f);
 	ImFont* pFontBold = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton ExtraBold.otf", 18.0f);
@@ -128,84 +211,98 @@ int main(int, char**)
 		while (SDL_PollEvent(&event))
 		{
 			ImGui_ImplSdlGL3_ProcessEvent(&event);
-			if (event.type == SDL_QUIT)
-				done = true;
+			if (event.type == SDL_QUIT) done = true;
 		}
 		ImGui_ImplSdlGL3_NewFrame(window);
-		ImGui::PushFont(pFontBold);
+		static bool waveforms = true;
+		static bool parameters = true;
+		static bool envelopedisplay = true;
+		static bool stepped = false;
+		if (ImGui::BeginMainMenuBar())
 		{
-			ImGui::Begin("Wobbler");
+
+			if (ImGui::BeginMenu("Wobbler Windows"))
+			{
+				ImGui::MenuItem("Output Waveforms", NULL, &waveforms);
+				ImGui::MenuItem("Wobbler Parameters", NULL, &parameters);
+				ImGui::MenuItem("FancyEnvelope", NULL, &envelopedisplay);
+				ImGui::MenuItem("SteppedResult", NULL, &stepped);
+
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+
+		if (parameters)
+		{ 
+			ImGui::PushFont(pFontBold);
+		
+			ImGui::Begin("Wobbler Parameters",&parameters, ImGuiWindowFlags_AlwaysAutoResize);
 			ImGui::PushFont(pFont);
 
 
+
+		
+
+			ImGui::SliderFloat("Phase", &fPhase, 0.0f, 1.0f);
+			ImGui::SliderFloat("Mod", &fMod, 0.0f, 1.0f);
+			ImGui::SliderFloat("Shape", &fShape, 0.0f, 1.0f);
+			ImGui::SliderFloat("Speed", &fSpeed, 0.0f, 1.0f);
+
+			ImGui::SliderFloat("Amount 1", &f5, 0.0f, 1.0f);
+
+			ImGui::SliderFloat("Amount 2", &f6, 0.0f, 1.0f);
+
+
+
+
+
+			if (ImGui::Button("Trigger"))
 			{
-
-
-				if (ImGui::CollapsingHeader("Parameters"))
-				{
-
-
-					ImGui::SliderFloat("Phase", &fPhase, 0.0f, 1.0f);
-					ImGui::SliderFloat("Mod", &fMod, 0.0f, 1.0f);
-					ImGui::SliderFloat("Shape", &fShape, 0.0f, 1.0f);
-					ImGui::SliderFloat("Speed", &fSpeed, 0.0f, 1.0f);
-
-					ImGui::SliderFloat("Amount 1", &f5, 0.0f, 1.0f);
-
-					ImGui::SliderFloat("Amount 2", &f6, 0.0f, 1.0f);
-
-
-
-
-
-					if (ImGui::Button("Trigger"))
-					{
-						Wobbler2_Trigger(&LFO2Static, 0, &LFO2Params);
-						Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Sync"))                      Wobbler2_SyncPulse(&LFO2Static);
-
-					if (ImGui::Button("Basic 1"))                      fShape = (0.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("Basic 2"))                      fShape = (1.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("Phased"))                      fShape = (2.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("Twang"))                      fShape = (3.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("Pendulum"))                      fShape = (4.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("SnH 1"))                      fShape = (5.0f / 6.0f);
-					ImGui::SameLine();
-					if (ImGui::Button("SnH 2"))                      fShape = (6.0f / 6.0f);
-
-					ImGui::SliderInt("Update Speed", &updaterate, 0, 100);
-
-				}
-
-				if (ImGui::CollapsingHeader("Leds"))
-				{
-
-					ImVec2 p = ImGui::GetCursorScreenPos();
-
-
-					float R = 5;
-					for (int i = 0; i < 9; i++)
-					{
-						int lA = LFO2Static.Led[0][i];
-						int lB = LFO2Static.Led[1][i];
-						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 10), R, IM_COL32(lA, lA, 60, 255));
-						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 30), R, IM_COL32(lB, lB, 60, 255));
-					}
-
-					for (int i = 0; i < 5; i++)
-					{
-						int lA = LFO2Static.ModeLed[i];
-						ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 50), R, IM_COL32(lA, lA, 60, 255));
-					}
-				}
+				Wobbler2_Trigger(&LFO2Static, 0, &LFO2Params);
+				Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
 			}
+			ImGui::SameLine();
+			if (ImGui::Button("Sync"))                      Wobbler2_SyncPulse(&LFO2Static);
+
+			if (ImGui::Button("Basic 1"))                      fShape = (0.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Basic 2"))                      fShape = (1.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Phased"))                      fShape = (2.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Twang"))                      fShape = (3.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("Pendulum"))                      fShape = (4.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("SnH 1"))                      fShape = (5.0f / 6.0f);
+			ImGui::SameLine();
+			if (ImGui::Button("SnH 2"))                      fShape = (6.0f / 6.0f);
+
+			ImGui::SliderInt("Update Speed", &updaterate, 0, 10);
+
+
+
+
+			ImVec2 p = ImGui::GetCursorScreenPos();
+
+
+			float R = 5;
+			for (int i = 0; i < 9; i++)
+			{
+				int lA = LFO2Static.Led[0][i];
+				int lB = LFO2Static.Led[1][i];
+				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 10), R, IM_COL32(lA, lA, 60, 255));
+				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 30), R, IM_COL32(lB, lB, 60, 255));
+			}
+
+			for (int i = 0; i < 5; i++)
+			{
+				int lA = LFO2Static.ModeLed[i];
+				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(10 + p.x + i * 15, p.y + 50), R, IM_COL32(lA, lA, 60, 255));
+			}
+				
+			
 			ImGui::PopFont();
 			ImGui::End();
 			ImGui::PopFont();
@@ -233,7 +330,7 @@ int main(int, char**)
 		LFO2Static.Amount2 = ((adcchannels[ADC_AMTPHASED]) >> 1) - (1 << 14);
 
 
-		for (int i = 0; i < updaterate; i++)
+		for (int i = 0; i < updaterate*10; i++)
 		{
 
 			res[cursor].normal = Wobbler2_Get(&LFO2Static, &LFO2Params);
@@ -242,12 +339,13 @@ int main(int, char**)
 			cursor = (cursor + 1) % 10000;
 		}
 		ImVec2 p;
+		if (waveforms)
 		{
 			ImGui::PushFont(pFontBold);
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
-			ImGui::Begin("Wave outputs");
+			ImGui::Begin("Wave outputs", &waveforms, ImGuiWindowFlags_AlwaysAutoResize);
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 200, 255));
-			ImGui::BeginChild("Normal", ImVec2(500, 240), true);
+			ImGui::BeginChild("Normal", ImVec2(500, 320), true);
 			 p = ImGui::GetCursorScreenPos();
 
 			for (int i = 0; i < 500; i++)
@@ -269,12 +367,6 @@ int main(int, char**)
 				Points2[i].y = p.y + 100 + ((P - 2048) / 20);
 			}
 			ImGui::GetWindowDrawList()->AddPolyline(Points2, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
-
-			ImGui::EndChild();
-			ImGui::Text("N: %d->%d, P: %d->%d", minN, maxN, minP, maxP);
-
-			ImGui::BeginChild("Envelope", ImVec2(500, 260), true);
-			p = ImGui::GetCursorScreenPos();
 			int maxE = -1000000;
 			int minE = 10000000;
 			for (int i = 0; i < 500; i++)
@@ -284,12 +376,13 @@ int main(int, char**)
 				if (N < minE) minE = N;
 
 				EnvPoints[i].x = i + p.x;
-				EnvPoints[i].y = p.y + 255 - ((N >> 8));
+				EnvPoints[i].y = p.y + 275 - ((N >> 8));
 			}
 			ImGui::GetWindowDrawList()->AddPolyline(EnvPoints, 500, IM_COL32(255, 255, 0, 255), false, 2.0f);
 
 			ImGui::EndChild();
-			ImGui::Text("E: %d->%d", minE, maxE);
+			ImGui::Text("N: %d->%d, P: %d->%d, E: %d->%d", minN, maxN, minP, maxP, minE, maxE);
+
 
 
 			ImGui::PopStyleColor();
@@ -297,12 +390,12 @@ int main(int, char**)
 			ImGui::PopStyleColor();
 			ImGui::PopFont();
 		}
-		if (0)
+		if (stepped)
 		{
 			ImGui::PushFont(pFontBold);
 
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
-			ImGui::Begin("SteppedTest");
+			ImGui::Begin("SteppedTest", &stepped, ImGuiWindowFlags_AlwaysAutoResize);
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 200, 255));
 
 			static int stepcount = 6;
@@ -337,7 +430,7 @@ int main(int, char**)
 		}
 
 
-		if (1){
+		if (envelopedisplay){
 			ImGui::PushFont(pFontBold);
 			static int envparam = 900;
 			
@@ -357,7 +450,7 @@ int main(int, char**)
 		
 			}
 		
-			ImGui::Begin("EnvelopeShape");
+			ImGui::Begin("EnvelopeShape",&envelopedisplay, ImGuiWindowFlags_AlwaysAutoResize);
 			ImGui::PushFont(pFont);
 
 			ImGui::BeginChild("EnvelopeFrame", ImVec2(540, 257), true);

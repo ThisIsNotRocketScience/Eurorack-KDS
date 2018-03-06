@@ -231,7 +231,7 @@ void Tuesday_TimerTick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 		//		}
 
 		int bpm = 1 + (200 * T->tempo) / 256;
-		int msecperbeat = (1000 * 60) / (T->TicksPerMeasure * (bpm / 4));
+		int msecperbeat = (1000 * 60) /__max(1,  (T->TicksPerMeasure * (bpm / 4)));
 
 
 		if (clockmode == 0)
@@ -253,7 +253,42 @@ void Tuesday_TimerTick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 			}
 		}
 
+		if (T->CVOutCountDown > 0)
+		{
+			T->CVOut += T->CVOutDelta;
+			T->CVOutCountDown--;
+			if (T->CVOutCountDown == 0) T->CVOut = T->CVOutTarget;
+		}
+		else
+		{
+			T->CVOut = T->CVOutTarget;
+		}
+
 	}
+
+	//void UpdateGates()
+//	{
+		for (int i = 0; i < 6; i++)
+		{
+			if (T->Gates[i] > 0)
+			{
+				T->Gates[i]--;
+				T->GatesGap[i] = 0;
+			}
+			else
+			{
+				if (T->GatesGap[i] > 0)
+				{
+					T->GatesGap[i]--;
+				}
+				else
+				{
+					T->Gates[i] = -T->Gates[i];
+				}
+			}
+		}
+//	}
+
 }
 
 void Tuesday_Clock( Tuesday_PatternGen *P,  Tuesday_Settings *S,  Tuesday_Params *Par, int ClockVal)
