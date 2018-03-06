@@ -49,10 +49,10 @@ typedef struct Wobbler2_LFO_SNH_t
 	uint32_t lastval2;
 	uint32_t lastval3;
 	uint32_t lastval4;
-	uint32_t store1;
-	uint32_t store2;
-	uint32_t store3;
-	uint32_t store4;
+	uint32_t normalout;
+	uint32_t delayedout;
+	uint32_t normalout_quantized;
+	uint32_t phasedout_quantized;
 
 	
 	uint8_t lastseg1;

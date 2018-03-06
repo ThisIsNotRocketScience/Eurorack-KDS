@@ -5,13 +5,9 @@
 #define __max(a,b) ((a)>(b)?(a):(b))
 #define __min(a,b) ((a)<(b)?(a):(b))
 
-//#define PI  (float)(3.1415926535897932384626433832795)
-//#define TAU (float)(3.1415926535897932384626433832795*2.0000)
-
 #define WOBBLER_SPEEDRATIOCOUNT 11
 #define SpeedRatio(x,y) ((x*65536)/y)
 int32_t Wobbler_SpeedRatioSet[WOBBLER_SPEEDRATIOCOUNT] = { SpeedRatio(1,8),SpeedRatio(1,6),SpeedRatio(1,4),SpeedRatio(1,3), SpeedRatio(1,2),SpeedRatio(1,1),SpeedRatio(2,1),SpeedRatio(3,1),SpeedRatio(4,1),SpeedRatio(6,1),SpeedRatio(8,1) };
-
 
 #ifdef __cplusplus
 extern "C"
@@ -89,9 +85,9 @@ extern "C"
 		LFO->PhasedShift = 0;
 		LFO->Gate[0] = 0;
 		LFO->Gate[1] = 0;
-//		LFO->EnvelopeVal = 0;
+		//		LFO->EnvelopeVal = 0;
 		LFO->PhasedCountdown = 0;
-	//	LFO->EnvelopeState = Wobbler2_IDLE;
+		//	LFO->EnvelopeState = Wobbler2_IDLE;
 		Wobbler2_FancyEnv_Init(&LFO->FancyEnv);
 		LFO->Speed = 10;
 		LFO->LastPhasing = 0;
@@ -158,7 +154,6 @@ extern "C"
 
 	void Wobbler2_StartTwang(Wobbler2_LFO_t *LFO)
 	{
-//		LFO->EnvelopeState = Wobbler2_ATTACK;
 		Wobbler2_FancyEnv_Trigger(&LFO->FancyEnv);
 	}
 
@@ -193,8 +188,7 @@ extern "C"
 		uint32_t freq = 0xffffffff / DP;
 		Mod = 255 - Mod;
 		Mod = ((Mod * 245) / 255);
-		//Mod = (Mod * 20) / 33;
-
+	
 		uint32_t m = LERP(Cmapping, SNHTABCURVECOUNT - 1, Mod);
 
 		uint16_t res = ((m >> 16));
@@ -206,42 +200,20 @@ extern "C"
 
 	void Wobbler2_SVF(Wobbler2_SVFstruct *f, int32_t coeff, uint32_t inp)
 	{
-
-		//	cutoff = 0 to 0xffff
-
-		//	f = 2 sin(0 tot kwartpi ) //[approximately]
-
 		signed short const tMid = HI16(f->mid);
 
 		uint16_t sC = coeff;
-
-
 		unsigned short Max = (0xf200 - sC);
 		unsigned long fR = 0 * Max;
-		//	sR=0xffff-HI16(fR);
+		
 		uint16_t sR = ~HI16(fR);
-
 		uint16_t scaler = 0xffff;
-		//if (coeff > 30000)
-//		{
+		
 		scaler = 0xffff / 20 + HI16(coeff * (0xe000));
-		//	}
 
 		f->high = (inp << 10) - f->low - sR * tMid;
 		f->mid += (sC * HI16(f->high));
-		f->low += ((HI16(sC * scaler))* tMid);
-
-		//uint32_t N = H + L;
-		//f->mid = B;
-		//if (f->mid < 0) f->mid = 0;
-		//if (f->mid > 0xffff) f->mid = 0xffff;
-		//f->low = L;
-
-		//if (f->low < 0) f->low = 0;
-		//if (f->low > 0xffff) f->low = 0xffff;
-
-		//f->mid = ((coeff * (inp - f->low))>>16) + f->mid;
-		//f->low = f->low + ((coeff * f->mid)>>16);
+		f->low += ((HI16(sC * scaler))* tMid);		
 	}
 
 	void Wobbler2_SampleHold(Wobbler2_LFO_SNH_t *sh, Wobbler2_LFO_t *lfo, uint32_t phase, Wobbler2_SVF_Coeffs *coeff, uint32_t phase2)
@@ -271,15 +243,15 @@ extern "C"
 		Wobbler2_SVF(&sh->F2, coeff->cutoff, sh->lastval2);
 		Wobbler2_SVF(&sh->F3, coeff->cutoff, sh->lastval3);
 		Wobbler2_SVF(&sh->F4, coeff->cutoff, sh->lastval4);
-		sh->store1 = ((sh->F1.low >> 10) * coeff->wet + sh->lastval1 * coeff->dry) >> 8;
-		sh->store2 = ((sh->F2.low >> 10) * coeff->wet + sh->lastval2 * coeff->dry) >> 8;
-		sh->store3 = ((sh->F3.low >> 10) * coeff->wet + sh->lastval3 * coeff->dry) >> 8;
-		sh->store4 = ((sh->F4.low >> 10) * coeff->wet + sh->lastval4 * coeff->dry) >> 8;
+		sh->normalout = ((sh->F1.low >> 10) * coeff->wet + sh->lastval1 * coeff->dry) >> 8;
+		sh->delayedout = ((sh->F2.low >> 10) * coeff->wet + sh->lastval2 * coeff->dry) >> 8;
+		sh->normalout_quantized = ((sh->F3.low >> 10) * coeff->wet + sh->lastval3 * coeff->dry) >> 8;
+		sh->phasedout_quantized = ((sh->F4.low >> 10) * coeff->wet + sh->lastval4 * coeff->dry) >> 8;
 	}
 
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
 	{
-		return (Sine(phase*4) >> 16) * (LFO->FancyEnv.currentcurved);
+		return (Sine(phase * 4) >> 16) * (LFO->FancyEnv.currentcurved);
 	}
 
 #include "FreqLerp.h"
@@ -304,69 +276,18 @@ extern "C"
 		{
 			LFO->extsync = 0;
 		}
-		else
-		{
-		//	LFO->extsync = 1;
-		}
 
-		if (LFO->Gate[0] > 0)
-		{
-			LFO->Gate[0]--;
-		}
+		if (LFO->Gate[0] > 0) { LFO->Gate[0]--; }
+		if (LFO->Gate[1] > 0) { LFO->Gate[1]--; }
 
-		if (LFO->Gate[1] > 0)
-		{
-			LFO->Gate[1]--;
-		}
 		if (LFO->TriggerLed > 0) LFO->TriggerLed--;
 		Wobbler2_FancyEnv_Update(&LFO->FancyEnv, LFO->Mod);
-		/*if (LFO->EnvelopeState != Wobbler2_IDLE)
-		{
-			uint32_t A = 0;
-			uint32_t R = Wobbler2_LFORange3(128 << 8, WOBBLERSAMPLERATE);
-			if ((LFO->Mod >> 8) < 128)
-			{
-				R = 1 + (Wobbler2_LFORange3(LFO->Mod, WOBBLERSAMPLERATE));
-			}
-			else
-			{
-				A = 1 + (Wobbler2_LFORange3(LFO->Mod - (128 << 8), WOBBLERSAMPLERATE));
-			}
-			if (LFO->EnvelopeState == Wobbler2_ATTACK)
-			{
-				if (A == 0)
-				{
-					LFO->EnvelopeState = Wobbler2_RELEASE;
-					LFO->EnvelopeVal = 1 << 24;
-				}
-				else
-				{
-					LFO->EnvelopeVal += ((1 << 24) - 1) / A;
-					if (LFO->EnvelopeVal >= 1 << 24)
-					{
-						LFO->EnvelopeVal = 1 << 24;
-						LFO->EnvelopeState = Wobbler2_RELEASE;
-					}
-				}
-			}
-			else
-			{
-				LFO->EnvelopeVal -= ((1 << 24) - 1) / R;
-				if (LFO->EnvelopeVal <= 0)
-				{
-					LFO->EnvelopeState = Wobbler2_IDLE;
-					LFO->EnvelopeVal = 0;
-				}
-			}
-		}
-		*/
 
 		uint32_t DP = 0;
 		if (LFO->extsync)
 		{
 			SteppedResult_t SpeedGrade;
 			Wobbler2_GetSteppedResult(LFO->SpeedOrig, WOBBLER_SPEEDRATIOCOUNT, &SpeedGrade);
-
 			uint32_t DPorig = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
 			DP = ((LFO->SyncDP >> 16) * GetInterpolatedResultInt(Wobbler_SpeedRatioSet, &SpeedGrade));
 			uint32_t DPdiff = DPorig - DP;
@@ -383,83 +304,82 @@ extern "C"
 		LFO->Phase2 = LFO->Phase1 + DP2;
 		LFO->SlomoPhase2 = LFO->SlomoPhase1 + DP2;
 		LFO->Phase2Rev = LFO->Phase1 - DP2;
-
-		LFO->PhasedShift += DP;
-		LFO->PhasedShift += DP3;
-
-
+		
 
 		if (LFO->Phase1 < LFO->OldPhase1)
 		{
-			LFO->Gate[1] = Wobbler2_GATECOUNTDOWN;
-			//		if (LFO->PhasedCountdown > 0)
-			//		{
-			//			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
-			//		}
-			//		LFO->PhasedCountdown = LFO->Phasing << 24;
+			LFO->Gate[1] = Wobbler2_GATECOUNTDOWN;			
 		}
-
-		//	uint32_t last = LFO->PhasedCountdown;
-		//	LFO->PhasedCountdown -= __min(DP, LFO->PhasedCountdown);
-		//	if (LFO->PhasedCountdown == 0 && last != 0)
-		//	{
-		//		LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
-		//	}
-
 		LFO->OldPhase1 = LFO->Phase1;
 
-		//	LFO->OldPhase2 = LFO->Phase2;
-		Wobbler2_CalcSampleHoldFilter(LFO->Mod >> 8, DP, &LFO->SVFCoeffs);
+		Wobbler2_CalculateCompensation(&LFO->CompensationVals, LFO->Mod >> 8);
 
-		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, &LFO->SVFCoeffs, LFO->Phase2Rev);
-
-		CalculateCompensation(&LFO->CompensationVals, LFO->Mod >> 8);
-		//Shapes_t BSO, &LFO->BasicShapesB;
+		// slomo mode
 		LFO->OutputsNormal[0] = FillBasicShapes(LFO->SlomoPhase1, LFO->Mod >> 8, &LFO->SlomoBasicShapesA, &LFO->CompensationVals);
-		LFO->OutputsNormal[1] = FillBasicShapes(LFO->Phase1, LFO->Mod >> 8, &LFO->BasicShapesA, &LFO->CompensationVals);
+		LFO->OutputsPhased[0] = FillBasicShapes(LFO->SlomoPhase2, LFO->Mod >> 8, &LFO->SlomoBasicShapesB, &LFO->CompensationVals);
 
+		// normal mode
+		LFO->OutputsNormal[1] = FillBasicShapes(LFO->Phase1, LFO->Mod >> 8, &LFO->BasicShapesA, &LFO->CompensationVals);
+		LFO->OutputsPhased[1] = FillBasicShapes(LFO->Phase2, LFO->Mod >> 8, &LFO->BasicShapesB, &LFO->CompensationVals);
+
+		// self-phasing mode
+
+		uint32_t  newdp3mul = fix16_add(fix16_from_int(1), LFO->Phasing * ((0xffff * 16) / 4096));
+		uint32_t  newdp3b = fix16_mul(DP, newdp3mul);
+
+		LFO->PhasedShift += newdp3b - DP;
+		//LFO->PhasedShift += DP;
+		//LFO->PhasedShift = fix16_mul(LFO->OutputsNormal[1], (LFO->Phasing<<10));
+
+
+		LFO->OutputsNormal[2] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsNormal[1]) / 2;
+		LFO->OutputsPhased[2] = (BasicShapes(LFO->Phase2 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsPhased[1]) / 2;
+
+		// twang
+		LFO->OutputsNormal[3] = Wobbler2_Twang(LFO, LFO->Phase1);
+		LFO->OutputsPhased[3] = Wobbler2_Twang(LFO, LFO->Phase2);
+
+		// pendulum precalc
 #ifdef INTPENDULUM
 		Wobbler2_DoublePendulumInt(&LFO->Pendulum, LFO->BasicShapesA.Sine);
 #else
 		Wobbler2_DoublePendulum(&LFO->Pendulum, 0.05f, LFO->BasicShapesA.Sine);
 #endif
-
-		LFO->OutputsNormal[2] = (BasicShapes(LFO->Phase1 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsNormal[0]) / 2;
-		LFO->OutputsNormal[3] = Wobbler2_Twang(LFO, LFO->Phase1);
+		// pendulum
 		LFO->OutputsNormal[4] = (LFO->Pendulum.As >> 16) * (LFO->FancyEnv.currentcurved);// + 0x80000000;
-		LFO->OutputsNormal[5] = (int32_t)(LFO->SNH.store1 << 16) - (1 << 29);
-		LFO->OutputsNormal[6] = (int32_t)(LFO->SNH.store3 << 16) - (1 << 29);
-
-		LFO->OutputsPhased[0] = FillBasicShapes(LFO->SlomoPhase2, LFO->Mod >> 8, &LFO->SlomoBasicShapesB, &LFO->CompensationVals);
-		LFO->OutputsPhased[1] = FillBasicShapes(LFO->Phase2, LFO->Mod >> 8, &LFO->BasicShapesB, &LFO->CompensationVals);
-		LFO->OutputsPhased[2] = (BasicShapes(LFO->Phase2 + LFO->PhasedShift, LFO->Mod >> 8, &LFO->CompensationVals) + LFO->OutputsPhased[0]) / 2;
-		LFO->OutputsPhased[3] = Wobbler2_Twang(LFO, LFO->Phase2);
 		LFO->OutputsPhased[4] = (LFO->Pendulum.Bs >> 16) * (LFO->FancyEnv.currentcurved);// + 0x80000000;
-		LFO->OutputsPhased[5] = (int32_t)(LFO->SNH.store2 << 16) - (1 << 29);
-		LFO->OutputsPhased[6] = (int32_t)(LFO->SNH.store4 << 16) - (1 << 29);
 
+		// sample/hold precalc
+		Wobbler2_CalcSampleHoldFilter(LFO->Mod >> 8, DP, &LFO->SVFCoeffs);
+		Wobbler2_SampleHold(&LFO->SNH, LFO, LFO->Phase1, &LFO->SVFCoeffs, LFO->Phase2Rev);
 
-		if ((LFO->BasicShapesB.Sine > 0) && (LFO->OldPhase2 < 0))
-		{
-			LFO->Gate[0] = Wobbler2_GATECOUNTDOWN;
-		}
+		// sample/hold 
+		LFO->OutputsNormal[5] = (int32_t)(LFO->SNH.normalout << 16) - (1 << 29);
+		LFO->OutputsPhased[5] = (int32_t)(LFO->SNH.delayedout << 16) - (1 << 29);
 
+		// sample/hold quantized
+		LFO->OutputsNormal[6] = (int32_t)(LFO->SNH.normalout_quantized << 16) - (1 << 29);
+		LFO->OutputsPhased[6] = (int32_t)(LFO->SNH.phasedout_quantized << 16) - (1 << 29);
+
+		// calculate phased phasereset gate
+		if ((LFO->BasicShapesB.Sine > 0) && (LFO->OldPhase2 <= 0)) { LFO->Gate[0] = Wobbler2_GATECOUNTDOWN; }
 		LFO->OldPhase2 = LFO->BasicShapesB.Sine;
 
 		Wobbler2_GetSteppedResult(LFO->Shape, 6, &LFO->ShapeStepped);
 
+		// interpolate between al the shapes
 		LFO->Output = GetInterpolatedResultInt(LFO->OutputsNormal, &LFO->ShapeStepped) / (0xffff * 4);
 		LFO->OutputPhased = GetInterpolatedResultInt(LFO->OutputsPhased, &LFO->ShapeStepped) / (0xffff * 4);
+		
+		// multiply outputs by level knobs
+		LFO->Output = (LFO->Output * LFO->Amount1) / (int)(1 << 14);
+		LFO->OutputPhased = (LFO->OutputPhased * LFO->Amount2) / (int)(1 << 14);
 
-		LFO->Output = (LFO->Output *LFO->Amount1) / (int)(1 << 14);
-		LFO->OutputPhased = (LFO->OutputPhased *LFO->Amount2) / (int)(1 << 14);
-
-		LFO->Output += 2048;// + (2540 - 2048);
-		LFO->OutputPhased += 2048;// +(2540 - 2048);
+		LFO->Output += 2048;
+		LFO->OutputPhased += 2048;
 
 		if (LFO->Output > 4095) LFO->Output = 4095; else if (LFO->Output < 0) LFO->Output = 0;
 		if (LFO->OutputPhased > 4095) LFO->OutputPhased = 4095; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;
-		//if (LFO->Output > 1) LFO->Output = 1; else if (LFO->Output < -1) LFO->Output = -1;
 
 		Wobbler2_DoLeds(LFO);
 		LFO->LastPhasing = LFO->Phasing;
@@ -468,7 +388,7 @@ extern "C"
 
 #include "BasicShapeCompensation.h"
 
-	void CalculateCompensation(ShapeCompensationVals_t *Comp, int mod)
+	void Wobbler2_CalculateCompensation(ShapeCompensationVals_t *Comp, int mod)
 	{
 		Comp->min = LERP(BasicShapeLow, SHAPECOMPENSATIONCOUNT - 1, mod);
 		Comp->mul = LERP(BasicShapeMult, SHAPECOMPENSATIONCOUNT - 1, mod);
@@ -554,9 +474,7 @@ extern "C"
 
 		out->index = M >> 8;
 		out->fractional = M & 0xff;
-
 	}
-
 
 	void Wobbler2_FancyEnv_Init(Wobbler2_FancyEnv_t* env)
 	{
@@ -575,8 +493,7 @@ extern "C"
 
 	int32_t Wobbler2_EnvTransferFunc(int32_t S)
 	{
-//	return fix16_sadd(fix16_sdiv(FIX(1), fix16_sub(S, FIX(1))), fix16_sdiv(FIX(1), fix16_add(S, FIX(1))));
-
+		//	return fix16_sadd(fix16_sdiv(FIX(1), fix16_sub(S, FIX(1))), fix16_sdiv(FIX(1), fix16_add(S, FIX(1))));
 		return fix16_mul(S, fix16_mul(S, S));
 	};
 
@@ -585,93 +502,86 @@ extern "C"
 		uint32_t A = 0;
 		uint32_t R = Wobbler2_LFORange3(128 << 8, WOBBLERSAMPLERATE);
 		env->endlevel = 0;
-		if ((param>> 8) < 128)
+		if ((param >> 8) < 128)
 		{
 			const int minR = (int)(0.055f * (float)WOBBLERSAMPLERATE);
-			R = minR + (Wobbler2_LFORange3(param, WOBBLERSAMPLERATE))*2;
+			R = minR + (Wobbler2_LFORange3(param, WOBBLERSAMPLERATE)) * 2;
 		}
 		else
 		{
-			A = 1 + (Wobbler2_LFORange3(param- (128 << 8), WOBBLERSAMPLERATE));
-			if ((param >> 8) > (255-10))
+			A = 1 + (Wobbler2_LFORange3(param - (128 << 8), WOBBLERSAMPLERATE));
+			if ((param >> 8) > (255 - 10))
 			{
-				env->endlevel = ((param>>8) - (255-10 ))* ((1<<24) / (10));
-			}		
+				env->endlevel = ((param >> 8) - (255 - 10))* ((1 << 24) / (10));
+			}
 		}
 
 
 		switch (env->state)
 		{
-		case WOBBLER2_FANCYENV_IDLE: env->currentcurved = 0; return env->current;
-		case WOBBLER2_FANCYENV_ATTACK:
-		{
-			int32_t attacklowerbound = FIX(0.8);
-			int32_t attackupperbound = FIX(0.002);
-
-			int32_t attackhighval = Wobbler2_EnvTransferFunc(attacklowerbound);// ((1 / (attacklowerbound - 1)) + 1 / (attacklowerbound + 1));
-			int32_t attacklowval = Wobbler2_EnvTransferFunc(attackupperbound);// ((1 / (attackupperbound - 1)) + 1 / (attackupperbound + 1));
-			int32_t attackbaseline = -attacklowval;
-			int32_t attackrange = fix16_sdiv( FIX(1.0), fix16_ssub(attackhighval ,attacklowval));
-
-			if (A == 0)
+			case WOBBLER2_FANCYENV_IDLE: env->currentcurved = 0; return env->current;
+			case WOBBLER2_FANCYENV_ATTACK:
 			{
-				env->state = WOBBLER2_FANCYENV_DECAY;
-				env->current= 1 << 24;
+				int32_t attacklowerbound = FIX(0.8);
+				int32_t attackupperbound = FIX(0.002);
+
+				int32_t attackhighval = Wobbler2_EnvTransferFunc(attacklowerbound);
+				int32_t attacklowval = Wobbler2_EnvTransferFunc(attackupperbound);
+				int32_t attackbaseline = -attacklowval;
+				int32_t attackrange = fix16_sdiv(FIX(1.0), fix16_ssub(attackhighval, attacklowval));
+
+				if (A == 0)
+				{
+					env->state = WOBBLER2_FANCYENV_DECAY;
+					env->current = 1 << 24;
+				}
+				else
+				{
+					env->current += ((1 << 24) - 1) / A;
+					if (env->current >= 1 << 24) { env->current = 1 << 24; env->state = WOBBLER2_FANCYENV_DECAY; };
+				}
+
+				int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), env->current >> 8), fix16_ssub(attackupperbound, attacklowerbound)), attacklowerbound);
+				env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled), attackbaseline), attackrange);
+
+				//	env->currentcurved = env->current >> 8;
+				return env->current;
 			}
-			else
+			case WOBBLER2_FANCYENV_DECAY:
 			{
-				env->current += ((1 << 24) - 1) / A;
-				if (env->current >= 1 << 24) { env->current = 1 << 24; env->state = WOBBLER2_FANCYENV_DECAY; };
+				env->current -= ((1 << 24) - 1) / R;
+
+				if (env->current <= env->endlevel) {
+					env->current = env->endlevel;
+					if (env->current == 0) env->state = WOBBLER2_FANCYENV_IDLE;
+				};
+
+				int32_t decaylowerbound = FIX(0.9);
+				int32_t decayupperbound = FIX(-0.016);
+
+				if (param < 0x8000)
+				{
+					decaylowerbound = fix16_sub(FIX(0.9f), fix16_smul(param * 2, FIX(0.9f - 0.19f)));
+					decayupperbound = -fix16_smul(param * 2, FIX(0.19));
+				}
+				else
+				{
+					decaylowerbound = fix16_sub(FIX(0.9f), fix16_smul(0x8000 * 2, FIX(0.9f - 0.19f)));
+					decayupperbound = fix16_sub(-fix16_smul(0x8000 * 2, FIX(0.19)), fix16_smul(FIX(0.9), (param - 0x8000) * 2));
+				}
+
+				int32_t decayhighval = Wobbler2_EnvTransferFunc(decaylowerbound);
+				int32_t decaylowval = Wobbler2_EnvTransferFunc(decayupperbound);
+				int32_t decaybaseline = -decaylowval;
+				int32_t decayrange = fix16_sdiv(FIX(1.0), fix16_ssub(decayhighval, decaylowval));
+
+
+				int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), env->current >> 8), fix16_ssub(decayupperbound, decaylowerbound)), decaylowerbound);
+
+				env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled), decaybaseline), decayrange);
+
+				return env->current;
 			}
-
-			int32_t scaled =fix16_add(fix16_mul( fix16_ssub(FIX(1.0), env->current>>8) , fix16_ssub(attackupperbound ,attacklowerbound)) , attacklowerbound);
-			env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled) ,attackbaseline),attackrange);
-			
-		//	env->currentcurved = env->current >> 8;
-			return env->current;			
-		}
-		case WOBBLER2_FANCYENV_DECAY:
-		{
-			env->current -= ((1 << 24) - 1) / R;
-
-			if (env->current <= env->endlevel) { 
-				env->current = env->endlevel; 
-				if (env->current == 0) env->state = WOBBLER2_FANCYENV_IDLE;
-			};
-
-			int32_t decaylowerbound = FIX(0.9);
-			int32_t decayupperbound = FIX(-0.016);
-
-			if (param < 0x8000)
-			{
-				
-				decaylowerbound = fix16_sub(FIX(0.9f), fix16_smul(param * 2, FIX(0.9f - 0.19f)));
-				decayupperbound = -fix16_smul(param * 2, FIX(0.19));
-			}
-			else
-			{
-				decaylowerbound = fix16_sub(FIX(0.9f), fix16_smul(0x8000 * 2, FIX(0.9f - 0.19f)));
-				decayupperbound = fix16_sub(-fix16_smul(0x8000* 2, FIX(0.19)), fix16_smul(FIX(0.9) ,(param - 0x8000)*2));
-			}
-		//	 decaylowerbound = FIX(0.9);
-			// decayupperbound = FIX(-0.016);
-
-			int32_t decayhighval = Wobbler2_EnvTransferFunc(decaylowerbound);//((1 / (decaylowerbound - 1)) + 1 / (decaylowerbound + 1));
-			int32_t decaylowval = Wobbler2_EnvTransferFunc(decayupperbound);//((1 / (decayupperbound - 1)) + 1 / (decayupperbound + 1));
-			int32_t decaybaseline = -decaylowval;
-//			int32_t decayrange = 1.0 / (decayhighval - decaylowval);
-			int32_t decayrange = fix16_sdiv(FIX(1.0), fix16_ssub(decayhighval, decaylowval));
-
-			
-			int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), env->current >> 8), fix16_ssub(decayupperbound, decaylowerbound)), decaylowerbound);
-			
-			env->currentcurved = fix16_mul(fix16_add(Wobbler2_EnvTransferFunc(scaled), decaybaseline), decayrange);
-			
-
-		//	env->currentcurved = env->current >> 8;
-
-			return env->current;
-		}
 		}
 
 	}
