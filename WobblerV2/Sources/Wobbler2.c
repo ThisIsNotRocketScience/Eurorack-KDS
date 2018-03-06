@@ -279,7 +279,7 @@ extern "C"
 
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
 	{
-		return (Sine(phase) >> 16) * (LFO->FancyEnv.currentcurved);
+		return (Sine(phase*4) >> 16) * (LFO->FancyEnv.currentcurved);
 	}
 
 #include "FreqLerp.h"
