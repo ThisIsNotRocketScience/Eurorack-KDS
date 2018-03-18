@@ -7,7 +7,7 @@
 **     Version     : Component 01.016, Driver 01.07, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2018-03-07, 02:52, # CodeGen: 32
 **     Abstract    :
 **          This component encapsulates the internal I2C communication
 **          interface. The implementation of the interface is based
@@ -28,9 +28,7 @@
 **     Settings    :
 **          Component name                                 : IntI2cLdd1
 **          I2C channel                                    : I2C0
-**          Interrupt service                              : Enabled
-**            Interrupt                                    : INT_I2C0
-**            Interrupt priority                           : medium priority
+**          Interrupt service                              : Disabled
 **          Settings                                       : 
 **            Mode selection                               : MASTER
 **            MASTER mode                                  : Enabled
@@ -58,8 +56,8 @@
 **            Enabled in init code                         : yes
 **            Auto initialization                          : no
 **            Event mask                                   : 
-**              OnMasterBlockSent                          : Enabled
-**              OnMasterBlockReceived                      : Enabled
+**              OnMasterBlockSent                          : Disabled
+**              OnMasterBlockReceived                      : Disabled
 **              OnMasterByteReceived                       : Disabled
 **              OnSlaveBlockSent                           : Disabled
 **              OnSlaveBlockReceived                       : Disabled
@@ -80,12 +78,17 @@
 **            Clock configuration 6                        : This component disabled
 **            Clock configuration 7                        : This component disabled
 **     Contents    :
-**         Init                     - LDD_TDeviceData* IntI2cLdd1_Init(LDD_TUserData *UserDataPtr);
-**         MasterSendBlock          - LDD_TError IntI2cLdd1_MasterSendBlock(LDD_TDeviceData *DeviceDataPtr,...
-**         MasterGetSentDataNum     - LDD_I2C_TSize IntI2cLdd1_MasterGetSentDataNum(LDD_TDeviceData *DeviceDataPtr);
-**         MasterReceiveBlock       - LDD_TError IntI2cLdd1_MasterReceiveBlock(LDD_TDeviceData *DeviceDataPtr,...
-**         MasterGetReceivedDataNum - LDD_I2C_TSize IntI2cLdd1_MasterGetReceivedDataNum(LDD_TDeviceData...
-**         SelectSlaveDevice        - LDD_TError IntI2cLdd1_SelectSlaveDevice(LDD_TDeviceData *DeviceDataPtr,...
+**         Init                         - LDD_TDeviceData* IntI2cLdd1_Init(LDD_TUserData *UserDataPtr);
+**         MasterSendBlock              - LDD_TError IntI2cLdd1_MasterSendBlock(LDD_TDeviceData *DeviceDataPtr,...
+**         MasterGetBlockSentStatus     - bool IntI2cLdd1_MasterGetBlockSentStatus(LDD_TDeviceData *DeviceDataPtr);
+**         MasterGetSentDataNum         - LDD_I2C_TSize IntI2cLdd1_MasterGetSentDataNum(LDD_TDeviceData *DeviceDataPtr);
+**         MasterReceiveBlock           - LDD_TError IntI2cLdd1_MasterReceiveBlock(LDD_TDeviceData *DeviceDataPtr,...
+**         MasterGetBlockReceivedStatus - bool IntI2cLdd1_MasterGetBlockReceivedStatus(LDD_TDeviceData *DeviceDataPtr);
+**         MasterGetReceivedDataNum     - LDD_I2C_TSize IntI2cLdd1_MasterGetReceivedDataNum(LDD_TDeviceData...
+**         SelectSlaveDevice            - LDD_TError IntI2cLdd1_SelectSlaveDevice(LDD_TDeviceData *DeviceDataPtr,...
+**         GetError                     - LDD_TError IntI2cLdd1_GetError(LDD_TDeviceData *DeviceDataPtr,...
+**         CheckBus                     - LDD_TError IntI2cLdd1_CheckBus(LDD_TDeviceData *DeviceDataPtr,...
+**         Main                         - void IntI2cLdd1_Main(LDD_TDeviceData *DeviceDataPtr);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -169,14 +172,17 @@ extern "C" {
 /* Methods configuration constants - generated for all enabled component's methods */
 #define IntI2cLdd1_Init_METHOD_ENABLED /*!< Init method of the component IntI2cLdd1 is enabled (generated) */
 #define IntI2cLdd1_MasterSendBlock_METHOD_ENABLED /*!< MasterSendBlock method of the component IntI2cLdd1 is enabled (generated) */
+#define IntI2cLdd1_MasterGetBlockSentStatus_METHOD_ENABLED /*!< MasterGetBlockSentStatus method of the component IntI2cLdd1 is enabled (generated) */
 #define IntI2cLdd1_MasterGetSentDataNum_METHOD_ENABLED /*!< MasterGetSentDataNum method of the component IntI2cLdd1 is enabled (generated) */
 #define IntI2cLdd1_MasterReceiveBlock_METHOD_ENABLED /*!< MasterReceiveBlock method of the component IntI2cLdd1 is enabled (generated) */
+#define IntI2cLdd1_MasterGetBlockReceivedStatus_METHOD_ENABLED /*!< MasterGetBlockReceivedStatus method of the component IntI2cLdd1 is enabled (generated) */
 #define IntI2cLdd1_MasterGetReceivedDataNum_METHOD_ENABLED /*!< MasterGetReceivedDataNum method of the component IntI2cLdd1 is enabled (generated) */
 #define IntI2cLdd1_SelectSlaveDevice_METHOD_ENABLED /*!< SelectSlaveDevice method of the component IntI2cLdd1 is enabled (generated) */
+#define IntI2cLdd1_GetError_METHOD_ENABLED /*!< GetError method of the component IntI2cLdd1 is enabled (generated) */
+#define IntI2cLdd1_CheckBus_METHOD_ENABLED /*!< CheckBus method of the component IntI2cLdd1 is enabled (generated) */
+#define IntI2cLdd1_Main_METHOD_ENABLED /*!< Main method of the component IntI2cLdd1 is enabled (generated) */
 
 /* Events configuration constants - generated for all enabled component's events */
-#define IntI2cLdd1_OnMasterBlockSent_EVENT_ENABLED /*!< OnMasterBlockSent event of the component IntI2cLdd1 is enabled (generated) */
-#define IntI2cLdd1_OnMasterBlockReceived_EVENT_ENABLED /*!< OnMasterBlockReceived event of the component IntI2cLdd1 is enabled (generated) */
 
 
 
@@ -254,6 +260,28 @@ LDD_TError IntI2cLdd1_MasterSendBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TData 
 
 /*
 ** ===================================================================
+**     Method      :  IntI2cLdd1_MasterGetBlockSentStatus (component I2C_LDD)
+*/
+/*!
+**     @brief
+**         This method returns current state of MasterSendBlock method.
+**         This method is available only for the MASTER mode and if
+**         method MasterSendBlock is enabled.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+**     @return
+**                         - Return value:
+**                           <true> - data block is completely
+**                           transmitted.
+**                           <false> - data block isn't completely
+**                           transmitted.
+*/
+/* ===================================================================*/
+bool IntI2cLdd1_MasterGetBlockSentStatus(LDD_TDeviceData *DeviceDataPtr);
+
+/*
+** ===================================================================
 **     Method      :  IntI2cLdd1_MasterGetSentDataNum (component I2C_LDD)
 */
 /*!
@@ -323,6 +351,27 @@ LDD_TError IntI2cLdd1_MasterReceiveBlock(LDD_TDeviceData *DeviceDataPtr, LDD_TDa
 
 /*
 ** ===================================================================
+**     Method      :  IntI2cLdd1_MasterGetBlockReceivedStatus (component I2C_LDD)
+*/
+/*!
+**     @brief
+**         This method returns current state of MasterReceiveBlock
+**         method. This method is available only for the MASTER mode
+**         and if method MasterReceiveBlock is enabled.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+**     @return
+**                         - Return value:
+**                           <true> - data block is completely received.
+**                           <false> - data block isn't completely
+**                           received.
+*/
+/* ===================================================================*/
+bool IntI2cLdd1_MasterGetBlockReceivedStatus(LDD_TDeviceData *DeviceDataPtr);
+
+/*
+** ===================================================================
 **     Method      :  IntI2cLdd1_MasterGetReceivedDataNum (component I2C_LDD)
 */
 /*!
@@ -377,16 +426,69 @@ LDD_TError IntI2cLdd1_SelectSlaveDevice(LDD_TDeviceData *DeviceDataPtr, LDD_I2C_
 
 /*
 ** ===================================================================
-**     Method      :  IntI2cLdd1_Interrupt (component I2C_LDD)
-**
-**     Description :
-**         The method services the interrupt of the selected peripheral(s)
-**         and eventually invokes event(s) of the component.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
+**     Method      :  IntI2cLdd1_GetError (component I2C_LDD)
 */
-/* {Default RTOS Adapter} ISR function prototype */
-PE_ISR(IntI2cLdd1_Interrupt);
+/*!
+**     @brief
+**         Returns value of error mask, e.g. LDD_I2C_ARBIT_LOST.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+**     @param
+**         ErrorMaskPtr    - Pointer to a variable
+**                           where errors value mask will be stored.
+**     @return
+**                         - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_SPEED - This device does not work in
+**                           the active clock configuration
+*/
+/* ===================================================================*/
+LDD_TError IntI2cLdd1_GetError(LDD_TDeviceData *DeviceDataPtr, LDD_I2C_TErrorMask *ErrorMaskPtr);
+
+/*
+** ===================================================================
+**     Method      :  IntI2cLdd1_CheckBus (component I2C_LDD)
+*/
+/*!
+**     @brief
+**         This method returns the status of the bus. If the START
+**         condition has been detected, the method returns LDD_I2C_BUSY.
+**         If the STOP condition has been detected, the method returns
+**         LDD_I2C_IDLE.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+**     @param
+**         BusStatePtr     - Pointer to a variable,
+**                           where value of status is stored.
+**     @return
+**                         - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_DISABLED -  Device is disabled
+**                           ERR_SPEED - This device does not work in
+**                           the active clock configuration
+*/
+/* ===================================================================*/
+LDD_TError IntI2cLdd1_CheckBus(LDD_TDeviceData *DeviceDataPtr, LDD_I2C_TBusState *BusStatePtr);
+
+/*
+** ===================================================================
+**     Method      :  IntI2cLdd1_Main (component I2C_LDD)
+*/
+/*!
+**     @brief
+**         This method is available only for polling mode. If interrupt
+**         service is disabled this method replaces the I2C interrupt
+**         handler. This method should be called if Receive/SendBlock
+**         was invoked before in order to run the reception/transmition.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+*/
+/* ===================================================================*/
+void IntI2cLdd1_Main(LDD_TDeviceData *DeviceDataPtr);
 
 /* END IntI2cLdd1. */
 

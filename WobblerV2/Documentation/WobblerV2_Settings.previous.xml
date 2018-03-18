@@ -81,7 +81,7 @@ PE_DEBUGHALT();
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_interrupts" />
               <Qualifier v="RX" />
-              <Address v="8192" />
+              <Address v="0" />
               <Size v="192" />
             </boolgroup>
           </group>

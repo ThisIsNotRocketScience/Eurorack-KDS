@@ -6,6 +6,8 @@
 
 typedef struct Wobbler2_Params
 {
+	int CalibNormal;
+	int CalibPhased;
 	unsigned char T;
 } Wobbler2_Params;
 	
@@ -152,6 +154,9 @@ typedef struct Wobbler2_LFO_t
 	int32_t OutputsPhased[7];
 
 	ShapeCompensationVals_t CompensationVals;
+
+	int32_t CalibNormal;
+	int32_t CalibPhased;
 
 } Wobbler2_LFO_t;
 

@@ -106,6 +106,9 @@ extern "C"
 		{
 			LFO->SNH.segbuffer[i] = 0;
 		}
+
+		LFO->CalibNormal = 0;
+		LFO->CalibPhased = 6;
 	}
 
 	void Wobbler2_Trigger(Wobbler2_LFO_t *LFO, unsigned char N, struct Wobbler2_Params *Params)
@@ -127,6 +130,9 @@ extern "C"
 
 	void Wobbler2_LoadSettings(Wobbler2_Settings *settings, Wobbler2_Params *params)
 	{
+		params->CalibNormal =0 ;
+		params->CalibPhased = 0;
+		params->T = 0;
 		settings->SlowSpeedMult = 0;
 	}
 
@@ -251,7 +257,7 @@ extern "C"
 
 	int Wobbler2_Twang(Wobbler2_LFO_t *LFO, uint32_t phase)
 	{
-		return (Sine(phase * 4) >> 16) * (LFO->FancyEnv.currentcurved);
+		return (Sine(phase ) >> 16) * (LFO->FancyEnv.currentcurved);
 	}
 
 #include "FreqLerp.h"
@@ -375,8 +381,8 @@ extern "C"
 		LFO->Output = (LFO->Output * LFO->Amount1) / (int)(1 << 14);
 		LFO->OutputPhased = (LFO->OutputPhased * LFO->Amount2) / (int)(1 << 14);
 
-		LFO->Output += 2048;
-		LFO->OutputPhased += 2048;
+		LFO->Output += 2048 + LFO->CalibNormal;
+		LFO->OutputPhased += 2048 + LFO->CalibPhased;
 
 		if (LFO->Output > 4095) LFO->Output = 4095; else if (LFO->Output < 0) LFO->Output = 0;
 		if (LFO->OutputPhased > 4095) LFO->OutputPhased = 4095; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;

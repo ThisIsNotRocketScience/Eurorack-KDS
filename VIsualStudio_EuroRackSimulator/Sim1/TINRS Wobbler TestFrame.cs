@@ -16,7 +16,7 @@ namespace Sim1
     {
         public WobblerTestFrame()
         {
-            for (int i = 0; i < 12000; i++)
+            for (int i = 0; i < 120000; i++)
             {
                 values.Add(0);
                 valuesref.Add(0);
@@ -137,6 +137,43 @@ namespace Sim1
                 float F = (0xffffffff / P) / 2000.0f; ;
                 Console.WriteLine("{0:X} -> {1}", P, F);
             }
+
+        }
+
+
+        public static void ColorToHSV(Color color, out double hue, out double saturation, out double value)
+        {
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            hue = color.GetHue();
+            saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            value = max / 255d;
+        }
+
+        public static Color ColorFromHSV(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            int v = Convert.ToInt32(value);
+            int p = Convert.ToInt32(value * (1 - saturation));
+            int q = Convert.ToInt32(value * (1 - f * saturation));
+            int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+
+            if (hi == 0)
+                return Color.FromArgb(255, v, t, p);
+            else if (hi == 1)
+                return Color.FromArgb(255, q, v, p);
+            else if (hi == 2)
+                return Color.FromArgb(255, p, v, t);
+            else if (hi == 3)
+                return Color.FromArgb(255, p, q, v);
+            else if (hi == 4)
+                return Color.FromArgb(255, t, p, v);
+            else
+                return Color.FromArgb(255, v, p, q);
         }
 
         void BuildPoster()
@@ -145,13 +182,27 @@ namespace Sim1
             SVGWriter S = new SVGWriter();
 
             int C = 0;
-            int R1 = 1;
-            int G1 = 58;
-            int B1 = 66;
+
+            int bR1 = 1;
+            int bG1 = 58;
+            int bB1 = 66;
+
+            int R1 = 21;
+            int G1 = 142;
+            int B1 = 160;
+
+            double h1, h2, s1, s2, v1, v2;
+
 
             int R2 = 255;
             int G2 = 234;
             int B2 = 0;
+
+
+            ColorToHSV(Color.FromArgb(R1, G1, B1), out h1, out s1, out v1);
+            ColorToHSV(Color.FromArgb(R2, G2, B2), out h2, out s2, out v2);
+
+
             int qmax = 8;
             int width = 128;
             for (int q = 0; q < qmax; q++)
@@ -161,37 +212,43 @@ namespace Sim1
                 {
 
                     Shape.Value = (int)(i);
-                    Phase.Value = (int)((i) %256);
+                    Phase.Value = (int)((i/5) %256);
                     Speed.Value = 255;
-                    Mod.Value = (int)((Math.Sin(i*(1.0f/(256.0/Math.PI*2)))*5 + 5) + ((q * 245) / (qmax - 1)));
-                    float Ybase = i * 10;
-                    float H = 40;
+                    float envelopeoffset = (float)(1 - Math.Abs(((float)i / 255 - 0.5))*2) * 14;
+                    if (envelopeoffset < 0) envelopeoffset = 0;
+                    Mod.Value = Math.Min((((q * 255) / (qmax - 1))) + (int)envelopeoffset,255);
+                    float Ybase = i * 5;
+                    float H = 30;
 
-                    RebuildLFO(true,4*4*4*width);
+                    RebuildLFO(true,2*4*6*width);
                     Polygon P = new Polygon();
                     Polygon P2 = new Polygon() { depth = 2 };
                     float targetmix = q / (float)(qmax - 1);
-                    float br = (i / 512.0f) + 0.5f;
-
+                    float br = 1.0f;// (i / 512.0f) + 0.5f;
+                    double h, s, v;
+                    h = h1 + (h2 - h1) * targetmix;
+                    s = s1 + (s2 - s1) * targetmix;
+                    v = v1 + (v2 - v1) * targetmix;
+                    var Co = ColorFromHSV(h, s, v);
                     P.r = (byte)((R1 + (R2 - R1) * targetmix) * br);
                     P.g = (byte)((G1 + (G2 - G1) * targetmix) * br);
                     P.b = (byte)((B1 + (B2 - B1) * targetmix) * br);
-
+                    // P.r = Co.R;
+                    // P.g = Co.G;
+                    // P.b = Co.B;
 
                     for (int j = 0; j < width; j++)
                     {
-                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)values2[(int)(j * 8 * 8.5)] * H));
-                        //   P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
+                        P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + (float)linvalues2[(int)(j * 4 * 8.5)] * H));
+                        // P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
                     }
                     Lines.Add(P);
                     // Lines.Add(P2);
                     C++;
-
                 }
             }
-            SVGWriter.Write("poster-" + DateTime.Now.ToLongDateString() + ".svg", 300 * 4, 256 * 10, Lines, 2, false);
+            SVGWriter.Write("poster-" + DateTime.Now.ToLongDateString() + ".svg", 600 * 4, 256 * 10, Lines, 1, false);
         }
-
 
         private void Attack_Scroll(object sender, EventArgs e)
         {
@@ -240,7 +297,7 @@ namespace Sim1
 
                 values64[i] = V2;
                 values2[i] = V / 4096.0f;
-                linvalues2[i] = TestFrameLoader.GetLFOPhased(1)/4096;
+                linvalues2[i] = TestFrameLoader.GetLFOPhased(1)/4096.0f;
             }
         }
 
@@ -319,13 +376,13 @@ namespace Sim1
             return 20 + (float)((pictureBox1.Height / 2 - 40) * (1.0 - inp));
         }
 
-        List<double> values = new List<double>(12000);
-        List<double> valuesref = new List<double>(12000);
-        List<double> linvalues = new List<double>(12000);
+        List<double> values = new List<double>(120000);
+        List<double> valuesref = new List<double>(120000);
+        List<double> linvalues = new List<double>(120000);
 
-        List<double> values2 = new List<double>(12000);
-        List<Int64> values64 = new List<Int64>(12000);
-        List<double> linvalues2 = new List<double>(12000);
+        List<double> values2 = new List<double>(120000);
+        List<Int64> values64 = new List<Int64>(120000);
+        List<double> linvalues2 = new List<double>(120000);
         int pos = 0;
 
         private void pictureBox1_Resize(object sender, EventArgs e)

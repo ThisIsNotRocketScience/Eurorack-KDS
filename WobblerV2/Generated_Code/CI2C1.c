@@ -7,7 +7,7 @@
 **     Version     : Component 01.287, Driver 01.01, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2018-03-07, 02:52, # CodeGen: 32
 **     Abstract    :
 **          This component encapsulates the internal I2C communication 
 **          interface. The implementation of the interface is based 
@@ -30,10 +30,7 @@
 **          I2C_LDD                                        : I2C_LDD
 **          I2C channel                                    : I2C0
 **          Mode selection                                 : MASTER
-**          Interrupt service/event                        : Enabled
-**            Interrupt                                    : INT_I2C0
-**            Interrupt priority                           : medium priority
-**            Buffers for SLAVE mode                       : Disabled
+**          Interrupt service/event                        : Disabled
 **          MASTER mode                                    : Enabled
 **            Polling trials                               : 2000
 **            Automatic stop condition                     : no
@@ -62,14 +59,12 @@
 **            Low speed mode                               : Disabled
 **            Slow speed mode                              : Disabled
 **     Contents    :
-**         SendChar        - byte CI2C1_SendChar(byte Chr);
-**         RecvChar        - byte CI2C1_RecvChar(byte *Chr);
-**         SendBlock       - byte CI2C1_SendBlock(void* Ptr, word Siz, word *Snt);
-**         RecvBlock       - byte CI2C1_RecvBlock(void* Ptr, word Siz, word *Rcv);
-**         SendStop        - byte CI2C1_SendStop(void);
-**         GetCharsInTxBuf - word CI2C1_GetCharsInTxBuf(void);
-**         GetCharsInRxBuf - word CI2C1_GetCharsInRxBuf(void);
-**         SelectSlave     - byte CI2C1_SelectSlave(byte Slv);
+**         SendChar    - byte CI2C1_SendChar(byte Chr);
+**         RecvChar    - byte CI2C1_RecvChar(byte *Chr);
+**         SendBlock   - byte CI2C1_SendBlock(void* Ptr, word Siz, word *Snt);
+**         RecvBlock   - byte CI2C1_RecvBlock(void* Ptr, word Siz, word *Rcv);
+**         SendStop    - byte CI2C1_SendStop(void);
+**         SelectSlave - byte CI2C1_SelectSlave(byte Slv);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -132,7 +127,6 @@
 /* MODULE CI2C1. */
 
 
-#include "Events.h"
 #include "CI2C1.h"
 #include "I2C_PDD.h"
 
@@ -151,7 +145,6 @@ extern "C" {
 #define MSxSL            0x80U         /* Master x Slave flag bit  */
 
 LDD_TDeviceData *IntI2cLdd1_DeviceDataPtr; /* Device data pointer */
-static word OutLenM;                   /* Length of output bufer's content */
 word CI2C1_SndRcvTemp;                 /* Temporary variable for SendChar (RecvChar) when they call SendBlock (RecvBlock) */
 static byte ChrTemp;                   /* Temporary variable for SendChar method */
 static byte CI2C1_SerFlag;             /* Flags for serial communication */
@@ -324,22 +317,41 @@ byte CI2C1_RecvChar(byte *Chr)
 byte CI2C1_SendBlock(void *Ptr,word Siz,word *Snt)
 {
   LDD_TError Error;
+  LDD_I2C_TErrorMask ErrorMask;
+  word TmpSnt = 0x00U;
+  word Tr;
 
   if (Siz == 0U) {                     /* Test variable Size on zero */
     *Snt = 0U;
     return ERR_OK;                     /* If zero then OK */
   }
-  EnterCritical();                     /* Enter the critical section */
   Error = IntI2cLdd1_MasterSendBlock(IntI2cLdd1_DeviceDataPtr, (LDD_TData *)Ptr, (LDD_I2C_TSize)Siz, LDD_I2C_NO_SEND_STOP); /* Send one data byte */
   if (Error == ERR_BUSY) {
-    ExitCritical();                    /* Exit the critical section */
     return ERR_BUSOFF;
   }
-  OutLenM = Siz;                       /* Set length of output bufer's content */
-  CI2C1_SerFlag |= IN_PROGRES;         /* Set master busy flag */
-  ExitCritical();                      /* Exit the critical section */
-  *Snt = Siz;                          /* Dummy number of really sent chars */
-  return ERR_OK;                       /* OK */
+  for (Tr=0U; Tr<0x07D0U; Tr++) {
+    IntI2cLdd1_Main(IntI2cLdd1_DeviceDataPtr); /* Call main communication method */
+    if (IntI2cLdd1_MasterGetBlockSentStatus(IntI2cLdd1_DeviceDataPtr)) { /* Are all a data transmitted? */
+      break;
+    }
+    if (TmpSnt != (word)IntI2cLdd1_MasterGetSentDataNum(IntI2cLdd1_DeviceDataPtr)) { /* Is a data byte sent? */
+      Tr = (word)-1;                   /* Clear trials */
+      TmpSnt = (word)IntI2cLdd1_MasterGetSentDataNum(IntI2cLdd1_DeviceDataPtr); /* Set TmpSnt on a new value */
+    }
+  }
+  *Snt = (word)IntI2cLdd1_MasterGetSentDataNum(IntI2cLdd1_DeviceDataPtr); /* Return sent data number */
+  (void)IntI2cLdd1_GetError(IntI2cLdd1_DeviceDataPtr, &ErrorMask);
+  if (ErrorMask != 0U) {               /* Is any error detected after transfer? */
+    if ((ErrorMask & LDD_I2C_MASTER_NACK) != 0U) { /* If yes, decode error and return error code */
+      return ERR_BUSY;
+    } else if ((ErrorMask & LDD_I2C_ARBIT_LOST) != 0U) {
+      return ERR_ARBITR;
+    }
+  }
+  if (Tr == 0x07D0U) {                 /* Is Tr == 'Polling trials'? */
+    return ERR_BUSOFF;                 /* Return with error */
+  }
+  return ERR_OK;                       /* Return ERR_OK */
 }
 
 /*
@@ -400,21 +412,48 @@ byte CI2C1_SendBlock(void *Ptr,word Siz,word *Snt)
 byte CI2C1_RecvBlock(void* Ptr,word Siz,word *Rcv)
 {
   LDD_TError Error;
+  LDD_I2C_TErrorMask ErrorMask;
+  LDD_I2C_TBusState BusState;
+  word TmpRcv = 0x00U;
+  word Tr;
 
   if (Siz == 0U) {                     /* Test variable Size on zero */
     *Rcv = 0U;
     return ERR_OK;                     /* If zero then OK */
   }
-  EnterCritical();                     /* Enter the critical section */
   Error = IntI2cLdd1_MasterReceiveBlock(IntI2cLdd1_DeviceDataPtr, (LDD_TData *)Ptr, (LDD_I2C_TSize)Siz, LDD_I2C_SEND_STOP); /* Receive a data block */
   if (Error == ERR_BUSY) {
-    ExitCritical();                    /* Exit the critical section */
     return ERR_BUSOFF;
   }
-  CI2C1_SerFlag |= IN_PROGRES;         /* Set master busy flag */
-  ExitCritical();                      /* Exit the critical section */
-  *Rcv = Siz;                          /* Dummy number of really received chars */
-  return ERR_OK;                       /* OK */
+  for (Tr=0U; Tr<0x07D0U; Tr++) {
+    IntI2cLdd1_Main(IntI2cLdd1_DeviceDataPtr); /* Call main communication method */
+    if (IntI2cLdd1_MasterGetBlockReceivedStatus(IntI2cLdd1_DeviceDataPtr)) { /* Are all a data received? */
+      break;
+    }
+    if (TmpRcv != (word)IntI2cLdd1_MasterGetReceivedDataNum(IntI2cLdd1_DeviceDataPtr)) { /* Is a data byte received? */
+      Tr = (word)-1;                   /* Clear trials counter */
+      TmpRcv = (word)IntI2cLdd1_MasterGetReceivedDataNum(IntI2cLdd1_DeviceDataPtr); /* Set TmpRcv on a new value */
+    }
+  }
+  *Rcv = (word)IntI2cLdd1_MasterGetReceivedDataNum(IntI2cLdd1_DeviceDataPtr); /* Return received data number */
+  (void)IntI2cLdd1_GetError(IntI2cLdd1_DeviceDataPtr, &ErrorMask);
+  if (ErrorMask != 0U) {               /* Is any error detected after transfer? */
+    if ((ErrorMask & LDD_I2C_MASTER_NACK) != 0U) { /* If yes, decode error and return error code */
+      return ERR_BUSY;
+    } else if ((ErrorMask & LDD_I2C_ARBIT_LOST) != 0U) {
+      return ERR_ARBITR;
+    }
+  }
+  if (Tr == 0x07D0U) {                 /* Is Tr == 'Polling trials'? */
+    return ERR_BUSOFF;                 /* Return with error */
+  }
+  for (Tr=0U; Tr<0x07D0U; Tr++) {
+    (void)IntI2cLdd1_CheckBus(IntI2cLdd1_DeviceDataPtr, &BusState); /* Get bus state */
+    if (BusState == LDD_I2C_IDLE) {    /* Is stop condition generated after transfer? */
+      return ERR_OK;                   /* Return ERR_OK */
+    }
+  }
+  return ERR_BUSOFF;                   /* Return error */
 }
 
 /*
@@ -439,52 +478,19 @@ byte CI2C1_RecvBlock(void* Ptr,word Siz,word *Rcv)
 */
 byte CI2C1_SendStop(void)
 {
+  LDD_I2C_TBusState BusState;
+  word Tr;
+
   (void)CI2C1_SerFlag;                 /* Suppress unused variable warning if needed */
-  if ((CI2C1_SerFlag & IN_PROGRES) != 0U) { /* Is the bus busy */
-    return ERR_BUSOFF;                 /* If yes then error */
-  }
   I2C_PDD_SetMasterMode(I2C0_BASE_PTR, I2C_PDD_SLAVE_MODE); /* Switch device to slave mode (stop signal sent) */
   I2C_PDD_SetTransmitMode(I2C0_BASE_PTR, I2C_PDD_RX_DIRECTION); /* Switch to Rx mode */
-  return ERR_OK;                       /* Return without error */
-}
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_GetCharsInTxBuf (component InternalI2C)
-**     Description :
-**         Returns number of characters in the output buffer. In SLAVE
-**         mode returns the number of characters in the internal slave
-**         output buffer. In MASTER mode returns number of characters
-**         to be sent from the user buffer (passed by SendBlock method).
-**         This method is not supported in polling mode.
-**     Parameters  : None
-**     Returns     :
-**         ---             - Number of characters in the output buffer.
-** ===================================================================
-*/
-word CI2C1_GetCharsInTxBuf(void)
-{
-  return (word)(OutLenM - IntI2cLdd1_MasterGetSentDataNum(IntI2cLdd1_DeviceDataPtr)); /* Return number of chars remaining in the Master Tx buffer */
-}
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_GetCharsInRxBuf (component InternalI2C)
-**     Description :
-**         Returns number of characters in the input buffer. In SLAVE
-**         mode returns the number of characters in the internal slave
-**         input buffer. In MASTER mode returns number of characters to
-**         be received into a user buffer (passed by RecvChar or
-**         RecvBlock method).
-**         This method is not supported in polling mode.
-**     Parameters  : None
-**     Returns     :
-**         ---             - Number of characters in the input buffer.
-** ===================================================================
-*/
-word CI2C1_GetCharsInRxBuf(void)
-{
-  return (word)(IntI2cLdd1_MasterGetReceivedDataNum(IntI2cLdd1_DeviceDataPtr)); /* Return number of chars in the Master Rx buffer */
+  for(Tr=0x07D0U; Tr!=0U; Tr--) {
+    (void)IntI2cLdd1_CheckBus(IntI2cLdd1_DeviceDataPtr, &BusState); /* Get I2C line state */
+    if(BusState == LDD_I2C_IDLE) {     /* Bus is idle? */
+      return ERR_OK;                   /* Return without error */
+    }
+  }
+  return ERR_BUSOFF;                   /* Return with error */
 }
 
 /*
@@ -527,46 +533,7 @@ byte CI2C1_SelectSlave(byte Slv)
 */
 void CI2C1_Init(void)
 {
-  OutLenM = 0x00U;                     /* Initialize length of output bufer's content */
   IntI2cLdd1_DeviceDataPtr = IntI2cLdd1_Init(NULL); /* Calling init method of the inherited component */
-}
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_IntI2cLdd1_OnMasterBlockSent (component InternalI2C)
-**
-**     Description :
-**         This event is called when I2C in master mode finishes the 
-**         transmission of the data successfully. This event is not 
-**         available for the SLAVE mode and if MasterSendBlock is 
-**         disabled.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void IntI2cLdd1_OnMasterBlockSent(LDD_TUserData *UserDataPtr)
-{
-  (void)UserDataPtr;                   /* Parameter is not used, suppress unused argument warning */
-  CI2C1_SerFlag &= (byte)~(IN_PROGRES);
-  CI2C1_OnTransmitData();              /* Invoke user event */
-}
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_IntI2cLdd1_OnMasterBlockReceived (component InternalI2C)
-**
-**     Description :
-**         This event is called when I2C is in master mode and finishes 
-**         the reception of the data successfully. This event is not 
-**         available for the SLAVE mode and if MasterReceiveBlock is 
-**         disabled.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void IntI2cLdd1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr)
-{
-  (void)UserDataPtr;                   /* Parameter is not used, suppress unused argument warning */
-  CI2C1_SerFlag &= (byte)~(IN_PROGRES);
-  CI2C1_OnReceiveData();               /* Invoke user event */
 }
 
 

@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Wobbler2_Twang" key="selection"/>
+		<item value="CheckAudio" key="selection"/>
 		<list key="findhistory">
-			<item value="Wobbler2_Twang"/>
-			<item value="doleds"/>
-			<item value="verb 1"/>
-			<item value="Dry"/>
-			<item value="delaylen"/>
-			<item value="init"/>
-			<item value="oledin"/>
-			<item value="oledinit"/>
+			<item value="checkaudio"/>
+			<item value="measure"/>
+			<item value="ad"/>
+			<item value="ad1"/>
+			<item value="printf"/>
+			<item value="GPIO_PDD_GetPortDataInput"/>
+			<item value="semi"/>
+			<item value="Off"/>
 		</list>
 		<list key="replacehistory">
 		</list>

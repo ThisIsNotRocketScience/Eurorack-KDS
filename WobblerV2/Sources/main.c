@@ -265,11 +265,11 @@ void SaveEeprom()
 	EE24_WriteBlock(1, (byte *)&Params, paramsize);
 }
 
+static byte LoadedVer = 0;
 void LoadEeprom()
 {
-	byte Ver;
-	Ver = EE24_ReadByte(0);
-	if (Ver == VERSIONBYTE)
+	LoadedVer = EE24_ReadByte(0);
+	if (LoadedVer == VERSIONBYTE)
 	{
 		int paramsize = sizeof(Params);
 		EE24_ReadBlock(1, (byte *)&Params, paramsize);
@@ -316,6 +316,8 @@ int main(void)
 	EuroRack_InitCalibration();
 
 	LoadEeprom();
+	LFO.CalibNormal = Params.CalibNormal;
+	LFO.CalibPhased = Params.CalibPhased;
 	DAC_INIT();
 	AD1_Calibrate(TRUE);
 	AD1_Start();

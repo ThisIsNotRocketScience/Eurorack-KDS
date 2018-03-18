@@ -288,13 +288,10 @@ int main(int, char**)
 
 					}
 
-
-
 					ImGui::SliderFloat("Tempo", &fTempo, 0.0f, 1.0f);
 					ImGui::SliderFloat("X", &fX, 0.0f, 1.0f);
 					ImGui::SliderFloat("Y", &fY, 0.0f, 1.0f);
 					ImGui::SliderFloat("!", &fBang, 0.0f, 1.0f);
-
 
 					static int algo = 3;
 					ImGui::Text("Algo:"); ImGui::SameLine();
@@ -335,15 +332,14 @@ int main(int, char**)
 						Tuesday.switchmode = 1;
 					}
 					ImGui::SliderInt("Update Speed", &updaterate, 0, 20);
-
-
 				}
+
 				ImGui::PopFont();
 				ImGui::End();
 				ImGui::PopFont();
-
 			}
 		}
+
 		int minN = 100000;
 		int maxN = -100000;
 		int minP = 100000;

@@ -28,16 +28,16 @@
 			<item value=""/>
 		</list>
 	</section>
+	<section name="CleanDialogSettings">
+		<item value="662" key="DIALOG_WIDTH"/>
+		<item value="493" key="DIALOG_Y_ORIGIN"/>
+		<item value="423" key="DIALOG_HEIGHT"/>
+		<item value="949" key="DIALOG_X_ORIGIN"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+	</section>
 	<section name="NewWizardAction">
 		<item value="com.processorexpert.ui.kds.newprojectwizard.wizard1" key="NewWizardSelectionPage.STORE_SELECTED_ID"/>
 		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
 		</list>
-	</section>
-	<section name="CleanDialogSettings">
-		<item value="662" key="DIALOG_WIDTH"/>
-		<item value="493" key="DIALOG_Y_ORIGIN"/>
-		<item value="949" key="DIALOG_X_ORIGIN"/>
-		<item value="423" key="DIALOG_HEIGHT"/>
-		<item value="false" key="TOGGLE_SELECTED"/>
 	</section>
 </section>

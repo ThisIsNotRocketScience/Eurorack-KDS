@@ -7,7 +7,7 @@
 **     Version     : Component 01.287, Driver 01.01, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-04, 08:30, # CodeGen: 0
+**     Date/Time   : 2018-03-07, 02:52, # CodeGen: 32
 **     Abstract    :
 **          This component encapsulates the internal I2C communication 
 **          interface. The implementation of the interface is based 
@@ -30,10 +30,7 @@
 **          I2C_LDD                                        : I2C_LDD
 **          I2C channel                                    : I2C0
 **          Mode selection                                 : MASTER
-**          Interrupt service/event                        : Enabled
-**            Interrupt                                    : INT_I2C0
-**            Interrupt priority                           : medium priority
-**            Buffers for SLAVE mode                       : Disabled
+**          Interrupt service/event                        : Disabled
 **          MASTER mode                                    : Enabled
 **            Polling trials                               : 2000
 **            Automatic stop condition                     : no
@@ -62,14 +59,12 @@
 **            Low speed mode                               : Disabled
 **            Slow speed mode                              : Disabled
 **     Contents    :
-**         SendChar        - byte CI2C1_SendChar(byte Chr);
-**         RecvChar        - byte CI2C1_RecvChar(byte *Chr);
-**         SendBlock       - byte CI2C1_SendBlock(void* Ptr, word Siz, word *Snt);
-**         RecvBlock       - byte CI2C1_RecvBlock(void* Ptr, word Siz, word *Rcv);
-**         SendStop        - byte CI2C1_SendStop(void);
-**         GetCharsInTxBuf - word CI2C1_GetCharsInTxBuf(void);
-**         GetCharsInRxBuf - word CI2C1_GetCharsInRxBuf(void);
-**         SelectSlave     - byte CI2C1_SelectSlave(byte Slv);
+**         SendChar    - byte CI2C1_SendChar(byte Chr);
+**         RecvChar    - byte CI2C1_RecvChar(byte *Chr);
+**         SendBlock   - byte CI2C1_SendBlock(void* Ptr, word Siz, word *Snt);
+**         RecvBlock   - byte CI2C1_RecvBlock(void* Ptr, word Siz, word *Rcv);
+**         SendStop    - byte CI2C1_SendStop(void);
+**         SelectSlave - byte CI2C1_SelectSlave(byte Slv);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -150,18 +145,6 @@ extern "C" {
 /* MODULE CI2C1. */
 
 extern word CI2C1_SndRcvTemp;
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_Interrupt (component InternalI2C)
-**
-**     Description :
-**         The method services the interrupt of the selected peripheral(s)
-**         and eventually invokes event(s) of the component.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-PE_ISR(CI2C1_Interrupt);
 
 /*
 ** ===================================================================
@@ -395,39 +378,6 @@ byte CI2C1_SendStop(void);
 
 /*
 ** ===================================================================
-**     Method      :  CI2C1_GetCharsInTxBuf (component InternalI2C)
-**     Description :
-**         Returns number of characters in the output buffer. In SLAVE
-**         mode returns the number of characters in the internal slave
-**         output buffer. In MASTER mode returns number of characters
-**         to be sent from the user buffer (passed by SendBlock method).
-**         This method is not supported in polling mode.
-**     Parameters  : None
-**     Returns     :
-**         ---             - Number of characters in the output buffer.
-** ===================================================================
-*/
-word CI2C1_GetCharsInTxBuf(void);
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_GetCharsInRxBuf (component InternalI2C)
-**     Description :
-**         Returns number of characters in the input buffer. In SLAVE
-**         mode returns the number of characters in the internal slave
-**         input buffer. In MASTER mode returns number of characters to
-**         be received into a user buffer (passed by RecvChar or
-**         RecvBlock method).
-**         This method is not supported in polling mode.
-**     Parameters  : None
-**     Returns     :
-**         ---             - Number of characters in the input buffer.
-** ===================================================================
-*/
-word CI2C1_GetCharsInRxBuf(void);
-
-/*
-** ===================================================================
 **     Method      :  CI2C1_SelectSlave (component InternalI2C)
 **     Description :
 **         This method selects a new slave for communication by its
@@ -462,34 +412,6 @@ byte CI2C1_SelectSlave(byte Slv);
 ** ===================================================================
 */
 void CI2C1_Init(void);
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_IntI2cLdd1_OnMasterBlockSent (component InternalI2C)
-**
-**     Description :
-**         This event is called when I2C in master mode finishes the 
-**         transmission of the data successfully. This event is not 
-**         available for the SLAVE mode and if MasterSendBlock is 
-**         disabled.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void IntI2cLdd1_OnMasterBlockSent(LDD_TUserData *UserDataPtr);
-
-/*
-** ===================================================================
-**     Method      :  CI2C1_IntI2cLdd1_OnMasterBlockReceived (component InternalI2C)
-**
-**     Description :
-**         This event is called when I2C is in master mode and finishes 
-**         the reception of the data successfully. This event is not 
-**         available for the SLAVE mode and if MasterReceiveBlock is 
-**         disabled.
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void IntI2cLdd1_OnMasterBlockReceived(LDD_TUserData *UserDataPtr);
 
 
 /* END CI2C1. */
