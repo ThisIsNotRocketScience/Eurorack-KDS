@@ -1001,10 +1001,7 @@ Autoselect
         <Properties>
           <Component_name v="IntI2cLdd1" />
           <I2C_channel v="I2C0" />
-          <boolgroup name="Interrupt service" v="Enabled">
-            <Interrupt v="INT_I2C0" />
-            <Interrupt_priority v="medium priority" />
-          </boolgroup>
+          <boolgroup name="Interrupt service" v="Disabled" />
           <group name="Settings">
             <Mode_selection v="MASTER" />
             <boolgroup name="MASTER mode" v="Enabled">
@@ -1035,8 +1032,8 @@ Autoselect
           <group name="Initialization">
             <Enabled_in_init_code v="yes" />
             <group name="Event mask">
-              <OnMasterBlockSent v="Enabled" />
-              <OnMasterBlockReceived v="Enabled" />
+              <OnMasterBlockSent v="Disabled" />
+              <OnMasterBlockReceived v="Disabled" />
               <OnMasterByteReceived v="Disabled" />
               <OnSlaveBlockSent v="Disabled" />
               <OnSlaveBlockReceived v="Disabled" />
@@ -1058,10 +1055,10 @@ Autoselect
           <SetEventMask v="don&amp;apos;t generate code" />
           <GetEventMask v="don&amp;apos;t generate code" />
           <MasterSendBlock v="generate code" />
-          <MasterGetBlockSentStatus v="don&amp;apos;t generate code" />
+          <MasterGetBlockSentStatus v="generate code" />
           <MasterGetSentDataNum v="generate code" />
           <MasterReceiveBlock v="generate code" />
-          <MasterGetBlockReceivedStatus v="don&amp;apos;t generate code" />
+          <MasterGetBlockReceivedStatus v="generate code" />
           <MasterGetReceivedDataNum v="generate code" />
           <MasterUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
           <SlaveSendBlock v="don&amp;apos;t generate code" />
@@ -1074,23 +1071,19 @@ Autoselect
           <SlaveUpdateReceiveBlockSize v="don&amp;apos;t generate code" />
           <SlaveCancelReceptionBlock v="don&amp;apos;t generate code" />
           <SelectSlaveDevice v="generate code" />
-          <GetError v="don&amp;apos;t generate code" />
-          <CheckBus v="don&amp;apos;t generate code" />
+          <GetError v="generate code" />
+          <CheckBus v="generate code" />
           <GetStats v="don&amp;apos;t generate code" />
           <ClearStats v="don&amp;apos;t generate code" />
-          <Main v="don&amp;apos;t generate code" />
+          <Main v="generate code" />
           <ConnectPin v="don&amp;apos;t generate code" />
           <SetOperationMode v="don&amp;apos;t generate code" />
           <GetDriverState v="don&amp;apos;t generate code" />
         </Methods>
         <Events>
           <Event_module_name v="Events" />
-          <event name="OnMasterBlockSent" v="generate code">
-            <Event_procedure_name v="IntI2cLdd1_OnMasterBlockSent" />
-          </event>
-          <event name="OnMasterBlockReceived" v="generate code">
-            <Event_procedure_name v="IntI2cLdd1_OnMasterBlockReceived" />
-          </event>
+          <event name="OnMasterBlockSent" v="don&amp;apos;t generate code" />
+          <event name="OnMasterBlockReceived" v="don&amp;apos;t generate code" />
           <event name="OnMasterByteReceived" v="don&amp;apos;t generate code" />
           <event name="OnSlaveBlockSent" v="don&amp;apos;t generate code" />
           <event name="OnSlaveBlockReceived" v="don&amp;apos;t generate code" />
@@ -1105,11 +1098,7 @@ Autoselect
       </inhrbean>
       <I2C_channel v="I2C0" />
       <Mode_selection v="MASTER" />
-      <boolgroup name="Interrupt service/event" v="Enabled">
-        <Interrupt v="INT_I2C0" />
-        <Interrupt_priority v="medium priority" />
-        <boolgroup name="Buffers for SLAVE mode" v="Disabled" />
-      </boolgroup>
+      <boolgroup name="Interrupt service/event" v="Disabled" />
       <boolgroup name="MASTER mode" v="Enabled">
         <Polling_trials v="2000" />
         <Automatic_stop_condition v="no" />
@@ -1153,8 +1142,8 @@ Autoselect
       <SendStop v="generate code" />
       <ClearTxBuf v="don&amp;apos;t generate code" />
       <ClearRxBuf v="don&amp;apos;t generate code" />
-      <GetCharsInTxBuf v="generate code" />
-      <GetCharsInRxBuf v="generate code" />
+      <GetCharsInTxBuf v="don&amp;apos;t generate code" />
+      <GetCharsInRxBuf v="don&amp;apos;t generate code" />
       <SelectSlave v="generate code" />
       <GetSelected v="don&amp;apos;t generate code" />
       <GetSelected10 v="don&amp;apos;t generate code" />
@@ -1169,14 +1158,8 @@ Autoselect
       <Event_module_name v="Events" />
       <event name="BeforeNewSpeed" v="don&amp;apos;t generate code" />
       <event name="AfterNewSpeed" v="don&amp;apos;t generate code" />
-      <event name="OnReceiveData" v="generate code">
-        <Event_procedure_name v="CI2C1_OnReceiveData" />
-        <Priority v="same as interrupt" />
-      </event>
-      <event name="OnTransmitData" v="generate code">
-        <Event_procedure_name v="CI2C1_OnTransmitData" />
-        <Priority v="same as interrupt" />
-      </event>
+      <event name="OnReceiveData" v="don&amp;apos;t generate code" />
+      <event name="OnTransmitData" v="don&amp;apos;t generate code" />
       <event name="OnByteTransfer" v="don&amp;apos;t generate code" />
       <event name="OnReadReq" v="don&amp;apos;t generate code" />
       <event name="OnWriteReq" v="don&amp;apos;t generate code" />

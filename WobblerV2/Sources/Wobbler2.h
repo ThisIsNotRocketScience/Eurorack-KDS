@@ -1,5 +1,5 @@
 
-#define Wobbler2_GATECOUNTDOWN 100
+#define Wobbler2_GATECOUNTDOWN 20
 
 #include <stdint.h>
 #include "../../EurorackShared/EURORACKSHARED.H"
@@ -196,7 +196,7 @@ extern "C"
 	extern void Wobbler2_FancyEnv_Init(Wobbler2_FancyEnv_t *env);
 	extern void Wobbler2_FancyEnv_Trigger(Wobbler2_FancyEnv_t *env);
 	extern int32_t Wobbler2_FancyEnv_Update(Wobbler2_FancyEnv_t *env, int32_t param);
-
+	extern uint16_t Wobbler2_SkipThe1Percent(uint16_t input);
 	extern int32_t LERP(int32_t *V, int total, int fade);
 #ifdef __cplusplus
 }

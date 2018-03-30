@@ -13,16 +13,16 @@
 
 
 
-struct BigFish_t Fish;
-struct Tuesday_PatternGen Tuesday;
-struct Tuesday_Settings TuesdaySettings;
-struct Tuesday_Params TuesdayParams;
+BigFish_t Fish;
+Tuesday_PatternGen Tuesday;
+Tuesday_Settings TuesdaySettings;
+Tuesday_Params TuesdayParams;
 
 
-struct  EdgeCutter2_Envelope EnvRunning;
-struct  EdgeCutter2_Envelope EnvStatic;
-struct  EdgeCutter2_Settings EnvSettings;
-struct  EdgeCutter2_Params EnvParams;
+EdgeCutter2_Envelope EnvRunning;
+EdgeCutter2_Envelope EnvStatic;
+EdgeCutter2_Settings EnvSettings;
+EdgeCutter2_Params EnvParams;
 
 
 /*struct  Wobbler_LFO LFORunning;
@@ -31,10 +31,10 @@ struct  Wobbler_Settings LFOSettings;
 struct  Wobbler_Params LFOParams;
 */
 
-struct  Wobbler2_LFO_t LFO2Static;
-struct  Wobbler2_Settings LFO2Settings;
-struct  Wobbler2_LFO_t LFO2Running;
-struct  Wobbler2_Params LFO2Params;
+Wobbler2_LFO_t LFO2Static;
+Wobbler2_Settings LFO2Settings;
+Wobbler2_LFO_t LFO2Running;
+Wobbler2_Params LFO2Params;
 
 //Wobbler2_Pendulum_t Pendulum;
 Wobbler2_PendulumInt_t PendulumInt;

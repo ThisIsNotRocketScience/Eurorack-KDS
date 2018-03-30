@@ -66,6 +66,8 @@ volatile int measured = 0;
 
 int adcchannels[ADC_Count];
 
+int convadcchannels[ADC_Count];
+
 #include "Wobbler2.h"
 #include "../../EurorackShared/EurorackShared.c"
 
@@ -290,7 +292,32 @@ void EnvelopeTrigger(int sw)
 {
 	Wobbler2_Trigger(&LFO, sw, &Params);
 }
-
+void PrescaleADC(int *p,int*outp,int count)
+{
+	for(int i =0 ;i<count;i++)
+	{
+		uint32_t in = p[i];
+		if (in<0x10)
+			{
+			outp[i] = 0;
+			}
+		else
+		{
+			if (in > 0xfa00)
+			{
+				outp[i] = 0xffff;
+			}
+			else
+			{
+				in-=0x10;
+				in *= 0xffff;
+				in /= (0xfa00-0x10);
+				if (in>0xffff) in = 0xffff;
+				outp[i] = in;
+			}
+		}
+	}
+}
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -401,14 +428,15 @@ int main(void)
 
 		if (measured == 1)
 		{
-			LFO.Mod = ~adcchannels[ADC_MODULATION];
-			LFO.Shape = ~adcchannels[ADC_SHAPE] ;
-			uint16_t phasepre = (~adcchannels[ADC_PHASING]);
-			LFO.Phasing  = phasepre >>4 ;
-			LFO.Speed = ((0xffff-adcchannels[ADC_SPEED]) >> 7);
-			LFO.SpeedOrig = ((0xffff-adcchannels[ADC_SPEED]) );
-			LFO.Amount1 = ((adcchannels[ADC_AMTNORMAL])>>1 ) -(1<<14);
-			LFO.Amount2 = ((adcchannels[ADC_AMTPHASED])>>1 )-(1<<14) ;
+			PrescaleADC(adcchannels,convadcchannels,ADC_Count);
+			LFO.Mod =Wobbler2_SkipThe1Percent( ~convadcchannels[ADC_MODULATION]);
+			LFO.Shape = ~convadcchannels[ADC_SHAPE] ;
+			uint16_t phasepre = (~convadcchannels[ADC_PHASING]);
+			LFO.Phasing  = Wobbler2_SkipThe1Percent(phasepre) >>4 ;
+			LFO.Speed = ((0xffff-convadcchannels[ADC_SPEED]) >> 7);
+			LFO.SpeedOrig = ((0xffff-convadcchannels[ADC_SPEED]) );
+			LFO.Amount1 = ((convadcchannels[ADC_AMTNORMAL])>>1 ) -(1<<14);
+			LFO.Amount2 = ((convadcchannels[ADC_AMTPHASED])>>1 )-(1<<14) ;
 
 
 			measured = 0;

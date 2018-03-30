@@ -99,7 +99,7 @@ int main(void)
 	GATEPIN_SetVal(0);
 	WAIT1_Waitms(200);
 
-	initialise_monitor_handles();
+	//initialise_monitor_handles();
 	/*** End of Processor Expert internal initialization.                    ***/
 	DACBITBANG_InitHardware();
 	//int i =0 ;

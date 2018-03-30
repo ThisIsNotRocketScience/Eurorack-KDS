@@ -32,6 +32,7 @@ typedef struct result
 	int32_t phased;
 	int32_t envelope1;
 	int32_t envelope2;
+	int32_t sync;
 }result;
 
 result res[10000];
@@ -193,6 +194,10 @@ int main(int, char**)
 	static float f6 = 0.0f;
 	static int counter = 0;
 	static int updaterate = 1;
+	static bool simsink = true;
+	static int SyncInterval = 40;;
+
+	int SyncT = 0;
 
 	ImFont* pFont = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton.otf", 14.0f);
 	ImFont* pFontBold = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton ExtraBold.otf", 18.0f);
@@ -204,7 +209,7 @@ int main(int, char**)
 	ImGui::GetStyle().ItemSpacing = ImVec2(5, 5);
 	ImGui::GetStyle().FramePadding = ImVec2(5, 5);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(1.0f, 1.0f, 1.0f, .800f);
-
+	
 	while (!done)
 	{
 		SDL_Event event;
@@ -263,7 +268,16 @@ int main(int, char**)
 				Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
 			}
 			ImGui::SameLine();
-			if (ImGui::Button("Sync"))                      Wobbler2_SyncPulse(&LFO2Static);
+			if (ImGui::Button("Sync"))
+			{
+				Wobbler2_SyncPulse(&LFO2Static);
+			}
+			ImGui::Checkbox("Simulate Syncpulse", &simsink);
+			if (simsink)
+			{
+				ImGui::SameLine();
+				ImGui::SliderInt("Sync interval", &SyncInterval, 1, 300);
+			}
 
 			if (ImGui::Button("Basic 1"))                      fShape = (0.0f / 6.0f);
 			ImGui::SameLine();
@@ -321,18 +335,32 @@ int main(int, char**)
 		adcchannels[ADC_AMTNORMAL] = (int)((1 - f5) * 0xffff);;
 		adcchannels[ADC_AMTPHASED] = (int)((1 - f6) * 0xffff);;
 
-		LFO2Static.Mod = ~adcchannels[ADC_MODULATION];
+		LFO2Static.Mod = Wobbler2_SkipThe1Percent(~adcchannels[ADC_MODULATION]);
 		LFO2Static.Shape = ~adcchannels[ADC_SHAPE];
-		LFO2Static.Phasing = (adcchannels[ADC_PHASING]) >> 4;
+		LFO2Static.Phasing = (Wobbler2_SkipThe1Percent(adcchannels[ADC_PHASING])) >> 4;
 		LFO2Static.Speed = ((0xffff - adcchannels[ADC_SPEED]) >> 7);
 		LFO2Static.SpeedOrig = ((0xffff - adcchannels[ADC_SPEED]));
 		LFO2Static.Amount1 = ((adcchannels[ADC_AMTNORMAL]) >> 1) - (1 << 14);
 		LFO2Static.Amount2 = ((adcchannels[ADC_AMTPHASED]) >> 1) - (1 << 14);
-
-
+		
+		static int synccountdown = 0;
 		for (int i = 0; i < updaterate*10; i++)
 		{
+			res[cursor].sync = synccountdown>0?1:0;
+			SyncT++;
 
+			if (simsink)
+			{
+				if (SyncT >= (SyncInterval*5))
+				{
+					Wobbler2_SyncPulse(&LFO2Static);;
+					SyncT = 0;
+					synccountdown = 15;
+				}
+
+				
+			}
+			if (synccountdown > 0) synccountdown--;
 			res[cursor].normal = Wobbler2_Get(&LFO2Static, &LFO2Params);
 			res[cursor].phased = LFO2Static.OutputPhased;
 			res[cursor].envelope1 = LFO2Static.FancyEnv.currentcurved;
@@ -350,6 +378,10 @@ int main(int, char**)
 
 			for (int i = 0; i < 500; i++)
 			{
+				if (res[(cursor - 1 - i * 10 + 10000) % 10000].sync)
+				{
+					ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(p.x + i, p.y + 3), 3, IM_COL32(255, 255, 0, 255), 4);
+				}
 				int N = res[(cursor - 1 - i * 10 + 10000) % 10000].normal;
 				if (N > maxN) maxN = N;
 				if (N < minN) minN = N;
@@ -454,6 +486,8 @@ int main(int, char**)
 			ImGui::PushFont(pFont);
 
 			ImGui::BeginChild("EnvelopeFrame", ImVec2(540, 257), true);
+			static int oneperctest = 0;
+			ImGui::SliderInt("1% test", &oneperctest, 0, 0xffff); ImGui::SameLine(); ImGui::Text("%x (%f) -> %x", oneperctest,(float)(oneperctest*100.0f)/65535.0f,  Wobbler2_SkipThe1Percent(oneperctest));
 
 			p = ImGui::GetCursorScreenPos();
 			for (int i = 0; i < 256; i++)

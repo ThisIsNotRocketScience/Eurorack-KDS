@@ -184,6 +184,7 @@ enum
 	MODE_CHORUS,
 	MODE_FLANGER,
 	MODE_VERB1,
+	MODE_FREQCOUNTER,
 	__MODE_COUNT,
 	MODE_PLATINUMCLIP
 };
@@ -194,8 +195,15 @@ const char Names[__MODE_COUNT][10]=
 		" X-Delay  ",
 		"  Chorus  ",
 		" Flanger  ",
-		"  Verb 1  "
+		"  Verb 1  ",
+		" FreqCount"
 };
+enum
+{
+	DISP_DEFAULT,
+	DISP_FREQCOUNT
+};
+int displaymode[__MODE_COUNT] = {DISP_DEFAULT,DISP_DEFAULT,DISP_DEFAULT,DISP_DEFAULT,DISP_DEFAULT,DISP_FREQCOUNT};
 
 const char ParamLabel[__MODE_COUNT][4][8] =
 {
@@ -203,11 +211,69 @@ const char ParamLabel[__MODE_COUNT][4][8] =
 		{"Wet/Dry ","Feedback","Length  ","X-over  "},
 		{"Wet/Dry ","Speed   ","Phasing ","        "},
 		{"Wet/Dry ","Speed   ","Phasing ","Feedback"},
+		{"Wet/Dry ","Length  ","Feedback","Damping "},
 		{"Wet/Dry ","Length  ","Feedback","Damping "}
 
 };
 
 int CurrentMode  =1;
+#define FREQCNT 40
+typedef struct FreqCount_t
+{
+	uint32_t currfreq;
+	uint32_t spacing[FREQCNT];
+	uint32_t reffreq;
+	int32_t lastval;
+	uint32_t timesincelast;
+	float fcurfreq;
+	float freffreq;
+	int idx;
+} FreqCount_t;
+
+void InitFreqCount(FreqCount_t *f)
+{
+	f->lastval = 0;
+	f->reffreq = 1;
+	f->currfreq = 1;
+	f->timesincelast = 0;
+	for (int i = 0;i<FREQCNT;i++) f->spacing[i] =10;
+	f->idx = 0;
+}
+
+#include "ak4558.h"
+
+void ProcessFreqCount(FreqCount_t *f,int32_t *in, int32_t *out)
+{
+
+	int nSamples = AUDIO_BUFFER_SIZE;
+
+
+	while (nSamples--)
+	{
+		int32_t left = *in++;
+		int32_t right = *in++;
+
+		if (left>=0 && f->lastval <0)
+		{
+			f->spacing[f->idx] = f->timesincelast;
+			f->idx = (f->idx + 1) % FREQCNT;
+			f->timesincelast = 0;
+			f->currfreq  =0 ;
+			for(int i =0;i<FREQCNT;i++)
+			{
+				f->currfreq += f->spacing[i];
+			}
+			;
+
+			f->fcurfreq = (48000.0f*(float)FREQCNT )/ (float)f->currfreq;
+
+		}
+		f->lastval = left;
+		f->timesincelast++;
+		*out++ = left;
+		*out++ = right;
+	}
+}
 
 typedef struct EffectsOverlay
 {
@@ -218,11 +284,34 @@ typedef struct EffectsOverlay
 		StereoChorus_t Chorus;
 		Flanger_t Flanger;
 		Verb1 Verb1;
+		FreqCount_t Freq;
 	};
 } EffectsOverlay;
 
 EffectsOverlay TheSet;
+void DoEnterPress()
+{
+	switch(CurrentMode)
+	{
+	case MODE_FREQCOUNTER:
+		TheSet.Freq.freffreq = TheSet.Freq.fcurfreq;
+		break;
+	case MODE_VERB1:
+		break;
 
+	case MODE_CHORUS:
+
+		break;
+	case MODE_DELAY:
+		break;
+	case MODE_XDELAY:
+		break;
+	case MODE_FLANGER:
+		break;
+	case MODE_PLATINUMCLIP:
+		break;
+	}
+}
 
 void SwitchMode(int newmode)
 {
@@ -231,6 +320,9 @@ void SwitchMode(int newmode)
 		CurrentMode = -1;
 		switch(newmode)
 		{
+		case MODE_FREQCOUNTER:
+			InitFreqCount(&TheSet.Freq);
+			break;
 		case MODE_VERB1:
 			InitVerb1(&TheSet.Verb1);
 			break;
@@ -243,8 +335,8 @@ void SwitchMode(int newmode)
 			InitDelay(&TheSet.Delay);
 			break;
 		case MODE_XDELAY:
-					InitXDelay(&TheSet.XDelay);
-					break;
+			InitXDelay(&TheSet.XDelay);
+			break;
 		case MODE_FLANGER:
 			InitFlanger(&TheSet.Flanger);
 			break;
@@ -271,6 +363,10 @@ void NextBlock(int32_t *in, int32_t *out)
 	if (pressed(&state_down)== 1)
 	{
 		SwitchMode((CurrentMode -1+__MODE_COUNT) % __MODE_COUNT);
+	}
+	if (pressed(&state_middle))
+	{
+		DoEnterPress();
 	}
 
 
@@ -302,6 +398,9 @@ void NextBlock(int32_t *in, int32_t *out)
 		TheSet.XDelay.Wet = Param[0]/65535.0;
 		TheSet.XDelay.Feedback = Param[1];
 		ProcessXDelay(&TheSet.XDelay,in, out);
+		break;
+	case MODE_FREQCOUNTER:
+		ProcessFreqCount(&TheSet.Freq,in,out);
 		break;
 	}
 }
@@ -343,23 +442,23 @@ void DoParam(int base, int32_t T1, int idx, int coffs, int absy)
 		if (y%2 == 0) b2+=32;
 		if (T1>0)
 		{
-		if ((y ==0) || (y==15)) t2 = 0;
+			if ((y ==0) || (y==15)) t2 = 0;
 
-		int charc = ( - coffs/7);
-		int charx = (-coffs+(14*8))%7 ;
-		int chary = (12-y);
-		if (chary>=0 && chary < 10 && charc<8 && charc>=0)
-		{
-			int c = ParamLabel[CurrentMode][idx][charc]-32;
-			int G =GetChar(c*10 + chary);
-			int mask = (1<<charx );
-			if ((G & mask)==0)
+			int charc = ( - coffs/7);
+			int charx = (-coffs+(14*8))%7 ;
+			int chary = (12-y);
+			if (chary>=0 && chary < 10 && charc<8 && charc>=0)
 			{
-				t2 = 0;
-			}
+				int c = ParamLabel[CurrentMode][idx][charc]-32;
+				int G =GetChar(c*10 + chary);
+				int mask = (1<<charx );
+				if ((G & mask)==0)
+				{
+					t2 = 0;
+				}
 
-		}
-		buffer2[base + b2] = t2;
+			}
+			buffer2[base + b2] = t2;
 		}
 		else
 		{
@@ -388,6 +487,71 @@ void DoParam(int base, int32_t T1, int idx, int coffs, int absy)
 	}
 }
 
+char* itoa(int i, char b[]){
+	char const digit[] = "0123456789";
+	for (int i =0;i<10;i++)
+	{
+		b[i] = ' ';
+	}
+	char* p = b;
+	if(i<0){
+		*p++ = '-';
+		i *= -1;
+	}
+	int shifter = i;
+	do{ //Move to where representation ends
+		++p;
+		shifter = shifter/10;
+	}while(shifter);
+	//*p = '\0';
+	do{ //Move back, inserting digits as u go
+		*--p = digit[i%10];
+		i = i/10;
+	}while(i);
+	return b;
+}
+void PrintLine(char*ccc)
+{
+	for (int x =0;x<16;x++)
+			{
+				if (x>=2 && x < 12)
+				{
+					int chary = x-2;
+					for(int b = 0;b<64;b++)
+					{
+						int b2;
+						if (b%2 == 1) b2 = b/2;else b2 = b/2 + 32;
+						int charc = b/7;
+						int charx = b%7;
+						if (charc<10)
+						{
+							int c = ccc[charc]-32;
+							int G = GetChar(c*10 + chary);
+							int mask = (1<<charx );
+							if ((G & mask)==0)
+							{
+								buffer2[b2] = RGB(255,255,255);
+							}
+							else
+							{
+								buffer2[b2] = RGB(0,0,0);
+
+							}
+						}
+					}
+				}
+				else
+				{
+					for(int x =0;x<64;x++){buffer2[x]= 0;};
+
+				}
+				CheckAudio();
+				sent =0;
+				SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
+				while(sent ==0 ){CheckAudio();};
+			}
+
+};
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
@@ -395,7 +559,7 @@ int main(void)
 
 	/*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
 
-	SwitchMode(MODE_VERB1);
+	SwitchMode(MODE_FREQCOUNTER);
 	PE_low_level_init();
 	/*** End of Processor Expert internal initialization.                    ***/
 	ak4558_init();
@@ -417,72 +581,74 @@ int main(void)
 		int Bp = ((0xffff-Param[1]) * 79)/65535;
 		int Cp = ((0xffff-Param[2]) * 79)/65535;
 		int Dp = ((0xffff-Param[3]) * 79)/65535;
+		PrintLine(Names[CurrentMode]);
 
-		for (int x =0;x<16;x++)
-		{
-			if (x>=2 && x < 12)
-			{
-				int chary = x-2;
-				for(int b = 0;b<64;b++)
-				{
-					int b2;
-					if (b%2 == 1) b2 = b/2;else b2 = b/2 + 32;
-					int charc = b/7;
-					int charx = b%7;
-					if (charc<10)
-					{
-						int c = Names[CurrentMode][charc]-32;
-						int G =GetChar(c*10 + chary);
-						int mask = (1<<charx );
-						if ((G & mask)==0)
-						{
-							buffer2[b2] = RGB(255,255,255);
-						}
-						else
-						{
-							buffer2[b2] = RGB(0,0,0);
-
-						}
-					}
-				}
-			}
-			else
-			{
-				for(int x =0;x<64;x++){buffer2[x]= 0;};
-
-			}
-			CheckAudio();
-			sent =0;
-			SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
-			while(sent ==0 ){CheckAudio();};
-		}
 		for(int x =0;x<64;x++){buffer2[x]= 0;};
-		for (int x = 16 ;x<96;x++)
+		switch(displaymode[CurrentMode])
 		{
-			CheckAudio();
+		case DISP_DEFAULT:
+		{
+			for (int x = 16 ;x<96;x++)
+			{
+				CheckAudio();
 
-			int c =0 ;
-			int r = ((BlockT + x)%96>48)?255:0;
-			uint16_t base = RGB(r,r,r);
-			int x2 = x-16;
-			uint8_t A1 = x2>=Ap?255:0;
-			uint8_t B1 = x2>=Bp?255:0;
-			uint8_t C1 = x2>=Cp?255:0;
-			uint8_t D1 = x2>=Dp?255:0;
+				int c =0 ;
+				int r = ((BlockT + x)%96>48)?255:0;
+				uint16_t base = RGB(r,r,r);
+				int x2 = x-16;
+				uint8_t A1 = x2>=Ap?255:0;
+				uint8_t B1 = x2>=Bp?255:0;
+				uint8_t C1 = x2>=Cp?255:0;
+				uint8_t D1 = x2>=Dp?255:0;
 
-			uint16_t T1 = RGB(0,A1/2,A1);
-			uint16_t T2 = RGB(0,B1,B1/2);
-			uint16_t T3 = RGB(0,C1/2,C1);
-			uint16_t T4 = RGB(0,D1,D1/2);
+				uint16_t T1 = RGB(0,A1/2,A1);
+				uint16_t T2 = RGB(0,B1,B1/2);
+				uint16_t T3 = RGB(0,C1/2,C1);
+				uint16_t T4 = RGB(0,D1,D1/2);
 
-			DoParam(0,T1,0,Ap-x2,-x2);
-			DoParam(8, T2,1,Bp-x2,-x2);
-			DoParam(16,T3,2,Cp-x2,-x2);
-			DoParam(24,T4,3,Dp-x2,-x2);
-			CheckAudio();
-			sent =0;
-			SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
-			while(sent ==0 ){CheckAudio();};
+				DoParam(0,T1,0,Ap-x2,-x2);
+				DoParam(8, T2,1,Bp-x2,-x2);
+				DoParam(16,T3,2,Cp-x2,-x2);
+				DoParam(24,T4,3,Dp-x2,-x2);
+				CheckAudio();
+				sent =0;
+				SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
+				while(sent ==0 ){CheckAudio();};
+			}
+
+		}
+		break;
+		case DISP_FREQCOUNT:
+		{
+			char freqdisp1[20];
+			char freqdisp2[20];
+			char freqdisp3[20];
+			char freqdisp4[20];
+			float ratio =1;
+			if (TheSet.Freq.freffreq > 0)
+			{
+				ratio = TheSet.Freq.fcurfreq/ TheSet.Freq.freffreq;
+			}
+			itoa((int)(TheSet.Freq.fcurfreq), freqdisp1);
+			itoa((int)(TheSet.Freq.freffreq), freqdisp2);
+			itoa((int)(ratio*1000.0), freqdisp3);
+			itoa((int)((1.0f/ratio)*1000.0), freqdisp4);
+			PrintLine(freqdisp1);
+			PrintLine(freqdisp2);
+			PrintLine(freqdisp3);
+			PrintLine(freqdisp4);
+
+
+
+			for (int x = 16+16*4 ;x<96;x++)
+			{
+				CheckAudio();
+
+				SM1_SendBlock(SM1_DeviceData, buffer2, 2*64);
+				while(sent ==0 ){CheckAudio();};
+			}
+			break;
+		}
 		}
 
 	}

@@ -270,6 +270,22 @@ extern "C"
 
 	}
 
+	uint16_t Wobbler2_SkipThe1Percent(uint16_t input)
+	{
+		if (input > 0xffff / 100)
+		{
+			uint32_t r = input - (0xffff / 100);
+			r *= 0xffff;
+			r /= (0xffff - (0xffff / 100));
+
+			return r;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
 	int Wobbler2_Get(Wobbler2_LFO_t *LFO, Wobbler2_Params *Params)
 	{
 		LFO->timesincesync++;
@@ -293,7 +309,7 @@ extern "C"
 		if (LFO->extsync)
 		{
 			SteppedResult_t SpeedGrade;
-			Wobbler2_GetSteppedResult(LFO->SpeedOrig, WOBBLER_SPEEDRATIOCOUNT, &SpeedGrade);
+			Wobbler2_GetSteppedResult(LFO->SpeedOrig, WOBBLER_SPEEDRATIOCOUNT-1, &SpeedGrade);
 			uint32_t DPorig = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
 			DP = ((LFO->SyncDP >> 16) * GetInterpolatedResultInt(Wobbler_SpeedRatioSet, &SpeedGrade));
 			uint32_t DPdiff = DPorig - DP;
