@@ -1,11 +1,14 @@
 #include "EdgeCutter2.h"
+#include "../../EurorackShared/EURORACKSHARED.H"
+
+
+
 #include <math.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
 	void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env)
 	{
 		Env->TriggerState = 0;
@@ -21,6 +24,86 @@ extern "C"
 			Env->Gates[i] = 0;
 		}
 	}
+	
+	int32_t EdgeCutter2_EnvTransferFunc(int32_t S)
+	{
+		return fix16_mul(S, fix16_mul(S, S));
+	};
+
+#define FIX(x)((int32_t)((x)*65536.0f))
+
+	uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog,uint16_t Curve, SteppedResult_t *curB)
+		{
+
+
+			prog = prog % 0x8000;
+			int32_t delta = to - from;
+			int32_t preres1;
+			int32_t preres2;
+
+			{
+				int32_t lowerbound = FIX(0.8);
+				int32_t upperbound = FIX(0.002);
+				int32_t highval = EdgeCutter2_EnvTransferFunc(lowerbound);
+				int32_t lowval = EdgeCutter2_EnvTransferFunc(upperbound);
+				int32_t baseline = -lowval;
+				int32_t range = fix16_sdiv(FIX(1.0), fix16_ssub(highval, lowval));
+				int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), prog * 2), fix16_ssub(upperbound, lowerbound)), lowerbound);
+				preres1= fix16_mul(fix16_add(EdgeCutter2_EnvTransferFunc(scaled), baseline), range);
+			}
+			{
+				int32_t upperbound = FIX(0.9);
+				int32_t lowerbound = FIX(-0.016);
+				int32_t highval = EdgeCutter2_EnvTransferFunc(lowerbound);
+				int32_t lowval = EdgeCutter2_EnvTransferFunc(upperbound);
+				int32_t baseline = -lowval;
+				int32_t range = fix16_sdiv(FIX(1.0), fix16_ssub(highval, lowval));
+				int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), prog * 2), fix16_ssub(upperbound, lowerbound)), lowerbound);
+				preres2 = fix16_mul(fix16_add(EdgeCutter2_EnvTransferFunc(scaled), baseline), range);
+			}
+			int32_t V[2] = { preres1,preres2 };
+			int32_t preres = preres1;
+			if (curB->index == 1)
+			{
+				preres = LERP(V, 1, curB->fractional);
+			}
+			else
+			{
+				if (curB->index > 1)
+				{
+					preres = preres2;
+				}
+			}
+			return from + (delta * preres/2) / FIXED(1);
+		}
+
+	uint32_t DoCurveAttack(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *cur)
+	{
+		uint32_t curve1 = FIXED(1) - DoCurve(from, to, prog, Curve,cur);
+
+		if (Curve < 0x8000)
+		{
+			uint32_t prog2 = prog;
+			
+			int32_t mult = ((0x8000 - Curve));
+			prog2 = prog2 * mult;
+			prog2 /= 0x1000;
+		//	prog2 = fix16_mul(prog2, FIX(2.0/(6*4096.0)));
+			uint32_t curve2 = FIXED(1) - DoCurve(from, to, prog2, Curve,cur);
+			curve2 *= curve1;
+			curve2 /= 32768;
+			uint32_t L[2] = {curve1,curve2};
+			
+			uint32_t res = ULERP(L, 1, 255 - ((Curve * 255) / 0x8000));;;
+			return res;
+		}
+		else
+		{
+			return curve1;
+		}
+	}
+
+
 
 	static void SwitchToState(struct EdgeCutter2_Envelope *Env, int newstate)
 	{
@@ -60,6 +143,7 @@ extern "C"
 			Env->DecayProgress = FIXED(1);
 			Env->ReleaseProgress = 0;
 			Env->ReleaseStart = Env->Current;
+			Env->CurvedReleaseStart = Env->CurrentCurved;
 			Env->Gates[GATE_RELEASESTART] = GATE_COUNTDOWN;
 			break;
 
@@ -68,6 +152,7 @@ extern "C"
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->DecayStart = Env->Current;
+			Env->CurvedDecayStart = Env->CurrentCurved;
 			break;
 
 		case ENVSTATE_ATTACK:
@@ -75,6 +160,7 @@ extern "C"
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->AttackStart = Env->Current;
+			Env->CurvedAttackStart = Env->CurrentCurved;
 			break;
 
 		case ENVSTATE_SUSTAIN:
@@ -133,16 +219,20 @@ extern "C"
 
 	static int32_t EnvelopeLength(int inp, int speed)
 	{
-		return 1 + (((speed ? 200 : 2000) * inp) >> 8);
+		return 1 + (((speed ? 200 : 2000) * (inp>>8)) >> 8);
 	}
 
 	static int32_t SustainLevel(int sus)
 	{
-		return (sus * FIXED(1)) >> 8;
+		return ((sus >>8)* FIXED(1)) >> 8;
 	}
 
 	int EdgeCutter2_GetEnv( EdgeCutter2_Envelope *Env,  EdgeCutter2_Params *Params)
 	{
+		SteppedResult_t CurveSteps;
+		GetSteppedResult(Env->Curvature, 4, &CurveSteps);
+
+
 		for (int i = 0; i < 4; i++)
 		{
 			if (Env->Gates[i]) Env->Gates[i]--;
@@ -167,9 +257,13 @@ extern "C"
 				int32_t Delta = FIXED(1) / L;
 				Env->Current += Delta;
 				Env->AttackProgress = (Env->Current * FIXED(1)) / (FIXED(1) - Env->AttackStart);
+
+				Env->CurrentCurved = DoCurveAttack(Env->CurvedAttackStart, FIXED(1), FIXED(1) -  Env->AttackProgress, Env->Curvature,&CurveSteps);
+
 				if (Env->Current >= FIXED(1))
 				{
 					Env->Current = FIXED(1);
+					Env->CurrentCurved = FIXED(1);
 					SwitchToState(Env, ENVSTATE_DECAY);
 				}
 			}
@@ -194,9 +288,13 @@ extern "C"
 					Env->DecayProgress = FIXED(1);
 					Env->Current = SusLev;
 				}
+
+				Env->CurrentCurved = DoCurve(SusLev, FIXED(1), FIXED(1) - Env->DecayProgress, Env->Curvature, &CurveSteps);
+
 				if (Env->Current <= SusLev)
 				{
 					Env->Current = SusLev;
+					Env->CurrentCurved = SusLev;
 					if (Params->mode == ENVMODE_TRIGGER || Params->mode == ENVMODE_LOOP)
 					{
 						SwitchToState(Env, ENVSTATE_RELEASE);
@@ -213,6 +311,8 @@ extern "C"
 						}
 					}
 				}
+
+	
 			}
 			break;
 
@@ -222,6 +322,7 @@ extern "C"
 				Env->CurrentTarget = SusLev;
 				int32_t Delta = (SustainLevel(Env->S) - Env->Current)/5;
 				Env->Current += Delta;
+				Env->CurrentCurved = Env->Current;
 			}
 			break;
 
@@ -233,9 +334,12 @@ extern "C"
 				Env->Current += Delta;
 				Env->ReleaseProgress = (((Env->ReleaseStart - Env->Current)) * FIXED(1)) / (Env->ReleaseStart);
 
+				Env->CurrentCurved = DoCurve(0, Env->CurvedReleaseStart, FIXED(1) - Env->ReleaseProgress, Env->Curvature, &CurveSteps);
+
 				if (Env->Current <= 0 || Delta == 0)
 				{
 					Env->Current = 0;
+					Env->CurrentCurved = 0;
 
 					if (Params->mode == ENVMODE_LOOP && Env->TriggerState)
 					{
@@ -246,39 +350,16 @@ extern "C"
 						SwitchToState(Env, ENVSTATE_IDLE);
 					}
 				}
+
 			}
 			break;
 
 			case ENVSTATE_IDLE:
 				Env->CurrentTarget = 0;
+
 			break;
 		}
 
-		switch (Env->State)
-		{
-			case ENVSTATE_ATTACK:
-			{
-				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->A) / 255.0));
-				Env->CurvedOutput += DCurved;
-			}
-			break;
-			
-			case ENVSTATE_SUSTAIN:
-			case ENVSTATE_DECAY:
-			{
-				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->D) / 255.0));
-				Env->CurvedOutput += DCurved;
-			}
-			break;
-			
-			case ENVSTATE_IDLE:
-			case ENVSTATE_RELEASE:
-			{
-				int32_t DCurved = (Env->CurrentTarget - Env->CurvedOutput) * (0.004 / ((1 + Env->R) / 255.0));
-				Env->CurvedOutput += DCurved;
-			}
-			break;
-		}
 
 		for (int i = 0; i < 13; i++)
 		{
@@ -290,7 +371,7 @@ extern "C"
 			// 12 leds, 8 and 9 are sustain.
 			int Led = 0;
 			
-			Led += (1<<8) + (Env->AttackProgress * 3 ) >> (FIXEDBITS - 8);
+			Led += (1<<8) + ((Env->AttackProgress * 3 ) >> (FIXEDBITS - 8));
 			Led += (Env->DecayProgress * 3 )>> (FIXEDBITS - 8);
 
 			if (Env->State == ENVSTATE_SUSTAIN)
@@ -333,7 +414,7 @@ extern "C"
 		}
 
 		Env->LinearOutput = (Env->Current * 4095) / (FIXED(1));
-		Env->CurvedOutput = (Env->Current * 4095) / (FIXED(1));
+		Env->CurvedOutput = (Env->CurrentCurved * 4095) / (FIXED(1));
 		return Env->LinearOutput;
 	}
 

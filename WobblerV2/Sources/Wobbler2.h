@@ -66,11 +66,6 @@ typedef struct Wobbler2_LFO_SNH_t
 	Wobbler2_SVFstruct F1, F2, F3, F4;
 } Wobbler2_LFO_SNH_t;
 
-typedef struct SteppedResult_t
-{
-	uint8_t index;
-	uint8_t fractional;
-} SteppedResult_t;
 
 #include "Pendulum.h"
 

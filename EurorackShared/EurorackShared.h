@@ -58,6 +58,13 @@ typedef struct ShapeCompensationVals_t
 	int32_t mul;
 } ShapeCompensationVals_t;
 
+typedef struct SteppedResult_t
+{
+	uint8_t index;
+	uint8_t fractional;
+} SteppedResult_t;
+
+
 #define COMPENSATION_NOMIN 0
 	#define COMPENSATION_NOMUL 0xffffffff;
 
@@ -82,6 +89,7 @@ extern "C"
 	/// @return     Sine value (Q12)
 	int32_t isin_S4(int32_t x);
 	int32_t LERP(int32_t *V, int total, int fade);
+	uint32_t ULERP(uint32_t *V, int total, int fade);
 
 	int32_t Sine(uint32_t phase);
 	int32_t Cosine(uint32_t phase);
@@ -96,7 +104,7 @@ extern "C"
 	void ResetSVF(struct EURORACK_SVF *filt);
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);
 	void ProcessSVF(struct EURORACK_SVF *filt, uint32_t RR);
-
+	void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
 	uint32_t StartCounting();
 	uint32_t EndCount(uint32_t start);
 

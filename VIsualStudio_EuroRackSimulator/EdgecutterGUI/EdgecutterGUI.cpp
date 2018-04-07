@@ -11,6 +11,7 @@ EdgeCutter2_Envelope Envelope;
 EdgeCutter2_Settings Settings;
 EdgeCutter2_Params Params;
 
+EdgeCutter2_Envelope EnvelopeStatic;
 
 
 SDL_Surface* load_PNG(const char* filename)
@@ -105,6 +106,7 @@ int cursor = 0;
 ImVec2 Points[1000];
 ImVec2 EnvPoints[1000];
 ImVec2 Points2[1000];
+ImVec2 Points3[1000];
 
 typedef struct res_Struct
 {
@@ -126,7 +128,8 @@ int main(int, char**)
 {
 	
 	EuroRack_InitCalibration();
-
+	EdgeCutter2_Init(&Envelope);
+	EdgeCutter2_Init(&EnvelopeStatic);
 	
 
 	// Setup SDL
@@ -146,7 +149,7 @@ int main(int, char**)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
-	SDL_Window *window = SDL_CreateWindow("TiNRS Tuesday Inspection GUI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow("TiNRS Edgecutter Inspection GUI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	SetupIcon(window);
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1); // Enable vsync
@@ -170,7 +173,7 @@ int main(int, char**)
 
 	bool done = false;
 	static int counter = 0;
-	static int updaterate = 1;
+	static int updaterate = 4;
 	static int T = 0;
 	static bool externalclock = true;
 	static int clocktiming = 10;
@@ -202,7 +205,8 @@ int main(int, char**)
 	ImGui::GetStyle().FramePadding = ImVec2(5, 5);
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(1.0f, 1.0f, 1.0f, .800f);
 	static bool parameters = true;
-	static bool waveoutputs = true;
+	static bool waveoutputs = false;
+	static bool staticenv = true;
 
 
 	while (!done)
@@ -223,6 +227,7 @@ int main(int, char**)
 			{
 				ImGui::MenuItem("Output Waveforms", NULL, &waveoutputs);
 				ImGui::MenuItem("Edgecutter Parameters", NULL, &parameters);
+				ImGui::MenuItem("Static Envelope", NULL, &staticenv);
 
 				ImGui::EndMenu();
 			}
@@ -297,13 +302,14 @@ int main(int, char**)
 		adcchannels[ADC_VELOCITY] = (int)((1 - fVelocity) * 0xffff);;
 
 
-		Envelope.A = ~(adcchannels[ADC_A] >> 8);
-		Envelope.D = ~(adcchannels[ADC_D] >> 8);
-		Envelope.S = ~(adcchannels[ADC_S] >> 8);
-		Envelope.R = ~(adcchannels[ADC_R] >> 8);
-		Envelope.Curvature = ~(adcchannels[ADC_CURVE] >> 8);
-		Envelope.Velocity = ~(adcchannels[ADC_VELOCITY] >> 8);
+		EnvelopeStatic.A = Envelope.A = ~(adcchannels[ADC_A]);
+		EnvelopeStatic.D = Envelope.D = ~(adcchannels[ADC_D]);
+		EnvelopeStatic.S = Envelope.S = ~(adcchannels[ADC_S]);
+		EnvelopeStatic.R = Envelope.R = ~(adcchannels[ADC_R]);
+		EnvelopeStatic.Curvature = Envelope.Curvature = ~(adcchannels[ADC_CURVE] );
+		EnvelopeStatic.Velocity = Envelope.Velocity = ~(adcchannels[ADC_VELOCITY] );
 
+		
 	
 		
 		for (int i = 0; i < updaterate*10; i++)
@@ -327,6 +333,43 @@ int main(int, char**)
 			cursor = (cursor + 1) % 10000;
 		}
 		ImVec2 p;
+
+		if (staticenv)
+		{
+			ImGui::PushFont(pFontBold);
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
+			ImGui::Begin("Static Envelope", &waveoutputs, ImGuiWindowFlags_AlwaysAutoResize);
+
+			ImGui::BeginChild("EnvelopeFrame", ImVec2(540, 257), true);
+
+			p = ImGui::GetCursorScreenPos();
+			static bool resetbetweenframes = true;
+			if (resetbetweenframes) EdgeCutter2_Init(&EnvelopeStatic);
+			for (int i = 0; i < 1000; i++)
+			{
+				if (i == 10)
+				{
+					EdgeCutter2_Trigger(&EnvelopeStatic, 1, &Params);
+				}
+				if (i == 300)
+				{
+					EdgeCutter2_Trigger(&EnvelopeStatic, 0, &Params);
+				}
+				Points3[i/2].x = p.x+ i;
+				for (int j =0 ;j< updaterate +1;j++) EdgeCutter2_GetEnv(&EnvelopeStatic, &Params);
+				int P = EnvelopeStatic.CurvedOutput;
+				Points3[i / 2].y = p.y + 100 - ((P - 2048) / 20);
+			}
+
+			ImGui::GetWindowDrawList()->AddPolyline(Points3, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
+			ImGui::EndChild();
+
+
+			ImGui::End();
+			ImGui::PopStyleColor();
+			ImGui::PopFont();
+		}
+
 		if(waveoutputs){
 			ImGui::PushFont(pFontBold);
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));

@@ -86,55 +86,7 @@ void SetupIcon(SDL_Window *window)
 
 }
 
-#define KNOB(name,x,y,min,max) +1
-const int knobcount = 0
-#include "PanControls.h"
-;
-#undef KNOB
-
-
-class LedButton
-{
-public:
-
-	std::string name;
-	float x;
-	float y;
-	bool value;
-};
-
-#define LEDBUTTON(name,x,y,min,max) +1
-const int ledbuttoncount = 0
-#include "PanControls.h"
-;
-#undef LEDBUTTON
-
-
-LedButton Buttons[ledbuttoncount] = {
-#define LEDBUTTON(iname,ix,iy) {iname,ix, iy},
-#include "PanControls.h"
-#undef LEDBUTTON
-
-};
-
-
-class Knob
-{
-public:
-	
-	std::string name;
-	float x;
-	float y;
-	float value;
-} ;
-
-Knob Knobs[knobcount] = {
-#define KNOB(iname,ix,iy,imin,imax) {iname,ix, iy},
-#include "PanControls.h"
-#undef KNOB
-
-};
-
+#include "PanHeader.h"
 
 
 static bool MyKnob(const char* label, float* p_value, float v_min, float v_max)
@@ -217,6 +169,36 @@ bool LedButton(const char* label, bool* v)
 	return pressed;
 }
 
+bool ImLed(const char* label, bool* v)
+{
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	float radius_outer = 5.0f;
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+	ImVec2 center = ImVec2(pos.x + radius_outer, pos.y + radius_outer);
+	float line_height = ImGui::GetTextLineHeight();
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+
+	bool is_active = ImGui::IsItemActive();
+	bool is_hovered = ImGui::IsItemHovered();
+
+
+	draw_list->AddCircleFilled(center, radius_outer, IM_COL32(0,0,0,255), 16);
+	auto R = ImGui::CalcTextSize(label);
+	draw_list->AddText(ImVec2(center.x - R.x / 2, pos.y - line_height - style.ItemInnerSpacing.y), ImGui::GetColorU32(ImGuiCol_Text), label);
+
+	
+	if (*v)
+	{
+		draw_list->AddCircleFilled(center, radius_outer, IM_COL32(255, 255, 0, 255), 16);
+
+	}
+
+	return false;
+}
 
 int main(int, char**)
 {
@@ -236,7 +218,7 @@ int main(int, char**)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
-	SDL_Window *window = SDL_CreateWindow("Synton PAN Simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow("Synton PAN Simulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 2000, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	SetupIcon(window);
 	SDL_GLContext glcontext = SDL_GL_CreateContext(window);
 	SDL_GL_SetSwapInterval(1); // Enable vsync
@@ -273,7 +255,7 @@ int main(int, char**)
 	int32_t gatecolor = ImColor::HSV(0, 0, 0.3);
 	int32_t accentcolor = ImColor::HSV(0, 0, 1);
 
-	ImFont* pFont = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton.otf", 14.0f);
+	ImFont* pFont = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton.otf", 11.0f);
 	ImFont* pFontBold = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton ExtraBold.otf", 18.0f);
 
 	unsigned char * pixels;
@@ -323,14 +305,20 @@ int main(int, char**)
 				{
 
 					ImGui::SetCursorScreenPos(ImVec2(pos.x + Knobs[i].x * xscalefac, pos.y + Knobs[i].y * yscalefac));
-					MyKnob(Knobs[i].name.c_str(), &Knobs[i].value, 0, 1);
+					MyKnob(Knobs[i].name, &Knobs[i].value, 0, 1);
 				}
 
 				for (int i = 0; i < ledbuttoncount; i++)
 				{
 					ImGui::SetCursorScreenPos(ImVec2(pos.x + Buttons[i].x * xscalefac, pos.y + Buttons[i].y * yscalefac));
-					LedButton(Buttons[i].name.c_str(), &Buttons[i].value);
+					LedButton(Buttons[i].name, &Buttons[i].value);
 				}
+				for (int i = 0; i < ledcount; i++)
+				{
+					ImGui::SetCursorScreenPos(ImVec2(pos.x + Leds[i].x * xscalefac, pos.y + Leds[i].y * yscalefac));
+					ImLed(Leds[i].name, &Leds[i].value);
+				}
+
 				ImGui::PopFont();
 
 

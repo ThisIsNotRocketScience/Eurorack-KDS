@@ -114,7 +114,16 @@ extern "C"
 		int I = T >> 8;
 		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
 	}
-	
+
+	uint32_t ULERP(uint32_t *V, int total, int fade)
+	{
+		int T = fade * total;
+		unsigned char frac = T & 0xff;
+		if (frac && (frac < 255)) frac += 1;
+		int I = T >> 8;
+		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
+	}
+
 	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes, ShapeCompensationVals_t *Comp)
 	{		
 		Shapes->Sine = Sine(phase);

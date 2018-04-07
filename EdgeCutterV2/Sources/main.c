@@ -71,6 +71,8 @@ int adcchannels[ADC_Count];
 #include "EdgeCutter2.h"
 #include "../../EurorackShared/EurorackShared.c"
 
+#include "../../EurorackShared/Math.c"
+#include "../../libfixmath/libfixmath/fix16.c"
 EdgeCutter2_Envelope Envelope;
 EdgeCutter2_Settings Settings;
 EdgeCutter2_Params Params;

@@ -42,11 +42,11 @@ typedef struct EdgeCutter2_Settings
 
 typedef struct EdgeCutter2_Envelope
 {
-	unsigned char A;
-	unsigned char D;
-	unsigned char S;
-	unsigned char R;
-	unsigned char Curvature;
+	unsigned short A;
+	unsigned short D;
+	unsigned short S;
+	unsigned short R;
+	unsigned short Curvature;
 
 	unsigned char TriggerState;
 	unsigned char Velocity;
@@ -61,15 +61,19 @@ typedef struct EdgeCutter2_Envelope
 	int32_t LastLed;
 
 	int32_t AttackStart;
+	int32_t CurvedAttackStart;
 	int32_t DecayStart;
+	int32_t CurvedDecayStart;
 	int32_t ReleaseStart;
-	
+	int32_t CurvedReleaseStart;
+
 	int32_t AttackProgress;
 	int32_t DecayProgress;
 	int32_t ReleaseProgress;
 
 
 	int32_t Current;
+	int32_t CurrentCurved;
 	int32_t CurrentTarget;
 
 	EdgeCutter2_Settings Settings;

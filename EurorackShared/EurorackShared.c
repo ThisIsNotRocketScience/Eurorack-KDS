@@ -51,6 +51,23 @@ void InitADC(struct EuroRack_ADC_Calibration *ADC)
 	ADC->scale = 0x100;
 }
 
+void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out)
+{
+	
+	uint32_t X = (param * steps) / 256;
+	X += 64;
+
+	int FloorX = X & 0xffffff00;
+	int Aside = FloorX;
+	int Bside = (X - (FloorX)) * 2 + (FloorX)-256;
+	int M = (Aside > Bside) ? Aside : Bside;
+
+	out->index = M >> 8;
+	out->fractional = M & 0xff;
+}
+
+
+
 void EuroRack_InitCalibration()
 {
 

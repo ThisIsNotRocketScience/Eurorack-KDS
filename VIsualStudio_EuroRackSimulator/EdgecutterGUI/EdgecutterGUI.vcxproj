@@ -143,6 +143,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\EdgeCutterV2\Sources\EdgeCutter2.c" />
     <ClCompile Include="..\..\EurorackShared\EurorackShared.c" />
+    <ClCompile Include="..\..\EurorackShared\Math.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_exp.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_sqrt.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_str.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fix16_trig.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\fract32.c" />
+    <ClCompile Include="..\..\libfixmath\libfixmath\uint32.c" />
     <ClCompile Include="..\libs\gl3w-master\src\gl3w.c" />
     <ClCompile Include="..\libs\imgui-master\examples\sdl_opengl3_example\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="..\libs\imgui-master\imgui.cpp" />
