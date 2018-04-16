@@ -46,20 +46,22 @@ namespace Sim1
 
             //            tf.Focus();
 
-            if (true)
+            if (false)
             {
                 WobblerTestFrame wf = new WobblerTestFrame();
                 wf.Show(this.dockPanel, DockState.Document);
                 wf.Text = "Wobbler";
             }
-           // WobblerSetup ws = new WobblerSetup();
-           // ws.Show(this.dockPanel, DockState.Document);
+            // WobblerSetup ws = new WobblerSetup();
+            // ws.Show(this.dockPanel, DockState.Document);
             //ws.Text = "Wobbler Setup";
 
-             EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
-             ef.Show(this.dockPanel, DockState.Document);
-             ef.Text = "EdgeCutter";
-
+            if (true)
+            {
+                EdgeCutterTestFrame ef = new EdgeCutterTestFrame();
+                ef.Show(this.dockPanel, DockState.Document);
+                ef.Text = "EdgeCutter";
+            }
             // BigFishTestFrame bf = new BigFishTestFrame();
             // bf.Show(this.dockPanel, DockState.Document);
             // bf.Text = "BigFish";

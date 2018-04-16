@@ -22,7 +22,6 @@
 <br/>
 
 \page page_components Components 
-- \subpage SM1
 - \subpage TU1
 - \subpage TimerIntLdd1
 - \subpage AdcLdd1

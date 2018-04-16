@@ -16,6 +16,12 @@ typedef struct EdgeCutter2_Params
 	unsigned char speed;
 } EdgeCutter2_Params;
 
+typedef struct EdgeCutter2_Calibration
+{
+	int CalibNormal;
+	int CalibCurved;
+} EdgeCutter2_Calibration;
+
 typedef struct EdgeCutter2_Settings
 {
 	unsigned char SlowSpeedMult;
@@ -31,7 +37,7 @@ typedef struct EdgeCutter2_Settings
 #define ENVMODE_TRIGGER 0
 #define ENVMODE_GATE 1
 #define ENVMODE_LOOP 2
-
+#define PEAKCOUNTSCALER 0x30
 #define GATE_ATTACKEND 3
 #define GATE_DECAYEND 2
 #define GATE_RELEASESTART 1
@@ -49,11 +55,11 @@ typedef struct EdgeCutter2_Envelope
 	unsigned short Curvature;
 
 	unsigned char TriggerState;
-	unsigned char Velocity;
+	unsigned short Velocity;
 	
 	int32_t LinearOutput;
 	int32_t CurvedOutput;
-
+	int32_t runninglowpass;
 	int State;
 	
 	unsigned char Gates[8];
@@ -75,6 +81,9 @@ typedef struct EdgeCutter2_Envelope
 	int32_t Current;
 	int32_t CurrentCurved;
 	int32_t CurrentTarget;
+	int32_t ReleaseTime;
+	int32_t AttackTime;
+	int32_t DecayTime;
 
 	EdgeCutter2_Settings Settings;
 
@@ -84,11 +93,13 @@ typedef struct EdgeCutter2_Envelope
 extern "C"
 {
 #endif
-	extern int EdgeCutter2_GetEnv(struct EdgeCutter2_Envelope *Env, struct EdgeCutter2_Params *Params);
-	extern void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env);
-	extern void EdgeCutter2_Trigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params);
-	extern void EdgeCutter2_LoadSettings(struct EdgeCutter2_Settings *settings, struct EdgeCutter2_Params *params);
-	extern void EdgeCutter2_ValidateParams(struct EdgeCutter2_Params *params);
+	extern int EdgeCutter2_GetEnv(EdgeCutter2_Envelope *Env, EdgeCutter2_Params *Params, EdgeCutter2_Calibration *calibration);
+	extern void EdgeCutter2_Init(EdgeCutter2_Envelope *Env);
+	extern void EdgeCutter2_Trigger(EdgeCutter2_Envelope *Env, unsigned char N, EdgeCutter2_Params *Params);
+	extern void EdgeCutter2_LoadSettings(EdgeCutter2_Settings *settings, EdgeCutter2_Params *params);
+	extern void EdgeCutter2_ValidateParams(EdgeCutter2_Params *params);
+	extern uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve,struct SteppedResult_t *curB, int32_t Linear);
+
 #ifdef __cplusplus
 }
 #endif

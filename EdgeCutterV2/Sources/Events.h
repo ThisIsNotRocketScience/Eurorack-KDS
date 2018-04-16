@@ -53,7 +53,6 @@
 #include "IntI2cLdd1.h"
 #include "JACK_RETRIGGER.h"
 #include "WAIT1.h"
-#include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"
@@ -96,25 +95,6 @@ void Cpu_OnNMIINT(void);
 */
 /* ===================================================================*/
 void SM1_OnBlockSent(LDD_TUserData *UserDataPtr);
-
-/*
-** ===================================================================
-**     Event       :  SM1_OnBlockReceived (module Events)
-**
-**     Component   :  SM1 [SPIMaster_LDD]
-*/
-/*!
-**     @brief
-**         This event is called when the requested number of data is
-**         moved to the input buffer. This method is available only if
-**         the ReceiveBlock method is enabled.
-**     @param
-**         UserDataPtr     - Pointer to the user or
-**                           RTOS specific data. The pointer is passed
-**                           as the parameter of Init method. 
-*/
-/* ===================================================================*/
-void SM1_OnBlockReceived(LDD_TUserData *UserDataPtr);
 
 /*
 ** ===================================================================

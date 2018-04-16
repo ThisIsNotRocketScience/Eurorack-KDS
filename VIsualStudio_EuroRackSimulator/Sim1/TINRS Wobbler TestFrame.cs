@@ -32,7 +32,7 @@ namespace Sim1
             RebuildLFO();
             //BuildCalibrationTable();
             //BuildFreqLerp();
-            BuildPoster();
+           // BuildPoster();
 
             Shape.Value = 255 / 5;
 
@@ -247,7 +247,7 @@ namespace Sim1
                     C++;
                 }
             }
-            SVGWriter.Write("poster-" + DateTime.Now.ToLongDateString() + ".svg", 600 * 4, 256 * 10, Lines, 1, false);
+            SVGWriter.Write("wobbler_poster-" + DateTime.Now.ToLongDateString() + ".svg", 600 * 4, 256 * 10, Lines, 1, false, Color.FromArgb(0, 58, 66));
         }
 
         private void Attack_Scroll(object sender, EventArgs e)

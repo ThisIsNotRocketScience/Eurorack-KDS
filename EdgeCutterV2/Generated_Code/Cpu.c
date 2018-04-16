@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-09-26, 18:12, # CodeGen: 3
+**     Date/Time   : 2018-04-10, 17:41, # CodeGen: 10
 **     Abstract    :
 **
 **     Settings    :
@@ -224,7 +224,6 @@
 /* MODULE Cpu. */
 
 /* {Default RTOS Adapter} No RTOS includes */
-#include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"
@@ -468,8 +467,6 @@ void PE_low_level_init(void)
                ));
   /* NVIC_IPR1: PRI_6=0 */
   NVIC_IPR1 &= (uint32_t)~(uint32_t)(NVIC_IP_PRI_6(0xFF));
-  /* ### SPIMaster_LDD "SM1" component auto initializatation. Auto initialization feature can be disabled by component's property "Auto initialization". */
-  (void)SM1_Init(NULL);
   /* ### TimerInt_LDD "TimerIntLdd1" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
   (void)TimerIntLdd1_Init(NULL);
   /* ### TimerInt "TI1" init code ... */

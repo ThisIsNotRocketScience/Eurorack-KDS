@@ -1022,12 +1022,12 @@ Autoselect
               <Input_Glitch_filter v="0" />
             </group>
             <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
-            <Bits_0_2_of_Frequency_divider_register v="100" />
-            <Bits_3_5_of_Frequency_divider_register v="101" />
-            <SCL_frequency v="41.643 kHz" />
-            <SDA_Hold v="4.044 us" />
-            <SCL_start_Hold v="11.924 us" />
-            <SCL_stop_Hold v="12.049 us" />
+            <Bits_0_2_of_Frequency_divider_register v="010" />
+            <Bits_3_5_of_Frequency_divider_register v="111" />
+            <SCL_frequency v="13.385 kHz" />
+            <SDA_Hold v="10.715 us" />
+            <SCL_start_Hold v="37.272 us" />
+            <SCL_stop_Hold v="37.397 us" />
           </group>
           <group name="Initialization">
             <Enabled_in_init_code v="yes" />
@@ -1114,10 +1114,10 @@ Autoselect
         <High_drive_select v="Disabled" />
       </group>
       <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
-      <Bits_0_2_of_Frequency_divider_register v="100" />
-      <Bits_3_5_of_Frequency_divider_register v="101" />
-      <SCL_frequency v="41.643 kHz" />
-      <SDA_Hold v="4.044 us" />
+      <Bits_0_2_of_Frequency_divider_register v="010" />
+      <Bits_3_5_of_Frequency_divider_register v="111" />
+      <SCL_frequency v="13.385 kHz" />
+      <SDA_Hold v="10.715 us" />
       <Noise__glitch__filter v="0" />
       <Wake_up v="Disabled" />
       <group name="Initialization">

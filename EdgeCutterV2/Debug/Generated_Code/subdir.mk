@@ -21,7 +21,6 @@ C_SRCS += \
 ../Generated_Code/PE_LDD.c \
 ../Generated_Code/PTA.c \
 ../Generated_Code/PTB.c \
-../Generated_Code/SM1.c \
 ../Generated_Code/SW_MODE.c \
 ../Generated_Code/SW_SPEED.c \
 ../Generated_Code/SW_TRIGGER.c \
@@ -49,7 +48,6 @@ OBJS += \
 ./Generated_Code/PE_LDD.o \
 ./Generated_Code/PTA.o \
 ./Generated_Code/PTB.o \
-./Generated_Code/SM1.o \
 ./Generated_Code/SW_MODE.o \
 ./Generated_Code/SW_SPEED.o \
 ./Generated_Code/SW_TRIGGER.o \
@@ -77,7 +75,6 @@ C_DEPS += \
 ./Generated_Code/PE_LDD.d \
 ./Generated_Code/PTA.d \
 ./Generated_Code/PTB.d \
-./Generated_Code/SM1.d \
 ./Generated_Code/SW_MODE.d \
 ./Generated_Code/SW_SPEED.d \
 ./Generated_Code/SW_TRIGGER.d \

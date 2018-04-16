@@ -1,6 +1,7 @@
 ﻿using GlmNet;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,13 +22,19 @@ namespace TINRS_ArtWorkGenerator
 
     public class SVGWriter
     {
-        public static void Write(string filename, int w, int h, List<Polygon> Polygons, double strokewidth, bool Closed)
+        public static void Write(string filename, int w, int h, List<Polygon> Polygons, double strokewidth, bool Closed, Color BG)
         {
+            string bgcolorstring = String.Format("#{0:X2}{1:X2}{2:X2}", BG.R, BG.G, BG.B);
+
+
             List<string> OutLines = new List<string>();
 
             OutLines.Add("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" >");
             OutLines.Add(String.Format("<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:space=\"preserve\" width=\"{0}\" height=\"{1}\">", w, h));
-            Dictionary<int, List<string>> groups = new Dictionary<int, List<string>>();
+
+            OutLines.Add(String.Format("<rect width=\"100%\" height=\"100%\" fill=\"{0}\" />", bgcolorstring));
+
+                 Dictionary <int, List<string>> groups = new Dictionary<int, List<string>>();
             for (int i = 0; i < 256; i++)
             {
                 groups[i] = new List<string>();

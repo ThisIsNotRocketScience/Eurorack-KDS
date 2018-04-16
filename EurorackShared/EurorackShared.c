@@ -1,7 +1,9 @@
 #include "EurorackShared.h"
 #ifndef BIGFISH
 #ifndef WIN32
+#ifndef SKIPDAC
 #include "DAC.c"
+#endif
 #include "Eeprom.c"
 #include "LEDS.c"
 #endif

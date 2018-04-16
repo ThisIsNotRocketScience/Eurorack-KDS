@@ -30,6 +30,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EdgecutterGUI", "Edgecutter
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PanSim", "PanSim\PanSim.vcxproj", "{15FE799D-F752-43BC-8EBF-542B1FA5282B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulators", "Simulators", "{7E46B039-C87C-44E9-8390-AB3D9521F865}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -164,5 +166,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6FB8F7DE-1377-4BBC-AF37-DB046353ABCE} = {7E46B039-C87C-44E9-8390-AB3D9521F865}
+		{37E918C0-58D6-4FBE-B07D-793796E2F87B} = {7E46B039-C87C-44E9-8390-AB3D9521F865}
+		{E6C9D198-D681-4659-A346-336289EEA146} = {7E46B039-C87C-44E9-8390-AB3D9521F865}
 	EndGlobalSection
 EndGlobal

@@ -52,6 +52,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.DispUpdate = new System.Windows.Forms.Timer(this.components);
             this.EnvUpdate = new System.Windows.Forms.Timer(this.components);
+            this.BuildPosterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -99,6 +100,7 @@
             this.flowLayoutPanel1.Controls.Add(this.Mode);
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
             this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Controls.Add(this.BuildPosterButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -331,6 +333,16 @@
             this.EnvUpdate.Interval = 10;
             this.EnvUpdate.Tick += new System.EventHandler(this.EnvUpdate_Tick);
             // 
+            // BuildPosterButton
+            // 
+            this.BuildPosterButton.Location = new System.Drawing.Point(3, 507);
+            this.BuildPosterButton.Name = "BuildPosterButton";
+            this.BuildPosterButton.Size = new System.Drawing.Size(179, 39);
+            this.BuildPosterButton.TabIndex = 13;
+            this.BuildPosterButton.Text = "Build Poster";
+            this.BuildPosterButton.UseVisualStyleBackColor = true;
+            this.BuildPosterButton.Click += new System.EventHandler(this.BuildPosterButton_Click);
+            // 
             // EdgeCutterTestFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -384,6 +396,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button BuildPosterButton;
     }
 }
 

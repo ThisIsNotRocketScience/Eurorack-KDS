@@ -100,9 +100,9 @@ extern "C"
 		EnvStatic.S = EnvRunning.S = sustain;
 		EnvStatic.R = EnvRunning.R = release;
 		EnvStatic.Curvature = EnvRunning.Curvature = curvature;
-
-		if (staticenv == 0) return EdgeCutter2_GetEnv(&EnvRunning, &EnvParams);
-		return	EdgeCutter2_GetEnv(&EnvStatic, &EnvParams);
+		EdgeCutter2_Calibration Calib = { 0 ,0 };
+		if (staticenv == 0) return EdgeCutter2_GetEnv(&EnvRunning, &EnvParams, &Calib);
+		return	EdgeCutter2_GetEnv(&EnvStatic, &EnvParams, &Calib);
 	}
 
 	__declspec(dllexport) int __stdcall GetEnvCurve(int staticenv)

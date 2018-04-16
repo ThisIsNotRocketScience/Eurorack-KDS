@@ -48,7 +48,6 @@
 #include "IntI2cLdd1.h"
 #include "JACK_RETRIGGER.h"
 #include "WAIT1.h"
-#include "SM1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"
@@ -69,6 +68,7 @@ int adcchannels[ADC_Count];
 
 
 #include "EdgeCutter2.h"
+#define SKIPDAC
 #include "../../EurorackShared/EurorackShared.c"
 
 #include "../../EurorackShared/Math.c"
@@ -182,6 +182,67 @@ int tickssincecommit = 0;
 int LinearOut = 0;
 int CurvedOut = 0;
 
+void DAC_DATA_SET() {GPIOA_PDOR |= (1<<7);};
+void DAC_DATA_CLR() {GPIOA_PDOR &= ~(1<<7);};
+void DAC_CLK_SET() {GPIOB_PDOR |= (1<<0);};
+void DAC_CLK_CLR() {GPIOB_PDOR &= ~(1<<0);};
+void DAC_INIT()
+{
+	PORTA_PCR7 = PORT_PCR_MUX(0x01);
+	PORTB_PCR0 = PORT_PCR_MUX(0x01);
+
+	GPIOA_PDDR |= (1 << 7);
+	GPIOB_PDDR |= (1 << 0);
+
+}
+void DAC_Shift(byte b)
+{
+	for(byte i =0x80;i;i>>=1)
+	{
+	if ((b&i) == i) 	DAC_DATA_SET();else DAC_DATA_CLR();
+	DAC_CLK_SET();DAC_CLK_CLR();
+	}
+
+}
+void DACB_Write(int channel, int value)
+{
+	DACSEL_ClrVal(0); // SetVal done in interrupt handler
+	const int shutdown1 = 0;
+	const int gain1 = 0;
+	const int shutdown2 = 0	;
+	const int gain2 = 0;
+	unsigned char coms[2];
+
+	unsigned int command;
+	if(channel == 1)
+	{
+		command = 0x0000;
+		command |= shutdown1 ? 0x0000 : 0x1000;
+		command |= gain1 ? 0x0000 : 0x2000;
+		command |= (value & 0x0FFF);
+		coms[0] =  command >> 8;
+		coms[1] = command &0xff;
+
+	}
+	else
+	{
+		command = 0x8000;
+		command |= shutdown2 ? 0x0000 : 0x1000;
+		command |= gain2 ? 0x0000 : 0x2000;
+		command |= (value & 0x0FFF);
+		coms[0] =  command >> 8;
+		coms[1] = command &0xff;
+
+
+	}
+	DAC_Shift(coms[0]);
+	DAC_Shift(coms[1]);
+	DACSEL_SetVal(0); // SetVal done in interrupt handler
+
+}
+EdgeCutter2_Calibration EdgecutterCalibration;
+
+
 void doTimer()
 {
 	UpdateButtons();
@@ -191,9 +252,9 @@ void doTimer()
 	{
 	case 0:
 	{
-		EdgeCutter2_GetEnv(&Envelope, &Params);
+		EdgeCutter2_GetEnv(&Envelope, &Params,&EdgecutterCalibration);
 		LinearOut = Envelope.LinearOutput;
-		DAC_Write(0, LinearOut);
+		DACB_Write(0, LinearOut);
 
 		for(int i =0 ;i<13;i++)
 		{
@@ -219,7 +280,7 @@ void doTimer()
 	case 1:
 	{
 		CurvedOut = Envelope.CurvedOutput;
-		DAC_Write(1, CurvedOut);
+		DACB_Write(1, CurvedOut);
 	}
 
 	break;
@@ -248,12 +309,37 @@ void SetSpeedLeds(int speed)
 }
 
 #define VERSIONBYTE 0x10
+#define CALIBRATIONVERSIONBYTE 0x10
+#define EEPROM_CALIBRATIONBASE 16
 
 void SaveEeprom()
 {
 	EE24_WriteByte(0, VERSIONBYTE);
 	int paramsize = sizeof(Params);
 	EE24_WriteBlock(1, (byte *)&Params, paramsize);
+}
+
+void SaveCalibrationEeprom()
+{
+	int calibrationsize = sizeof(EdgecutterCalibration);
+	EE24_WriteByte(EEPROM_CALIBRATIONBASE, CALIBRATIONVERSIONBYTE);
+	EE24_WriteBlock(EEPROM_CALIBRATIONBASE + 1, (byte *)&EdgecutterCalibration, calibrationsize);
+}
+
+void LoadCalibrationEeprom()
+{
+	int Ver = EE24_ReadByte(EEPROM_CALIBRATIONBASE);
+	if (Ver == CALIBRATIONVERSIONBYTE)
+	{
+		int paramsize = sizeof(EdgecutterCalibration);
+		EE24_ReadBlock(EEPROM_CALIBRATIONBASE+1, (byte *)&EdgecutterCalibration, paramsize);
+	}
+	else
+	{
+		EdgecutterCalibration.CalibCurved =120 ;
+		EdgecutterCalibration.CalibNormal =120 ;
+		SaveCalibrationEeprom();
+	}
 }
 
 void LoadEeprom()
@@ -301,7 +387,7 @@ int main(void)
 	/*** End of Processor Expert internal initialization.                    ***/
 
 	/* Write your code here */
-
+	DAC_INIT();
 	EdgeCutter2_Init(&Envelope);
 
 #ifdef USE_SEMIHOST
@@ -309,6 +395,7 @@ int main(void)
 #endif
 
 	EdgeCutter2_LoadSettings(&Settings, &Params);
+	LoadCalibrationEeprom();
 	LoadEeprom();
 	for(int j =0 ;j<18;j++) targetleds[j] = 255;
 	TI1_Enable();
@@ -372,12 +459,12 @@ int main(void)
 			AD1_Measure(FALSE);
 		}
 
-		Envelope.A = ~(adcchannels[ADC_A] >> 8);
-		Envelope.D = ~(adcchannels[ADC_D] >> 8);
-		Envelope.S = ~(adcchannels[ADC_S] >> 8);
-		Envelope.R = ~(adcchannels[ADC_R] >> 8);
-		Envelope.Curvature = ~(adcchannels[ADC_CURVATURE] >> 8);
-		Envelope.Velocity = ~(adcchannels[ADC_VELOCITY] >> 8);
+		Envelope.A = ~(adcchannels[ADC_A] );
+		Envelope.D = ~(adcchannels[ADC_D] );
+		Envelope.S = ~(adcchannels[ADC_S] );
+		Envelope.R = ~(adcchannels[ADC_R] );
+		Envelope.Curvature = ~(adcchannels[ADC_CURVATURE] );
+		Envelope.Velocity = ~(adcchannels[ADC_VELOCITY]);
 
 
 		if (switchmode == 1)

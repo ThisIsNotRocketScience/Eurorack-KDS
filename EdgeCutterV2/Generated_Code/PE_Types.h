@@ -6,7 +6,7 @@
 **     Component   : PE_Types
 **     Version     : Driver 01.01
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-09-26, 18:12, # CodeGen: 3
+**     Date/Time   : 2018-04-10, 17:41, # CodeGen: 10
 **     Abstract    :
 **         PE_Types.h - contains definitions of basic types,
 **         register access macros and hardware specific macros
@@ -204,20 +204,19 @@ typedef unsigned long int       uint32;
 ** is used internally as an index to the array of LDD device structures.
 ** ===========================================================================
 */
-#define PE_LDD_COMPONENT_SM1_ID                  0x00U
-#define PE_LDD_COMPONENT_TU1_ID                  0x01U
-#define PE_LDD_COMPONENT_TimerIntLdd1_ID         0x02U
-#define PE_LDD_COMPONENT_AdcLdd1_ID              0x03U
-#define PE_LDD_COMPONENT_DACSEL_ID               0x04U
-#define PE_LDD_COMPONENT_CLOCKINT_ID             0x05U
-#define PE_LDD_COMPONENT_SW_MODE_ID              0x06U
-#define PE_LDD_COMPONENT_LATCH_ID                0x07U
-#define PE_LDD_COMPONENT_DATA_ID                 0x08U
-#define PE_LDD_COMPONENT_CLOCK_ID                0x09U
-#define PE_LDD_COMPONENT_SW_TRIGGER_ID           0x0AU
-#define PE_LDD_COMPONENT_SW_SPEED_ID             0x0BU
-#define PE_LDD_COMPONENT_IntI2cLdd1_ID           0x0CU
-#define PE_LDD_COMPONENT_JACK_RETRIGGER_ID       0x0DU
+#define PE_LDD_COMPONENT_TU1_ID                  0x00U
+#define PE_LDD_COMPONENT_TimerIntLdd1_ID         0x01U
+#define PE_LDD_COMPONENT_AdcLdd1_ID              0x02U
+#define PE_LDD_COMPONENT_DACSEL_ID               0x03U
+#define PE_LDD_COMPONENT_CLOCKINT_ID             0x04U
+#define PE_LDD_COMPONENT_SW_MODE_ID              0x05U
+#define PE_LDD_COMPONENT_LATCH_ID                0x06U
+#define PE_LDD_COMPONENT_DATA_ID                 0x07U
+#define PE_LDD_COMPONENT_CLOCK_ID                0x08U
+#define PE_LDD_COMPONENT_SW_TRIGGER_ID           0x09U
+#define PE_LDD_COMPONENT_SW_SPEED_ID             0x0AU
+#define PE_LDD_COMPONENT_IntI2cLdd1_ID           0x0BU
+#define PE_LDD_COMPONENT_JACK_RETRIGGER_ID       0x0CU
 
 /*
 ** ===================================================================

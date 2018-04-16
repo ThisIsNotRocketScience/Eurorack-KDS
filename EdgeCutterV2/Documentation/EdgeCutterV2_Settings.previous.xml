@@ -141,7 +141,7 @@ PE_DEBUGHALT();
             <Clock_rate_index v="0" />
           </group>
         </list>
-        <Clock_rate v="0.333525 &amp;#181;s" />
+        <Clock_rate v="32.018443 &amp;#181;s" />
         <HW_input_buffer_size v="1" />
         <HW_input_watermark v="1" />
         <HW_output_buffer_size v="Max buffer size" />

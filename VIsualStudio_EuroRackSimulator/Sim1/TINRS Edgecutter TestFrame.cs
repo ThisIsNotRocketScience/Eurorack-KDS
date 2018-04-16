@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TINRS_ArtWorkGenerator;
 
 namespace Sim1
 {
@@ -16,7 +17,7 @@ namespace Sim1
         public EdgeCutterTestFrame()
         {
             TestFrameLoader.Init();
-            for (int i = 0; i < 4000; i++)
+            for (int i = 0; i < 120000; i++)
             {
                 values.Add(0);
                 linvalues.Add(0);
@@ -107,11 +108,17 @@ namespace Sim1
             pictureBox1.Invalidate();
         }
 
-        private void RebuildEnv()
+        private void RebuildEnv(int points = -1)
         {
+            int l = points;
+            if (points == -1)
+            {
+                l = Math.Min(4000, pictureBox1.Width);
+            }
+
             Envelope Envelope2 = new Envelope();
             TestFrameLoader.ResetStatic();
-            for (int i = 0; i < Math.Min(4000, pictureBox1.Width); i++)
+            for (int i = 0; i <l; i++)
             {
                 if (i == 10)
                 {
@@ -124,11 +131,39 @@ namespace Sim1
 
                 double D = 0;
                 triggers2[i] = Envelope2.Trigger;
-                values2[i] = TestFrameLoader.GetEnv(1, Attack.Value, Decay.Value, Sustain.Value, Release.Value, Curvature.Value, (int)TimeScale, (int)EnvMode) / 4095.0;
+                values2[i] = TestFrameLoader.GetEnv(1, Attack.Value*255, Decay.Value * 255, Sustain.Value * 255, Release.Value * 255, Curvature.Value * 255, (int)TimeScale, (int)EnvMode) / 4095.0;
                 D = TestFrameLoader.GetEnvCurve(1) / 4095.0;
                 linvalues2[i] = D;
             }
+        }
 
+        private void RebuildEnvInt(int points,int a, int d, int s, int r, int curv)
+        {
+            int l = points;
+            if (points == -1)
+            {
+                l = Math.Min(4000, pictureBox1.Width);
+            }
+
+            Envelope Envelope2 = new Envelope();
+            TestFrameLoader.ResetStatic();
+            for (int i = 0; i < l; i++)
+            {
+                if (i == 0)
+                {
+                    Envelope2.TriggerOn(); TestFrameLoader.Trigger(1, 1, (int)EnvMode);
+                }
+                if (i == (points*2)/4)
+                {
+                    Envelope2.TriggerOff(EnvMode); TestFrameLoader.Trigger(0, 1, (int)EnvMode);
+                }
+
+                double D = 0;
+                triggers2[i] = Envelope2.Trigger;
+                values2[i] = TestFrameLoader.GetEnv(1, a * 255, d * 255, s* 255, r * 255, curv* 255, (int)TimeScale, (int)EnvMode) / 4095.0;
+                D = TestFrameLoader.GetEnvCurve(1) / 4095.0;
+                linvalues2[i] = D;
+            }
         }
 
         private void Curvature_Scroll(object sender, EventArgs e)
@@ -203,13 +238,13 @@ namespace Sim1
             return 20 + (float)((pictureBox1.Height / 2 - 40) * (1.0 - inp));
         }
 
-        List<double> values = new List<double>(4000);
-        List<bool> triggers = new List<bool>(4000);
-        List<double> linvalues = new List<double>(4000);
+        List<double> values = new List<double>(120000);
+        List<bool> triggers = new List<bool>(120000);
+        List<double> linvalues = new List<double>(120000);
 
-        List<double> values2 = new List<double>(4000);
-        List<bool> triggers2 = new List<bool>(4000);
-        List<double> linvalues2 = new List<double>(4000);
+        List<double> values2 = new List<double>(120000);
+        List<bool> triggers2 = new List<bool>(120000);
+        List<double> linvalues2 = new List<double>(120000);
         int pos = 0;
 
         private void pictureBox1_Resize(object sender, EventArgs e)
@@ -232,7 +267,7 @@ namespace Sim1
                 pos = (pos + 1) % 4000;
                 double D = 0;
                 triggers[pos] = Envelope.Trigger;
-                values[pos] = TestFrameLoader.GetEnv(0, Attack.Value, Decay.Value, Sustain.Value, Release.Value, Curvature.Value, (int)TimeScale, (int)EnvMode) / 4095.0;
+                values[pos] = TestFrameLoader.GetEnv(0, Attack.Value * 255, Decay.Value * 255, Sustain.Value * 255, Release.Value * 255, Curvature.Value * 255, (int)TimeScale, (int)EnvMode) / 4095.0;
                 D = TestFrameLoader.GetEnvCurve(0) / 4095.0;
 
                 linvalues[pos] = D;
@@ -263,6 +298,124 @@ namespace Sim1
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void BuildPosterButton_Click(object sender, EventArgs e)
+        {
+            BuildPoster();
+        }
+        public static void ColorToHSV(Color color, out double hue, out double saturation, out double value)
+        {
+            int max = Math.Max(color.R, Math.Max(color.G, color.B));
+            int min = Math.Min(color.R, Math.Min(color.G, color.B));
+
+            hue = color.GetHue();
+            saturation = (max == 0) ? 0 : 1d - (1d * min / max);
+            value = max / 255d;
+        }
+
+        public Color ColorFromHSV(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            int v = Convert.ToInt32(value);
+            int p = Convert.ToInt32(value * (1 - saturation));
+            int q = Convert.ToInt32(value * (1 - f * saturation));
+            int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+
+            if (hi == 0)
+                return Color.FromArgb(255, v, t, p);
+            else if (hi == 1)
+                return Color.FromArgb(255, q, v, p);
+            else if (hi == 2)
+                return Color.FromArgb(255, p, v, t);
+            else if (hi == 3)
+                return Color.FromArgb(255, p, q, v);
+            else if (hi == 4)
+                return Color.FromArgb(255, t, p, v);
+            else
+                return Color.FromArgb(255, v, p, q);
+        }
+
+        public void BuildPoster()
+        {
+            int qmax = 8;
+            int width = 128;
+            int skip = 2;
+
+            List<Polygon> Lines = new List<Polygon>(qmax*256/skip);
+            SVGWriter S = new SVGWriter();
+
+            int C = 0;
+
+            int bR1 = 1;
+            int bG1 = 58;
+            int bB1 = 66;
+
+            int R1 = 21;
+            int G1 = 142;
+            int B1 = 160;
+
+            double h1, h2, s1, s2, v1, v2;
+
+
+            int R2 = 255;
+            int G2 = 234;
+            int B2 = 0;
+
+
+            ColorToHSV(Color.FromArgb(R1, G1, B1), out h1, out s1, out v1);
+            ColorToHSV(Color.FromArgb(R2, G2, B2), out h2, out s2, out v2);
+
+            for (int q = 0; q < qmax; q++)
+            {
+                Console.WriteLine("column {0}/{1}", q + 1, qmax);
+                for (float i = 0; i < 256; i += skip)
+                {
+                    float envelopeoffset = (float)(1 - Math.Abs(((float)i / 255 - 0.5)) * 2) * 14;
+                    if (envelopeoffset < 0) envelopeoffset = 0;
+                    int DecayValue =40 +  (q * 120) / (qmax - 1);
+                    float Ybase = i * 5;
+                    float H = 30;
+
+                    RebuildEnvInt(width*30, DecayValue, DecayValue, DecayValue, DecayValue, (int)i);
+                    Polygon P = new Polygon();
+                    Polygon P2 = new Polygon() { depth = 2 };
+                    float targetmix = q / (float)(qmax - 1);
+                    float br = 1.0f;// (i / 512.0f) + 0.5f;
+                    double h, s, v;
+                    h = h1 + (h2 - h1) * targetmix;
+                    s = s1 + (s2 - s1) * targetmix;
+                    v = v1 + (v2 - v1) * targetmix;
+                    var Co = ColorFromHSV(h, s, v);
+                    P.r = (byte)((R1 + (R2 - R1) * targetmix) * br);
+                    P.g = (byte)((G1 + (G2 - G1) * targetmix) * br);
+                    P.b = (byte)((B1 + (B2 - B1) * targetmix) * br);
+                    // P.r = Co.R;
+                    // P.g = Co.G;
+                    // P.b = Co.B;
+
+                    for (int j = 0; j < width; j++)
+                    {
+                        double vv = linvalues2[(int)(j * 30)];
+                       // if (vv != 0)
+                        {
+                            P.Vertices.Add(new GlmNet.vec2(j + q * width, Ybase + H - (float)vv * H));
+                        }
+                        // P2.Vertices.Add(new GlmNet.vec2(j, Ybase + (float)linvalues2[j * 4] * H));
+                    }
+                    Lines.Add(P);
+                    // Lines.Add(P2);
+                    C++;
+                }
+            }
+            Console.WriteLine("writing svg..");
+
+            SVGWriter.Write("edgecutter_poster-" + DateTime.Now.ToLongDateString() + ".svg", 600 * 4, 256 * 10, Lines, 1, false, Color.FromArgb(0,58,66));
+            Console.WriteLine("done!");
 
         }
     }

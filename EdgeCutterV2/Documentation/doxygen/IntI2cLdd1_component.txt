@@ -29,7 +29,7 @@ by the component.
 <tr><td colspan="4" class="ttitle1">IntI2cLdd1 Initialization</td></tr>
 <tr><td class="ttitle2">Address</td><td class="ttitle2">Register</td><td class="ttitle2">Register Value</td><td class="ttitle2">Register Description</td></tr>
 <tr><td>0x40048034</td><td>SIM_SCGC4</td>
-<td class="regNotResetVal">0xE0400070</td>
+<td class="regNotResetVal">0xE0000070</td>
  <td>SIM_SCGC4 register, peripheral IntI2cLdd1.</td></tr>
 <tr><td>0x40066002</td><td>I2C0_C1</td>
 <td class="regResetVal">0x00000000</td>
@@ -106,10 +106,10 @@ registers of the peripheral(s) configured by the component.
         
 </div>
 <table class="regtbl2"><tr><td class="trowtit" colspan="2">Address</td><td colspan="2">0x40048034</td></tr>
-<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0xE0400070</td></tr>
+<tr class="trowtit"><td  class="trowtit" colspan="2">Initial value</td><td colspan="2">0xE0000070</td></tr>
 <tr class="trowtit"><td  class="trowtit" colspan="2">After-reset value</td><td colspan="2">0xE0000030</td></tr>
 <tr><td class="ttitle2">Bit</td><td class="ttitle2">Field</td><td class="ttitle2">Value</td><td class="ttitle2">Description</td></tr>
-<tr><td>22</td><td>SPI0</td><td>0x01</td><td>SPI0 Clock Gate Control</td>
+<tr><td>22</td><td>SPI0</td><td>0x00</td><td>SPI0 Clock Gate Control</td>
 <tr><td>19</td><td>CMP</td><td>0x00</td><td>Comparator Clock Gate Control</td>
 <tr><td>10</td><td>UART0</td><td>0x00</td><td>UART0 Clock Gate Control</td>
 <tr><td>7</td><td>I2C1</td><td>0x00</td><td>I2C1 Clock Gate Control</td>
