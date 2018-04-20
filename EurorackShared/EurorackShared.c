@@ -118,9 +118,9 @@ int EuroRack_ValidateCalibration()
 
 int islongpress( struct denoise_state_t *state)
 {
-	if (state->longpressed >= LONGPRESSCYCLES)
+	if (state->longpressed >= LONGPRESSCYCLES && state->longpressed > -1)
 	{
-		state->longpressed  = 0;
+		state->longpressed  = -1;
 		return 1;
 	}
 	return 0;
@@ -184,7 +184,7 @@ void denoise(int sw_down, struct denoise_state_t *state)
 
 	if (state->down > 0)
 	{
-		state->longpressed++;
+		if (state->longpressed>-1) state->longpressed++;
 	}
 	else
 	{

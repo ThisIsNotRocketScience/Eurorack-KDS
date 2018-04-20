@@ -398,11 +398,12 @@ int main(int, char**)
 			ImGui::PushFont(pFontBold);
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
 			ImGui::Begin("Velocity Repeater", &velocityrepeater, ImGuiWindowFlags_AlwaysAutoResize);
-
+			static int velocitycurvemode = 1;
 			ImGui::BeginChild("RepeaterFrame", ImVec2(540 * 2, 410), true);
 			int VelLevel = 0;
 			int SampledVel = 0;
 			p = ImGui::GetCursorScreenPos();
+			ImGui::SliderInt("velocity curve", &velocitycurvemode, 0, 2);
 			static bool resetbetweenframes = true;
 			if (resetbetweenframes)
 			{
@@ -410,7 +411,13 @@ int main(int, char**)
 			}
 			for (int i = 0; i < 1000; i++)
 			{
-				VelLevel = (i * 65536) / 1000;
+				switch (velocitycurvemode)
+				{
+				case 0:VelLevel = (i * 65536) / 1000; break;
+				case 1:VelLevel = 65535-( (i * 65536) / 1000); break;
+				case 2:VelLevel = floor(sin(i/40.0f )*20767 + 32767); break;
+
+				}
 				EnvelopeStatic.Velocity = VelLevel;
 				if (i%100 ==0)
 				{
@@ -445,6 +452,9 @@ int main(int, char**)
 			ImGui::PopStyleColor();
 			ImGui::PopFont();
 		}
+
+		EnvelopeStatic.Velocity = Envelope.Velocity = ~(adcchannels[ADC_VELOCITY]);
+
 		if (staticenv)
 		{
 			ImGui::PushFont(pFontBold);
@@ -509,11 +519,40 @@ int main(int, char**)
 				Points[i].y = p.y + 100 - ((P - 2048) / 20);
 			}
 			ImGui::GetWindowDrawList()->AddPolyline(Points, 500, IM_COL32(40, 255, 220, 255), false, 2.0f);
-
-			for (int i = 0; i < 16; i++)
+			static int outleds[20] = {0};
+			static int targetleds[20] = { 0 };
+			for (int i = 0; i<13; i++)
 			{
-				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(p.x + 8 + (16 * i), p.y +8), 6, IM_COL32(Envelope.StateLeds[i], Envelope.StateLeds[i], 50, 255));
+				targetleds[i] = Envelope.StateLeds[i];
+				if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
 			}
+			for (int i = 0; i < 20; i++)
+			{
+				if (targetleds[i] > outleds[i])
+				{
+					outleds[i]++;
+				}
+				else
+				{
+					if (targetleds[i] < outleds[i])
+					{
+
+						outleds[i]-=__min(outleds[i],10);
+					}
+				}
+			}
+
+
+
+			for (int i = 0; i < 13; i++)
+			{
+				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(p.x + 8 + (16 * i), p.y +8), 6, IM_COL32(outleds[i], outleds[i], 50, 255));
+			}
+
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + 8 + 16 * 0, p.y + 8+32), ImVec2(p.x + 8 + 16 * 3, p.y + 8), IM_COL32(255,255,0,255),2);
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + 8 + 16 * 3, p.y + 8 ), ImVec2(p.x + 8 + 16 * 6, p.y + 8+16), IM_COL32(255, 255, 0, 255), 2);
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + 8 + 16 * 6, p.y + 8 + 16), ImVec2(p.x + 8 + 16 * 9, p.y + 8+16), IM_COL32(255, 255, 0, 255), 2);
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + 8 + 16 * 9, p.y + 8 + 16), ImVec2(p.x + 8 + 16 * 12, p.y + 8+32), IM_COL32(255, 255, 0, 255), 2);
 
 			ImGui::EndChild();
 

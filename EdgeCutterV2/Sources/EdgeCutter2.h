@@ -1,3 +1,4 @@
+#include "../../EurorackShared/EURORACKSHARED.H"
 
 #define EDGECUTTER2_MAXMODE 3
 #define EDGECUTTER2_MAXSPEED 2
@@ -14,6 +15,7 @@ typedef struct EdgeCutter2_Params
 {
 	unsigned char mode;
 	unsigned char speed;
+	unsigned char GatedMode;
 } EdgeCutter2_Params;
 
 typedef struct EdgeCutter2_Calibration
@@ -25,7 +27,6 @@ typedef struct EdgeCutter2_Calibration
 typedef struct EdgeCutter2_Settings
 {
 	unsigned char SlowSpeedMult;
-	unsigned char GatedMode;
 } EdgeCutter2_Settings;
 
 #define ENVSTATE_IDLE 0
@@ -45,6 +46,7 @@ typedef struct EdgeCutter2_Settings
 
 #define GATE_COUNTDOWN 30;
 
+#define EDGECUTTER_VELOCITYSAMPLES 8
 
 typedef struct EdgeCutter2_Envelope
 {
@@ -85,6 +87,11 @@ typedef struct EdgeCutter2_Envelope
 	int32_t AttackTime;
 	int32_t DecayTime;
 
+	int32_t PreviouslySampledVelocity;
+	int32_t SampledVelocity;
+	int32_t VelocityCurrent;
+	int32_t VelocitySampleCountdown;
+	int32_t VelocitySample[EDGECUTTER_VELOCITYSAMPLES];
 	EdgeCutter2_Settings Settings;
 
 } EdgeCutter2_Envelope;
@@ -96,9 +103,10 @@ extern "C"
 	extern int EdgeCutter2_GetEnv(EdgeCutter2_Envelope *Env, EdgeCutter2_Params *Params, EdgeCutter2_Calibration *calibration);
 	extern void EdgeCutter2_Init(EdgeCutter2_Envelope *Env);
 	extern void EdgeCutter2_Trigger(EdgeCutter2_Envelope *Env, unsigned char N, EdgeCutter2_Params *Params);
+	extern void EdgeCutter2_Retrigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params);
 	extern void EdgeCutter2_LoadSettings(EdgeCutter2_Settings *settings, EdgeCutter2_Params *params);
 	extern void EdgeCutter2_ValidateParams(EdgeCutter2_Params *params);
-	extern uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve,struct SteppedResult_t *curB, int32_t Linear);
+	extern uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *curB, int32_t Linear);
 
 #ifdef __cplusplus
 }

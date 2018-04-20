@@ -99,6 +99,7 @@ public:
 	char *name;
 	float x;
 	float y;
+	int id;
 	bool value;
 };
 
@@ -113,6 +114,7 @@ public:
 	char* name;
 	float x;
 	float y;
+	int id;
 	bool value;
 };
 
@@ -125,14 +127,22 @@ public:
 	char *name;
 	float x;
 	float y;
+	int id;
 	float value;
 };
 
-extern Knob Knobs[];
-extern const int knobcount;
+class Screen
+{
+public:
+	float x;
+	float y;
+	float width;
+	float height;
+};
 
+extern Knob Knobs[];
 extern Led Leds[];
-extern const int ledcount;
+extern Screen TheScreen;
 
 
 
@@ -172,11 +182,40 @@ extern void GUI_Enc2Press();
 extern void GUI_Enter();
 extern void GUI_Cancel();
 
+#define KNOB(name,x,y,min,max)  knob_##name,
+enum KnobEnum
+{
+#include "PanControls.h"
+	__KNOB_COUNT
+};
+#undef KNOB
+
+#define LEDBUTTON(name,x,y)  ledbutton_##name,
+enum LedButtonEnum
+{
+#include "PanControls.h"
+	__LEDBUTTON_COUNT
+};
+
+#undef LEDBUTTON
+
+#define LED(name,x,y)  led_##name,
+enum LedEnum
+{
+#include "PanControls.h"
+	__LED_COUNT
+};
+
+#undef LEDBUTTON
 typedef struct PanGui_t
 {
 	
 } PanGui_t;
 
+extern void KnobChanged(int ID, int value);
+extern void ButtonPressed(int ID, int value);
 
+extern void RenderScreen();
+extern void EncoderTurn(int id, int delta);
 
 #endif

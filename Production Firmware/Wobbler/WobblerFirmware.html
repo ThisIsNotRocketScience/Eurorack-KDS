@@ -1,0 +1,76 @@
+
+<!-- saved from url=(0053)http://thisisnotrocketscience.nl/WobblerFirmware.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Wobbler - Upgrading your firmware</title>
+
+<style>
+body,html{
+color: black;
+background-color: white;
+font-family: arial;
+margin:10px;
+}
+h2{
+margin-top: 20px;
+}
+h3{
+margin-top: 20px;
+padding-top:20px;
+border-top: 1px solid #d0d0d0;
+}
+h4{
+margin-top: 20px;
+}
+li{
+margin-bottom: 10px;
+}
+
+</style></head>
+
+<body>
+<h1>Wobbler - Firmware Upgrade Guide</h1>
+<h2>Upgrade procedure</h2>
+
+<h3>Things you will need</h3>
+<ul>
+<li>a Wobbler in a suitably powered Eurorack</li>
+<li>a patch cable</li>
+<li>an MP3 player with loud headphone out (a mobile phone is excellent for this)</li>
+<li>The firmware mp3: <br><a href="http://www.thisisnotrocketscience.nl/TINRS-Wobbler-2018-04-20.mp3">Download as MP3</a> (warning, use rightclick and "save link as" - this file is loud!)<br>
+  <a href="http://www.thisisnotrocketscience.nl/TINRS-Wobbler-2018-04-20.zip">Download as zipped MP3</a></li>
+</ul>
+
+<h3>Upgrading</h3>
+<ul><li><b>as always: READ ALL THE INSTRUCTIONS FIRST!</b></li></ul>
+
+<h4>Flashing the new firmware</h4>
+<ol>
+<li>Disconnect all patch cables from the Wobbler.</li>
+<li>Put the "MOD" knob in center position.</li>
+<li>Put the firmware MP3 on an MP3 player.</li>
+<li>A phone or laptop can be used. Make sure the MP3 player is NOT connected to WIFI/mobile services. If you can, please use airplane mode. If any sound interrupts the playback of the file, the firmware update will fail/be faulty</li>
+<li>Disable all postprocessing on the audio playback. This means no EQ, bass boost, etc. Some MP3 players (like winamp) have resamplers that can make transfer problematic sometimes. Windows media player seems fine.</li>
+<li>Connect the MP3 player's headphone socket to the "MOD" port on the Wobbler.</li>
+<li>Power down your Eurorack.</li>
+<li>While holding the <b>TRIGGER</b> button down, power up your Eurorack.</li>
+<li>The Wobbler should not show its normal boot-cycle, but instead it is showing incoming audio level.</li>
+<li>After about 5 seconds, let go of the <b>TRIGGER</b> button.</li>
+
+<li>Turn up the volume on your MP3 player to maximum.</li>
+<li>Play the Firmware MP3 file in to the Wobbler. </li>
+<li>After a few seconds the LEDs in the LED bars will start lighting up one by one to show the progress.</li>
+<li>After the entire MP3 has played, the Wobbler will reboot and you can start playing with your new firmware!</li>
+<li>If anything goes wrong during playback of the firmware MP3, one or more of the LEDs in the bars will start blinking:
+<br>Try to adjust the volume of the player and check if the "MOD" knob is centered and start again. Also make sure that the ENTIRE mp3 has been played. If this still does not work - please try another MP3 player, as some devices have post-processing on the audio which might impede correct transfer. If problems persist, please contact <a href="mailto:priscilla@thisisnotrocketscience.nl">us.</a></li>
+</ol>	
+
+<h2>Changelog</h2>
+<h3>Firmware Version 1.1 (2018-04-20)</h3>
+Improvements:
+<h4>Better sync-input tracking</h4>
+The sync timing is now calculated using 64bit math to prevent rounding errors in the fixedpoint calculations.
+<h4>Slight change in behaviour of the SnH mode</h4>
+SnH mode now instantly triggers a sample-event on trigger instead of just resetting the timing, allowing manual sampling over the trigger when synced. 
+
+
+</body></html>

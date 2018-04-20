@@ -82,6 +82,7 @@ extern "C"
 		LFO->SNH.segindex = 0;
 		LFO->SNH.lastseg1 = 8;
 		LFO->SNH.lastseg2 = 8;
+		LFO->SNH.triggerhappened = 0;
 		LFO->PhasedShift = 0;
 		LFO->Gate[0] = 0;
 		LFO->Gate[1] = 0;
@@ -119,6 +120,7 @@ extern "C"
 			LFO->Phase1 = 0;
 			LFO->SlomoPhase1 = 0;
 			LFO->PhasedShift = 0;
+			LFO->SNH.triggerhappened = 1;
 			Wobbler2_StartTwang(LFO);
 #ifdef INTPENDULUM
 			Wobbler2_InitIntPendulum(&LFO->Pendulum, LFO);
@@ -226,7 +228,7 @@ extern "C"
 	{
 		int newseg = ((phase >> 29)) & 7;
 		int const QUANT = 2048;
-		if (newseg != sh->lastseg1)
+		if (newseg != sh->lastseg1 || sh->triggerhappened>0)
 		{
 			sh->lastseg1 = newseg;
 			sh->segindex = (sh->segindex + 1) % 32;
@@ -236,7 +238,7 @@ extern "C"
 		}
 
 		int newseg2 = ((((phase2) >> 29))) & 7;
-		if (newseg2 != sh->lastseg2)
+		if (newseg2 != sh->lastseg2 || sh->triggerhappened>0)
 		{
 			sh->lastseg2 = newseg2;
 			int segidx2 = (32 + sh->segindex - (lfo->Phasing >> 9)) % 32;
@@ -244,6 +246,7 @@ extern "C"
 			sh->lastval4 = ((sh->lastval2 / QUANT)*QUANT * 4096) / 3580;
 		}
 
+		sh->triggerhappened = 0;
 
 		Wobbler2_SVF(&sh->F1, coeff->cutoff, sh->lastval1);
 		Wobbler2_SVF(&sh->F2, coeff->cutoff, sh->lastval2);
@@ -311,7 +314,11 @@ extern "C"
 			SteppedResult_t SpeedGrade;
 			Wobbler2_GetSteppedResult(LFO->SpeedOrig, WOBBLER_SPEEDRATIOCOUNT-1, &SpeedGrade);
 			uint32_t DPorig = Wobbler2_MakeFreq(LFO->Speed);// Wobbler2_LFORange2(LFO->Speed << 2, 0);;
-			DP = ((LFO->SyncDP >> 16) * GetInterpolatedResultInt(Wobbler_SpeedRatioSet, &SpeedGrade));
+			int32_t interpint = GetInterpolatedResultInt(Wobbler_SpeedRatioSet, &SpeedGrade);
+			int64_t interm = LFO->SyncDP;
+			interm *= interpint;
+			interm >>= 16;
+			DP = interm;// ((LFO->SyncDP >> 16) * interpint);
 			uint32_t DPdiff = DPorig - DP;
 		}
 		else
@@ -394,14 +401,19 @@ extern "C"
 		LFO->OutputPhased = GetInterpolatedResultInt(LFO->OutputsPhased, &LFO->ShapeStepped) / (0xffff * 4);
 		
 		// multiply outputs by level knobs
-		LFO->Output = (LFO->Output * LFO->Amount1) / (int)(1 << 14);
-		LFO->OutputPhased = (LFO->OutputPhased * LFO->Amount2) / (int)(1 << 14);
-
-		LFO->Output += 2048 + LFO->CalibNormal;
-		LFO->OutputPhased += 2048 + LFO->CalibPhased;
+		LFO->OutputPreCalib = (LFO->Output * LFO->Amount1) / (int)(1 << 14);
+		LFO->OutputPhasedPreCalib = (LFO->OutputPhased * LFO->Amount2) / (int)(1 << 14);
+		
+		LFO->OutputPreCalib += 2048;
+		LFO->OutputPhasedPreCalib += 2048;
+		LFO->Output = LFO->OutputPreCalib + LFO->CalibNormal;
+		LFO->OutputPhased = LFO->OutputPhasedPreCalib + LFO->CalibPhased;
 
 		if (LFO->Output > 4095) LFO->Output = 4095; else if (LFO->Output < 0) LFO->Output = 0;
 		if (LFO->OutputPhased > 4095) LFO->OutputPhased = 4095; else if (LFO->OutputPhased < 0) LFO->OutputPhased = 0;
+
+		if (LFO->OutputPreCalib > 4095) LFO->OutputPreCalib = 4095; else if (LFO->OutputPreCalib < 0) LFO->OutputPreCalib = 0;
+		if (LFO->OutputPhasedPreCalib > 4095) LFO->OutputPhasedPreCalib = 4095; else if (LFO->OutputPhasedPreCalib < 0) LFO->OutputPhasedPreCalib = 0;
 
 		Wobbler2_DoLeds(LFO);
 		LFO->LastPhasing = LFO->Phasing;
@@ -426,14 +438,14 @@ extern "C"
 			LFO->Led[1][i] = 0;
 		}
 
-		int32_t LedIdxB = (LFO->Output * 8);
+		int32_t LedIdxB = (LFO->OutputPreCalib * 8);
 		int iLedIdxB = LedIdxB >> 12;
 		int IdxB = ((LedIdxB - (iLedIdxB << 12))) >> 4;
 
 		LFO->Led[0][8 - ((iLedIdxB + 9) % 9)] = 255 - IdxB;
 		LFO->Led[0][8 - ((iLedIdxB + 10) % 9)] = IdxB;
 
-		int32_t LedIdxA = (LFO->OutputPhased * 8);
+		int32_t LedIdxA = (LFO->OutputPhasedPreCalib * 8);
 		int iLedIdxA = LedIdxA >> 12;
 		int IdxA = ((LedIdxA - (iLedIdxA << 12))) >> 4;
 
@@ -478,6 +490,7 @@ extern "C"
 	int32_t GetInterpolatedResultInt(int32_t *table, SteppedResult_t *inp)
 	{
 		unsigned char F = inp->fractional;
+		if (F == 0) return table[inp->index];
 		unsigned char IF = ~inp->fractional;
 		return ((table[inp->index] / 256) * IF) + ((table[inp->index + 1] / 256) * F);
 	}

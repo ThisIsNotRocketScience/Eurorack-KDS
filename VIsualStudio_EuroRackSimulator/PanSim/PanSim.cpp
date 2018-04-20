@@ -7,6 +7,8 @@
 
 #include "../libs/lodepng-master/lodepng.h"
 
+#include  "PanHeader.h"
+
 
 SDL_Surface* load_PNG(const char* filename)
 {
@@ -86,8 +88,10 @@ void SetupIcon(SDL_Window *window)
 
 }
 
-#include "PanHeader.h"
-
+void PrintKnobs()
+{
+	
+}
 
 static bool MyKnob(const char* label, float* p_value, float v_min, float v_max)
 {
@@ -159,7 +163,7 @@ bool LedButton(const char* label, bool* v)
 	auto R = ImGui::CalcTextSize(label);
 	draw_list->AddText(ImVec2(center.x - R.x / 2, pos.y - line_height - style.ItemInnerSpacing.y), ImGui::GetColorU32(ImGuiCol_Text), label);
 
-	if (pressed) *v = !*v;
+	//if (pressed) *v = !*v;
 	if (*v)
 	{
 		draw_list->AddCircleFilled(center, radius_outer,IM_COL32(255,255,0,255) , 16);
@@ -301,24 +305,38 @@ int main(int, char**)
 				ImVec2 pos = ImGui::GetCursorScreenPos();
 				float xscalefac = 60;
 				float yscalefac = 80;
-				for (int i = 0; i < knobcount; i++)
+				for (int i = 0; i < __KNOB_COUNT; i++)
 				{
 
 					ImGui::SetCursorScreenPos(ImVec2(pos.x + Knobs[i].x * xscalefac, pos.y + Knobs[i].y * yscalefac));
-					MyKnob(Knobs[i].name, &Knobs[i].value, 0, 1);
+					if (MyKnob(Knobs[i].name, &Knobs[i].value, 0, 1))
+					{
+						KnobChanged(Knobs[i].id, Knobs[i].value);
+					}
 				}
 
-				for (int i = 0; i < ledbuttoncount; i++)
+				for (int i = 0; i < __LEDBUTTON_COUNT; i++)
 				{
 					ImGui::SetCursorScreenPos(ImVec2(pos.x + Buttons[i].x * xscalefac, pos.y + Buttons[i].y * yscalefac));
-					LedButton(Buttons[i].name, &Buttons[i].value);
+					if (LedButton(Buttons[i].name, &Buttons[i].value))
+					{
+						ButtonPressed(Buttons[i].id, Buttons[i].value);
+
+					}
 				}
-				for (int i = 0; i < ledcount; i++)
+				for (int i = 0; i < __LED_COUNT; i++)
 				{
 					ImGui::SetCursorScreenPos(ImVec2(pos.x + Leds[i].x * xscalefac, pos.y + Leds[i].y * yscalefac));
 					ImLed(Leds[i].name, &Leds[i].value);
 				}
 
+				ImGui::SetCursorScreenPos(ImVec2(pos.x + TheScreen.x * xscalefac, pos.y + TheScreen.y * yscalefac));
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0, 0, 0, 255));
+
+				ImGui::BeginChild("screen", ImVec2(xscalefac * TheScreen.width, yscalefac * TheScreen.height), true);
+				RenderScreen();
+				ImGui::EndChild();
+				ImGui::PopStyleColor();
 				ImGui::PopFont();
 
 

@@ -64,6 +64,8 @@ typedef struct Wobbler2_LFO_SNH_t
 	uint16_t segbuffer[32];
 	Wobbler2_RandomGen random;	
 	Wobbler2_SVFstruct F1, F2, F3, F4;
+
+	uint8_t triggerhappened;
 } Wobbler2_LFO_SNH_t;
 
 
@@ -113,6 +115,9 @@ typedef struct Wobbler2_LFO_t
 	int32_t OutputPhased;
 	int32_t Output;
 
+	int32_t OutputPhasedPreCalib;
+	int32_t OutputPreCalib;
+	
 	unsigned char Gate[2];
 	 int Led[2][9];
 	unsigned char ModeLed[5];

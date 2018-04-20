@@ -33,6 +33,7 @@ typedef struct result
 	int32_t envelope1;
 	int32_t envelope2;
 	int32_t sync;
+	int32_t reset;
 }result;
 
 result res[10000];
@@ -187,17 +188,21 @@ int main(int, char**)
 	bool done = false;
 
 	static float fPhase = 1.0f;
-	static float fMod = 0.1f;
-	static float fShape = 0.3f;
-	static float fSpeed = 0.6f;
-	static float f5 = 0.0f;
-	static float f6 = 0.0f;
+	static float fMod = 0.0f;
+	static float fShape = 0.833f;
+	static float fSpeed = 0.0f;
+	static float f5 = 0.250f;
+	static float f6 = 0.25f;
 	static int counter = 0;
-	static int updaterate = 1;
+	static int updaterate = 10;
 	static bool simsink = true;
-	static int SyncInterval = 40;;
+	static bool resetsimsink = true;
+	static bool simreset = true;
+	static int SyncInterval = 60;;
+	static int ResetInterval = 240;;
 
 	int SyncT = 0;
+	int ResetT = 0;
 
 	ImFont* pFont = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton.otf", 14.0f);
 	ImFont* pFontBold = io.Fonts->AddFontFromFileTTF("Fontfabric - Panton ExtraBold.otf", 18.0f);
@@ -267,16 +272,27 @@ int main(int, char**)
 				Wobbler2_Trigger(&LFO2Static, 0, &LFO2Params);
 				Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
 			}
+			
 			ImGui::SameLine();
 			if (ImGui::Button("Sync"))
 			{
 				Wobbler2_SyncPulse(&LFO2Static);
 			}
+
 			ImGui::Checkbox("Simulate Syncpulse", &simsink);
 			if (simsink)
 			{
 				ImGui::SameLine();
 				ImGui::SliderInt("Sync interval", &SyncInterval, 1, 300);
+			}
+			
+			ImGui::Checkbox("Simulate Reset Pulse", &simreset);
+			if (simreset)
+			{
+				ImGui::SameLine();
+				ImGui::SliderInt("Reset interval", &ResetInterval, 1, 300);
+				ImGui::Checkbox("Reset SyncPulse With Trigger too", &resetsimsink);
+
 			}
 
 			if (ImGui::Button("Basic 1"))                      fShape = (0.0f / 6.0f);
@@ -293,7 +309,7 @@ int main(int, char**)
 			ImGui::SameLine();
 			if (ImGui::Button("SnH 2"))                      fShape = (6.0f / 6.0f);
 
-			ImGui::SliderInt("Update Speed", &updaterate, 0, 10);
+			ImGui::SliderInt("Update Speed", &updaterate, 0, 40);
 
 
 
@@ -344,23 +360,44 @@ int main(int, char**)
 		LFO2Static.Amount2 = ((adcchannels[ADC_AMTPHASED]) >> 1) - (1 << 14);
 		
 		static int synccountdown = 0;
-		for (int i = 0; i < updaterate*10; i++)
+		static int resetcountdown = 0;
+		for (int i = 0; i < updaterate; i++)
 		{
 			res[cursor].sync = synccountdown>0?1:0;
+			res[cursor].reset = resetcountdown>0 ? 1 : 0;
 			SyncT++;
+			ResetT++;
+			
+			if (simreset)
+			{
+				if (ResetT >= (ResetInterval * 15))
+				{
+					Wobbler2_Trigger(&LFO2Static, 0, &LFO2Params);
+					Wobbler2_Trigger(&LFO2Static, 1, &LFO2Params);
+					if (resetsimsink)
+					{
+						SyncT = 4000;
+					}
+					ResetT = 0;
+					resetcountdown = 15;
+				}
+
+
+			}
 
 			if (simsink)
 			{
-				if (SyncT >= (SyncInterval*5))
+				if (SyncT >= (SyncInterval * 15))
 				{
 					Wobbler2_SyncPulse(&LFO2Static);;
 					SyncT = 0;
 					synccountdown = 15;
 				}
 
-				
+
 			}
 			if (synccountdown > 0) synccountdown--;
+			if (resetcountdown > 0) resetcountdown--;
 			res[cursor].normal = Wobbler2_Get(&LFO2Static, &LFO2Params);
 			res[cursor].phased = LFO2Static.OutputPhased;
 			res[cursor].envelope1 = LFO2Static.FancyEnv.currentcurved;
@@ -373,14 +410,18 @@ int main(int, char**)
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
 			ImGui::Begin("Wave outputs", &waveforms, ImGuiWindowFlags_AlwaysAutoResize);
 			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 200, 255));
-			ImGui::BeginChild("Normal", ImVec2(500, 320), true);
+			ImGui::BeginChild("Normal", ImVec2(1000, 320), true);
 			 p = ImGui::GetCursorScreenPos();
 
-			for (int i = 0; i < 500; i++)
+			for (int i = 0; i < 1000; i++)
 			{
+				if (res[(cursor - 1 - i * 10 + 10000) % 10000].reset)
+				{
+					ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + i, p.y -2), ImVec2(p.x + i, p.y + 200), IM_COL32(255, 0, 0, 200), 4);
+				}
 				if (res[(cursor - 1 - i * 10 + 10000) % 10000].sync)
 				{
-					ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(p.x + i, p.y + 3), 3, IM_COL32(255, 255, 0, 255), 4);
+					ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + i, p.y), ImVec2(p.x + i, p.y + 200), IM_COL32(255, 255, 0, 200), 2);
 				}
 				int N = res[(cursor - 1 - i * 10 + 10000) % 10000].normal;
 				if (N > maxN) maxN = N;
@@ -389,8 +430,8 @@ int main(int, char**)
 				Points[i].x = i + p.x;
 				Points[i].y = p.y + 100 + ((N - 2048) / 20);
 			}
-			ImGui::GetWindowDrawList()->AddPolyline(Points, 500, IM_COL32(255, 255, 0, 255), false, 2.0f);
-			for (int i = 0; i < 500; i++)
+			ImGui::GetWindowDrawList()->AddPolyline(Points, 1000, IM_COL32(255, 255, 0, 255), false, 1.0f);
+			for (int i = 0; i < 1000; i++)
 			{
 				int P = res[(cursor - 1 - i * 10 + 10000) % 10000].phased;
 				if (P > maxP) maxP = P;
@@ -398,19 +439,19 @@ int main(int, char**)
 				Points2[i].x = i + p.x;
 				Points2[i].y = p.y + 100 + ((P - 2048) / 20);
 			}
-			ImGui::GetWindowDrawList()->AddPolyline(Points2, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
+			ImGui::GetWindowDrawList()->AddPolyline(Points2, 1000, IM_COL32(100, 255, 20, 255), false, 1.0f);
 			int maxE = -1000000;
 			int minE = 10000000;
-			for (int i = 0; i < 500; i++)
+			for (int i = 0; i < 1000; i++)
 			{
 				int N = res[(cursor - 1 - i * 10 + 10000) % 10000].envelope1;
 				if (N > maxE) maxE = N;;
 				if (N < minE) minE = N;
 
 				EnvPoints[i].x = i + p.x;
-				EnvPoints[i].y = p.y + 275 - ((N >> 8));
+				EnvPoints[i].y = p.y + 275 - ((N >> 10));
 			}
-			ImGui::GetWindowDrawList()->AddPolyline(EnvPoints, 500, IM_COL32(255, 255, 0, 255), false, 2.0f);
+			ImGui::GetWindowDrawList()->AddPolyline(EnvPoints, 1000, IM_COL32(255, 255, 0, 255), false, 2.0f);
 
 			ImGui::EndChild();
 			ImGui::Text("N: %d->%d, P: %d->%d, E: %d->%d", minN, maxN, minP, maxP, minE, maxE);

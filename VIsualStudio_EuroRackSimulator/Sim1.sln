@@ -28,8 +28,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TuesdayGUI", "TuesdayImGui\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EdgecutterGUI", "EdgecutterGUI\EdgecutterGUI.vcxproj", "{E6C9D198-D681-4659-A346-336289EEA146}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PanSim", "PanSim\PanSim.vcxproj", "{15FE799D-F752-43BC-8EBF-542B1FA5282B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulators", "Simulators", "{7E46B039-C87C-44E9-8390-AB3D9521F865}"
 EndProject
 Global
@@ -153,16 +151,6 @@ Global
 		{E6C9D198-D681-4659-A346-336289EEA146}.Release|x64.Build.0 = Release|x64
 		{E6C9D198-D681-4659-A346-336289EEA146}.Release|x86.ActiveCfg = Release|Win32
 		{E6C9D198-D681-4659-A346-336289EEA146}.Release|x86.Build.0 = Release|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Debug|x64.ActiveCfg = Debug|x64
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Debug|x64.Build.0 = Debug|x64
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Debug|x86.ActiveCfg = Debug|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Debug|x86.Build.0 = Debug|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Release|Any CPU.ActiveCfg = Release|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Release|x64.ActiveCfg = Release|x64
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Release|x64.Build.0 = Release|x64
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Release|x86.ActiveCfg = Release|Win32
-		{15FE799D-F752-43BC-8EBF-542B1FA5282B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
