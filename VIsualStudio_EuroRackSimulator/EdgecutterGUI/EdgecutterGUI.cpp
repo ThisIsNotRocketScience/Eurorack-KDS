@@ -13,6 +13,8 @@ EdgeCutter2_Params Params;
 
 EdgeCutter2_Envelope EnvelopeStatic;
 
+static int outleds[20] = { 0 };
+static int targetleds[20] = { 0 };
 
 SDL_Surface* load_PNG(const char* filename)
 {
@@ -311,6 +313,14 @@ int main(int, char**)
 		adcchannels[ADC_D] = (int)((1 - fD) * 0xffff);
 		adcchannels[ADC_S] = (int)((1 - fS) * 0xffff);
 		adcchannels[ADC_R] = (int)((1 - fR) * 0xffff);;
+	
+		
+//		adcchannels[ADC_A] = 0xade0;
+//		adcchannels[ADC_D] = 0xd020;
+//		adcchannels[ADC_S] = 0xf1d0;
+//		adcchannels[ADC_R] = 0xf0e0 ;
+
+
 		adcchannels[ADC_CURVE] = (int)((1 - fCurve) * 0xffff);;
 		adcchannels[ADC_VELOCITY] = (int)((1 - fVelocity) * 0xffff);;
 
@@ -339,12 +349,39 @@ int main(int, char**)
 			}
 			;
 			EdgeCutter2_GetEnv(&Envelope, &Params, &Calib);
+
+			for (int i = 0; i<13; i++)
+			{
+				targetleds[i] = Envelope.StateLeds[i];
+				if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
+			}
+
+
+
+
 			res[cursor].linout = Envelope.LinearOutput;
 			res[cursor].curveout = Envelope.CurvedOutput;
 			
 
 			cursor = (cursor + 1) % 10000;
 		}
+
+		for (int i = 0; i < 20; i++)
+		{
+			if (targetleds[i] > outleds[i])
+			{
+				outleds[i]++;
+			}
+			else
+			{
+				if (targetleds[i] < outleds[i])
+				{
+
+					outleds[i] -= __min(outleds[i], 10);
+				}
+			}
+		}
+
 		ImVec2 p;
 		if (docurvetest)
 		{
@@ -519,29 +556,7 @@ int main(int, char**)
 				Points[i].y = p.y + 100 - ((P - 2048) / 20);
 			}
 			ImGui::GetWindowDrawList()->AddPolyline(Points, 500, IM_COL32(40, 255, 220, 255), false, 2.0f);
-			static int outleds[20] = {0};
-			static int targetleds[20] = { 0 };
-			for (int i = 0; i<13; i++)
-			{
-				targetleds[i] = Envelope.StateLeds[i];
-				if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
-			}
-			for (int i = 0; i < 20; i++)
-			{
-				if (targetleds[i] > outleds[i])
-				{
-					outleds[i]++;
-				}
-				else
-				{
-					if (targetleds[i] < outleds[i])
-					{
-
-						outleds[i]-=__min(outleds[i],10);
-					}
-				}
-			}
-
+			
 
 
 			for (int i = 0; i < 13; i++)

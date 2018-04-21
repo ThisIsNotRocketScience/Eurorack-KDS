@@ -103,7 +103,7 @@ extern "C"
 	extern int EdgeCutter2_GetEnv(EdgeCutter2_Envelope *Env, EdgeCutter2_Params *Params, EdgeCutter2_Calibration *calibration);
 	extern void EdgeCutter2_Init(EdgeCutter2_Envelope *Env);
 	extern void EdgeCutter2_Trigger(EdgeCutter2_Envelope *Env, unsigned char N, EdgeCutter2_Params *Params);
-	extern void EdgeCutter2_Retrigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params);
+	extern void EdgeCutter2_Retrigger(EdgeCutter2_Envelope *Env);
 	extern void EdgeCutter2_LoadSettings(EdgeCutter2_Settings *settings, EdgeCutter2_Params *params);
 	extern void EdgeCutter2_ValidateParams(EdgeCutter2_Params *params);
 	extern uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *curB, int32_t Linear);

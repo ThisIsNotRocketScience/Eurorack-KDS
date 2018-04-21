@@ -133,6 +133,7 @@ extern "C"
 			return curve1;
 		}
 	}
+
 	uint32_t DoCurveDecay(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *cur, int32_t Linear)
 	{
 		uint32_t curve1 = DoCurve(from, to, prog, Curve, cur, Linear);
@@ -283,12 +284,13 @@ extern "C"
 		}
 	}
 
-	void EdgeCutter2_Retrigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params)
+	void EdgeCutter2_Retrigger(struct EdgeCutter2_Envelope *Env)
 	{
-		SwitchToState(Env, ENVSTATE_ATTACK);
-		Env->TriggerState = 1;
-		Env->VelocitySampleCountdown = 7;
-
+		if (Env->TriggerState == 1)
+		{
+			SwitchToState(Env, ENVSTATE_ATTACK);
+			Env->VelocitySampleCountdown = 7;
+		}
 	}
 
 	void EdgeCutter2_Trigger(struct EdgeCutter2_Envelope *Env, unsigned char N, struct EdgeCutter2_Params *Params)
@@ -403,8 +405,8 @@ extern "C"
 		{
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
-
-			int32_t Delta = -(FIXED(1) - SusLev) / EnvelopeLength(Env->D, Params->speed);
+			int32_t decaylength = EnvelopeLength(Env->D, Params->speed);
+			int32_t Delta = -(FIXED(1) - SusLev) / decaylength;
 			Env->Current += Delta;
 			if (Env->DecayStart > SusLev)
 			{
@@ -418,10 +420,11 @@ extern "C"
 				Env->DecayProgress = FIXED(1);
 				Env->Current = SusLev;
 			}
+			Env->DecayTime++;
+			Env->DecayProgress = (Env->DecayTime * FIXED(1)) / (decaylength);
 
 			Env->CurrentCurved = DoCurveDecay(SusLev, FIXED(1), FIXED(1) - Env->DecayProgress, Env->Curvature, &CurveSteps, Env->Current);
-
-			if (Env->Current <= SusLev)
+			if (Env->Current <= SusLev || Env->DecayTime >= decaylength)
 			{
 				Env->Current = SusLev;
 				Env->CurrentCurved = SusLev;
@@ -479,8 +482,8 @@ extern "C"
 			else
 			{
 				Env->CurrentCurved = 0;
-
 			}
+
 			if (Env->ReleaseTime >= releasetime)
 			{
 				Env->Current = 0;
@@ -495,8 +498,6 @@ extern "C"
 					SwitchToState(Env, ENVSTATE_IDLE);
 				}
 			}
-
-
 		}
 		break;
 
@@ -525,20 +526,22 @@ extern "C"
 			}
 			
 
-			if (Led < Env->LastLed)
-			{
-				
-				int idx1 = (Env->LastLed >> 8);
-				int idx2 = 13;
-				for (int i = idx1; i < idx2; i++)
+			if (0) {
+				if (Led < Env->LastLed)
 				{
-					Env->StateLeds[i] = 255;
-				}
-				Env->StateLeds[idx1] = (Env->LastLed & 0xff);
-				Env->StateLeds[idx2] = (Led & 0xff);
 
-				// dont slide back, since the release phase has not actually been performed in this case.
-				//Env->LastLed = 0;
+					int idx1 = (Env->LastLed >> 8);
+					int idx2 = 13;
+					for (int i = idx1; i < idx2; i++)
+					{
+						Env->StateLeds[i] = 255;
+					}
+					Env->StateLeds[idx1] = (Env->LastLed & 0xff);
+					Env->StateLeds[idx2] = (Led & 0xff);
+
+					// dont slide back, since the release phase has not actually been performed in this case.
+					//Env->LastLed = 0;
+				}
 			}
 			//	printf("%4x %4x %d %d\n", Led, Env->LastLed, Led>>8, Env->LastLed>>8);
 

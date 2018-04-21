@@ -105,7 +105,7 @@ byte outleds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
 byte targetleds[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0};
 //                    13                 5, 6, 7, 8, 9,10, 4, 3,2,1,0
 
-byte ledorder[13] = {19,18,17,16,15, 8,9, 10,11,12,13,14, 2};
+//byte ledorder[13] = {19,18,17,16,15, 8,9, 10,11,12,13,14, 2};
 unsigned char pwm = 3;
 //int counter = 0;
 
@@ -238,10 +238,13 @@ void DACB_Write(int channel, int value)
 	DAC_Shift(coms[0]);
 	DAC_Shift(coms[1]);
 	DACSEL_SetVal(0); // SetVal done in interrupt handler
+	denoise(JACK_RETRIGGER_GetVal(0), &retriggerjack_state);
 
 }
 EdgeCutter2_Calibration EdgecutterCalibration;
 
+int justretriggered = 0;
+int buttonjustpressed  = 0;
 
 void doTimer()
 {
@@ -252,12 +255,18 @@ void doTimer()
 	{
 	case 0:
 	{
+		if (pressed(&retriggerjack_state))
+		{
+			justretriggered = 1;
+			EdgeCutter2_Retrigger(&Envelope);
+		}
 		EdgeCutter2_GetEnv(&Envelope, &Params,&EdgecutterCalibration);
 		LinearOut = Envelope.LinearOutput;
 		DACB_Write(0, LinearOut);
 
 		for(int i =0 ;i<13;i++)
 		{
+
 			targetleds[i] = Envelope.StateLeds[i];
 			if (outleds[i] < targetleds[i]) outleds[i] = Envelope.StateLeds[i];;
 		}
@@ -402,10 +411,7 @@ void EnvelopeTrigger(int sw)
 {
 	if (buttonpressed == 1) return;
 	EdgeCutter2_Trigger(&Envelope, sw>0?0:1, &Params);
-	if (sw== 0)
-	{
-		outleds[18]= 255;
-	}
+	buttonjustpressed = 1;
 }
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
@@ -486,11 +492,11 @@ int main(void)
 		{
 			switchmode = 1;
 			switch(SpeedSwitchMode)
-						{
+			{
 
 			case SPEEDSWITCH_NORMAL:  Params.speed = (Params.speed + 1) % EDGECUTTER2_MAXSPEED;break;
 			case SPEEDSWITCH_GATEMODE:  Params.GatedMode = (Params.GatedMode + 1) % __SPEEDSWITCH_COUNT;break;
-						}
+			}
 			commitchange = 1;
 		}
 
@@ -498,16 +504,24 @@ int main(void)
 		{
 			buttonpressed = 1;
 			EdgeCutter2_Trigger(&Envelope, 1, &Params);
-			targetleds[18]  = 255;
-			outleds[18]= 255;
+			buttonjustpressed = 1;
 
 		}
+
 		if (released(&triggersw_state) )
 		{
 			buttonpressed = 0;
-			targetleds[18]  = 0;
 			EdgeCutter2_Trigger(&Envelope, 0 ,&Params);
 		}
+		int buttonled= 0;
+		if (buttonpressed > 0) buttonled = 128;
+		if (buttonjustpressed >0)buttonled = 255;
+		if (justretriggered > 0 && buttonpressed) buttonled = 255;
+		justretriggered = 0;
+		buttonjustpressed = 0;
+		targetleds[18]  = buttonled;
+
+		if (targetleds[18] > outleds[18]) outleds[18] = targetleds[18];
 
 		if (measured == 1)
 		{
@@ -528,6 +542,7 @@ int main(void)
 		SetupLeds();
 
 		//}
+		denoise(JACK_RETRIGGER_GetVal(0), &retriggerjack_state);
 
 		if (commitchange == 1 && tickssincecommit >= 10)
 		{
