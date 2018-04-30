@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Eep" key="selection"/>
+		<item value="VelVal" key="selection"/>
 		<list key="findhistory">
+			<item value="VelVal"/>
+			<item value="Convert"/>
+			<item value="convert"/>
 			<item value="eep"/>
 			<item value="calib"/>
 			<item value="m_in"/>
 			<item value="checkaudio"/>
 			<item value="measure"/>
-			<item value="ad"/>
-			<item value="ad1"/>
-			<item value="printf"/>
 		</list>
 		<list key="replacehistory">
 		</list>

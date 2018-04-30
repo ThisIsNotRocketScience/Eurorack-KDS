@@ -89,7 +89,10 @@ void BRK(int offs)
 
 int ConvertVelocity(int i)
 {
-	return 127;
+	if (i<50) return 127;
+	if (i>2000) return 1;
+	return 127 - (((i-50)*127)/(2000-50));
+
 }
 
 extern int NoteVal ;
@@ -115,6 +118,7 @@ void NoteOff(int n)
 
 int CurrentCV = 0;
 int lastIdx;
+int LastV = 0;
 void UpdateGateNote()
 {
 	int HighestIDX =-1 ;
@@ -126,9 +130,11 @@ void UpdateGateNote()
 	if (HighestIDX > -1)
 	{
 		NoteVal = ((HighestIDX+12)*4096)/(12*5);
-		if (NoteVal != CurrentCV || lastIdx !=HighestIDX )
+		int V = (Velocity[HighestIDX] * 4095)/127;
+		if (V!=LastV || NoteVal != CurrentCV || lastIdx !=HighestIDX )
 		{
-			DACBITBANG_Update(NoteVal, VelVal);
+			LastV = V;
+			DACBITBANG_Update(NoteVal, V);
 			CurrentCV = NoteVal;
 			lastIdx = HighestIDX ;
 			//printf("%d: %d\n", lastIdx, CurrentCV);
