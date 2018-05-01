@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : KL02RM, Rev.2, Dec 2012
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-04-10, 17:41, # CodeGen: 10
+**     Date/Time   : 2018-05-01, 14:43, # CodeGen: 20
 **     Abstract    :
 **
 **     Settings    :
@@ -241,11 +241,11 @@
 #include "WAIT1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "JACK_RETRIGGER.h"
 #include "EE241.h"
 #include "GI2C1.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
-#include "JACK_RETRIGGER.h"
 #include "PE_Types.h"
 #include "PE_Error.h"
 #include "PE_Const.h"
@@ -498,14 +498,14 @@ void PE_low_level_init(void)
 
   /* ### KinetisSDK "KSDK1" init code ... */
   /* Write code here ... */
+  /* ### BitIO_LDD "JACK_RETRIGGER" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
+  (void)JACK_RETRIGGER_Init(NULL);
   /* ### InternalI2C "CI2C1" init code ... */
   CI2C1_Init();
   /* ### GenericI2C "GI2C1" init code ... */
   GI2C1_Init();
   /* ### 24AA_EEPROM "EE241" init code ... */
   /* Write code here ... */
-  /* ### BitIO_LDD "JACK_RETRIGGER" component auto initialization. Auto initialization feature can be disabled by component property "Auto initialization". */
-  (void)JACK_RETRIGGER_Init(NULL);
   __EI();
 }
   /* Flash configuration field */

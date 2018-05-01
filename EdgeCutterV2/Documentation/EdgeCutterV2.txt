@@ -160,6 +160,15 @@ Module "PTB"       (component Init_GPIO_VAR0)
 
 Module "KSDK1"     (component KinetisSDK)
 
+Module "JACK_RETRIGGER" (component BitIO_LDD)
+   - JACK_RETRIGGER_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors 
+                and sets interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" 
+                value then the device is also enabled(see the description of the Enable() method). In this case the Enable() 
+                method is not necessary and needn't to be generated.
+   - JACK_RETRIGGER_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read 
+                and returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
+                property for limitations). This method cannot be disabled if direction is [input].
+
 Module "EE241"     (component 24AA_EEPROM)
    - EE241_ReadByte -Reads a single byte from the given memory address
    - EE241_WriteByte -Writes a single byte to specified address
@@ -229,15 +238,6 @@ Module "CI2C1"     (component InternalI2C)
    - CI2C1_SelectSlave -This method selects a new slave for communication by its 7-bit slave address value. Any send or receive 
                 method directs to or from selected device, until a new slave device is selected by this method. This method is 
                 not available for the SLAVE mode.
-
-Module "JACK_RETRIGGER" (component BitIO_LDD)
-   - JACK_RETRIGGER_Init -Initializes the device. Allocates memory for the device data structure, allocates interrupt vectors 
-                and sets interrupt priority, sets pin routing, sets timing, etc. If the "Enable in init. code" is set to "yes" 
-                value then the device is also enabled(see the description of the Enable() method). In this case the Enable() 
-                method is not necessary and needn't to be generated.
-   - JACK_RETRIGGER_GetVal -Returns the input/output value. If the direction is [input] then the input value of the pin is read 
-                and returned. If the direction is [output] then the last written value is read and returned (see <Safe mode> 
-                property for limitations). This method cannot be disabled if direction is [input].
 
 Module "Cpu"       (component MKL02Z32FM4)
 

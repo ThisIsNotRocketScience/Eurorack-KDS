@@ -23,9 +23,9 @@
     <GeneratedByPE>
       <File Name="Generated_Code/TI1.c" FileDate="2017-11-09, 18:43:31" FileAge="1510249411986" FileType="45637" CompNumb="5" />
       <File Name="Generated_Code/GI2C1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411836" FileType="45637" CompNumb="27" />
-      <File Name="Documentation/EdgeCutterV2_AudioBoot_SIGNALS.txt" FileDate="2018-04-11, 02:45:47" FileAge="1523407547103" FileType="3072" />
+      <File Name="Documentation/EdgeCutterV2_AudioBoot_SIGNALS.txt" FileDate="2018-05-01, 15:00:23" FileAge="1525179623031" FileType="3072" />
       <File Name="Static_Code/PDD/I2C_PDD.h" FileDate="2016-11-12, 18:36:25" FileAge="1478972185504" FileType="1048576" />
-      <File Name="Generated_Code/PE_Types.h" FileDate="2018-04-11, 02:45:47" FileAge="1523407547084" FileType="45637" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2018-05-01, 15:00:23" FileAge="1525179623008" FileType="45637" />
       <File Name="Generated_Code/GI2C1.c" FileDate="2017-11-09, 18:43:31" FileAge="1510249411827" FileType="45637" CompNumb="27" />
       <File Name="Generated_Code/IFsh1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411955" FileType="45637" CompNumb="10" />
       <File Name="Generated_Code/WAIT1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411897" FileType="45637" CompNumb="21" />
@@ -84,7 +84,7 @@
       <File Name="Generated_Code/TimerIntLdd1.c" FileDate="2017-11-09, 18:43:32" FileAge="1510249412006" FileType="45637" CompNumb="6" />
       <File Name="Documentation/doxygen/pex.doxyfile" FileDate="2017-11-09, 18:43:31" FileAge="1510249411739" FileType="45637" CompNumb="2" />
       <File Name="Static_Code/IO_Map/MKL02Z4.h" FileDate="2016-11-12, 18:36:25" FileAge="1478972185479" FileType="1048576" CompNumb="2" />
-      <File Name="Sources/main.c" FileDate="2017-04-12, 04:04:47" FileAge="1491962687678" FileType="128" />
+      <File Name="Sources/main.c" FileDate="2018-05-01, 02:05:51" FileAge="1525133151584" FileType="128" />
       <File Name="Documentation/doxygen/IntI2cLdd1_component.txt" FileDate="2017-04-12, 00:41:49" FileAge="1491950509604" FileType="45637" CompNumb="29" />
       <File Name="Generated_Code/CI2C1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411855" FileType="45637" CompNumb="28" />
       <File Name="Documentation/doxygen/RoutingReport_component.txt" FileDate="2016-11-12, 18:36:25" FileAge="1478972185571" FileType="45637" CompNumb="2" />
@@ -98,5 +98,5 @@
       <File Name="Generated_Code/TI1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411995" FileType="45637" CompNumb="5" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>4</CodeGenReference>
+  <CodeGenReference>7</CodeGenReference>
 </CodeGenerationInfo>

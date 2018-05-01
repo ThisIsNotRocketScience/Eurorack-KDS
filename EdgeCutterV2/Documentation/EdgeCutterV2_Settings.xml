@@ -81,7 +81,7 @@ PE_DEBUGHALT();
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_interrupts" />
               <Qualifier v="RX" />
-              <Address v="0" />
+              <Address v="8192" />
               <Size v="192" />
             </boolgroup>
           </group>
@@ -92,8 +92,8 @@ PE_DEBUGHALT();
             <boolgroup name="ROM/RAM Area" v="Enabled">
               <Name v="m_text" />
               <Qualifier v="RX" />
-              <Address v="1040" />
-              <Size v="31728" />
+              <Address v="9232" />
+              <Size v="23536" />
             </boolgroup>
           </group>
           <group name="MemoryArea3">
@@ -943,6 +943,38 @@ Autoselect
       <EmptySection_DummyValue />
     </Events>
   </Bean>
+  <Bean name="JACK_RETRIGGER" type="BitIO_LDD">
+    <Enabled v="Y" />
+    <Properties>
+      <Component_name v="JACK_RETRIGGER" />
+      <Pin_for_I_O v="PTA6/TPM0_CH0/SPI0_MISO" />
+      <Direction v="Input" />
+      <group name="Initialization">
+        <Init__direction v="Input" />
+        <Init__value v="0" />
+        <Auto_initialization v="yes" />
+      </group>
+      <Safe_mode v="no" />
+    </Properties>
+    <Methods>
+      <Init v="generate code" />
+      <Deinit v="don&amp;apos;t generate code" />
+      <GetDir v="don&amp;apos;t generate code" />
+      <SetDir v="don&amp;apos;t generate code" />
+      <SetInput v="don&amp;apos;t generate code" />
+      <SetOutput v="don&amp;apos;t generate code" />
+      <GetVal v="generate code" />
+      <PutVal v="don&amp;apos;t generate code" />
+      <ClrVal v="don&amp;apos;t generate code" />
+      <SetVal v="don&amp;apos;t generate code" />
+      <NegVal v="don&amp;apos;t generate code" />
+      <ConnectPin v="don&amp;apos;t generate code" />
+      <GetRawVal v="don&amp;apos;t generate code" />
+    </Methods>
+    <Events>
+      <EmptySection_DummyValue />
+    </Events>
+  </Bean>
   <Bean name="EE241" type="24AA_EEPROM">
     <Enabled v="Y" />
     <Properties>
@@ -1048,12 +1080,12 @@ Autoselect
               <Input_Glitch_filter v="0" />
             </group>
             <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
-            <Bits_0_2_of_Frequency_divider_register v="101" />
-            <Bits_3_5_of_Frequency_divider_register v="101" />
-            <SCL_frequency v="37.478 kHz" />
-            <SDA_Hold v="4.044 us" />
-            <SCL_start_Hold v="13.258 us" />
-            <SCL_stop_Hold v="13.383 us" />
+            <Bits_0_2_of_Frequency_divider_register v="010" />
+            <Bits_3_5_of_Frequency_divider_register v="111" />
+            <SCL_frequency v="13.385 kHz" />
+            <SDA_Hold v="10.715 us" />
+            <SCL_start_Hold v="37.272 us" />
+            <SCL_stop_Hold v="37.397 us" />
           </group>
           <group name="Initialization">
             <Enabled_in_init_code v="yes" />
@@ -1140,10 +1172,10 @@ Autoselect
         <High_drive_select v="Disabled" />
       </group>
       <Internal_frequency__multiplier_factor_ v="23.986176 MHz" />
-      <Bits_0_2_of_Frequency_divider_register v="101" />
-      <Bits_3_5_of_Frequency_divider_register v="101" />
-      <SCL_frequency v="37.478 kHz" />
-      <SDA_Hold v="4.044 us" />
+      <Bits_0_2_of_Frequency_divider_register v="010" />
+      <Bits_3_5_of_Frequency_divider_register v="111" />
+      <SCL_frequency v="13.385 kHz" />
+      <SDA_Hold v="10.715 us" />
       <Noise__glitch__filter v="0" />
       <Wake_up v="Disabled" />
       <group name="Initialization">
@@ -1198,38 +1230,6 @@ Autoselect
       <event name="OnError" v="don&amp;apos;t generate code" />
       <event name="OnTxEmptyChar" v="don&amp;apos;t generate code" />
       <event name="OnGeneralCall" v="don&amp;apos;t generate code" />
-    </Events>
-  </Bean>
-  <Bean name="JACK_RETRIGGER" type="BitIO_LDD">
-    <Enabled v="Y" />
-    <Properties>
-      <Component_name v="JACK_RETRIGGER" />
-      <Pin_for_I_O v="PTA6/TPM0_CH0/SPI0_MISO" />
-      <Direction v="Input" />
-      <group name="Initialization">
-        <Init__direction v="Input" />
-        <Init__value v="0" />
-        <Auto_initialization v="yes" />
-      </group>
-      <Safe_mode v="no" />
-    </Properties>
-    <Methods>
-      <Init v="generate code" />
-      <Deinit v="don&amp;apos;t generate code" />
-      <GetDir v="don&amp;apos;t generate code" />
-      <SetDir v="don&amp;apos;t generate code" />
-      <SetInput v="don&amp;apos;t generate code" />
-      <SetOutput v="don&amp;apos;t generate code" />
-      <GetVal v="generate code" />
-      <PutVal v="don&amp;apos;t generate code" />
-      <ClrVal v="don&amp;apos;t generate code" />
-      <SetVal v="don&amp;apos;t generate code" />
-      <NegVal v="don&amp;apos;t generate code" />
-      <ConnectPin v="don&amp;apos;t generate code" />
-      <GetRawVal v="don&amp;apos;t generate code" />
-    </Methods>
-    <Events>
-      <EmptySection_DummyValue />
     </Events>
   </Bean>
 </PE_PROJECT_SETTINGS_DOCUMENTATION>

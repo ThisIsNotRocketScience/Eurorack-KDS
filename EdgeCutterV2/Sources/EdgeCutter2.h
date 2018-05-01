@@ -20,8 +20,8 @@ typedef struct EdgeCutter2_Params
 
 typedef struct EdgeCutter2_Calibration
 {
-	int CalibNormal;
-	int CalibCurved;
+	int32_t CalibNormal;
+	int32_t CalibCurved;
 } EdgeCutter2_Calibration;
 
 typedef struct EdgeCutter2_Settings

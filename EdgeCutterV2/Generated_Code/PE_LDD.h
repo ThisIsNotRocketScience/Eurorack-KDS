@@ -6,7 +6,7 @@
 **     Version     : Component 01.009, Driver 01.04, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-04-10, 17:41, # CodeGen: 10
+**     Date/Time   : 2018-05-01, 14:43, # CodeGen: 20
 **     Abstract    :
 **
 **     Settings    :
@@ -78,11 +78,11 @@
 #include "WAIT1.h"
 #include "PTB.h"
 #include "KSDK1.h"
+#include "JACK_RETRIGGER.h"
 #include "EE241.h"
 #include "GI2C1.h"
 #include "CI2C1.h"
 #include "IntI2cLdd1.h"
-#include "JACK_RETRIGGER.h"
 
 
 /*

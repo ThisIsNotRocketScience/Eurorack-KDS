@@ -35,8 +35,8 @@
 - \subpage SW_TRIGGER
 - \subpage SW_SPEED
 - \subpage PTB
-- \subpage IntI2cLdd1
 - \subpage JACK_RETRIGGER
+- \subpage IntI2cLdd1
 
 */
 

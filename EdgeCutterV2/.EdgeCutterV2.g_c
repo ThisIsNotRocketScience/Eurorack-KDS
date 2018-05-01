@@ -19,7 +19,7 @@
         <Line>PE_Const</Line>
         <Line>IO_Map</Line>
       </GenSharedModules>
-      <ShrdHeaderAge0>1284148521</ShrdHeaderAge0>
+      <ShrdHeaderAge0>1285649774</ShrdHeaderAge0>
       <ShrdCodeAge0>-1</ShrdCodeAge0>
       <ShrdAsemblAge0>-1</ShrdAsemblAge0>
       <ShrdHeaderAge1>1256765491</ShrdHeaderAge1>
@@ -45,8 +45,8 @@
         <Line>Documentation\doxygen\SW_TRIGGER_component.txt</Line>
         <Line>Documentation\doxygen\SW_SPEED_component.txt</Line>
         <Line>Documentation\doxygen\PTB_component.txt</Line>
-        <Line>Documentation\doxygen\IntI2cLdd1_component.txt</Line>
         <Line>Documentation\doxygen\JACK_RETRIGGER_component.txt</Line>
+        <Line>Documentation\doxygen\IntI2cLdd1_component.txt</Line>
         <Line>Documentation\doxygen\EdgeCutterV2_project.txt</Line>
         <Line>Documentation\doxygen\RoutingReport_component.txt</Line>
         <Line>Documentation\doxygen\pex.doxyfile</Line>
@@ -60,9 +60,9 @@
       <GenExtraFileSrcDir22>lib\Kinetis\startup\</GenExtraFileSrcDir22>
       <GenExtraFileSrcDir18>Repositories\lib\doxygen\</GenExtraFileSrcDir18>
       <XtraAge19>1284148521</XtraAge19>
-      <XtraAge20>1284148521</XtraAge20>
+      <XtraAge20>1285649774</XtraAge20>
       <XtraAge22>1235061858</XtraAge22>
-      <XtraAge23>1284148521</XtraAge23>
+      <XtraAge23>1285649774</XtraAge23>
       <GenExtraFileType23>4</GenExtraFileType23>
       <GenExtraFileType22>5</GenExtraFileType22>
       <GenExtraFileType21>4</GenExtraFileType21>
@@ -166,16 +166,16 @@
         <Line>WAIT1</Line>
         <Line>PTB</Line>
         <Line>KSDK1</Line>
+        <Line>JACK_RETRIGGER</Line>
         <Line>EE241</Line>
         <Line>GI2C1</Line>
         <Line>CI2C1</Line>
         <Line>IntI2cLdd1</Line>
-        <Line>JACK_RETRIGGER</Line>
       </GenBeanModules>
     </GenFiles>
     <SignalListFile>Documentation\EdgeCutterV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>97</ProjectModificationStamp>
+    <ProjectModificationStamp>103</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -184,7 +184,7 @@
     <GenDriverVersion>01.04</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1262129547</HeaderAge>
-    <CodeAge>1284148521</CodeAge>
+    <CodeAge>1285649774</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>10</GenNumMethods>
     <SetClockConfiguration>false</SetClockConfiguration>
@@ -1764,7 +1764,66 @@
     <GenMethodPos>0</GenMethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_48>
-  <ComponentID_49>
+  <ComponentID_58>
+    <Generated>true</Generated>
+    <GenCompName>JACK_RETRIGGER</GenCompName>
+    <GenComponentVersion>01.033</GenComponentVersion>
+    <GenDriverVersion>01.03</GenDriverVersion>
+    <GenEventModule />
+    <HeaderAge>1262129547</HeaderAge>
+    <CodeAge>1262129547</CodeAge>
+    <AsemblAge>-1</AsemblAge>
+    <GenNumMethods>13</GenNumMethods>
+    <Init>true</Init>
+    <Deinit>false</Deinit>
+    <GetDir>false</GetDir>
+    <SetDir>false</SetDir>
+    <SetInput>false</SetInput>
+    <SetOutput>false</SetOutput>
+    <GetVal>true</GetVal>
+    <PutVal>false</PutVal>
+    <ClrVal>false</ClrVal>
+    <SetVal>false</SetVal>
+    <NegVal>false</NegVal>
+    <ConnectPin>false</ConnectPin>
+    <GetRawVal>false</GetRawVal>
+    <GenNumEvents>0</GenNumEvents>
+    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
+    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
+    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
+    <GenMethodPos>4</GenMethodPos>
+    <MethodPos>
+      <MethodPos0>Init</MethodPos0>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>117</LineBeg>
+      <LineEnd>140</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos1>GetVal</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>141</LineBeg>
+      <LineEnd>162</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Init</MethodPos2>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>93</LineBeg>
+      <LineEnd>139</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos3>GetVal</MethodPos3>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>140</LineBeg>
+      <LineEnd>168</LineEnd>
+    </MethodPos>
+    <GenExtraFilesCount>1</GenExtraFilesCount>
+    <ExtraFile0>Documentation\doxygen\JACK_RETRIGGER_component.txt</ExtraFile0>
+  </ComponentID_58>
+  <ComponentID_60>
     <Generated>true</Generated>
     <GenCompName>EE241</GenCompName>
     <GenComponentVersion>01.031</GenComponentVersion>
@@ -1860,8 +1919,8 @@
       <LineEnd>399</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
-  </ComponentID_49>
-  <ComponentID_50>
+  </ComponentID_60>
+  <ComponentID_69>
     <Generated>true</Generated>
     <GenCompName>GI2C1</GenCompName>
     <GenComponentVersion>01.023</GenComponentVersion>
@@ -2117,15 +2176,15 @@
       <LineEnd>466</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
-  </ComponentID_50>
-  <ComponentID_56>
+  </ComponentID_69>
+  <ComponentID_70>
     <Generated>true</Generated>
     <GenCompName>CI2C1</GenCompName>
     <GenComponentVersion>01.287</GenComponentVersion>
     <GenDriverVersion>01.01</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256765491</HeaderAge>
-    <CodeAge>1256765491</CodeAge>
+    <HeaderAge>1285649774</HeaderAge>
+    <CodeAge>1285649774</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Enable>false</Enable>
@@ -2309,14 +2368,14 @@
       <LineEnd>537</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
-    <InhrCompID_57>
+    <InhrCompID_71>
       <Generated>true</Generated>
       <GenCompName>IntI2cLdd1</GenCompName>
       <GenComponentVersion>01.016</GenComponentVersion>
       <GenDriverVersion>01.07</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1256765491</HeaderAge>
-      <CodeAge>1256765491</CodeAge>
+      <HeaderAge>1285649774</HeaderAge>
+      <CodeAge>1285649774</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>31</GenNumMethods>
       <Init>true</Init>
@@ -2555,67 +2614,8 @@
       </MethodPos>
       <GenExtraFilesCount>1</GenExtraFilesCount>
       <ExtraFile0>Documentation\doxygen\IntI2cLdd1_component.txt</ExtraFile0>
-    </InhrCompID_57>
-  </ComponentID_56>
-  <ComponentID_58>
-    <Generated>true</Generated>
-    <GenCompName>JACK_RETRIGGER</GenCompName>
-    <GenComponentVersion>01.033</GenComponentVersion>
-    <GenDriverVersion>01.03</GenDriverVersion>
-    <GenEventModule />
-    <HeaderAge>1262129547</HeaderAge>
-    <CodeAge>1262129547</CodeAge>
-    <AsemblAge>-1</AsemblAge>
-    <GenNumMethods>13</GenNumMethods>
-    <Init>true</Init>
-    <Deinit>false</Deinit>
-    <GetDir>false</GetDir>
-    <SetDir>false</SetDir>
-    <SetInput>false</SetInput>
-    <SetOutput>false</SetOutput>
-    <GetVal>true</GetVal>
-    <PutVal>false</PutVal>
-    <ClrVal>false</ClrVal>
-    <SetVal>false</SetVal>
-    <NegVal>false</NegVal>
-    <ConnectPin>false</ConnectPin>
-    <GetRawVal>false</GetRawVal>
-    <GenNumEvents>0</GenNumEvents>
-    <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
-    <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
-    <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>4</GenMethodPos>
-    <MethodPos>
-      <MethodPos0>Init</MethodPos0>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>117</LineBeg>
-      <LineEnd>140</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos1>GetVal</MethodPos1>
-      <MethodType>method</MethodType>
-      <ModuleType>Header</ModuleType>
-      <LineBeg>141</LineBeg>
-      <LineEnd>162</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos2>Init</MethodPos2>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>93</LineBeg>
-      <LineEnd>139</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos3>GetVal</MethodPos3>
-      <MethodType>method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>140</LineBeg>
-      <LineEnd>168</LineEnd>
-    </MethodPos>
-    <GenExtraFilesCount>1</GenExtraFilesCount>
-    <ExtraFile0>Documentation\doxygen\JACK_RETRIGGER_component.txt</ExtraFile0>
-  </ComponentID_58>
+    </InhrCompID_71>
+  </ComponentID_70>
   <UsedSrcFiles>
     <SrcFile0>Drivers\Common\CheckRegBits8_Rst.prg=1183486427</SrcFile0>
     <SrcFile1>Drivers\I2C_LDD.src=-1</SrcFile1>
