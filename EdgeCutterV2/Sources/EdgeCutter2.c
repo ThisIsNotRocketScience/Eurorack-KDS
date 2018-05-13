@@ -34,6 +34,7 @@ extern "C"
 
 	void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env)
 	{
+		Env->VelocityFade = 0;
 		Env->TriggerState = 0;
 		Env->LinearOutput = 0;
 		Env->State = ENVSTATE_IDLE;
@@ -56,8 +57,8 @@ extern "C"
 		Env->AttackTime = 0;
 		Env->DecayTime = 0;
 		Env->runninglowpass = 0;
-		Env->SampledVelocity = 0;
-		Env->PreviouslySampledVelocity = 0;
+		Env->SampledVelocity = FIXED(1);
+		Env->PreviouslySampledVelocity = FIXED(1);
 
 		for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = 0;
 
@@ -295,7 +296,6 @@ extern "C"
 
 		case ENVSTATE_DECAY:
 			Env->AttackProgress = FIXED(1);
-			Env->VelocityCurrent = Env->SampledVelocity;
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->DecayStart = Env->Current;
@@ -304,6 +304,7 @@ extern "C"
 			break;
 
 		case ENVSTATE_ATTACK:
+			Env->VelocityFade = 0;
 			Env->AttackProgress = 0;
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
@@ -325,8 +326,7 @@ extern "C"
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->Current = SusLev;
 			Env->CurrentCurved = SusLev;
-			Env->VelocityCurrent = Env->SampledVelocity;
-
+			
 			Env->AttackProgress = FIXED(1);
 			Env->DecayProgress = FIXED(1);
 			Env->ReleaseProgress = 0;
@@ -342,6 +342,8 @@ extern "C"
 		if (Env->TriggerState == 1)
 		{
 			SwitchToState(Env, ENVSTATE_ATTACK);
+			for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
+
 			Env->VelocitySampleCountdown = 7;
 		}
 	}
@@ -354,6 +356,7 @@ extern "C"
 			{
 				SwitchToState(Env, ENVSTATE_ATTACK);
 				Env->TriggerState = 1;
+				for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
 				Env->VelocitySampleCountdown = 7;
 
 			}
@@ -379,10 +382,7 @@ extern "C"
 	void EdgeCutter2_LoadSettings(struct EdgeCutter2_Settings *settings, struct EdgeCutter2_Params *params)
 	{
 		params->GatedMode = 0;
-
 	}
-
-	
 
 	int EdgeCutter2_GetEnv(EdgeCutter2_Envelope *Env, EdgeCutter2_Params *Params, EdgeCutter2_Calibration *Calibration)
 	{
@@ -392,9 +392,12 @@ extern "C"
 		{
 			Env->VelocitySampleCountdown--;
 			Env->VelocitySample[Env->VelocitySampleCountdown] = Env->Velocity;
-
-			for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->SampledVelocity += Env->VelocitySample[i];
-			Env->SampledVelocity /= EDGECUTTER_VELOCITYSAMPLES;
+			Env->SampledVelocity = 0;
+			for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES-1 ; i++)
+			{
+				Env->SampledVelocity += Env->VelocitySample[i];
+			}
+			Env->SampledVelocity /= (EDGECUTTER_VELOCITYSAMPLES-1);
 		}
 		for (int i = 0; i < 4; i++)
 		{
@@ -414,6 +417,10 @@ extern "C"
 			case ENVSTATE_RELEASE: Env->Gates[GATE_RELEASEEND] = 1; break;
 			}
 		}
+	//	Env->VelocityFade = Env->VelocityFade + 5;
+		//if (Env->VelocityFade > 255) Env->VelocityFade = 255;
+	//	int32_t Vels[2] = { Env->PreviouslySampledVelocity, Env->SampledVelocity };
+		Env->VelocityCurrent =  Env->SampledVelocity;
 
 		switch (Env->State)
 		{
@@ -426,7 +433,7 @@ extern "C"
 			Env->AttackProgress = ((Env->Current - Env->AttackStart) * FIXED(1)) / (FIXED(1) - Env->AttackStart);
 
 			Env->CurrentCurved = Env->CurvedAttackStart + DoCurveAttack(Env->CurvedAttackStart, FIXED(1), FIXED(1) - Env->AttackProgress, Env->Curvature, &CurveSteps, Env->Current);
-			Env->VelocityCurrent = (Env->AttackProgress * (Env->SampledVelocity - Env->PreviouslySampledVelocity)) / FIXED(1) + Env->PreviouslySampledVelocity;
+			
 			if (Env->Current >= FIXED(1))
 			{
 				Env->Current = FIXED(1);
@@ -438,8 +445,7 @@ extern "C"
 
 		case ENVSTATE_DECAY:
 		{
-			Env->VelocityCurrent = Env->SampledVelocity;
-
+			
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
 			int32_t decaylength = EnvelopeLength(Env->D, Params->speed);
@@ -491,7 +497,6 @@ extern "C"
 
 		case ENVSTATE_SUSTAIN:
 		{
-			Env->VelocityCurrent = Env->SampledVelocity;
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
 			int32_t Delta = (SusLev - Env->Current) / 5;
@@ -628,8 +633,14 @@ extern "C"
 
 		Env->LinearOutput += Calibration->CalibNormal;
 		Env->CurvedOutput += Calibration->CalibCurved;
-		if (Env->LinearOutput < 0) Env->LinearOutput = 0; else if (Env->LinearOutput > 4095) Env->LinearOutput = 4095;
-		if (Env->CurvedOutput < 0) Env->CurvedOutput = 0; else if (Env->CurvedOutput > 4095) Env->CurvedOutput = 4095;
+		if (Env->LinearOutput < 0) Env->LinearOutput = 0; else if (Env->LinearOutput > 4095)
+		{
+			Env->LinearOutput = 4095;
+		}
+		if (Env->CurvedOutput < 0) Env->CurvedOutput = 0; else if (Env->CurvedOutput > 4095)
+		{
+			Env->CurvedOutput = 4095;
+		}
 
 		return Env->LinearOutput;
 	}

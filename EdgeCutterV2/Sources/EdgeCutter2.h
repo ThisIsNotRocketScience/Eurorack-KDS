@@ -90,6 +90,7 @@ typedef struct EdgeCutter2_Envelope
 	int32_t PreviouslySampledVelocity;
 	int32_t SampledVelocity;
 	int32_t VelocityCurrent;
+	int32_t VelocityFade;
 	int32_t VelocitySampleCountdown;
 	int32_t VelocitySample[EDGECUTTER_VELOCITYSAMPLES];
 	EdgeCutter2_Settings Settings;

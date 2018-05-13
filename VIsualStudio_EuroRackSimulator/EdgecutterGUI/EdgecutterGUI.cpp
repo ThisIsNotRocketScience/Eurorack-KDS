@@ -116,6 +116,7 @@ ImVec2 PointsA[1000];
 ImVec2 PointsAc[1000];
 ImVec2 PointsV[1000];
 ImVec2 PointsVSnH[1000];
+ImVec2 PointsVCur[1000];
 
 typedef struct res_Struct
 {
@@ -522,6 +523,7 @@ int main(int, char**)
 				PointsA[i / 2].x = p.x + i * 2;
 				PointsAc[i / 2].x = p.x + i * 2;
 				PointsV[i / 2].x = p.x + i * 2;
+				PointsVCur[i / 2].x = p.x + i * 2;;
 				for (int j = 0; j< updaterate + 1; j++) EdgeCutter2_GetEnv(&EnvelopeStatic, &Params, &Calib);
 				int P2 = EnvelopeStatic.CurvedOutput;
 				int P = EnvelopeStatic.LinearOutput;
@@ -529,9 +531,11 @@ int main(int, char**)
 				PointsAc[i / 2].y = p.y + 400 - ((P2) / (4096 / 370));
 				PointsV[i / 2].y = p.y + 400 - (VelLevel / (65535/390));
 				PointsVSnH[i / 2].y = p.y + 400 - (SampledVel / (65535 / 390));
+				PointsVCur[i / 2].y = p.y + 400 - (EnvelopeStatic.VelocityCurrent / (65535 / 390));
 			}
 
 			ImGui::GetWindowDrawList()->AddPolyline(PointsVSnH, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
+			ImGui::GetWindowDrawList()->AddPolyline(PointsVCur, 500, IM_COL32(0, 200, 30, 255), false, 2.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsV, 500, IM_COL32(20, 100, 255, 255), false, 2.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsA, 500, IM_COL32(255, 100, 20, 255), false, 2.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsAc, 500, IM_COL32(255, 255, 20, 255), false, 2.0f);
