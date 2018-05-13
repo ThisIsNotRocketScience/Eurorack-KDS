@@ -1,6 +1,6 @@
 
 #include "EdgeCutter2.h"
-
+#include "../../libfixmath/libfixmath/fix16.h"
 
 
 #include <math.h>
@@ -10,6 +10,28 @@ int lowpassenabled = 0;
 extern "C"
 {
 #endif
+
+	void EdgeCutter2_ValidateParams(struct EdgeCutter2_Params *params)
+	{
+
+	}
+
+	static unsigned long EnvelopeRange(uint32_t V, int speed)
+	{
+		return 1 + (((speed ? 1 : 10) * V) >> 8);
+	}
+
+	static int32_t EnvelopeLength(int inp, int speed)
+	{
+		return 1 + (((speed ? 200 : 2000) * (inp >> 8)) >> 8);
+	}
+
+	static int32_t SustainLevel(int sus)
+	{
+		return ((sus >> 8)* FIXED(1)) >> 8;
+	}
+
+
 	void EdgeCutter2_Init(struct EdgeCutter2_Envelope *Env)
 	{
 		Env->TriggerState = 0;
@@ -53,7 +75,7 @@ extern "C"
 
 #define FIX(x)((int32_t)((x)*65536.0f))
 
-	uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *curB, int32_t Linear)
+	uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult16_t *curB, int32_t Linear)
 	{
 
 
@@ -82,18 +104,19 @@ extern "C"
 			int32_t scaled = fix16_add(fix16_mul(fix16_ssub(FIX(1.0), prog * 2), fix16_ssub(upperbound, lowerbound)), lowerbound);
 			preres2 = fix16_mul(fix16_add(EdgeCutter2_EnvTransferFunc(scaled), baseline), range);
 		}
+
 		int32_t Va[2] = { preres1,prog * 2 };
 		int32_t Vb[2] = { prog * 2,preres2 };
 		int32_t preres = preres1;
 		if (curB->index == 1)
 		{
-			preres = LERP(Va, 1, curB->fractional);
+			preres = LERP16(Va, 1, curB->fractional);
 		}
 		else
 		{
 			if (curB->index == 2)
 			{
-				preres = LERP(Vb, 1, curB->fractional);
+				preres = LERP16(Vb, 1, curB->fractional);
 			}
 			else
 			{
@@ -107,8 +130,29 @@ extern "C"
 		uint32_t premul = (delta * preres / 2);
 		return from + premul / FIXED(1);
 	}
+	uint32_t ULERP16b(uint32_t *V, int total, uint16_t fade)
+	{
 
-	uint32_t DoCurveAttack(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *cur, int32_t Linear)
+
+		int T = fade * total;
+		uint16_t frac = T & 0xffff;
+		if (frac && (frac < 0xffff)) frac += 1;
+		int I = T >> 16;
+
+		uint64_t tempOut;
+		tempOut = ((int64_t)V[I] * (int64_t)((0xffff - frac)));
+		tempOut += ((int64_t)V[I + 1] * (int64_t)frac);
+		tempOut >>= 16;
+		return (uint32_t)tempOut;
+
+	}
+	
+	int32_t ScaleFromTo(int32_t from, int32_t to, int32_t inp)
+	{
+		return inp;// from + (inp * (to - from)) / FIXED(1);
+	}
+
+	uint32_t DoCurveAttack(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult16_t *cur, int32_t Linear)
 	{
 		uint32_t curve1 = FIXED(1) - DoCurve(from, to, prog, Curve, cur, Linear);
 
@@ -116,34 +160,34 @@ extern "C"
 		{
 			uint32_t prog2 = prog;
 
-			int32_t mult = ((0xff - cur->fractional));
+			int32_t mult = ((0xffff - cur->fractional)) >> 8;
 			prog2 = prog2 * mult;
 			prog2 /= PEAKCOUNTSCALER;
 			//	prog2 = fix16_mul(prog2, FIX(2.0/(6*4096.0)));
-			uint32_t curve2 = FIXED(1) - DoCurve(from, to, prog2, Curve, cur, Linear);
+			uint32_t curve2 = FIXED(1) - DoCurve(0, FIXED(1), prog2, Curve, cur, Linear);
 			curve2 *= curve1;
 			curve2 /= 32768;
-			uint32_t L[2] = { curve1,curve2 };
-
-			uint32_t res = ULERP(L, 1, 255 - cur->fractional);
-			return res;
+			uint32_t L[2] = { curve2,curve1 };
+			//return curve2;
+			uint32_t res = ULERP16b(L, 1, cur->fractional);
+			return ScaleFromTo(from,to,res);
 		}
 		else
 		{
-			return curve1;
+			return ScaleFromTo(from, to, curve1);;
 		}
 	}
 
-	uint32_t DoCurveDecay(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *cur, int32_t Linear)
+	uint32_t DoCurveDecay(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult16_t *cur, int32_t Linear)
 	{
 		uint32_t curve1 = DoCurve(from, to, prog, Curve, cur, Linear);
-		uint32_t curveref = DoCurve(from, to, ~prog, Curve, cur, Linear);
+		//	uint32_t curveref = DoCurve(from, to, ~prog, Curve, cur, Linear);
 
 		if (cur->index == 0)
 		{
 			uint32_t prog2 = prog;
 			prog2 = 0x8000 - prog2;
-			int32_t mult = ((0xff - cur->fractional));
+			int32_t mult = ((0xffff - cur->fractional)) >> 8;
 			prog2 = prog2 * mult;
 			prog2 /= PEAKCOUNTSCALER;
 			prog2 = 0x8000 - (prog2 % 0x8000);
@@ -156,7 +200,7 @@ extern "C"
 			curve2 += curve1;
 			uint32_t L[2] = { curve1,curve2 };
 
-			uint32_t res = ULERP(L, 1, 255 - cur->fractional);
+			uint32_t res = ULERP16(L, 1, 0xffff - cur->fractional);
 			return res;
 		}
 		else
@@ -165,7 +209,7 @@ extern "C"
 		}
 	}
 
-	uint32_t DoCurveRelease(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult_t *cur, int32_t Linear)
+	uint32_t DoCurveRelease(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult16_t *cur, int32_t Linear)
 	{
 		uint32_t curve1 = DoCurve(from, to, prog, Curve, cur, Linear);
 		uint32_t curveref = DoCurve(0, FIXED(0.5), prog, Curve, cur, Linear);
@@ -175,10 +219,10 @@ extern "C"
 			uint32_t prog2 = prog;
 
 			int32_t mult = (cur->fractional);
-			if (cur->index > 3)mult = 256;
+			if (cur->index > 3)mult = 0x10000;
 			prog2 = 0x8000 - prog2;
 			prog2 = prog2 * mult;
-			prog2 /= PEAKCOUNTSCALER;
+			prog2 /= PEAKCOUNTSCALER << 8;
 			prog2 = 0x8000 - (prog2 % 0x8000);
 			//	prog2 = fix16_mul(prog2, FIX(2.0/(6*4096.0)));
 			uint32_t curve2 = DoCurve(from, to, prog2, Curve, cur, Linear);
@@ -187,7 +231,7 @@ extern "C"
 			uint32_t L[2] = { curve1,curve2 };
 			if (cur->index == 3)
 			{
-				uint32_t res = ULERP(L, 1, cur->fractional);
+				uint32_t res = ULERP16(L, 1, cur->fractional);
 				return res;
 			}
 			else
@@ -251,6 +295,7 @@ extern "C"
 
 		case ENVSTATE_DECAY:
 			Env->AttackProgress = FIXED(1);
+			Env->VelocityCurrent = Env->SampledVelocity;
 			Env->DecayProgress = 0;
 			Env->ReleaseProgress = 0;
 			Env->DecayStart = Env->Current;
@@ -275,12 +320,20 @@ extern "C"
 			break;
 
 		case ENVSTATE_SUSTAIN:
+
+		{
+			int32_t SusLev = SustainLevel(Env->S);
+			Env->Current = SusLev;
+			Env->CurrentCurved = SusLev;
+			Env->VelocityCurrent = Env->SampledVelocity;
+
 			Env->AttackProgress = FIXED(1);
 			Env->DecayProgress = FIXED(1);
 			Env->ReleaseProgress = 0;
 			Env->StateLeds[7] = 255;
 			Env->StateLeds[8] = 255;
-			break;
+		}
+		break;
 		}
 	}
 
@@ -311,7 +364,7 @@ extern "C"
 		}
 		else
 		{
-			if (Params->mode != ENVMODE_TRIGGER &&  Env->State != ENVSTATE_IDLE && Env->State != ENVSTATE_RELEASE)
+			if (Params->mode != ENVMODE_TRIGGER && Env->State != ENVSTATE_IDLE && Env->State != ENVSTATE_RELEASE)
 			{
 				if (Env->State == ENVSTATE_ATTACK)
 				{
@@ -329,30 +382,12 @@ extern "C"
 
 	}
 
-	void EdgeCutter2_ValidateParams(struct EdgeCutter2_Params *params)
-	{
-
-	}
-
-	static unsigned long EnvelopeRange(uint32_t V, int speed)
-	{
-		return 1 + (((speed ? 1 : 10) * V) >> 8);
-	}
-
-	static int32_t EnvelopeLength(int inp, int speed)
-	{
-		return 1 + (((speed ? 200 : 2000) * (inp >> 8)) >> 8);
-	}
-
-	static int32_t SustainLevel(int sus)
-	{
-		return ((sus >> 8)* FIXED(1)) >> 8;
-	}
+	
 
 	int EdgeCutter2_GetEnv(EdgeCutter2_Envelope *Env, EdgeCutter2_Params *Params, EdgeCutter2_Calibration *Calibration)
 	{
-		SteppedResult_t CurveSteps;
-		GetSteppedResult(Env->Curvature, 4, &CurveSteps);
+		SteppedResult16_t CurveSteps;
+		GetSteppedResult16(Env->Curvature, 4, &CurveSteps);
 		if (Env->VelocitySampleCountdown > 0)
 		{
 			Env->VelocitySampleCountdown--;
@@ -394,15 +429,17 @@ extern "C"
 			Env->VelocityCurrent = (Env->AttackProgress * (Env->SampledVelocity - Env->PreviouslySampledVelocity)) / FIXED(1) + Env->PreviouslySampledVelocity;
 			if (Env->Current >= FIXED(1))
 			{
-				SwitchToState(Env, ENVSTATE_DECAY);
 				Env->Current = FIXED(1);
 				Env->CurrentCurved = FIXED(1);
+				SwitchToState(Env, ENVSTATE_DECAY);
 			}
 		}
 		break;
 
 		case ENVSTATE_DECAY:
 		{
+			Env->VelocityCurrent = Env->SampledVelocity;
+
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
 			int32_t decaylength = EnvelopeLength(Env->D, Params->speed);
@@ -449,16 +486,15 @@ extern "C"
 					}
 				}
 			}
-
-
 		}
 		break;
 
 		case ENVSTATE_SUSTAIN:
 		{
+			Env->VelocityCurrent = Env->SampledVelocity;
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
-			int32_t Delta = (SustainLevel(Env->S) - Env->Current) / 5;
+			int32_t Delta = (SusLev - Env->Current) / 5;
 			Env->Current += Delta;
 			Env->CurrentCurved = Env->Current;
 		}
@@ -517,14 +553,14 @@ extern "C"
 		{
 			// 12 leds, 8 and 9 are sustain.
 			int32_t Led = 0;
-			switch(Env->State)
+			switch (Env->State)
 			{
 			case ENVSTATE_ATTACK: Led = (Env->AttackProgress * 3) >> (FIXEDBITS - 8); break;
 			case ENVSTATE_DECAY: Led = (3 << 8) + ((Env->DecayProgress * 3) >> (FIXEDBITS - 8)); break;
-			case ENVSTATE_SUSTAIN: Led = (6 << 8); break;			
+			case ENVSTATE_SUSTAIN: Led = (6 << 8); break;
 			case ENVSTATE_RELEASE: Led = ((9 << 8) + 0xff) + ((Env->ReleaseProgress * 3) >> (FIXEDBITS - 8)); break;
 			}
-			
+
 
 			if (0) {
 				if (Led < Env->LastLed)
@@ -549,16 +585,16 @@ extern "C"
 			{
 				int idx1 = (Env->LastLed >> 8);
 				int idx2 = Led >> 8;
-				if (idx1!=idx2)
-				for (int i = idx1; i <= idx2; i++)
-				{
+				if (idx1 != idx2)
+					for (int i = idx1; i <= idx2; i++)
+					{
 						Env->StateLeds[i] = 255;
-				}
+					}
 				Env->StateLeds[idx1] = (Env->LastLed & 0xff);
 				Env->StateLeds[idx1] = 255 - Env->StateLeds[idx1];
 				if (idx2 != idx1)
 				{
-					Env->StateLeds[idx2+1] = (Led & 0xff);
+					Env->StateLeds[idx2 + 1] = (Led & 0xff);
 				}
 				else
 				{

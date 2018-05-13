@@ -68,6 +68,24 @@ void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out)
 	out->fractional = M & 0xff;
 }
 
+void GetSteppedResult16(uint32_t param, uint8_t steps, SteppedResult16_t *out)
+{
+
+	uint32_t X = (param * steps);
+	//X += 64<<8;
+
+	int FloorX = X & 0xffff0000;
+	int Aside = FloorX;
+	int Bside = (X - (FloorX)) * 2 + (FloorX)-256;
+	int M = (Aside > Bside) ? Aside : Bside;
+	int32_t frac = X & 0xffff;
+	frac -= 0x2000;
+	frac *= (0xffff / 0x7fff);
+	if (frac < 0) frac = 0; else if (frac > 0xffff) frac = 0xffff;
+
+	out->index = X >> 16;
+	out->fractional = frac;
+}
 
 
 void EuroRack_InitCalibration()

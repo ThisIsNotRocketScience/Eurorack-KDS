@@ -115,6 +115,26 @@ extern "C"
 		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
 	}
 
+	int32_t LERP16(int32_t *V, int total, int fade)
+	{
+		int T = fade * total;
+		unsigned short frac = T & 0xffff;
+		if (frac && (frac < 0xffff)) frac += 1;
+		int I = T >> 16;
+
+		int64_t tempOut;
+		tempOut = ((int64_t)V[I] * ((0xffff - frac)));
+		tempOut += ((int64_t)V[I+1]* frac);
+		tempOut >>= 16;
+		return (int32_t)tempOut;
+
+
+//		int32_t term1 = ((V[I] ) * ((0xffff - frac)>>3))>>13;
+	//	int32_t term2 = ((V[I+1] ) * (( frac)>>3))>>13;
+
+//		return term1 + term2;
+	}
+
 	uint32_t ULERP(uint32_t *V, int total, int fade)
 	{
 		int T = fade * total;
@@ -122,6 +142,31 @@ extern "C"
 		if (frac && (frac < 255)) frac += 1;
 		int I = T >> 8;
 		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
+		
+
+//		return ((V[I] >> 8) *(255 - frac) + (V[I + 1] >> 8) * frac);
+	}
+	
+	uint32_t ULERP16(uint32_t *V, int total, int fade)
+	{
+
+
+		int T = fade * total;
+		unsigned short frac = T & 0xffff;
+		if (frac && (frac < 0xffff)) frac += 1;
+		int I = T >> 16;
+
+		uint64_t tempOut;
+		tempOut = ((int64_t)V[I] * ((0xffff - frac)));
+		tempOut += ((int64_t)V[I + 1] * frac);
+		tempOut >>= 16;
+		return (uint32_t)tempOut;
+
+
+		uint32_t term1 = ((V[I] >> 3) * ((0xffff - frac) >> 3)) >> 10;
+		uint32_t term2 = ((V[I + 1] >> 3) * ((frac) >> 3)) >> 10;
+
+		return term1 + term2;
 	}
 
 	int32_t FillBasicShapes(uint32_t phase, int mod, Shapes_t *Shapes, ShapeCompensationVals_t *Comp)

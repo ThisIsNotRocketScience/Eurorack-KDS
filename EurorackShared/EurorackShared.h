@@ -64,6 +64,11 @@ typedef struct SteppedResult_t
 	uint8_t fractional;
 } SteppedResult_t;
 
+typedef struct SteppedResult16_t
+{
+	uint8_t index;
+	uint16_t fractional;
+} SteppedResult16_t;
 
 #define COMPENSATION_NOMIN 0
 	#define COMPENSATION_NOMUL 0xffffffff;
@@ -91,6 +96,10 @@ extern "C"
 	int32_t LERP(int32_t *V, int total, int fade);
 	uint32_t ULERP(uint32_t *V, int total, int fade);
 
+
+	int32_t LERP16(int32_t *V, int total, int fade);
+	uint32_t ULERP16(uint32_t *V, int total, int fade);
+
 	int32_t Sine(uint32_t phase);
 	int32_t Cosine(uint32_t phase);
 	int32_t SawTooth(uint32_t phase);
@@ -105,6 +114,7 @@ extern "C"
 	void SetSVF(struct EURORACK_SVF *filt, uint16_t cut, uint16_t res);
 	void ProcessSVF(struct EURORACK_SVF *filt, uint32_t RR);
 	void GetSteppedResult(uint16_t param, uint8_t steps, SteppedResult_t *out);
+	void GetSteppedResult16(uint32_t param, uint8_t steps, SteppedResult16_t *out);
 	uint32_t StartCounting();
 	uint32_t EndCount(uint32_t start);
 

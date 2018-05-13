@@ -54,7 +54,6 @@ int main(int argc, char **argv)
 {
 	Wobbler2_LFO_t LFO2Static;
 	Wobbler2_Settings LFO2Settings;
-	Wobbler2_LFO_t LFO2Running;
 	Wobbler2_Params LFO2Params;
 
 	Wobbler2_LoadSettings(&LFO2Settings, &LFO2Params);
@@ -90,7 +89,7 @@ int main(int argc, char **argv)
 		Wobbler2_Get(&LFO2Static, &LFO2Params);
 	}
 
-	
+	/*
 
 	if (0)
 	{
@@ -130,7 +129,7 @@ int main(int argc, char **argv)
 		fprintf(F, "}\n\n");
 		fclose(F);
 	}
-	
+	*/
 	{
 		float sintab[2048];
 		float dsintab[2048];
@@ -140,7 +139,7 @@ int main(int argc, char **argv)
 		int mindelayafterprocess = (int)((chorusdepth + mindelay) * 2);
 		for (int i = 0; i < 2048; i++)
 		{
-			sintab[i] = mindelay + sin((float)i*6.283f / 2048.f)*chorusdepth;
+			sintab[i] = mindelay + (float)sin((float)i*6.283f / 2048.f)*chorusdepth;
 		}
 		for (int i = 0; i < 2048; i++)
 		{

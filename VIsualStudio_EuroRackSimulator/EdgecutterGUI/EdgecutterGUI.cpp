@@ -110,6 +110,7 @@ ImVec2 EnvPoints[1000];
 ImVec2 Points4[1000];
 ImVec2 Points2[1000];
 ImVec2 Points3[1000];
+ImVec2 Points3l[1000];
 
 ImVec2 PointsA[1000];
 ImVec2 PointsAc[1000];
@@ -129,6 +130,9 @@ typedef struct res_Struct
 	
 }
 res_Struct;
+
+
+
 extern "C" {
 	extern int lowpassenabled;
 }
@@ -216,9 +220,11 @@ int main(int, char**)
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(1.0f, 1.0f, 1.0f, .800f);
 	static bool parameters = true;
 	static bool waveoutputs = false;
-	static bool staticenv = false;
+	static bool staticenv = true;
 	static bool docurvetest = false;
-	static bool velocityrepeater = true;
+	static bool velocityrepeater = false;
+	static bool stepped = false;
+
 	while (!done)
 	{
 		SDL_Event event;
@@ -243,6 +249,8 @@ int main(int, char**)
 				ImGui::MenuItem("Static Envelope", NULL, &staticenv);
 				ImGui::MenuItem("Docurve Test", NULL, &docurvetest);
 				ImGui::MenuItem("Velocity & Repeat Attack Test", NULL, &velocityrepeater);
+				ImGui::MenuItem("SteppedResult", NULL, &stepped);
+
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -263,6 +271,8 @@ int main(int, char**)
 					ImGui::SliderFloat("Sustain", &fS, 0, 1);
 					ImGui::SliderFloat("Release", &fR, 0, 1);
 					ImGui::SliderFloat("Curvature", &fCurve, 0, 1);
+
+
 					ImGui::SliderFloat("Velocity", &fVelocity, 0, 1);
 					static bool trigger;
 					if (ImGui::Checkbox("Trigger", &trigger)) 
@@ -381,8 +391,51 @@ int main(int, char**)
 				}
 			}
 		}
-
 		ImVec2 p;
+
+		if (stepped)
+		{
+			ImGui::PushFont(pFontBold);
+
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
+			ImGui::Begin("SteppedTest", &stepped, ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 200, 255));
+
+			static int stepcount = 6;
+			ImGui::SliderInt("steps", &stepcount, 1, 20);
+			ImGui::BeginChild("StepptedTestFrame", ImVec2(540, 280), true);
+
+
+
+			p = ImGui::GetCursorScreenPos();
+			int sMin = 100000;
+			int sMax = -100000;
+			for (int i = 0; i < 65536; i += 256)
+			{
+				SteppedResult16_t T;
+				GetSteppedResult16(i, stepcount, &T);
+				uint32_t y = T.index;
+				y *= 0xffff;
+				y += T.fractional;
+				int yy = y / (stepcount*255);
+				int xx = (i * 2)/256;
+
+				if (yy < sMin) sMin = yy;
+				if (yy > sMax) sMax = yy;
+				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(xx + p.x, yy + p.y), 1, IM_COL32(255, 255, 60, 255));
+
+			}
+			ImGui::EndChild();
+			ImGui::Text("Steps %d: %d->%d", stepcount, sMin, sMax);
+
+			ImGui::PopStyleColor();
+
+			ImGui::End();
+			ImGui::PopStyleColor();
+			ImGui::PopFont();
+		}
+
+
 		if (docurvetest)
 		{
 			ImGui::PushFont(pFontBold);
@@ -395,9 +448,9 @@ int main(int, char**)
 			ImGui::SliderInt("DoCurve Curvature", &docurvecurvature, 0, 0xffff);
 			ImGui::SliderInt("DoCurve Value", &docurvevalue, 0, 0xffff);
 			
-			SteppedResult_t curve;
+			SteppedResult16_t curve;
 			
-			GetSteppedResult(docurvecurvature, 4, &curve);
+			GetSteppedResult16(docurvecurvature, 4, &curve);
 
 			ImGui::LabelText("labls","%d", DoCurve(0, 65536, docurvevalue, docurvecurvature, &curve, 0x8000));
 			static bool showgraph = true;
@@ -496,10 +549,17 @@ int main(int, char**)
 		{
 			ImGui::PushFont(pFontBold);
 			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 100, 255));
 			ImGui::Begin("Static Envelope", &staticenv, ImGuiWindowFlags_AlwaysAutoResize);
 
-			ImGui::BeginChild("EnvelopeFrame", ImVec2(540*2, 257*2), true);
 
+			SteppedResult16_t curve;
+
+			GetSteppedResult16(EnvelopeStatic.Curvature, 4, &curve);
+
+
+			ImGui::BeginChild("EnvelopeFrame", ImVec2(540*2, 257*2), true);
+			ImGui::Text("%x %x", curve.index, curve.fractional);
 			p = ImGui::GetCursorScreenPos();
 			static bool resetbetweenframes = true;
 			if (resetbetweenframes) EdgeCutter2_Init(&EnvelopeStatic);
@@ -513,17 +573,26 @@ int main(int, char**)
 				{
 					EdgeCutter2_Trigger(&EnvelopeStatic, 0, &Params);
 				}
+				if (i == 400)
+				{
+					EdgeCutter2_Trigger(&EnvelopeStatic, 1, &Params);
+				}
 				Points3[i/2].x = p.x+ i*2;
+				Points3l[i / 2].x = p.x + i * 2;
 				for (int j =0 ;j< updaterate +1;j++) EdgeCutter2_GetEnv(&EnvelopeStatic, &Params, &Calib);
 				int P = EnvelopeStatic.CurvedOutput;
+				int Pl = EnvelopeStatic.LinearOutput;
 				Points3[i / 2].y = p.y + 200 - ((P - 2048) / 10);
+				Points3l[i / 2].y = p.y + 200 - ((Pl - 2048) / 10);
 			}
 
 			ImGui::GetWindowDrawList()->AddPolyline(Points3, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
+			ImGui::GetWindowDrawList()->AddPolyline(Points3l, 500, IM_COL32(100, 255, 255, 255), false, 2.0f);
 			ImGui::EndChild();
 
 
 			ImGui::End();
+			ImGui::PopStyleColor();
 			ImGui::PopStyleColor();
 			ImGui::PopFont();
 		}
@@ -555,10 +624,9 @@ int main(int, char**)
 				Points[i].x = 500-i + p.x;
 				Points[i].y = p.y + 100 - ((P - 2048) / 20);
 			}
+			
 			ImGui::GetWindowDrawList()->AddPolyline(Points, 500, IM_COL32(40, 255, 220, 255), false, 2.0f);
 			
-
-
 			for (int i = 0; i < 13; i++)
 			{
 				ImGui::GetWindowDrawList()->AddCircleFilled(ImVec2(p.x + 8 + (16 * i), p.y +8), 6, IM_COL32(outleds[i], outleds[i], 50, 255));
@@ -570,7 +638,6 @@ int main(int, char**)
 			ImGui::GetWindowDrawList()->AddLine(ImVec2(p.x + 8 + 16 * 9, p.y + 8 + 16), ImVec2(p.x + 8 + 16 * 12, p.y + 8+32), IM_COL32(255, 255, 0, 255), 2);
 
 			ImGui::EndChild();
-
 
 			ImGui::End();
 			ImGui::PopStyleColor();
