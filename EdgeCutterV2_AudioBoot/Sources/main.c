@@ -101,8 +101,14 @@ void aLED_DATA_CLR() {GPIOB_PDOR &= ~(1<<LED_DATA);};
 
 #define SetIf(x){if (x) {aLED_DATA_SET();}else {aLED_DATA_CLR();}aLED_CLK_CLR(); aLED_CLK_SET();};
 #define SetNotIf(x){if (x) {aLED_DATA_CLR();}else {aLED_DATA_SET();}aLED_CLK_CLR(); aLED_CLK_SET();};
-uint8_t LEDS[23]={0};
-uint8_t Order[23]={12,17,16,15,14,13,18,4,5,6,7,8,9,10,11,19,20,21,3,2,1,0,22};
+uint8_t LEDS[25]={0};
+
+uint8_t Order[23]=
+{
+		 12,17,16,15,14,13,18,4,
+		  5, 6, 7, 8, 9,10,11,19,
+		 20,21, 3, 2, 1, 0,22};
+
 #define GATE_ATTACKEND 19
 #define GATE_DECAYEND 20
 #define GATE_RELEASESTART 21
@@ -124,9 +130,12 @@ aLED_LATCH_SET();
 
 }
 
+int T = 0;
+
+
 void SetLed(int i)
 {
-	LEDS[Order[i]] = 1;
+	LEDS[i] = 1;
 }
 
 
@@ -152,7 +161,6 @@ int main(void)
 	InitSequence();
 
 	DecoderInit();
-	int T = 0;
 
 // 15 1
 	/*
@@ -187,6 +195,7 @@ int main(void)
 		T++;
 		for (int i =0;i<23;i++) LEDS[i] = 0;
 		SetLed(GATE_ATTACKEND +  Reader.Sync );
+		//SetLed((T/1000)%23);
 		for(int i = 0;i<64;i++)
 		{
 			SetLed(((History[i])/4000 + 8)%13);
@@ -208,9 +217,9 @@ int main(void)
 			{
 				if ((T/400) % 2 == 0)
 				{
-					for (int i =0;i<16;i++)
+					for (int i =0;i<23;i++)
 					{
-						if (((T/200) + i) % 2 == 0) SetLed((i*13)/256);
+						 SetLed(i);
 					}
 				}
 				//show error

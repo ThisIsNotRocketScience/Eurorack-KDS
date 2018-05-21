@@ -175,7 +175,7 @@
     </GenFiles>
     <SignalListFile>Documentation\EdgeCutterV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>103</ProjectModificationStamp>
+    <ProjectModificationStamp>109</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -271,8 +271,8 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.02</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256765491</HeaderAge>
-    <CodeAge>1256765491</CodeAge>
+    <HeaderAge>1286674780</HeaderAge>
+    <CodeAge>1286674780</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
     <Enable>true</Enable>
@@ -338,8 +338,8 @@
       <GenComponentVersion>01.018</GenComponentVersion>
       <GenDriverVersion>01.02</GenDriverVersion>
       <GenEventModule>Events</GenEventModule>
-      <HeaderAge>1256765491</HeaderAge>
-      <CodeAge>1256765491</CodeAge>
+      <HeaderAge>1286674780</HeaderAge>
+      <CodeAge>1286674780</CodeAge>
       <AsemblAge>-1</AsemblAge>
       <GenNumMethods>17</GenNumMethods>
       <Init>true</Init>
@@ -419,8 +419,8 @@
     <GenComponentVersion>01.164</GenComponentVersion>
     <GenDriverVersion>01.11</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1256765491</HeaderAge>
-    <CodeAge>1256765491</CodeAge>
+    <HeaderAge>1286674780</HeaderAge>
+    <CodeAge>1286674780</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>22</GenNumMethods>
     <Init>true</Init>

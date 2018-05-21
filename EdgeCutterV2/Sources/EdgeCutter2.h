@@ -108,6 +108,8 @@ extern "C"
 	extern void EdgeCutter2_LoadSettings(EdgeCutter2_Settings *settings, EdgeCutter2_Params *params);
 	extern void EdgeCutter2_ValidateParams(EdgeCutter2_Params *params);
 	extern uint32_t DoCurve(int32_t from, int32_t to, uint32_t prog, uint16_t Curve, SteppedResult16_t *curB, int32_t Linear);
+	extern int32_t EdgeCutter2_EnvelopeLength(int inp, int speed);
+	extern int32_t EdgeCutter2_EnvelopeLength2(int inp, int speed);
 
 #ifdef __cplusplus
 }

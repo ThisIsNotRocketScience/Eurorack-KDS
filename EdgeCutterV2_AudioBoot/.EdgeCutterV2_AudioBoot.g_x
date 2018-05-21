@@ -23,9 +23,9 @@
     <GeneratedByPE>
       <File Name="Generated_Code/TI1.c" FileDate="2017-11-09, 18:43:31" FileAge="1510249411986" FileType="45637" CompNumb="5" />
       <File Name="Generated_Code/GI2C1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411836" FileType="45637" CompNumb="27" />
-      <File Name="Documentation/EdgeCutterV2_AudioBoot_SIGNALS.txt" FileDate="2018-05-13, 22:36:07" FileAge="1526243767551" FileType="3072" />
+      <File Name="Documentation/EdgeCutterV2_AudioBoot_SIGNALS.txt" FileDate="2018-05-17, 03:09:37" FileAge="1526519377955" FileType="3072" />
       <File Name="Static_Code/PDD/I2C_PDD.h" FileDate="2016-11-12, 18:36:25" FileAge="1478972185504" FileType="1048576" />
-      <File Name="Generated_Code/PE_Types.h" FileDate="2018-05-13, 22:36:07" FileAge="1526243767531" FileType="45637" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2018-05-17, 03:09:37" FileAge="1526519377931" FileType="45637" />
       <File Name="Generated_Code/GI2C1.c" FileDate="2017-11-09, 18:43:31" FileAge="1510249411827" FileType="45637" CompNumb="27" />
       <File Name="Generated_Code/IFsh1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411955" FileType="45637" CompNumb="10" />
       <File Name="Generated_Code/WAIT1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411897" FileType="45637" CompNumb="21" />
@@ -98,5 +98,5 @@
       <File Name="Generated_Code/TI1.h" FileDate="2017-11-09, 18:43:31" FileAge="1510249411995" FileType="45637" CompNumb="5" />
     </GeneratedByPE>
   </GeneratedFilesList>
-  <CodeGenReference>8</CodeGenReference>
+  <CodeGenReference>9</CodeGenReference>
 </CodeGenerationInfo>

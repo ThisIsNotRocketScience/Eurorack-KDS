@@ -111,7 +111,8 @@ ImVec2 Points4[1000];
 ImVec2 Points2[1000];
 ImVec2 Points3[1000];
 ImVec2 Points3l[1000];
-
+ImVec2 PointsEnvRange[1000];
+ImVec2 PointsEnvRange2[1000];
 ImVec2 PointsA[1000];
 ImVec2 PointsAc[1000];
 ImVec2 PointsV[1000];
@@ -137,11 +138,39 @@ res_Struct;
 extern "C" {
 	extern int lowpassenabled;
 }
+
+int exptabshort[11] = {1, 11, 32, 69, 138, 266, 502, 938, 1744, 3234, 5986};
+int exptablong[11] = {1, 55, 157, 344, 689, 1328, 2509, 4691, 8722, 16170, 29934};
+
+int32_t EdgeCutter2_EnvelopeLength2(int inp, int speed)
+{
+	if (speed)
+	{
+
+		return LERP16(exptabshort, 10, inp);
+	}
+	else
+	{
+		return LERP16(exptablong, 10, inp);
+	}
+}
+
+
+
+
 res_Struct res[10000];
 EdgeCutter2_Calibration Calib = { 0,0 };
 int main(int, char**)
 {
-	
+	for (int i = 0; i < 11; i++)
+	{
+		//0.1 + 0.012276 e ^ (6.14 x)
+		float E =  (0.012276  * exp(6.14f * i*0.1)- 0.012276)*(2999/ 5.69672163587);
+		exptabshort[i] =(int)(1+ E * 0.001 * 1500.0f);
+		float E2 = (0.012276  * exp(6.14f * i*0.1) - 0.012276)*(14999 / 5.69672163587);
+		exptablong[i] = (int)(1 + E2 * 0.001 * 1500.0f);
+		printf("%f\n", E);
+	};
 	EuroRack_InitCalibration();
 	EdgeCutter2_Init(&Envelope);
 	EdgeCutter2_Init(&EnvelopeStatic);
@@ -221,10 +250,11 @@ int main(int, char**)
 	ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(1.0f, 1.0f, 1.0f, .800f);
 	static bool parameters = true;
 	static bool waveoutputs = false;
-	static bool staticenv = true;
+	static bool staticenv = false;
 	static bool docurvetest = false;
 	static bool velocityrepeater = false;
 	static bool stepped = false;
+	static bool rangedisplay = true;
 
 	while (!done)
 	{
@@ -249,6 +279,7 @@ int main(int, char**)
 				ImGui::MenuItem("Edgecutter Parameters", NULL, &parameters);
 				ImGui::MenuItem("Static Envelope", NULL, &staticenv);
 				ImGui::MenuItem("Docurve Test", NULL, &docurvetest);
+				ImGui::MenuItem("Envelope Range display", NULL, &rangedisplay);
 				ImGui::MenuItem("Velocity & Repeat Attack Test", NULL, &velocityrepeater);
 				ImGui::MenuItem("SteppedResult", NULL, &stepped);
 
@@ -484,6 +515,53 @@ int main(int, char**)
 			ImGui::PopFont();
 
 		}
+
+		if (rangedisplay)
+		{
+			ImGui::PushFont(pFontBold);
+			//	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 255));
+			ImGui::Begin("Envelope Range Display", &rangedisplay, ImGuiWindowFlags_AlwaysAutoResize);
+
+			static bool EnvelopeRange = false;
+			ImGui::Checkbox("Long", &EnvelopeRange);
+
+			
+				ImGui::BeginChild("EnvelopeRangeFrame", ImVec2(540, 287), true);
+				p = ImGui::GetCursorScreenPos();
+				int mmaxP = -10000;
+				int mminP = 100000;
+				int Ps[500];
+				int Ps2[500];
+				for (int i = 0; i < 500; i++)
+				{
+					int32_t P = EdgeCutter2_EnvelopeLength(i*0xffff/500,EnvelopeRange?1:0);
+					int32_t P2 = EdgeCutter2_EnvelopeLength2(i * 0xffff / 500, EnvelopeRange ? 1 : 0);
+					Ps[i] = P;
+					Ps2[i] = P2;
+					if (P > mmaxP) mmaxP = P;
+					if (P < mminP) mminP = P;
+				}
+				for (int i = 0; i < 500; i++)
+				{
+					PointsEnvRange[i].x = i + p.x;
+					PointsEnvRange[i].y = p.y + 250-((Ps[i] - mminP)*230)/(mmaxP-mminP);
+					PointsEnvRange2[i].x = i + p.x;
+					PointsEnvRange2[i].y = p.y + 250-((Ps2[i] - mminP) * 230) / (mmaxP - mminP);
+
+				}
+
+				ImGui::GetWindowDrawList()->AddPolyline(PointsEnvRange, 500, IM_COL32(0, 0, 0, 255), false, 2.0f);
+				ImGui::GetWindowDrawList()->AddPolyline(PointsEnvRange2, 500, IM_COL32(255, 0, 0, 255), false, 2.0f);
+				ImGui::EndChild();
+			
+
+
+			ImGui::End();
+			//	ImGui::PopStyleColor();
+			ImGui::PopFont();
+
+		}
+
 		if (velocityrepeater)
 		{
 			ImGui::PushFont(pFontBold);
@@ -535,7 +613,7 @@ int main(int, char**)
 			}
 
 			ImGui::GetWindowDrawList()->AddPolyline(PointsVSnH, 500, IM_COL32(100, 255, 20, 255), false, 2.0f);
-			ImGui::GetWindowDrawList()->AddPolyline(PointsVCur, 500, IM_COL32(0, 200, 30, 255), false, 2.0f);
+			ImGui::GetWindowDrawList()->AddPolyline(PointsVCur, 500, IM_COL32(0, 100, 100, 255), false, 3.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsV, 500, IM_COL32(20, 100, 255, 255), false, 2.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsA, 500, IM_COL32(255, 100, 20, 255), false, 2.0f);
 			ImGui::GetWindowDrawList()->AddPolyline(PointsAc, 500, IM_COL32(255, 255, 20, 255), false, 2.0f);

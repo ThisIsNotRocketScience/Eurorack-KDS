@@ -15,15 +15,55 @@ extern "C"
 	{
 
 	}
+#define EDGECUTTERSAMPLERATE (float)1500
+#define MSEC(yy) ((int32_t)( EDGECUTTERSAMPLERATE * ((float)yy  * 0.001f)))
+#define MSECEXP(x, max) (MSEC( ((x)*(x)*(max-1))) + MSEC(1.0))
 
-	static unsigned long EnvelopeRange(uint32_t V, int speed)
-	{
-		return 1 + (((speed ? 1 : 10) * V) >> 8);
-	}
 
-	static int32_t EnvelopeLength(int inp, int speed)
+	int exptabshort[11] = { 1, 25, 50, 75, 138, 266, 502, 938, 1744, 3234, 5986 };
+	int exptablong[11] = { 1, 55, 157, 344, 689, 1328, 2509, 4691, 8722, 16170, 29934 };
+
+	int32_t MSECSHORT[11] = 
+	{ 
+		MSECEXP(0.0,3000), 
+		MSECEXP(0.1,3000), 
+		MSECEXP(0.2,3000), 
+		MSECEXP(0.3,3000),
+		MSECEXP(0.4,3000),
+		MSECEXP(0.5,3000),
+		MSECEXP(0.6,3000),
+		MSECEXP(0.7,3000),
+		MSECEXP(0.8,3000),
+		MSECEXP(0.9,3000),
+		MSECEXP(1.0,3000)
+	};
+
+	int32_t MSECLONG[11] =
 	{
-		return 1 + (((speed ? 200 : 2000) * (inp >> 8)) >> 8);
+		MSECEXP(0.0,15000),
+		MSECEXP(0.05,15000),
+		MSECEXP(0.15,15000),
+		MSECEXP(0.25,15000),
+		MSECEXP(0.4,15000),
+		MSECEXP(0.5,15000),
+		MSECEXP(0.6,15000),
+		MSECEXP(0.7,15000),
+		MSECEXP(0.8,15000),
+		MSECEXP(0.9,15000),
+		MSECEXP(1.0,15000)
+	};
+
+	int32_t EdgeCutter2_EnvelopeLength(int inp, int speed)
+	{
+		if (speed)
+		{
+
+			return LERP16(exptabshort, 10, inp);
+		}
+		else
+		{
+			return LERP16(exptablong, 10, inp);
+		}
 	}
 
 	static int32_t SustainLevel(int sus)
@@ -250,6 +290,9 @@ extern "C"
 	{
 		switch (Env->State)
 		{
+		case ENVSTATE_IDLE:
+			Env->SampledVelocity = Env->PreviouslySampledVelocity = Env->Velocity;
+			break;
 		case ENVSTATE_SUSTAIN:
 			Env->StateLeds[7] = 0;
 			Env->StateLeds[8] = 0;
@@ -342,7 +385,7 @@ extern "C"
 		if (Env->TriggerState == 1)
 		{
 			SwitchToState(Env, ENVSTATE_ATTACK);
-			for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
+			//for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
 
 			Env->VelocitySampleCountdown = 7;
 		}
@@ -356,7 +399,7 @@ extern "C"
 			{
 				SwitchToState(Env, ENVSTATE_ATTACK);
 				Env->TriggerState = 1;
-				for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
+				//for (int i = 0; i < EDGECUTTER_VELOCITYSAMPLES; i++) Env->VelocitySample[i] = Env->Velocity;
 				Env->VelocitySampleCountdown = 7;
 
 			}
@@ -419,15 +462,15 @@ extern "C"
 		}
 	//	Env->VelocityFade = Env->VelocityFade + 5;
 		//if (Env->VelocityFade > 255) Env->VelocityFade = 255;
-	//	int32_t Vels[2] = { Env->PreviouslySampledVelocity, Env->SampledVelocity };
-		Env->VelocityCurrent =  Env->SampledVelocity;
+		int32_t Vels[2] = { Env->PreviouslySampledVelocity, Env->SampledVelocity };
+		Env->VelocityCurrent =  LERP16(Vels, 1,  Env->AttackProgress*2);
 
 		switch (Env->State)
 		{
 		case ENVSTATE_ATTACK:
 		{
 			Env->CurrentTarget = FIXED(1);
-			int L = EnvelopeLength(Env->A, Params->speed);;
+			int L = EdgeCutter2_EnvelopeLength(Env->A, Params->speed);;
 			int32_t Delta = FIXED(1) / L;
 			Env->Current += Delta;
 			Env->AttackProgress = ((Env->Current - Env->AttackStart) * FIXED(1)) / (FIXED(1) - Env->AttackStart);
@@ -448,7 +491,7 @@ extern "C"
 			
 			int32_t SusLev = SustainLevel(Env->S);
 			Env->CurrentTarget = SusLev;
-			int32_t decaylength = EnvelopeLength(Env->D, Params->speed);
+			int32_t decaylength = EdgeCutter2_EnvelopeLength(Env->D, Params->speed);
 			int32_t Delta = -(FIXED(1) - SusLev) / decaylength;
 			Env->Current += Delta;
 			if (Env->DecayStart > SusLev)
@@ -508,7 +551,7 @@ extern "C"
 		case ENVSTATE_RELEASE:
 		{
 			Env->CurrentTarget = 0;
-			int32_t releasetime = EnvelopeLength(Env->R, Params->speed);
+			int32_t releasetime = EdgeCutter2_EnvelopeLength(Env->R, Params->speed);
 			int32_t Delta = -Env->ReleaseStart / releasetime;
 			Env->Current += Delta;
 			Env->ReleaseTime++;
