@@ -388,8 +388,6 @@ void LoadEeprom()
 	}
 }
 
-
-
 void SetupLeds()
 {
 	if (SpeedSwitchMode == SPEEDSWITCH_NORMAL) SetSpeedLeds(Params.speed);

@@ -15,15 +15,15 @@ extern "C"
 	{
 
 	}
-#define EDGECUTTERSAMPLERATE (float)1500
-#define MSEC(yy) ((int32_t)( EDGECUTTERSAMPLERATE * ((float)yy  * 0.001f)))
-#define MSECEXP(x, max) (MSEC( ((x)*(x)*(max-1))) + MSEC(1.0))
+//#define EDGECUTTERSAMPLERATE (float)1500
+//#define MSEC(yy) ((int32_t)( EDGECUTTERSAMPLERATE * ((float)yy  * 0.001f)))
+//#define MSECEXP(x, max) (MSEC( ((x)*(x)*(max-1))) + MSEC(1.0))
 
 
 	int exptabshort[11] = { 1, 25, 50, 75, 138, 266, 502, 938, 1744, 3234, 5986 };
 	int exptablong[11] = { 1, 55, 157, 344, 689, 1328, 2509, 4691, 8722, 16170, 29934 };
 
-	int32_t MSECSHORT[11] = 
+	/*int32_t MSECSHORT[11] = 
 	{ 
 		MSECEXP(0.0,3000), 
 		MSECEXP(0.1,3000), 
@@ -51,7 +51,7 @@ extern "C"
 		MSECEXP(0.8,15000),
 		MSECEXP(0.9,15000),
 		MSECEXP(1.0,15000)
-	};
+	};*/
 
 	int32_t EdgeCutter2_EnvelopeLength(int inp, int speed)
 	{

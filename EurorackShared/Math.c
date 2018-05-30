@@ -123,7 +123,7 @@ extern "C"
 		int I = T >> 16;
 
 		int64_t tempOut;
-		tempOut = ((int64_t)V[I] * ((0xffff - frac)));
+		tempOut = ((int64_t)V[I] * ((0x10000 - frac)));
 		tempOut += ((int64_t)V[I+1]* frac);
 		tempOut >>= 16;
 		return (int32_t)tempOut;

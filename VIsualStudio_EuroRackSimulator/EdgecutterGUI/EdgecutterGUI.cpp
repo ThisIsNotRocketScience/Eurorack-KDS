@@ -171,6 +171,8 @@ int main(int, char**)
 		exptablong[i] = (int)(1 + E2 * 0.001 * 1500.0f);
 		printf("%f\n", E);
 	};
+
+	int i = EdgeCutter2_EnvelopeLength(0, 0);
 	EuroRack_InitCalibration();
 	EdgeCutter2_Init(&Envelope);
 	EdgeCutter2_Init(&EnvelopeStatic);
