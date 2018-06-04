@@ -139,8 +139,8 @@ extern "C" {
 	extern int lowpassenabled;
 }
 
-int exptabshort[11] = {1, 11, 32, 69, 138, 266, 502, 938, 1744, 3234, 5986};
-int exptablong[11] = {1, 55, 157, 344, 689, 1328, 2509, 4691, 8722, 16170, 29934};
+int32_t exptabshort[11] = {1, 11, 32, 69, 138, 266, 502, 938, 1744, 3234, 5986};
+int32_t exptablong[11] = {1, 55, 157, 344, 689, 1328, 2509, 4691, 8722, 16170, 29934};
 
 int32_t EdgeCutter2_EnvelopeLength2(int inp, int speed)
 {

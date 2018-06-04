@@ -411,9 +411,24 @@ void EnvelopeTrigger(int sw)
 {
 	if (buttonpressed == 1) return;
 	EdgeCutter2_Trigger(&Envelope, sw>0?0:1, &Params);
-	buttonjustpressed = 1;
+	if (sw==0) buttonjustpressed = 1;
 }
 
+uint16_t Adjust(uint16_t inp)
+{
+			if (inp > 0xc00)
+			{
+				uint32_t r = inp - (0xc00);
+				r *= 0xffff;
+				r /= (0xffff - (0xc00));
+				return r;
+			}
+			else
+			{
+				return 0;
+			}
+
+}
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -514,7 +529,7 @@ int main(void)
 			EdgeCutter2_Trigger(&Envelope, 0 ,&Params);
 		}
 		int buttonled= 0;
-		if (buttonpressed > 0) buttonled = 128;
+		if (buttonpressed > 0 || Envelope.TriggerState == 1) buttonled = 128;
 		if (buttonjustpressed >0)buttonled = 255;
 		if (justretriggered > 0 && buttonpressed) buttonled = 255;
 		justretriggered = 0;
@@ -529,12 +544,13 @@ int main(void)
 			AD1_Measure(FALSE);
 		}
 
-		Envelope.A = ~(adcchannels[ADC_A] );
-		Envelope.D = ~(adcchannels[ADC_D] );
-		Envelope.S = ~(adcchannels[ADC_S] );
-		Envelope.R = ~(adcchannels[ADC_R] );
-		Envelope.Curvature = ~(adcchannels[ADC_CURVATURE] );
+		Envelope.A =Adjust( ~(adcchannels[ADC_A] ));
+		Envelope.D =Adjust( ~(adcchannels[ADC_D] ));
+		Envelope.S =Adjust( ~(adcchannels[ADC_S] ));
+		Envelope.R = Adjust(~(adcchannels[ADC_R] ));
+		Envelope.Curvature = Adjust(~(adcchannels[ADC_CURVATURE] ));
 		Envelope.Velocity = ~(adcchannels[ADC_VELOCITY]);
+
 
 
 		//if (switchmode == 1)

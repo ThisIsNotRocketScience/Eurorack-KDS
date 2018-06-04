@@ -175,7 +175,7 @@
     </GenFiles>
     <SignalListFile>Documentation\EdgeCutterV2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>GNUC</DestinationCompiler>
-    <ProjectModificationStamp>110</ProjectModificationStamp>
+    <ProjectModificationStamp>111</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
