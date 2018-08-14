@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="1920" key="dialogWidth"/>
-		<item value="1170" key="dialogHeight"/>
+		<item value="1536" key="dialogWidth"/>
+		<item value="939" key="dialogHeight"/>
 		<list key="orderedProviders">
 		</list>
 		<list key="textArray">
@@ -16,21 +16,21 @@
 		<item value="392" key="DIALOG_Y_ORIGIN"/>
 		<item value="952" key="DIALOG_X_ORIGIN"/>
 	</section>
-	<section name="NewWizardAction">
-	</section>
 	<section name="InstallationDialogSettings">
 		<item value="934" key="DIALOG_WIDTH"/>
 		<item value="-477" key="DIALOG_Y_ORIGIN"/>
-		<item value="-123" key="DIALOG_X_ORIGIN"/>
 		<item value="982" key="DIALOG_HEIGHT"/>
+		<item value="-123" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="NewWizardAction">
 	</section>
 	<section name="ShowViewDialog">
 		<item value="392" key="DIALOG_WIDTH"/>
 		<item value="org.eclipse.debug.ui.BreakpointView" key="ShowViewDialog.STORE_SELECTED_VIEW_ID"/>
 		<item value="465" key="DIALOG_Y_ORIGIN"/>
-		<item value="479" key="DIALOG_HEIGHT"/>
 		<item value="1093" key="DIALOG_X_ORIGIN"/>
+		<item value="479" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<list key="ShowViewDialog.STORE_EXPANDED_CATEGORIES_ID">
 			<item value="org.eclipse.debug.ui"/>
