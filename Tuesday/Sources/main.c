@@ -433,7 +433,7 @@ void NOINLINE _SetupLeds()
 		case OPTION_ALGO:
 		{
 			int S = Settings.algooptions[Tuesday.OptionIndex];
-			ShowSets(D, (S >> 4) & 0x03, S & 0x3, (S >> 2) & 0x03);
+			ShowSets(D, (S >> 4) & 0x07, S & 0x3, (S >> 2) & 0x03);
 		}
 		break;
 		case OPTION_SCALE:
@@ -613,7 +613,14 @@ void UI_SelectOption()
 
 	if (but1) NewS = (S & (0xff - (3 << 0))) + (((((S >> 0) & 3) + 1) & 3) << 0);
 	if (but2) NewS = (S & (0xff - (3 << 2))) + (((((S >> 2) & 3) + 1) & 3) << 2);
-	if (but3) NewS = (S & (0xff - (3 << 4))) + (((((S >> 4) & 3) + 1) & 3) << 4);
+	if (Tuesday.OptionSelect == OPTION_ALGO)
+	{
+		if (but3) NewS = (S & (0xff - (7 << 4))) + (((((S >> 4) & 7) + 1) & 7) << 4);
+	}
+	else
+	{
+		if (but3) NewS = (S & (0xff - (3 << 4))) + (((((S >> 4) & 3) + 1) & 3) << 4);
+	}
 
 	if (NewS != S)
 	{

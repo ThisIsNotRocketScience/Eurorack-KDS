@@ -321,10 +321,22 @@ int main(int, char**)
 					ImGui::RadioButton("b3", &beats, 2); ImGui::SameLine();
 					ImGui::RadioButton("b4", &beats, 3); ImGui::SameLine(); ImGui::Text("%d", (int)TuesdaySettings.beatoptions[beats]);
 
+					static bool algo_lengthmode = false;
+					static bool algo_slides = false;
+					static bool algo_lengthmulti = false;
+
+					ImGui::Checkbox("Slides", &algo_slides);
+					ImGui::Checkbox("LengthMode", &algo_lengthmode);
+					ImGui::Checkbox("LengthMult", &algo_lengthmulti);
+					
+
 					TuesdayParams.algo = algo;
 					TuesdayParams.beatopt = beats;
 					TuesdayParams.scale = scale;
 					TuesdayParams.tpbopt = ticks;
+
+					TuesdaySettings.algooptions[algo] = (TuesdaySettings.algooptions[algo] & 0xf) + (algo_lengthmode ? (1 << 5) : 0) + (algo_slides ? (1 << 4) : 0) + (algo_lengthmulti ? (1 << 6) : 0);
+
 					static int lastopts = -1;
 					if (algo + beats + scale + ticks != lastopts)
 					{
@@ -436,7 +448,7 @@ int main(int, char**)
 				}
 				if (acc)
 				{
-					ImVec2 S(i * 2 + p.x, p.y + 100);
+					ImVec2 S(i * 2 + p.x, p.y + 110);
 					ImGui::GetWindowDrawList()->AddCircle(S, 3, accentcolor,4);
 				}
 

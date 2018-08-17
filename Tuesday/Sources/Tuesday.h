@@ -129,6 +129,7 @@ typedef struct Tuesday_PatternGen
 	uint8_t switchmode;
 	uint8_t commitchange;
 	uint8_t TicksPerMeasure;
+	int ticklengthscaler;
 } Tuesday_PatternGen;
 
 #define TUESDAY_MAXALGO 4

@@ -109,6 +109,7 @@ void Tuesday_Init( Tuesday_PatternGen *P)
 	P->switchmode = 1;
 	P->commitchange = 0;
 	P->UIMode = UI_STARTUP;
+	P->ticklengthscaler = 9;
 }
 
 void Tuesday_Reset( Tuesday_PatternGen *T)
@@ -167,7 +168,7 @@ void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 				T->CVOut = T->CVOutTarget;
 			}
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
-			int Ticks = (T->msecpertick * T->CurrentPattern.Ticks[T->Tick].maxsubticklength);;
+			int Ticks = (T->msecpertick * T->CurrentPattern.Ticks[T->Tick].maxsubticklength)/T->ticklengthscaler;;
 			if (T->Gates[GATE_GATE] > 0) { T->Gates[GATE_GATE] = -Ticks; T->GatesGap[GATE_GATE] = GATE_MINGATETIME; }
 			else T->Gates[GATE_GATE] = Ticks;
 
@@ -660,7 +661,8 @@ void Tuesday_Generate( Tuesday_PatternGen *T, Tuesday_Params *P,  Tuesday_Settin
 	int CurrentAlgo = (S->algooptions[P->algo] & 0xf) % ALGO_COUNT;
 	int SlideMode = (S->algooptions[P->algo] >> 4) & 1;
 	int LengthMode = (S->algooptions[P->algo] >> 5) & 1;
-
+	int LengthMultMode = (S->algooptions[P->algo] >> 6) & 1;
+	if (LengthMultMode > 0) T->ticklengthscaler = 9; else T->ticklengthscaler = 3;
 	 PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
 	for (int j = 0; j < 4; j++)
