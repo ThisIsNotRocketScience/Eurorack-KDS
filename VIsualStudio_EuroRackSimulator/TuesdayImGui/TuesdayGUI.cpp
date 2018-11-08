@@ -298,7 +298,7 @@ int main(int, char**)
 					ImGui::RadioButton("a1", &algo, 0); ImGui::SameLine();
 					ImGui::RadioButton("a2", &algo, 1); ImGui::SameLine();
 					ImGui::RadioButton("a3", &algo, 2); ImGui::SameLine();
-					ImGui::RadioButton("a4", &algo, 3); ImGui::SameLine(); ImGui::Text("%d", (int)TuesdaySettings.algooptions[algo]);
+					ImGui::RadioButton("a4", &algo, 3); ImGui::SameLine(); ImGui::Text("%d", (int)TuesdaySettings.algooptions[algo]&0xf);
 
 					static int scale = 3;
 					ImGui::Text("scale:"); ImGui::SameLine();
@@ -334,6 +334,32 @@ int main(int, char**)
 					TuesdayParams.beatopt = beats;
 					TuesdayParams.scale = scale;
 					TuesdayParams.tpbopt = ticks;
+
+					static int algot = 3;
+					ImGui::Text("CurrentAlgo:"); ImGui::SameLine();
+
+					ImGui::RadioButton("TESTS", &algot, 0); ImGui::SameLine();
+					ImGui::RadioButton("TRITRANCE", &algot, 1); ImGui::SameLine();
+					ImGui::RadioButton("STOMPER", &algot, 2); ImGui::SameLine();
+					ImGui::RadioButton("MARKOV", &algot, 3); ImGui::SameLine(); 
+					ImGui::RadioButton("WOBBLER", &algot, 4); ImGui::SameLine();
+					ImGui::RadioButton("CHIPARP1", &algot, 5); ImGui::SameLine();
+					ImGui::RadioButton("CHIPARP2", &algot, 6); ImGui::SameLine();
+					ImGui::RadioButton("SNH", &algot, 7); ImGui::SameLine();
+					ImGui::RadioButton("SAIKOCLASSIC", &algot, 8); ImGui::SameLine();
+					ImGui::RadioButton("NEOSAIKO", &algot, 9); ImGui::SameLine();
+					ImGui::RadioButton("SCALEWALKER", &algot, 10); ImGui::SameLine();
+					ImGui::RadioButton("TOOEASY", &algot, 11); ImGui::SameLine();
+					ImGui::RadioButton("RANDOM", &algot, 12); ImGui::SameLine();
+					ImGui::RadioButton("alg14", &algot, 13); ImGui::SameLine();
+					ImGui::RadioButton("alg15", &algot, 14); ImGui::SameLine();
+					ImGui::RadioButton("alg16", &algot, 15); ImGui::SameLine();
+
+					TuesdaySettings.algooptions[algo] = algot;
+
+					ImGui::Text("%d", (int)TuesdaySettings.algooptions[algo]&0xf);
+
+
 
 					TuesdaySettings.algooptions[algo] = (TuesdaySettings.algooptions[algo] & 0xf) + (algo_lengthmode ? (1 << 5) : 0) + (algo_slides ? (1 << 4) : 0) + (algo_lengthmulti ? (1 << 6) : 0);
 
