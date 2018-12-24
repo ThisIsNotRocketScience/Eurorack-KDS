@@ -341,19 +341,19 @@ int main(int, char**)
 					ImGui::RadioButton("TESTS", &algot, 0); ImGui::SameLine();
 					ImGui::RadioButton("TRITRANCE", &algot, 1); ImGui::SameLine();
 					ImGui::RadioButton("STOMPER", &algot, 2); ImGui::SameLine();
-					ImGui::RadioButton("MARKOV", &algot, 3); ImGui::SameLine(); 
+					ImGui::RadioButton("MARKOV", &algot, 3); //ImGui::SameLine(); 
 					ImGui::RadioButton("WOBBLER", &algot, 4); ImGui::SameLine();
 					ImGui::RadioButton("CHIPARP1", &algot, 5); ImGui::SameLine();
 					ImGui::RadioButton("CHIPARP2", &algot, 6); ImGui::SameLine();
-					ImGui::RadioButton("SNH", &algot, 7); ImGui::SameLine();
+					ImGui::RadioButton("SNH", &algot, 7); //ImGui::SameLine();
 					ImGui::RadioButton("SAIKOCLASSIC", &algot, 8); ImGui::SameLine();
 					ImGui::RadioButton("NEOSAIKO", &algot, 9); ImGui::SameLine();
 					ImGui::RadioButton("SCALEWALKER", &algot, 10); ImGui::SameLine();
-					ImGui::RadioButton("TOOEASY", &algot, 11); ImGui::SameLine();
+					ImGui::RadioButton("TOOEASY", &algot, 11);// ImGui::SameLine();
 					ImGui::RadioButton("RANDOM", &algot, 12); ImGui::SameLine();
 					ImGui::RadioButton("alg14", &algot, 13); ImGui::SameLine();
 					ImGui::RadioButton("alg15", &algot, 14); ImGui::SameLine();
-					ImGui::RadioButton("alg16", &algot, 15); ImGui::SameLine();
+					ImGui::RadioButton("alg16", &algot, 15); //ImGui::SameLine();
 
 					TuesdaySettings.algooptions[algo] = algot;
 
