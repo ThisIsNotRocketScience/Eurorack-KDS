@@ -130,6 +130,7 @@ typedef struct Tuesday_PatternGen
 	uint8_t commitchange;
 	uint8_t TicksPerMeasure;
 	int ticklengthscaler;
+	uint8_t LastResetVal;
 } Tuesday_PatternGen;
 
 #define TUESDAY_MAXALGO 4
@@ -137,8 +138,11 @@ typedef struct Tuesday_PatternGen
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
 
+#define ALTERNATESCALES
+
 typedef enum
 {
+#ifndef ALTERNATESCALES
 	SCALE_MAJOR,
 	SCALE_MINOR,
 	SCALE_DORIAN,
@@ -147,22 +151,39 @@ typedef enum
 	SCALE_12TONE,
 	SCALE_MAJORTRIAD,
 	SCALE_MINORTRIAD,
-	SCALE_9,
-	SCALE_10,
-	SCALE_11,
-	SCALE_12,
-	SCALE_13,
-	SCALE_14,
+
+	SCALE_EGYPTIAN,
+	SCALE_PHRYGIAN,
+	SCALE_LOCRIAN,
+	SCALE_OCTATONIC,
+	SCALE_MELODICMINOR,
+	SCALE_SCALE_MINORPENTA,
 	SCALE_15,
 	SCALE_16,
+#else
+
+	SCALE_MINOR,
+	SCALE_MELODICMINOR,
+	SCALE_MINORPENTA,
+	SCALE_MINORTRIAD,
+	SCALE_PHRYGIAN,
+	SCALE_LOCRIAN,
+	SCALE_OCTATONIC,
+	SCALE_12TONE,
+
+
+	SCALE_MAJOR,
+	SCALE_DORIAN,
+	SCALE_PENTA,
+	SCALE_EGYPTIAN,
+	SCALE_BLUES,
+	SCALE_MAJORTRIAD,
+	SCALE_15,
+	SCALE_16,
+#endif
 	__SCALE_COUNT
 } TUESDAY_SCALES;
 
-typedef enum
-{
-	CLOCK_UPSLOPE,
-	CLOCK_DOWNSLOPE
-} TUESDAY_CLOCKPOLARITY;
 
 typedef enum
 {
@@ -171,6 +192,21 @@ typedef enum
 	OCTAVELIMIT_2,
 	OCTAVELIMIT_3,
 } TUESDAY_OCTAVELIMIT;
+
+typedef enum
+{
+
+	CLOCKMODE_RESETREGULAR = 0,
+	CLOCKMODE_RESETINVERTED = 1,
+
+	CLOCKMODE_RESET_BLOCKS_TICKS = 2,
+	CLOCKMODE_RESET_TRIGGER_ONLY = 0,
+
+	CLOCKMODE_DOWNSLOPE= 4,
+	CLOCKMODE_UPSLOPE= 0
+
+} TUESDAY_RESETFLAGS;
+
 
 typedef struct Tuesday_Scale
 {
@@ -191,7 +227,7 @@ typedef struct Tuesday_Settings
 
 	uint8_t ClockSubDivMode;
 	uint8_t OctaveLimiter;
-	uint8_t ClockPolarityMode;
+	uint8_t ClockMode;
 } Tuesday_Settings;
 
 typedef struct Tuesday_Params
@@ -248,11 +284,13 @@ extern "C"
 	extern void Tuesday_Init(Tuesday_PatternGen *T);
 	extern void Tuesday_Clock(Tuesday_PatternGen *P, Tuesday_Settings *S, Tuesday_Params *Par, int ClockVal);
 	extern void Tuesday_ExtClock(Tuesday_PatternGen *P,Tuesday_Params *Params, Tuesday_Settings *S, int state);
-	extern void Tuesday_Reset(Tuesday_PatternGen *T);
+	extern void Tuesday_Reset(Tuesday_PatternGen *T, Tuesday_Settings *s, int Val);
 	extern void Tuesday_Tick(Tuesday_PatternGen *T, Tuesday_Params *P);
 	extern void Tuesday_TimerTick(Tuesday_PatternGen *T, Tuesday_Params *P);
 	extern void Tuesday_ValidateParams(Tuesday_Params *P);
-
+	extern void Tuesday_MainLoop(Tuesday_PatternGen *T,Tuesday_Settings *settings, Tuesday_Params *params);
+	extern void Tuesday_SwitchToOptionMode(Tuesday_PatternGen *T,int mode, int startoption);
+	extern void Tuesday_SetupLeds(Tuesday_PatternGen *T, Tuesday_Settings *settings, Tuesday_Params *params);
 	extern void Tuesday_ValidateSettings(Tuesday_Settings *S);
 	extern void Tuesday_LoadSettings(Tuesday_Settings *S, Tuesday_Params *P);
 	extern void Tuesday_LoadDefaults(Tuesday_Settings *S, Tuesday_Params *P);
@@ -267,7 +305,10 @@ extern "C"
 
 	extern void DoClock(int state);
 	extern void doTick();
-
+	extern void Tuesday_ToggleSlope(Tuesday_Settings *Settings);
+	extern void Tuesday_ToggleReset(Tuesday_Settings *Settings);
+	extern void Tuesday_ToggleResetPattern(Tuesday_Settings *Settings);
+	
 
 #ifdef __cplusplus
 }

@@ -206,10 +206,8 @@ void CLOCKINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 /* ===================================================================*/
 void RESETINT_OnInterrupt(LDD_TUserData *UserDataPtr)
 {
-  if (RESETINT_GetVal(RESETINT_DeviceData) == 0)
-  {
-	  PatternReset();
-  }
+	  PatternReset(RESETINT_GetVal(RESETINT_DeviceData) );
+
 }
 
 

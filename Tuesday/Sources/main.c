@@ -78,19 +78,18 @@ struct Tuesday_PatternGen Tuesday;
 struct Tuesday_Settings Settings;
 struct Tuesday_Params Params;
 struct Tuesday_Params LastParams;
-struct Tuesday_RandomGen MainRandom;
-
-int tickssincecommit = 0;
-long oldseed = -1;
+extern struct Tuesday_RandomGen MainRandom;
+extern int oldseed;
+extern int tickssincecommit;
 
 byte pwm = 0;
 
-void _SetupLeds();
+void SetupLeds();
 
-struct denoise_state_t algosw_state = { 0 };
-struct denoise_state_t scalesw_state = { 0 };
-struct denoise_state_t beatsw_state = { 0 };
-struct denoise_state_t tpbsw_state = { 0 };
+extern struct denoise_state_t algosw_state ;
+extern struct denoise_state_t scalesw_state ;
+extern struct denoise_state_t beatsw_state ;
+extern struct denoise_state_t tpbsw_state ;
 
 void UpdateButtons()
 {
@@ -143,9 +142,9 @@ void doTick()
 	ShiftOut();
 }
 
-void PatternReset()
+void PatternReset(int Val)
 {
-	Tuesday_Reset(&Tuesday);
+	Tuesday_Reset(&Tuesday,&Settings, Val);
 }
 
 void ExtClockTick(int state)
@@ -235,97 +234,11 @@ void doTimer()
 
 	if (Tuesday.T % 2 == 0)
 	{
-		_SetupLeds();
+		Tuesday_SetupLeds(&Tuesday,&Settings, &Params);
 	}
 
 	ShiftOut();
 }
-
-void SetLedNumber(int offset, int number)
-{
-	switch (number % 13)
-	{
-	case 0:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 1:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 2:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 3:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 4:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 5:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 6:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 7:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 8:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 0;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 9:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 0;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 10:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 0;
-		break;
-	case 11:
-		Tuesday.StateLedTargets[offset + 0] = 0;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	case 12:
-		Tuesday.StateLedTargets[offset + 0] = 255;
-		Tuesday.StateLedTargets[offset + 1] = 255;
-		Tuesday.StateLedTargets[offset + 2] = 255;
-		Tuesday.StateLedTargets[offset + 3] = 255;
-		break;
-	}
-}
-
 
 void SaveEeprom()
 {
@@ -399,141 +312,7 @@ void LoadEeprom()
 	}
 }
 
-void NOINLINE ShowSets(int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
-{
-	if (ticksgroup > -1) SetLedNumber(0, ticksgroup);
-	if (beatsgroup > -1) SetLedNumber(4, beatsgroup);
-	if (scalegroup > -1) SetLedNumber(8, scalegroup);
-	if (algogroup > -1) SetLedNumber(12, algogroup);
-}
 
-void NOINLINE _SetupLeds()
-{
-	switch (Tuesday.UIMode)
-	{
-	case UI_STARTUP:
-		// give the opening animation some breathing space
-		break;
-
-	case UI_NORMAL:
-		SetLedNumber(0, Params.tpbopt);
-		SetLedNumber(4, Params.beatopt);
-		SetLedNumber(8, Params.scale);
-		SetLedNumber(12, Params.algo);
-		break;
-
-	case UI_SELECTOPTION:
-	{
-		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
-		int D = -1;
-		if ((tickssincecommit >> 8) & 0x1) D = Tuesday.OptionIndex;
-
-		switch (Tuesday.OptionSelect)
-		{
-		case OPTION_ALGO:
-		{
-			int S = Settings.algooptions[Tuesday.OptionIndex];
-			ShowSets(D, (S >> 4) & 0x07, S & 0x3, (S >> 2) & 0x03);
-		}
-		break;
-		case OPTION_SCALE:
-		{
-			int S = Settings.scale[Tuesday.OptionIndex];
-			ShowSets((S >> 4) & 0x03, D, S & 0x3, (S >> 2) & 0x03);
-		}
-		break;
-		case OPTION_BEATS:
-		{
-			int S = Settings.beatoptions[Tuesday.OptionIndex] - 1;
-			ShowSets(S & 0x3, (S >> 2) & 0x03, (S >> 4) & 0x03, D);
-		}
-		break;
-		case OPTION_TPB:
-		{
-			int S = Settings.tpboptions[Tuesday.OptionIndex] - 1;
-			ShowSets(S & 0x3, (S >> 2) & 0x03, D, (S >> 4) & 0x03);
-		}
-		break;
-		}
-	}break;
-
-	case UI_GLOBALSETTINGS:
-	{
-		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
-
-		int S = Settings.ClockSubDivMode;
-		ShowSets(Settings.ClockPolarityMode, Settings.OctaveLimiter, S, -1);
-		Tuesday.StateLedTargets[4] = 255;
-		Tuesday.StateLedTargets[5] = 255;
-		Tuesday.StateLedTargets[6] = 255;
-		Tuesday.StateLedTargets[7] = 255;
-
-	}
-	break;
-	case UI_CALIBRATION:
-		for (int i = 0; i < TUESDAY_LEDS; i++) Tuesday.StateLedTargets[i] = 0;
-		switch (Tuesday.CalibTarget)
-		{
-		case CALIBRATION_VEL:
-			Tuesday.Gates[GATE_ACCENT] = 1;
-			Tuesday.Gates[GATE_GATE] = 0;
-			Tuesday.StateLedTargets[0] = 255;
-			Tuesday.StateLedTargets[1] = 255;
-			Tuesday.StateLedTargets[2] = 255;
-			Tuesday.StateLedTargets[3] = 255;
-			break;
-
-		case CALIBRATION_NOTE:
-			Tuesday.Gates[GATE_ACCENT] = 0;
-			Tuesday.Gates[GATE_GATE] = 1;
-			Tuesday.StateLedTargets[4] = 255;
-			Tuesday.StateLedTargets[5] = 255;
-			Tuesday.StateLedTargets[6] = 255;
-			Tuesday.StateLedTargets[7] = 255;
-			break;
-
-		case CALIBRATION_NOTARGET:
-		{
-			Tuesday.Gates[GATE_ACCENT] = 0;
-			Tuesday.Gates[GATE_GATE] = 0;
-			unsigned char T = Triangle(tickssincecommit << 23) >> 24;
-			for (int i = 0; i < 4; i++)
-			{
-				Tuesday.StateLedTargets[i] = T;
-				Tuesday.StateLedTargets[i + 4] = ~T;
-			}
-		}
-		break;
-		}
-		break;
-	}
-
-	for (int i = 0; i < TUESDAY_LEDS; i++)
-	{
-		if (Tuesday.StateLedTargets[i] > Tuesday.RStateLeds[i])
-		{
-			Tuesday.RStateLeds[i]++;
-		}
-		else
-		{
-			if (Tuesday.StateLedTargets[i] < Tuesday.RStateLeds[i])
-			{
-				Tuesday.RStateLeds[i]--;
-			}
-			if (Tuesday.StateLedTargets[i] < Tuesday.RStateLeds[i])
-			{
-				Tuesday.RStateLeds[i]--;
-			}
-		}
-	}
-}
-
-void SwitchToOptionMode(int mode, int startoption)
-{
-	Tuesday.OptionSelect = mode;
-	Tuesday.OptionIndex = startoption;
-	Tuesday.UIMode = UI_SELECTOPTION;
-}
 
 
 // reset basic options, but not calibration
@@ -549,276 +328,6 @@ void FactoryReset(int all)
 }
 
 
-
-
-void UI_SelectOption()
-{
-	int butconf, but1, but2, but3;
-	int butconflong = 0;;
-	int S = 0;
-	int MaxS = 64;
-	switch (Tuesday.OptionSelect)
-	{
-	case OPTION_ALGO:
-	{
-		butconf = pressed(&algosw_state);
-		butconflong = islongpress(&algosw_state);
-		S = Settings.algooptions[Tuesday.OptionIndex];
-		//MaxS = __ALGO_COUNT;
-
-		but1 = pressed(&tpbsw_state);
-		but2 = pressed(&beatsw_state);
-		but3 = pressed(&scalesw_state);
-	};
-	break;
-
-	case OPTION_SCALE:
-	{
-		butconf = pressed(&scalesw_state);
-		butconflong = islongpress(&scalesw_state);
-		S = Settings.scale[Tuesday.OptionIndex];
-		//		MaxS = __SCALE_COUNT;
-
-		but1 = pressed(&tpbsw_state);
-		but2 = pressed(&beatsw_state);
-		but3 = pressed(&algosw_state);
-
-	};
-	break;
-
-	case OPTION_BEATS:
-	{
-		butconf = pressed(&beatsw_state);
-		butconflong = islongpress(&beatsw_state);
-		//Settings.beatoptions[]
-		but1 = pressed(&algosw_state);
-		but2 = pressed(&scalesw_state);
-		but3 = pressed(&tpbsw_state);
-	};
-	break;
-
-	case OPTION_TPB:
-	{
-		butconf = pressed(&tpbsw_state);
-		butconflong = islongpress(&tpbsw_state);
-
-		but1 = pressed(&algosw_state);
-		but2 = pressed(&scalesw_state);
-		but3 = pressed(&beatsw_state);
-	};
-	break;
-	}
-
-	int NewS = S;
-
-	if (but1) NewS = (S & (0xff - (3 << 0))) + (((((S >> 0) & 3) + 1) & 3) << 0);
-	if (but2) NewS = (S & (0xff - (3 << 2))) + (((((S >> 2) & 3) + 1) & 3) << 2);
-	if (Tuesday.OptionSelect == OPTION_ALGO)
-	{
-		if (but3) NewS = (S & (0xff - (7 << 4))) + (((((S >> 4) & 7) + 1) & 7) << 4);
-	}
-	else
-	{
-		if (but3) NewS = (S & (0xff - (3 << 4))) + (((((S >> 4) & 3) + 1) & 3) << 4);
-	}
-
-	if (NewS != S)
-	{
-		S = NewS;
-
-		switch (Tuesday.OptionSelect)
-		{
-		case OPTION_ALGO:  Settings.algooptions[Tuesday.OptionIndex] = S; break;
-		case OPTION_BEATS: Settings.beatoptions[Tuesday.OptionIndex] = (S + 1); break;
-		case OPTION_TPB:   Settings.tpboptions[Tuesday.OptionIndex] = (S + 1); break;
-		case OPTION_SCALE: Settings.scale[Tuesday.OptionIndex] = S; break;
-		}
-		Tuesday.switchmode = 1;
-		SaveSettingsEeprom();
-
-	}
-	if (butconf == 1)
-	{
-		Tuesday.OptionIndex = (Tuesday.OptionIndex + 1) % 4;
-
-		switch (Tuesday.OptionSelect)
-		{
-		case OPTION_ALGO:  Params.algo = Tuesday.OptionIndex; break;
-		case OPTION_BEATS: Params.beatopt = Tuesday.OptionIndex; break;
-		case OPTION_TPB:   Params.tpbopt = Tuesday.OptionIndex; break;
-		case OPTION_SCALE: Params.scale = Tuesday.OptionIndex; break;
-		}
-
-		Tuesday.switchmode = 1;
-
-	}
-	if (butconflong == 1)
-	{
-		Tuesday.UIMode = UI_NORMAL;
-
-		switch (Tuesday.OptionSelect)
-		{
-
-
-		case OPTION_ALGO:  Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO; break;
-		case OPTION_SCALE: Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE; break;
-
-		}
-	}
-}
-
-
-void UI_GlobalSettings()
-{
-	if (pressed(&beatsw_state))
-	{
-		Tuesday.UIMode = UI_NORMAL;
-		Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
-		SaveSettingsEeprom();
-		return;
-	}
-
-	if (pressed(&tpbsw_state))
-	{
-		Settings.ClockSubDivMode = (Settings.ClockSubDivMode + 1) % 4;
-		Tuesday_SetupClockSubdivision(&Tuesday, &Settings, &Params);
-
-	}
-
-	if (pressed(&algosw_state))
-	{
-		Settings.ClockPolarityMode = (Settings.ClockPolarityMode + 1) % 2;
-	}
-
-	if (pressed(&scalesw_state))
-	{
-		Settings.OctaveLimiter = (Settings.OctaveLimiter + 1) % 4;
-	}
-}
-
-void UI_Calibration()
-{
-	if (pressed(&algosw_state))
-	{
-		Tuesday.UIMode = UI_NORMAL;
-		return;
-	}
-
-	switch (Tuesday.CalibTarget)
-	{
-	case CALIBRATION_NOTE: ChangeDACCalibration(0, Tuesday.seed1, Tuesday.seed2); break;
-	case CALIBRATION_VEL: ChangeDACCalibration(1, Tuesday.seed1, Tuesday.seed2); break;
-	}
-
-
-	if (pressed(&beatsw_state))
-	{
-		Tuesday.CalibTarget = CALIBRATION_NOTE;
-	}
-	else
-	{
-		if (islongpress(&beatsw_state))
-		{
-			if (Tuesday.CalibTarget == CALIBRATION_NOTE)
-			{
-				// Write Velocity output calibration value!
-				Tuesday.CalibTarget = CALIBRATION_NOTARGET;
-				SaveCalibrationEeprom();
-			}
-		}
-	}
-
-	if (pressed(&tpbsw_state))
-	{
-		Tuesday.CalibTarget = CALIBRATION_VEL;
-	}
-	else
-	{
-		if (islongpress(&tpbsw_state))
-		{
-			if (Tuesday.CalibTarget == CALIBRATION_VEL)
-			{
-				// Write Note output calibration value!
-				Tuesday.CalibTarget = CALIBRATION_NOTARGET;
-				SaveCalibrationEeprom();
-			}
-		}
-	}
-
-}
-
-void UI_Normal()
-{
-
-	if (pressed(&algosw_state))
-	{
-		Tuesday.switchmode = 1;
-		Params.algo = (Params.algo + 1) % TUESDAY_MAXALGO;
-		Tuesday.commitchange = 1;
-	}
-	else
-	{
-		if (islongpress(&algosw_state)) // longpress!
-		{
-			Params.algo = (Params.algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO;
-			Tuesday.commitchange = 1;
-			SwitchToOptionMode(OPTION_ALGO, Params.algo);
-		}
-	}
-
-	if (pressed(&scalesw_state))
-	{
-		Tuesday.switchmode = 1;
-		Params.scale = (Params.scale + 1) % TUESDAY_MAXSCALE;
-		Tuesday.commitchange = 1;
-	}
-	else
-	{
-		if (islongpress(&scalesw_state)) // longpress!
-		{
-			Params.scale = (Params.scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE;
-			Tuesday.commitchange = 1;
-			SwitchToOptionMode(OPTION_SCALE, Params.scale);
-		}
-	}
-
-	if (pressed(&beatsw_state))
-	{
-		Tuesday.switchmode = 1;
-		Params.beatopt = (Params.beatopt + 1) % TUESDAY_MAXBEAT;
-
-		Tuesday.commitchange = 1;
-	}
-	else
-	{
-		if (islongpress(&beatsw_state)) // longpress!
-		{
-			//Params.beatopt = (Params.beatopt + TUESDAY_MAXBEAT -1) % TUESDAY_MAXBEAT;
-
-			//SwitchToOptionMode(OPTION_BEATS, Params.beatopt);
-		}
-	}
-
-	if (pressed(&tpbsw_state))
-	{
-		Tuesday.switchmode = 1;
-
-		Params.tpbopt = (Params.tpbopt + 1) % TUESDAY_MAXTPB;
-		Tuesday.commitchange = 1;
-	}
-	else
-	{
-		if (islongpress(&tpbsw_state)) // longpress!
-		{
-
-			Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
-			Tuesday.commitchange = 1;
-			Tuesday.UIMode = UI_GLOBALSETTINGS;
-			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
-			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
-		}
-	}
-}
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -908,19 +417,6 @@ int main(void)
 	for (;;)
 	{
 
-		switch (Tuesday.UIMode)
-		{
-
-		case UI_SELECTOPTION: UI_SelectOption(); break;
-
-		case UI_CALIBRATION: UI_Calibration(); break;
-
-		case UI_GLOBALSETTINGS: UI_GlobalSettings(); break;
-
-		case UI_NORMAL: UI_Normal(); break;
-
-
-		};
 
 		if (measured == 1)
 		{
@@ -932,24 +428,8 @@ int main(void)
 			AD1_Measure(FALSE);
 		}
 
-		// read the X/Y seed knobs
-		long newseed = (Tuesday.seed1) + (Tuesday.seed2 << 8);
-		if (newseed != oldseed) Tuesday.switchmode = 1;
+		Tuesday_MainLoop(&Tuesday,&Settings, &Params);
 
-		if (Tuesday.switchmode == 1)
-		{
-			Tuesday.switchmode = 0;
-			Tuesday_RandomSeed(&MainRandom, newseed);
-			Tuesday_Generate(&Tuesday, &Params, &Settings);
-			oldseed = newseed;
-		}
-
-		if (Tuesday.commitchange == 1 && tickssincecommit >= 10)
-		{
-			SaveEeprom();
-			Tuesday.commitchange = 0;
-			tickssincecommit = 0;
-		}
 
 	}
 	/*** Don't write any code pass this line, or it will be deleted during code generation. ***/

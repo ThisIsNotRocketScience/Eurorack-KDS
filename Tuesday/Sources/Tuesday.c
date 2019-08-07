@@ -4,11 +4,291 @@
 #include "Algo.h"
 #include "AlgoImpl.h"
 
- PatternFunctions PatternTypes[ALGO_COUNT];
+void Tuesday_ToggleSlope(Tuesday_Settings *Settings) 
+{
+
+	int ClockDownSlope = ((Settings->ClockMode & CLOCKMODE_DOWNSLOPE) > 0)?1:0;
+	if (ClockDownSlope > 0)
+	{
+		Settings->ClockMode &= ~CLOCKMODE_DOWNSLOPE;
+	}
+
+	else
+	{
+		Settings->ClockMode |= CLOCKMODE_DOWNSLOPE;
+	}
+};
+
+void Tuesday_ToggleReset(Tuesday_Settings *Settings) 
+{
+	int ClockResetModeInverted = (Settings->ClockMode & CLOCKMODE_RESETINVERTED) > 0?1:0;
+
+	if (ClockResetModeInverted > 0)
+	{
+		Settings->ClockMode &= ~CLOCKMODE_RESETINVERTED;
+	}
+
+	else
+	{
+		Settings->ClockMode |= CLOCKMODE_RESETINVERTED;
+	}
+};
+void Tuesday_ToggleResetPattern(Tuesday_Settings *Settings) 
+{
+	int ClockResetHaltsPulses = (Settings->ClockMode & CLOCKMODE_RESET_BLOCKS_TICKS) > 0?1:0;
+
+	if (ClockResetHaltsPulses > 0)
+	{
+		Settings->ClockMode &= ~CLOCKMODE_RESET_BLOCKS_TICKS;
+	}
+
+	else
+	{
+		Settings->ClockMode |= CLOCKMODE_RESET_BLOCKS_TICKS;
+	}
+};
+
+PatternFunctions PatternTypes[ALGO_COUNT];
+long oldseed = -1;
+struct denoise_state_t algosw_state = { 0 };
+struct denoise_state_t scalesw_state = { 0 };
+struct denoise_state_t beatsw_state = { 0 };
+struct denoise_state_t tpbsw_state = { 0 };
+int tickssincecommit = 0;
+
+
+extern void SaveEeprom();
+extern void SaveSettingsEeprom();
+extern void 	SaveCalibrationEeprom();
+
+void SetLedNumber(Tuesday_PatternGen *T,  int offset, int number)
+{
+	switch (number % 13)
+	{
+	case 0:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 1:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 2:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 3:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 4:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 5:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 6:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 7:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 8:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 0;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 9:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 0;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 10:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 0;
+		break;
+	case 11:
+		T->StateLedTargets[offset + 0] = 0;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	case 12:
+		T->StateLedTargets[offset + 0] = 255;
+		T->StateLedTargets[offset + 1] = 255;
+		T->StateLedTargets[offset + 2] = 255;
+		T->StateLedTargets[offset + 3] = 255;
+		break;
+	}
+}
+
+
+void NOINLINE ShowSets(Tuesday_PatternGen*T, int algogroup, int scalegroup, int ticksgroup, int beatsgroup)
+{
+	if (ticksgroup > -1) SetLedNumber(T,0, ticksgroup);
+	if (beatsgroup > -1) SetLedNumber(T,4, beatsgroup);
+	if (scalegroup > -1) SetLedNumber(T,8, scalegroup);
+	if (algogroup > -1) SetLedNumber(T,12, algogroup);
+}
+
+
+void NOINLINE Tuesday_SetupLeds(Tuesday_PatternGen *T, Tuesday_Settings *settings, Tuesday_Params *params)
+{
+	switch (T->UIMode)
+	{
+	case UI_STARTUP:
+		// give the opening animation some breathing space
+		break;
+
+	case UI_NORMAL:
+		SetLedNumber(T,0, params->tpbopt);
+		SetLedNumber(T,4, params->beatopt);
+		SetLedNumber(T,8, params->scale);
+		SetLedNumber(T,12, params->algo);
+		break;
+
+	case UI_SELECTOPTION:
+	{
+		for (int i = 0; i < TUESDAY_LEDS; i++) T->StateLedTargets[i] = 0;
+		int D = -1;
+		if ((tickssincecommit >> 8) & 0x1) D = T->OptionIndex;
+
+		switch (T->OptionSelect)
+		{
+		case OPTION_ALGO:
+		{
+			int S = settings->algooptions[T->OptionIndex];
+			ShowSets(T,D, (S >> 4) & 0x07, S & 0x3, (S >> 2) & 0x03);
+		}
+		break;
+		case OPTION_SCALE:
+		{
+			int S = settings->scale[T->OptionIndex];
+			ShowSets(T,(S >> 4) & 0x03, D, S & 0x3, (S >> 2) & 0x03);
+		}
+		break;
+		case OPTION_BEATS:
+		{
+			int S = settings->beatoptions[T->OptionIndex] - 1;
+			ShowSets(T,S & 0x3, (S >> 2) & 0x03, (S >> 4) & 0x03, D);
+		}
+		break;
+		case OPTION_TPB:
+		{
+			int S = settings->tpboptions[T->OptionIndex] - 1;
+			ShowSets(T,S & 0x3, (S >> 2) & 0x03, D, (S >> 4) & 0x03);
+		}
+		break;
+		}
+	}break;
+
+	case UI_GLOBALSETTINGS:
+	{
+		for (int i = 0; i < TUESDAY_LEDS; i++) T->StateLedTargets[i] = 0;
+
+		int S = settings->ClockSubDivMode;
+		ShowSets(T,-1,settings->OctaveLimiter, S, -1);
+
+		T->StateLedTargets[12+0] =( settings->ClockMode & CLOCKMODE_RESETINVERTED) >0?255:0;
+		T->StateLedTargets[12+1] = (settings->ClockMode & CLOCKMODE_RESET_BLOCKS_TICKS) > 0 ? 255 : 0;
+		T->StateLedTargets[12+2] = (settings->ClockMode & CLOCKMODE_DOWNSLOPE)> 0 ? 255 : 0;
+		T->StateLedTargets[12+3] = 0;
+
+
+		T->StateLedTargets[4] = 255;
+		T->StateLedTargets[5] = 255;
+		T->StateLedTargets[6] = 255;
+		T->StateLedTargets[7] = 255;
+
+	}
+	break;
+	case UI_CALIBRATION:
+		for (int i = 0; i < TUESDAY_LEDS; i++) T->StateLedTargets[i] = 0;
+		switch (T->CalibTarget)
+		{
+		case CALIBRATION_VEL:
+			T->Gates[GATE_ACCENT] = 1;
+			T->Gates[GATE_GATE] = 0;
+			T->StateLedTargets[0] = 255;
+			T->StateLedTargets[1] = 255;
+			T->StateLedTargets[2] = 255;
+			T->StateLedTargets[3] = 255;
+			break;
+
+		case CALIBRATION_NOTE:
+			T->Gates[GATE_ACCENT] = 0;
+			T->Gates[GATE_GATE] = 1;
+			T->StateLedTargets[4] = 255;
+			T->StateLedTargets[5] = 255;
+			T->StateLedTargets[6] = 255;
+			T->StateLedTargets[7] = 255;
+			break;
+
+		case CALIBRATION_NOTARGET:
+		{
+			T->Gates[GATE_ACCENT] = 0;
+			T->Gates[GATE_GATE] = 0;
+			unsigned char tT = Triangle(tickssincecommit << 23) >> 24;
+			for (int i = 0; i < 4; i++)
+			{
+				T->StateLedTargets[i] = tT;
+				T->StateLedTargets[i + 4] = ~tT;
+			}
+		}
+		break;
+		}
+		break;
+	}
+
+	for (int i = 0; i < TUESDAY_LEDS; i++)
+	{
+		if (T->StateLedTargets[i] > T->RStateLeds[i])
+		{
+			T->RStateLeds[i]++;
+		}
+		else
+		{
+			if (T->StateLedTargets[i] < T->RStateLeds[i])
+			{
+				T->RStateLeds[i]--;
+			}
+			if (T->StateLedTargets[i] < T->RStateLeds[i])
+			{
+				T->RStateLeds[i]--;
+			}
+		}
+	}
+}
+
+
 
 void NOINLINE SetPatternFunc(int i, GenFuncPtr Gen, InitFuncPtr Init, PatternInitFuncPtr PatternInit, uint8_t dither)
 {
-	 PatternFunctions *PF = &PatternTypes[i];
+	PatternFunctions *PF = &PatternTypes[i];
 	PF->Gen = Gen;
 	PF->Init = Init;
 	PF->PatternInit = PatternInit;
@@ -112,8 +392,16 @@ void Tuesday_Init( Tuesday_PatternGen *P)
 	P->ticklengthscaler = 9;
 }
 
-void Tuesday_Reset( Tuesday_PatternGen *T)
+int GetResetEq(Tuesday_Settings *s)
 {
+	if (s->ClockMode & CLOCKMODE_RESETINVERTED) return 0;
+	return 1;
+}
+void Tuesday_Reset( Tuesday_PatternGen *T,Tuesday_Settings *s, int val)
+{
+	T->LastResetVal = val;
+	if (val != GetResetEq(s)) return;
+
 	T->TickOut = 0;
 	//T->Tick = -1;
 	T->DoReset = 1;
@@ -131,6 +419,327 @@ void Tuesday_Reset( Tuesday_PatternGen *T)
 	T->extclocksdowsincereset = 0;
 }
 
+
+
+
+
+void UI_SelectOption( Tuesday_PatternGen *T,Tuesday_Settings *settings, Tuesday_Params *params)
+{
+	int butconf, but1, but2, but3;
+	int butconflong = 0;;
+	int S = 0;
+	int MaxS = 64;
+	switch (T->OptionSelect)
+	{
+	case OPTION_ALGO:
+	{
+		butconf = pressed(&algosw_state);
+		butconflong = islongpress(&algosw_state);
+		S = settings->algooptions[T->OptionIndex];
+		//MaxS = __ALGO_COUNT;
+
+		but1 = pressed(&tpbsw_state);
+		but2 = pressed(&beatsw_state);
+		but3 = pressed(&scalesw_state);
+	};
+	break;
+
+	case OPTION_SCALE:
+	{
+		butconf = pressed(&scalesw_state);
+		butconflong = islongpress(&scalesw_state);
+		S = settings->scale[T->OptionIndex];
+		//		MaxS = __SCALE_COUNT;
+
+		but1 = pressed(&tpbsw_state);
+		but2 = pressed(&beatsw_state);
+		but3 = pressed(&algosw_state);
+
+	};
+	break;
+
+	case OPTION_BEATS:
+	{
+		butconf = pressed(&beatsw_state);
+		butconflong = islongpress(&beatsw_state);
+		//Settings.beatoptions[]
+		but1 = pressed(&algosw_state);
+		but2 = pressed(&scalesw_state);
+		but3 = pressed(&tpbsw_state);
+	};
+	break;
+
+	case OPTION_TPB:
+	{
+		butconf = pressed(&tpbsw_state);
+		butconflong = islongpress(&tpbsw_state);
+
+		but1 = pressed(&algosw_state);
+		but2 = pressed(&scalesw_state);
+		but3 = pressed(&beatsw_state);
+	};
+	break;
+	}
+
+	int NewS = S;
+
+	if (but1) NewS = (S & (0xff - (3 << 0))) + (((((S >> 0) & 3) + 1) & 3) << 0);
+	if (but2) NewS = (S & (0xff - (3 << 2))) + (((((S >> 2) & 3) + 1) & 3) << 2);
+	if (T->OptionSelect == OPTION_ALGO)
+	{
+		if (but3) NewS = (S & (0xff - (7 << 4))) + (((((S >> 4) & 7) + 1) & 7) << 4);
+	}
+	else
+	{
+		if (but3) NewS = (S & (0xff - (3 << 4))) + (((((S >> 4) & 3) + 1) & 3) << 4);
+	}
+
+	if (NewS != S)
+	{
+		S = NewS;
+
+		switch (T->OptionSelect)
+		{
+		case OPTION_ALGO:  settings->algooptions[T->OptionIndex] = S; break;
+		case OPTION_BEATS: settings->beatoptions[T->OptionIndex] = (S + 1); break;
+		case OPTION_TPB:   settings->tpboptions[T->OptionIndex] = (S + 1); break;
+		case OPTION_SCALE: settings->scale[T->OptionIndex] = S; break;
+		}
+		T->switchmode = 1;
+		SaveSettingsEeprom();
+
+	}
+	if (butconf == 1)
+	{
+		T->OptionIndex = (T->OptionIndex + 1) % 4;
+
+		switch (T->OptionSelect)
+		{
+		case OPTION_ALGO:  params->algo = T->OptionIndex; break;
+		case OPTION_BEATS: params->beatopt = T->OptionIndex; break;
+		case OPTION_TPB:   params->tpbopt = T->OptionIndex; break;
+		case OPTION_SCALE: params->scale = T->OptionIndex; break;
+		}
+
+		T->switchmode = 1;
+
+	}
+	if (butconflong == 1)
+	{
+		T->UIMode = UI_NORMAL;
+
+		switch (T->OptionSelect)
+		{
+
+
+		case OPTION_ALGO:  params->algo = (params->algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO; break;
+		case OPTION_SCALE: params->scale = (params->scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE; break;
+
+		}
+	}
+}
+
+
+void UI_GlobalSettings(Tuesday_PatternGen* T,Tuesday_Settings *settings, Tuesday_Params *params)
+{
+	if (pressed(&beatsw_state))
+	{
+		T->UIMode = UI_NORMAL;
+		Tuesday_SetupClockSubdivision(T, settings, params);
+		SaveSettingsEeprom();
+		return;
+	}
+
+	if (pressed(&tpbsw_state))
+	{
+		settings->ClockSubDivMode = (settings->ClockSubDivMode + 1) % 4;
+		Tuesday_SetupClockSubdivision(T, settings, params);
+
+	}
+
+	if (pressed(&algosw_state))
+	{
+		settings->ClockMode = (settings->ClockMode + 1) % 8;
+	}
+
+	if (pressed(&scalesw_state))
+	{
+		settings->OctaveLimiter = (settings->OctaveLimiter + 1) % 4;
+	}
+}
+
+void UI_Calibration(Tuesday_PatternGen *T)
+{
+	if (pressed(&algosw_state))
+	{
+		T->UIMode = UI_NORMAL;
+		return;
+	}
+
+	switch (T->CalibTarget)
+	{
+	case CALIBRATION_NOTE: ChangeDACCalibration(0, T->seed1, T->seed2); break;
+	case CALIBRATION_VEL: ChangeDACCalibration(1, T->seed1, T->seed2); break;
+	}
+
+
+	if (pressed(&beatsw_state))
+	{
+		T->CalibTarget = CALIBRATION_NOTE;
+	}
+	else
+	{
+		if (islongpress(&beatsw_state))
+		{
+			if (T->CalibTarget == CALIBRATION_NOTE)
+			{
+				// Write Velocity output calibration value!
+				T->CalibTarget = CALIBRATION_NOTARGET;
+				SaveCalibrationEeprom();
+			}
+		}
+	}
+
+	if (pressed(&tpbsw_state))
+	{
+		T->CalibTarget = CALIBRATION_VEL;
+	}
+	else
+	{
+		if (islongpress(&tpbsw_state))
+		{
+			if (T->CalibTarget == CALIBRATION_VEL)
+			{
+				// Write Note output calibration value!
+				T->CalibTarget = CALIBRATION_NOTARGET;
+				SaveCalibrationEeprom();
+			}
+		}
+	}
+
+}
+
+void UI_Normal(Tuesday_PatternGen*T,Tuesday_Settings *settings, Tuesday_Params *params)
+{
+
+	if (pressed(&algosw_state))
+	{
+		T->switchmode = 1;
+		params->algo = (params->algo + 1) % TUESDAY_MAXALGO;
+		T->commitchange = 1;
+	}
+	else
+	{
+		if (islongpress(&algosw_state)) // longpress!
+		{
+			params->algo = (params->algo + TUESDAY_MAXALGO - 1) % TUESDAY_MAXALGO;
+			T->commitchange = 1;
+			Tuesday_SwitchToOptionMode(T,OPTION_ALGO, params->algo);
+		}
+	}
+
+	if (pressed(&scalesw_state))
+	{
+		T->switchmode = 1;
+		params->scale = (params->scale + 1) % TUESDAY_MAXSCALE;
+		T->commitchange = 1;
+	}
+	else
+	{
+		if (islongpress(&scalesw_state)) // longpress!
+		{
+			params->scale = (params->scale + TUESDAY_MAXSCALE - 1) % TUESDAY_MAXSCALE;
+			T->commitchange = 1;
+			Tuesday_SwitchToOptionMode(T,OPTION_SCALE, params->scale);
+		}
+	}
+
+	if (pressed(&beatsw_state))
+	{
+		T->switchmode = 1;
+		params->beatopt = (params->beatopt + 1) % TUESDAY_MAXBEAT;
+
+		T->commitchange = 1;
+	}
+	else
+	{
+		if (islongpress(&beatsw_state)) // longpress!
+		{
+			//Params.beatopt = (Params.beatopt + TUESDAY_MAXBEAT -1) % TUESDAY_MAXBEAT;
+
+			//SwitchToOptionMode(OPTION_BEATS, Params.beatopt);
+		}
+	}
+
+	if (pressed(&tpbsw_state))
+	{
+		T->switchmode = 1;
+
+		params->tpbopt = (params->tpbopt + 1) % TUESDAY_MAXTPB;
+		T->commitchange = 1;
+	}
+	else
+	{
+		if (islongpress(&tpbsw_state)) // longpress!
+		{
+
+			params->tpbopt = (params->tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
+			T->commitchange = 1;
+			T->UIMode = UI_GLOBALSETTINGS;
+			//Params.tpbopt = (Params.tpbopt + TUESDAY_MAXTPB - 1) % TUESDAY_MAXTPB;
+			//SwitchToOptionMode(OPTION_TPB, Params.tpbopt);
+		}
+	}
+}
+
+struct Tuesday_RandomGen MainRandom;
+
+void Tuesday_SwitchToOptionMode(Tuesday_PatternGen *T,int mode, int startoption)
+{
+	T->OptionSelect = mode;
+	T->OptionIndex = startoption;
+	T->UIMode = UI_SELECTOPTION;
+}
+
+
+void Tuesday_MainLoop(Tuesday_PatternGen *T,Tuesday_Settings *settings, Tuesday_Params *params)
+{
+	switch (T->UIMode)
+	{
+
+	case UI_SELECTOPTION: UI_SelectOption(T,settings,params); break;
+
+	case UI_CALIBRATION: UI_Calibration(T); break;
+
+	case UI_GLOBALSETTINGS: UI_GlobalSettings(T,settings,params); break;
+
+	case UI_NORMAL: UI_Normal(T,settings,params); break;
+
+
+	};
+
+
+	// read the X/Y seed knobs
+	long newseed = (T->seed1) + (T->seed2 << 8);
+	if (newseed != oldseed) T->switchmode = 1;
+
+	if (T->switchmode == 1)
+	{
+		T->switchmode = 0;
+		Tuesday_RandomSeed(&MainRandom, newseed);
+		Tuesday_Generate(T, params, settings);
+		oldseed = newseed;
+	}
+
+	if (T->commitchange == 1 && tickssincecommit >= 10)
+	{
+		SaveEeprom();
+		T->commitchange = 0;
+		tickssincecommit = 0;
+	}
+
+}
+
 void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 {
 	T->msecpertick = __max(1, T->msecsincelasttick);
@@ -143,14 +752,13 @@ void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 		if (T->CoolDown < 0) T->CoolDown = 0;
 	}
 
-	 Tuesday_Tick_t *Tick = &T->CurrentPattern.Ticks[T->Tick];
+	Tuesday_Tick_t *Tick = &T->CurrentPattern.Ticks[T->Tick];
 
 	if (Tick->vel >= T->CoolDown)
 	{
 		T->CoolDown = CoolDownMax;
 
 		//	T->countdownNote =( T->msecpertick * 900) / 1000;
-
 		//	if (T->countdownNote >= T->msecpertick) T->countdownNote = 0;
 
 		T->TickOut = ((Tick->vel / 2) + (T->CurrentPattern.Ticks[T->Tick].accent * 127)) * (4096 / 256);
@@ -181,7 +789,6 @@ void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 			{
 				T->Gates[GATE_ACCENT] = 0;
 			}
-
 		}
 		if (T->CurrentPattern.Ticks[T->Tick].note == TUESDAY_NOTEOFF)
 		{
@@ -190,7 +797,6 @@ void Tuesday_Tick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 			T->Gates[GATE_ACCENT] = 0;
 			T->lastnote = T->CurrentPattern.Ticks[T->Tick].note;
 		}
-
 	}
 
 	if (T->Tick == 0)
@@ -213,7 +819,7 @@ void Tuesday_TimerTick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 	if (T->clockup == 0 && T->timesincelastclocktick > 2000)
 	{
 		T->timesincelastclocktick = 3000;
-		clockmode = 0;
+		clockmode = 0;	
 	}
 
 	T->T++;
@@ -267,34 +873,46 @@ void Tuesday_TimerTick( Tuesday_PatternGen *T,  Tuesday_Params *P)
 
 	}
 
-	//void UpdateGates()
-//	{
-		for (int i = 0; i < 6; i++)
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (T->Gates[i] > 0)
 		{
-			if (T->Gates[i] > 0)
+			T->Gates[i]--;
+			T->GatesGap[i] = 0;
+		}
+		else
+		{
+			if (T->GatesGap[i] > 0)
 			{
-				T->Gates[i]--;
-				T->GatesGap[i] = 0;
+				T->GatesGap[i]--;
 			}
 			else
 			{
-				if (T->GatesGap[i] > 0)
-				{
-					T->GatesGap[i]--;
-				}
-				else
-				{
-					T->Gates[i] = -T->Gates[i];
-				}
+				T->Gates[i] = -T->Gates[i];
 			}
 		}
-//	}
+	}
 
+};
+
+int Tuesday_IsClockPassed(Tuesday_PatternGen *P, Tuesday_Settings *S)
+{
+	if ((S->ClockMode & CLOCKMODE_RESET_BLOCKS_TICKS) == 0)
+	{
+		return 1;
+	}
+
+	if (P->LastResetVal == GetResetEq(S))
+	{
+		return 0;
+	}
+	return 1;
 }
 
 void Tuesday_Clock( Tuesday_PatternGen *P,  Tuesday_Settings *S,  Tuesday_Params *Par, int ClockVal)
 {
-	if (ClockVal == 1)
+	if (ClockVal == 1 && (Tuesday_IsClockPassed(P, S)==1))
 	{
 		P->Gates[GATE_CLOCK] = GATE_MINGATETIME;
 		Tuesday_SetupClockSubdivision(P, S, Par);
@@ -323,7 +941,7 @@ void Tuesday_Clock( Tuesday_PatternGen *P,  Tuesday_Settings *S,  Tuesday_Params
 			//if (P->Tick == -1)
 			{
 				//			P->Tick = 0;
-							//NewTick = 0;
+				//NewTick = 0;
 			}
 			//	printf("NT: %d - Tick: %d - delta %d \n", P->NewTick, P->Tick);
 
@@ -353,6 +971,11 @@ uint32_t KnobOpt(uint32_t val)
 	if (val > (65536 * 4) / 5) r++;
 	return 1 + 4 - r;
 }
+int GetClockPolarityEq(Tuesday_Settings *Settings)
+{
+	if ((Settings->ClockMode & CLOCKMODE_DOWNSLOPE) > 0) return 0;
+	return 1;
+}
 
 void Tuesday_ExtClock( Tuesday_PatternGen *P,  Tuesday_Params *Params,  Tuesday_Settings *Settings, int state)
 {
@@ -366,7 +989,7 @@ void Tuesday_ExtClock( Tuesday_PatternGen *P,  Tuesday_Params *Params,  Tuesday_
 		P->lastclocksubdiv = clocksubdiv;
 	}
 
-	if (state == Settings->ClockPolarityMode)
+	if (state == GetClockPolarityEq(Settings))
 	{
 		if ((P->extclocksupsincereset % clocksubdiv) == 0)
 		{
@@ -383,7 +1006,7 @@ void Tuesday_ExtClock( Tuesday_PatternGen *P,  Tuesday_Params *Params,  Tuesday_
 		P->extclocksdowsincereset = (P->extclocksdowsincereset + 1) % clocksubdiv;
 	}
 
-	if (state == Settings->ClockPolarityMode)
+	if (state == GetClockPolarityEq(Settings))
 	{
 		for (int i = 1; i < 6; i++)
 		{
@@ -395,9 +1018,9 @@ void Tuesday_ExtClock( Tuesday_PatternGen *P,  Tuesday_Params *Params,  Tuesday_
 				P->extclockssincereset[i] = (P->extclockssincereset[i] + 1) % P->TicksPerMeasure;
 			}
 		}
-		P->timesincelastclocktick = 0;
-	}
 
+	}
+	P->timesincelastclocktick = 0;
 }
 
 void Tuesday_ValidateParams( Tuesday_Params *P)
@@ -431,7 +1054,9 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 	S->beatoptions[3] = 32;
 
 	S->ClockSubDivMode = CLOCKSUBDIV_24PPQN;
-	S->ClockPolarityMode = CLOCK_DOWNSLOPE;
+
+	S->ClockMode = CLOCKMODE_DOWNSLOPE | CLOCKMODE_RESETREGULAR | CLOCKMODE_RESET_TRIGGER_ONLY;
+
 	S->OctaveLimiter = OCTAVELIMIT_OFF;
 
 	for (int j = 0; j < __SCALE_COUNT; j++)
@@ -443,10 +1068,19 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 		S->scales[j].count = 1;
 	}
 
+#ifdef ALTERNATESCALES
+	S->scale[0] = SCALE_MELODICMINOR;
+	S->scale[1] = SCALE_MINORPENTA;
+	S->scale[2] = SCALE_LOCRIAN;
+	S->scale[3] = SCALE_OCTATONIC;
+#else
+
 	S->scale[0] = SCALE_MAJOR;
 	S->scale[1] = SCALE_MINOR;
 	S->scale[2] = SCALE_DORIAN;
 	S->scale[3] = SCALE_BLUES;
+#endif
+
 
 	S->scales[SCALE_MAJOR].notes[0] = 0;
 	S->scales[SCALE_MAJOR].notes[1] = 2;
@@ -478,6 +1112,21 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 	S->scales[SCALE_MINORTRIAD].notes[3] = 9;
 	S->scales[SCALE_MINORTRIAD].count = 4; // Minor scale triad
 
+	S->scales[SCALE_PENTA].notes[0] = 0;
+	S->scales[SCALE_PENTA].notes[1] = 2;
+	S->scales[SCALE_PENTA].notes[2] = 5;
+	S->scales[SCALE_PENTA].notes[3] = 7;
+	S->scales[SCALE_PENTA].notes[4] = 9;
+	S->scales[SCALE_PENTA].count = 5; // Pentatonic
+
+	S->scales[SCALE_BLUES].notes[0] = 0;
+	S->scales[SCALE_BLUES].notes[1] = 3;
+	S->scales[SCALE_BLUES].notes[2] = 5;
+	S->scales[SCALE_BLUES].notes[3] = 6;
+	S->scales[SCALE_BLUES].notes[4] = 7;
+	S->scales[SCALE_BLUES].notes[5] = 10;
+	S->scales[SCALE_BLUES].count = 6; // Blues
+
 	S->scales[SCALE_DORIAN].notes[0] = 0;
 	S->scales[SCALE_DORIAN].notes[1] = 2;
 	S->scales[SCALE_DORIAN].notes[2] = 3;
@@ -487,21 +1136,14 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 	S->scales[SCALE_DORIAN].notes[6] = 10;
 	S->scales[SCALE_DORIAN].count = 7; // Dorian scale
 
-	S->scales[SCALE_PENTA].notes[0] = 0;
-	S->scales[SCALE_PENTA].notes[1] = 2;
-	S->scales[SCALE_PENTA].notes[2] = 5;
-	S->scales[SCALE_PENTA].notes[3] = 7;
-	S->scales[SCALE_PENTA].notes[4] = 9;
-	S->scales[SCALE_PENTA].count = 5; // Pentatonic
+	S->scales[SCALE_MINORPENTA].notes[0] = 0;
+	S->scales[SCALE_MINORPENTA].notes[1] = 3;
+	S->scales[SCALE_MINORPENTA].notes[2] = 5;
+	S->scales[SCALE_MINORPENTA].notes[3] = 7;
+	S->scales[SCALE_MINORPENTA].notes[4] = 10;
+	S->scales[SCALE_MINORPENTA].count = 5; // Pentatonic
 
 
-	S->scales[SCALE_BLUES].notes[0] = 0;
-	S->scales[SCALE_BLUES].notes[1] = 3;
-	S->scales[SCALE_BLUES].notes[2] = 5;
-	S->scales[SCALE_BLUES].notes[3] = 6;
-	S->scales[SCALE_BLUES].notes[4] = 7;
-	S->scales[SCALE_BLUES].notes[5] = 10;
-	S->scales[SCALE_BLUES].count = 6; // Blues
 
 
 
@@ -518,6 +1160,57 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 	S->scales[SCALE_12TONE].notes[10] = 10;
 	S->scales[SCALE_12TONE].notes[11] = 11;
 	S->scales[SCALE_12TONE].count = 12; // 12tone
+
+
+
+
+	S->scales[SCALE_EGYPTIAN].notes[0] = 0;
+	S->scales[SCALE_EGYPTIAN].notes[1] = 2;
+	S->scales[SCALE_EGYPTIAN].notes[2] = 5;
+	S->scales[SCALE_EGYPTIAN].notes[3] = 7;
+	S->scales[SCALE_EGYPTIAN].notes[4] = 10;
+	S->scales[SCALE_EGYPTIAN].count = 5; // Egyptian
+
+	S->scales[SCALE_PHRYGIAN].notes[0] = 0;
+	S->scales[SCALE_PHRYGIAN].notes[1] = 1;
+	S->scales[SCALE_PHRYGIAN].notes[2] = 4;
+	S->scales[SCALE_PHRYGIAN].notes[3] = 5;
+	S->scales[SCALE_PHRYGIAN].notes[4] = 7;
+	S->scales[SCALE_PHRYGIAN].notes[5] = 8;
+	S->scales[SCALE_PHRYGIAN].notes[6] = 10;
+	S->scales[SCALE_PHRYGIAN].count = 7; // Phrygian
+
+	S->scales[SCALE_LOCRIAN].notes[0] = 0;
+	S->scales[SCALE_LOCRIAN].notes[1] = 1;
+	S->scales[SCALE_LOCRIAN].notes[2] = 3;
+	S->scales[SCALE_LOCRIAN].notes[3] = 5;
+	S->scales[SCALE_LOCRIAN].notes[4] = 6;
+	S->scales[SCALE_LOCRIAN].notes[5] = 8;
+	S->scales[SCALE_LOCRIAN].notes[6] = 10;
+	S->scales[SCALE_LOCRIAN].count = 7; // Locrian
+
+	S->scales[SCALE_OCTATONIC].notes[0] = 0;
+	S->scales[SCALE_OCTATONIC].notes[1] = 2;
+	S->scales[SCALE_OCTATONIC].notes[2] = 3;
+	S->scales[SCALE_OCTATONIC].notes[3] = 5;
+	S->scales[SCALE_OCTATONIC].notes[4] = 6;
+	S->scales[SCALE_OCTATONIC].notes[5] = 8;
+	S->scales[SCALE_OCTATONIC].notes[6] = 9;
+	S->scales[SCALE_OCTATONIC].notes[7] = 11;
+	S->scales[SCALE_OCTATONIC].count = 8; // Octatonic
+
+	S->scales[SCALE_MELODICMINOR].notes[0] = 0;
+	S->scales[SCALE_MELODICMINOR].notes[1] = 2;
+	S->scales[SCALE_MELODICMINOR].notes[2] = 3;
+	S->scales[SCALE_MELODICMINOR].notes[3] = 5;
+	S->scales[SCALE_MELODICMINOR].notes[4] = 7;
+	S->scales[SCALE_MELODICMINOR].notes[5] = 9;
+	S->scales[SCALE_MELODICMINOR].notes[6] = 11;
+	S->scales[SCALE_MELODICMINOR].count = 7; // MelodicMinor /NOTDONE
+
+
+
+
 }
 
 void Tuesday_LoadSettings( Tuesday_Settings *S,  Tuesday_Params *P)
@@ -555,11 +1248,11 @@ const unsigned char dither[24 * 3] =
 		0b1000, 0b1100, 0b1110
 };
 
- Tuesday_PatternFuncSpecific FuncSpecific[4];
- Tuesday_Tick_t Ticks[4];
- Tuesday_Tick_t Top;
- Tuesday_Tick_t Bot;
- Tuesday_RandomGen Randoms[4];
+Tuesday_PatternFuncSpecific FuncSpecific[4];
+Tuesday_Tick_t Ticks[4];
+Tuesday_Tick_t Top;
+Tuesday_Tick_t Bot;
+Tuesday_RandomGen Randoms[4];
 
 #pragma GCC push_options
 #pragma GCC optimize ("Os")
@@ -601,7 +1294,6 @@ void CopyTick( Tuesday_Tick_t *A,  Tuesday_Tick_t *Out)
 	Out->vel = A->vel;
 	Out->slide = A->slide;
 	Out->maxsubticklength = A->maxsubticklength;
-
 }
 
 void ApplyDither(int tick, uint32_t ditherpattern,  Tuesday_Tick_t *A,  Tuesday_Tick_t *B,  Tuesday_Tick_t *Out)
@@ -663,7 +1355,7 @@ void Tuesday_Generate( Tuesday_PatternGen *T, Tuesday_Params *P,  Tuesday_Settin
 	int LengthMode = (S->algooptions[P->algo] >> 5) & 1;
 	int LengthMultMode = (S->algooptions[P->algo] >> 6) & 1;
 	if (LengthMultMode > 0) T->ticklengthscaler = 9; else T->ticklengthscaler = 3;
-	 PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
+	PatternFunctions *Algo = &PatternTypes[CurrentAlgo];
 
 	for (int j = 0; j < 4; j++)
 	{

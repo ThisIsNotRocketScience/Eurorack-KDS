@@ -383,6 +383,22 @@ extern "C"
 #include <Windows.h>
 #include <stdio.h>
 
+extern "C"
+{
+	void SaveSettingsEeprom()
+	{
+
+	}
+
+	void SaveCalibrationEeprom()
+	{
+
+	}
+	void SaveEeprom()
+	{
+	}
+}
+
 void DoSubDivTest(int clockmode, int maxclocks, int tpbopt)
 {
 
@@ -400,7 +416,10 @@ void DoSubDivTest(int clockmode, int maxclocks, int tpbopt)
 	for (int i = 0; i < TUESDAY_GATES; i++) gates[i] = -1;
 	int LastTick = -2;
 	int LastNewTick = -3;
-	Tuesday_Reset(&Tuesday);
+	
+	Tuesday_Reset(&Tuesday, &TuesdaySettings, 1);
+	Tuesday_Reset(&Tuesday, &TuesdaySettings, 0);
+
 	int lastnonzeroes = -1;
 	int cv = 0;
 	for (int i = 0; i < maxclocks; i++)

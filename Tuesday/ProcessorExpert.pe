@@ -3,7 +3,7 @@
   <Header>
     <Name>Tuesday</Name>
     <SavedBy>Stijn</SavedBy>
-    <ModificationStamp>91</ModificationStamp>
+    <ModificationStamp>92</ModificationStamp>
     <Date>2015-12-04</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -3136,9 +3136,9 @@
           <ItemSymbol>C_RomRamAddr0</ItemSymbol>
           <ReadOnly>false</ReadOnly>
           <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-          <Value>0</Value>
+          <Value>8192</Value>
           <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
-          <Base>DEC</Base>
+          <Base>HEX</Base>
           <Area />
         </ItemState>
         <ItemState>
