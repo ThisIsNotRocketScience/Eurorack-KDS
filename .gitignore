@@ -69,3 +69,4 @@ BigFishLib/Debug/BigFishLib.idb
 *.o
 WobblerV2/.WobblerV2.g_x
 *.otf
+.DS_Store
