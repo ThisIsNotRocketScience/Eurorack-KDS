@@ -14,10 +14,12 @@ extern "C"
 	extern struct denoise_state_t scalesw_state;
 	extern struct denoise_state_t beatsw_state;
 	extern struct denoise_state_t tpbsw_state;
+	
 	void __cdecl doTick()
 	{
 		Tuesday_Tick(&Tuesday, &TuesdayParams);
 	}
+
 	void __cdecl DoClock(int state)
 	{
 		Tuesday_Clock(&Tuesday, &TuesdaySettings, &TuesdayParams, state);
@@ -36,7 +38,7 @@ extern "C"
 #include <GL/gl3w.h>    // This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
 #include <SDL.h>
 
-#include "../../WobblerV2/Sources/Wobbler2.h"
+//#include "../../WobblerV2/Sources/Wobbler2.h"
 
 #include "../libs/lodepng-master/lodepng.h"
 extern "C"
@@ -137,7 +139,7 @@ enum
 {
 	ADC_TEMPO,
 	ADC_X,
-	ADC_Y,
+	ADC_Y,	
 	ADC_BANG,
 	ADC_COUNT
 };
@@ -315,6 +317,7 @@ int main(int, char**)
 	static bool waveoutputs = true;
 	static bool simsettings = true;
 	static bool reset = false;
+	static bool patternview = true;
 	bool processtimerticksautomatically;
 	bool knobs = true;
 
@@ -343,10 +346,58 @@ int main(int, char**)
 				ImGui::MenuItem("Output Waveforms", NULL, &waveoutputs);
 				ImGui::MenuItem("Tuesday Parameters", NULL, &parameters);
 				ImGui::MenuItem("Sim settings", NULL, &simsettings);
+				ImGui::MenuItem("Patternview", NULL, &patternview);
 				ImGui::MenuItem("Knobs?", NULL, &knobs);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
+		}
+		if (patternview)
+		{
+			ImGui::PushFont(pFontBold);
+			
+				ImGui::Begin("Pattern", &patternview, ImGuiWindowFlags_AlwaysAutoResize);
+				ImGui::PushFont(pFont);
+
+				
+					ImGui::BeginChild("PTN", ImVec2(1000, 540), true);
+					ImVec2 P = ImGui::GetCursorScreenPos();
+					float xs = 930 / (float)(Tuesday.CurrentPattern.Length);
+					float ys = 4;
+					float  H = 540;
+					int minnote = 10000;
+					int maxnote = -10000;
+						for (int i = 0; i < Tuesday.CurrentPattern.Length; i++)
+						{
+							int n = Tuesday.CurrentPattern.Ticks[i].note;
+
+							if (n < minnote) minnote = n; 
+							if (n > maxnote) maxnote = n;
+						}
+						ys = H / (36 );
+
+						for (int i = 0; i <= 36; i++)
+						{
+							int n = i;
+							int b[12] = { 0,1,0,1,0,0,1,0,1,0,1,0 };
+							ImGui::GetWindowDrawList()->AddRectFilled(ImVec2( P.x, P.y + H - (ys*0.9 + i * ys)), ImVec2(1000 + P.x, P.y + H - (i * ys)), b[n%12]?0x50000000:0x40f0f0f0, 2.0);
+						}
+
+					for (int i = 0; i < Tuesday.CurrentPattern.Length; i++)
+					{
+						int n = Tuesday.CurrentPattern.Ticks[i].note;
+						float L = (Tuesday.CurrentPattern.Ticks[i].maxsubticklength) / 6.0;
+						ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(70+P.x + i * xs, P.y + H-(ys+n*ys)), ImVec2(70+P.x + (i + L) * xs,P.y +H-( n*ys)),0xff50f0f0, 2.0);
+						ImGui::GetWindowDrawList()->AddRect(ImVec2(70 + P.x + i * xs, P.y + H - (ys + n * ys)), ImVec2(70 + P.x + (i + L) * xs, P.y + H - (n * ys)), 0xdf808080, 2.0);
+						ImGui::GetWindowDrawList()->AddRectFilled(ImVec2(20+ P.x, P.y + H - (ys + n * ys)), ImVec2(20 +ys + P.x , P.y + H - (n * ys)), 0xff50f0f0, 4.0);
+					}
+					ImGui::EndChild();
+
+				ImGui::PopFont();
+				ImGui::End();
+				ImGui::PopFont();
+		
+
 		}
 		if (simsettings)
 		{
@@ -440,7 +491,39 @@ int main(int, char**)
 
 				TuesdaySettings.algooptions[TuesdayParams.algo] = algot;
 
-				ImGui::Text("%d", (int)TuesdaySettings.algooptions[TuesdayParams.algo] & 0xf);
+				ImGui::Text("algo%d", (int)TuesdaySettings.algooptions[TuesdayParams.algo] & 0xf);
+
+
+				static int scalet = 3;
+				ImGui::Text("CurrentScale:"); ImGui::SameLine();
+
+				ImGui::RadioButton("MAJOR", &scalet, 0); ImGui::SameLine();
+				ImGui::RadioButton("MINOR", &scalet, 1); ImGui::SameLine();
+				ImGui::RadioButton("DORIAN", &scalet, 2); ImGui::SameLine();
+				ImGui::RadioButton("BLUES", &scalet, 3); //ImGui::SameLine(); 
+				ImGui::RadioButton("PENTA", &scalet, 4); ImGui::SameLine();
+				ImGui::RadioButton("12TONE", &scalet, 5); ImGui::SameLine();
+				ImGui::RadioButton("MAJORTRIAD", &scalet, 6); ImGui::SameLine();
+				ImGui::RadioButton("MINORTRIAD", &scalet, 7); //ImGui::SameLine();
+				if (ImGui::Button("regen"))
+				{
+					Tuesday.switchmode = 1;
+				}
+		/*	SCALE_EGYPTIAN,
+					SCALE_PHRYGIAN,
+					SCALE_LOCRIAN,
+					SCALE_OCTATONIC,
+					SCALE_MELODICMINOR,
+					SCALE_MINORPENTA,
+					SCALE_15,
+					SCALE_16,
+					*/
+
+
+				TuesdaySettings.scale[TuesdayParams.scale] = scalet;
+
+
+				ImGui::Text("scale: %d", (int)TuesdaySettings.scale[TuesdayParams.scale] & 0xf);
 
 
 

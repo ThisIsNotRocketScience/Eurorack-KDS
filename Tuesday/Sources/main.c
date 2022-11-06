@@ -414,6 +414,8 @@ int main(void)
 		//	}
 	}
 
+	Tuesday_InitScales(&Settings);
+
 	for (;;)
 	{
 

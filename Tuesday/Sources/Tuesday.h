@@ -138,7 +138,7 @@ typedef struct Tuesday_PatternGen
 #define TUESDAY_MAXBEAT 4
 #define TUESDAY_MAXTPB 4
 
-#define ALTERNATESCALES
+//#define ALTERNATESCALES
 
 typedef enum
 {
@@ -157,7 +157,7 @@ typedef enum
 	SCALE_LOCRIAN,
 	SCALE_OCTATONIC,
 	SCALE_MELODICMINOR,
-	SCALE_SCALE_MINORPENTA,
+	SCALE_MINORPENTA,
 	SCALE_15,
 	SCALE_16,
 #else
@@ -302,6 +302,9 @@ extern "C"
 	extern void Tuesday_Flat(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int Length);
 	extern void Tuesday_Psych(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int Length);
 	extern void Tuesday_Zeph(Tuesday_PatternContainer *T, Tuesday_RandomGen *R, int stepsperbeat, int beats, int fullcycles);
+
+
+	extern void Tuesday_InitScales(Tuesday_Settings *S);
 
 	extern void DoClock(int state);
 	extern void doTick();

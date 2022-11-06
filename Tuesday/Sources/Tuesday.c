@@ -1031,6 +1031,157 @@ void Tuesday_ValidateParams( Tuesday_Params *P)
 	P->scale = P->scale % TUESDAY_MAXSCALE;
 }
 
+
+void Tuesday_InitScales(Tuesday_Settings *S)
+{
+#ifdef ALTERNATESCALES
+S->scale[0] = SCALE_MELODICMINOR;
+S->scale[1] = SCALE_MINORPENTA;
+S->scale[2] = SCALE_LOCRIAN;
+S->scale[3] = SCALE_OCTATONIC;
+
+
+
+#else
+
+S->scale[0] = SCALE_MAJOR;
+S->scale[1] = SCALE_MINOR;
+S->scale[2] = SCALE_DORIAN;
+S->scale[3] = SCALE_BLUES;
+#endif
+
+S->scales[SCALE_MINORPENTA].notes[0] = 0;
+S->scales[SCALE_MINORPENTA].notes[1] = 3;
+S->scales[SCALE_MINORPENTA].notes[2] = 5;
+S->scales[SCALE_MINORPENTA].notes[3] = 7;
+S->scales[SCALE_MINORPENTA].notes[4] = 10;
+S->scales[SCALE_MINORPENTA].count = 5; // Pentatonic
+
+
+S->scales[SCALE_MAJOR].notes[0] = 0;
+S->scales[SCALE_MAJOR].notes[1] = 2;
+S->scales[SCALE_MAJOR].notes[2] = 4;
+S->scales[SCALE_MAJOR].notes[3] = 5;
+S->scales[SCALE_MAJOR].notes[4] = 7;
+S->scales[SCALE_MAJOR].notes[5] = 9;
+S->scales[SCALE_MAJOR].notes[6] = 11;
+S->scales[SCALE_MAJOR].count = 7; // Major scale
+
+S->scales[SCALE_MAJORTRIAD].notes[0] = 0;
+S->scales[SCALE_MAJORTRIAD].notes[1] = 4;
+S->scales[SCALE_MAJORTRIAD].notes[2] = 7;
+S->scales[SCALE_MAJORTRIAD].notes[3] = 11;
+S->scales[SCALE_MAJORTRIAD].count = 4; // Major scale triad
+
+S->scales[SCALE_MINOR].notes[0] = 0;
+S->scales[SCALE_MINOR].notes[1] = 2;
+S->scales[SCALE_MINOR].notes[2] = 3;
+S->scales[SCALE_MINOR].notes[3] = 5;
+S->scales[SCALE_MINOR].notes[4] = 7;
+S->scales[SCALE_MINOR].notes[5] = 8;
+S->scales[SCALE_MINOR].notes[6] = 10;
+S->scales[SCALE_MINOR].count = 7; // Minor scale
+
+S->scales[SCALE_MINORTRIAD].notes[0] = 0;
+S->scales[SCALE_MINORTRIAD].notes[1] = 3;
+S->scales[SCALE_MINORTRIAD].notes[2] = 7;
+S->scales[SCALE_MINORTRIAD].notes[3] = 10; // aaaarghhh!
+S->scales[SCALE_MINORTRIAD].count = 4; // Minor scale triad
+
+S->scales[SCALE_PENTA].notes[0] = 0;
+S->scales[SCALE_PENTA].notes[1] = 2;
+S->scales[SCALE_PENTA].notes[2] = 5;
+S->scales[SCALE_PENTA].notes[3] = 7;
+S->scales[SCALE_PENTA].notes[4] = 9;
+S->scales[SCALE_PENTA].count = 5; // Pentatonic
+
+S->scales[SCALE_BLUES].notes[0] = 0;
+S->scales[SCALE_BLUES].notes[1] = 3;
+S->scales[SCALE_BLUES].notes[2] = 5;
+S->scales[SCALE_BLUES].notes[3] = 6;
+S->scales[SCALE_BLUES].notes[4] = 7;
+S->scales[SCALE_BLUES].notes[5] = 10;
+S->scales[SCALE_BLUES].count = 6; // Blues
+
+S->scales[SCALE_DORIAN].notes[0] = 0;
+S->scales[SCALE_DORIAN].notes[1] = 2;
+S->scales[SCALE_DORIAN].notes[2] = 3;
+S->scales[SCALE_DORIAN].notes[3] = 6;
+S->scales[SCALE_DORIAN].notes[4] = 7;
+S->scales[SCALE_DORIAN].notes[5] = 9;
+S->scales[SCALE_DORIAN].notes[6] = 10;
+S->scales[SCALE_DORIAN].count = 7; // Dorian scale
+
+
+
+
+
+
+S->scales[SCALE_12TONE].notes[0] = 0;
+S->scales[SCALE_12TONE].notes[1] = 1;
+S->scales[SCALE_12TONE].notes[2] = 2;
+S->scales[SCALE_12TONE].notes[3] = 3;
+S->scales[SCALE_12TONE].notes[4] = 4;
+S->scales[SCALE_12TONE].notes[5] = 5;
+S->scales[SCALE_12TONE].notes[6] = 6;
+S->scales[SCALE_12TONE].notes[7] = 7;
+S->scales[SCALE_12TONE].notes[8] = 8;
+S->scales[SCALE_12TONE].notes[9] = 9;
+S->scales[SCALE_12TONE].notes[10] = 10;
+S->scales[SCALE_12TONE].notes[11] = 11;
+S->scales[SCALE_12TONE].count = 12; // 12tone
+
+
+
+
+S->scales[SCALE_EGYPTIAN].notes[0] = 0;
+S->scales[SCALE_EGYPTIAN].notes[1] = 2;
+S->scales[SCALE_EGYPTIAN].notes[2] = 5;
+S->scales[SCALE_EGYPTIAN].notes[3] = 7;
+S->scales[SCALE_EGYPTIAN].notes[4] = 10;
+S->scales[SCALE_EGYPTIAN].count = 5; // Egyptian
+
+S->scales[SCALE_PHRYGIAN].notes[0] = 0;
+S->scales[SCALE_PHRYGIAN].notes[1] = 1;
+S->scales[SCALE_PHRYGIAN].notes[2] = 4;
+S->scales[SCALE_PHRYGIAN].notes[3] = 5;
+S->scales[SCALE_PHRYGIAN].notes[4] = 7;
+S->scales[SCALE_PHRYGIAN].notes[5] = 8;
+S->scales[SCALE_PHRYGIAN].notes[6] = 10;
+S->scales[SCALE_PHRYGIAN].count = 7; // Phrygian
+
+S->scales[SCALE_LOCRIAN].notes[0] = 0;
+S->scales[SCALE_LOCRIAN].notes[1] = 1;
+S->scales[SCALE_LOCRIAN].notes[2] = 3;
+S->scales[SCALE_LOCRIAN].notes[3] = 5;
+S->scales[SCALE_LOCRIAN].notes[4] = 6;
+S->scales[SCALE_LOCRIAN].notes[5] = 8;
+S->scales[SCALE_LOCRIAN].notes[6] = 10;
+S->scales[SCALE_LOCRIAN].count = 7; // Locrian
+
+S->scales[SCALE_OCTATONIC].notes[0] = 0;
+S->scales[SCALE_OCTATONIC].notes[1] = 2;
+S->scales[SCALE_OCTATONIC].notes[2] = 3;
+S->scales[SCALE_OCTATONIC].notes[3] = 5;
+S->scales[SCALE_OCTATONIC].notes[4] = 6;
+S->scales[SCALE_OCTATONIC].notes[5] = 8;
+S->scales[SCALE_OCTATONIC].notes[6] = 9;
+S->scales[SCALE_OCTATONIC].notes[7] = 11;
+S->scales[SCALE_OCTATONIC].count = 8; // Octatonic
+
+S->scales[SCALE_MELODICMINOR].notes[0] = 0;
+S->scales[SCALE_MELODICMINOR].notes[1] = 2;
+S->scales[SCALE_MELODICMINOR].notes[2] = 3;
+S->scales[SCALE_MELODICMINOR].notes[3] = 5;
+S->scales[SCALE_MELODICMINOR].notes[4] = 7;
+S->scales[SCALE_MELODICMINOR].notes[5] = 9;
+S->scales[SCALE_MELODICMINOR].notes[6] = 11;
+S->scales[SCALE_MELODICMINOR].count = 7; // MelodicMinor /NOTDONE
+
+
+}
+
+
 void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 {
 	P->algo = 2;
@@ -1067,149 +1218,7 @@ void NOINLINE Tuesday_LoadDefaults( Tuesday_Settings *S,  Tuesday_Params *P)
 		}
 		S->scales[j].count = 1;
 	}
-
-#ifdef ALTERNATESCALES
-	S->scale[0] = SCALE_MELODICMINOR;
-	S->scale[1] = SCALE_MINORPENTA;
-	S->scale[2] = SCALE_LOCRIAN;
-	S->scale[3] = SCALE_OCTATONIC;
-#else
-
-	S->scale[0] = SCALE_MAJOR;
-	S->scale[1] = SCALE_MINOR;
-	S->scale[2] = SCALE_DORIAN;
-	S->scale[3] = SCALE_BLUES;
-#endif
-
-
-	S->scales[SCALE_MAJOR].notes[0] = 0;
-	S->scales[SCALE_MAJOR].notes[1] = 2;
-	S->scales[SCALE_MAJOR].notes[2] = 4;
-	S->scales[SCALE_MAJOR].notes[3] = 5;
-	S->scales[SCALE_MAJOR].notes[4] = 7;
-	S->scales[SCALE_MAJOR].notes[5] = 9;
-	S->scales[SCALE_MAJOR].notes[6] = 11;
-	S->scales[SCALE_MAJOR].count = 7; // Major scale
-
-	S->scales[SCALE_MAJORTRIAD].notes[0] = 0;
-	S->scales[SCALE_MAJORTRIAD].notes[1] = 4;
-	S->scales[SCALE_MAJORTRIAD].notes[2] = 7;
-	S->scales[SCALE_MAJORTRIAD].notes[3] = 11;
-	S->scales[SCALE_MAJORTRIAD].count = 4; // Major scale triad
-
-	S->scales[SCALE_MINOR].notes[0] = 0;
-	S->scales[SCALE_MINOR].notes[1] = 2;
-	S->scales[SCALE_MINOR].notes[2] = 3;
-	S->scales[SCALE_MINOR].notes[3] = 5;
-	S->scales[SCALE_MINOR].notes[4] = 7;
-	S->scales[SCALE_MINOR].notes[5] = 8;
-	S->scales[SCALE_MINOR].notes[6] = 10;
-	S->scales[SCALE_MINOR].count = 7; // Minor scale
-
-	S->scales[SCALE_MINORTRIAD].notes[0] = 0;
-	S->scales[SCALE_MINORTRIAD].notes[1] = 3;
-	S->scales[SCALE_MINORTRIAD].notes[2] = 7;
-	S->scales[SCALE_MINORTRIAD].notes[3] = 9;
-	S->scales[SCALE_MINORTRIAD].count = 4; // Minor scale triad
-
-	S->scales[SCALE_PENTA].notes[0] = 0;
-	S->scales[SCALE_PENTA].notes[1] = 2;
-	S->scales[SCALE_PENTA].notes[2] = 5;
-	S->scales[SCALE_PENTA].notes[3] = 7;
-	S->scales[SCALE_PENTA].notes[4] = 9;
-	S->scales[SCALE_PENTA].count = 5; // Pentatonic
-
-	S->scales[SCALE_BLUES].notes[0] = 0;
-	S->scales[SCALE_BLUES].notes[1] = 3;
-	S->scales[SCALE_BLUES].notes[2] = 5;
-	S->scales[SCALE_BLUES].notes[3] = 6;
-	S->scales[SCALE_BLUES].notes[4] = 7;
-	S->scales[SCALE_BLUES].notes[5] = 10;
-	S->scales[SCALE_BLUES].count = 6; // Blues
-
-	S->scales[SCALE_DORIAN].notes[0] = 0;
-	S->scales[SCALE_DORIAN].notes[1] = 2;
-	S->scales[SCALE_DORIAN].notes[2] = 3;
-	S->scales[SCALE_DORIAN].notes[3] = 6;
-	S->scales[SCALE_DORIAN].notes[4] = 7;
-	S->scales[SCALE_DORIAN].notes[5] = 9;
-	S->scales[SCALE_DORIAN].notes[6] = 10;
-	S->scales[SCALE_DORIAN].count = 7; // Dorian scale
-
-	S->scales[SCALE_MINORPENTA].notes[0] = 0;
-	S->scales[SCALE_MINORPENTA].notes[1] = 3;
-	S->scales[SCALE_MINORPENTA].notes[2] = 5;
-	S->scales[SCALE_MINORPENTA].notes[3] = 7;
-	S->scales[SCALE_MINORPENTA].notes[4] = 10;
-	S->scales[SCALE_MINORPENTA].count = 5; // Pentatonic
-
-
-
-
-
-	S->scales[SCALE_12TONE].notes[0] = 0;
-	S->scales[SCALE_12TONE].notes[1] = 1;
-	S->scales[SCALE_12TONE].notes[2] = 2;
-	S->scales[SCALE_12TONE].notes[3] = 3;
-	S->scales[SCALE_12TONE].notes[4] = 4;
-	S->scales[SCALE_12TONE].notes[5] = 5;
-	S->scales[SCALE_12TONE].notes[6] = 6;
-	S->scales[SCALE_12TONE].notes[7] = 7;
-	S->scales[SCALE_12TONE].notes[8] = 8;
-	S->scales[SCALE_12TONE].notes[9] = 9;
-	S->scales[SCALE_12TONE].notes[10] = 10;
-	S->scales[SCALE_12TONE].notes[11] = 11;
-	S->scales[SCALE_12TONE].count = 12; // 12tone
-
-
-
-
-	S->scales[SCALE_EGYPTIAN].notes[0] = 0;
-	S->scales[SCALE_EGYPTIAN].notes[1] = 2;
-	S->scales[SCALE_EGYPTIAN].notes[2] = 5;
-	S->scales[SCALE_EGYPTIAN].notes[3] = 7;
-	S->scales[SCALE_EGYPTIAN].notes[4] = 10;
-	S->scales[SCALE_EGYPTIAN].count = 5; // Egyptian
-
-	S->scales[SCALE_PHRYGIAN].notes[0] = 0;
-	S->scales[SCALE_PHRYGIAN].notes[1] = 1;
-	S->scales[SCALE_PHRYGIAN].notes[2] = 4;
-	S->scales[SCALE_PHRYGIAN].notes[3] = 5;
-	S->scales[SCALE_PHRYGIAN].notes[4] = 7;
-	S->scales[SCALE_PHRYGIAN].notes[5] = 8;
-	S->scales[SCALE_PHRYGIAN].notes[6] = 10;
-	S->scales[SCALE_PHRYGIAN].count = 7; // Phrygian
-
-	S->scales[SCALE_LOCRIAN].notes[0] = 0;
-	S->scales[SCALE_LOCRIAN].notes[1] = 1;
-	S->scales[SCALE_LOCRIAN].notes[2] = 3;
-	S->scales[SCALE_LOCRIAN].notes[3] = 5;
-	S->scales[SCALE_LOCRIAN].notes[4] = 6;
-	S->scales[SCALE_LOCRIAN].notes[5] = 8;
-	S->scales[SCALE_LOCRIAN].notes[6] = 10;
-	S->scales[SCALE_LOCRIAN].count = 7; // Locrian
-
-	S->scales[SCALE_OCTATONIC].notes[0] = 0;
-	S->scales[SCALE_OCTATONIC].notes[1] = 2;
-	S->scales[SCALE_OCTATONIC].notes[2] = 3;
-	S->scales[SCALE_OCTATONIC].notes[3] = 5;
-	S->scales[SCALE_OCTATONIC].notes[4] = 6;
-	S->scales[SCALE_OCTATONIC].notes[5] = 8;
-	S->scales[SCALE_OCTATONIC].notes[6] = 9;
-	S->scales[SCALE_OCTATONIC].notes[7] = 11;
-	S->scales[SCALE_OCTATONIC].count = 8; // Octatonic
-
-	S->scales[SCALE_MELODICMINOR].notes[0] = 0;
-	S->scales[SCALE_MELODICMINOR].notes[1] = 2;
-	S->scales[SCALE_MELODICMINOR].notes[2] = 3;
-	S->scales[SCALE_MELODICMINOR].notes[3] = 5;
-	S->scales[SCALE_MELODICMINOR].notes[4] = 7;
-	S->scales[SCALE_MELODICMINOR].notes[5] = 9;
-	S->scales[SCALE_MELODICMINOR].notes[6] = 11;
-	S->scales[SCALE_MELODICMINOR].count = 7; // MelodicMinor /NOTDONE
-
-
-
+	Tuesday_InitScales(S);
 
 }
 
